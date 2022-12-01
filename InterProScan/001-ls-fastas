@@ -1,0 +1,4 @@
+#! /bin/bash
+# Interproscan script
+
+ls source-fastas/*aa > 1-list-fastas

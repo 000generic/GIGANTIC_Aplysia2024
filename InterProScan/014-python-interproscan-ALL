@@ -1,0 +1,20 @@
+#! python
+# Interproscan script
+
+# /home/eedsinger/software/interproscan/interproscan-5.48-83.0/interproscan.sh --applications Pfam --input  ../species311/species311-fastas/*Acanthopleura-granulata*aa --cpu 45 --disable-precalc                                      
+
+input_fastas = open( 'output/1-list-fastas', 'r' )
+output_command = open( '003-interproscan-all-apps-all-species', 'w' )
+
+for next_fasta in input_fastas:
+
+    fasta = next_fasta[ :-1 ]
+    info = fasta.split( '/' )[ -1 ]
+    info_2 = info.split( '-' )
+    gspp = info_2[ 5 ] + ' ' + info_2[ 6 ]
+
+    output = '/home/eedsinger/software/interproscan/interproscan-5.59-91.0/interproscan.sh --input ' + fasta + ' --cpu 20 --disable-precalc \n'
+    output_command.write( output )
+
+input_fastas.close()
+output_command.close()

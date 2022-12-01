@@ -1,0 +1,4 @@
+#! /bin/bash
+# Interproscan script
+
+ls output-interproscan/*tsv > output/10-list-interproscan-tsv-files
