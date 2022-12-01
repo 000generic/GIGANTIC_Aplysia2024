@@ -1,0 +1,109 @@
+#! python
+# GIGANTIC ProjectDB
+
+# Annelida-Owenia-fusiformis      Annelida-Owenia-fusiformis/Annelida-Owenia-fusiformis.gff       gene-OFUS_LOCUS40       rna-OFUS_LOCUS40        cds-CAC9445486.1
+
+input_fastas = open( 'output/3-list-fastas', 'r') 
+
+for next_fasta in input_fastas:
+
+    next_fasta = next_fasta[ :-1 ]
+    filename = '.'.join( next_fasta.split( '/' )[ -1 ].split( '.' )[ :-1 ] )
+
+    #leave a record
+    print( 'processing' , filename )
+
+    ### Parsing lines in GFF
+    input_fasta = open( next_fasta, 'r' ) # input
+    input_gff_map = open( 'output/4-output/4-map-gff-' + filename, 'r' )
+
+    output_fasta = open( 'output/5-output/' + filename + '-T1.aa', 'w' ) # output
+    output_error = open( 'output/5-output/5-error-' + filename, 'w' )
+
+    cds_gene = {}
+    
+    for next_line in input_gff_map:
+
+        info = next_line[ :-1 ].split( '\t' )
+        gspp = info[ 0 ]
+        folder = info[ 1 ]
+        gene = info[ 2 ].replace( 'gene-', '' ).replace( 'gene:', '' )
+        cds = info[ 4 ].replace( 'cds-', '' ).replace( 'cds:', '' )
+        cds = cds.split( '.cds' )[ 0 ] # clean up for Dicymedia gff
+        cds = cds.split( '.t1.cds' )[ 0 ] # clean up for Ephydatia
+        cds = cds.split( 'CDS:' )[ -1 ] # clean up for Hofstenia
+
+        if gene != "":
+
+            cds_gene[ cds ] = gene
+            
+            #if gene in gene_cds.keys():
+             #   gene_cds[ gene ].append( cds )
+
+            #else:
+             #   gene_cds[ gene ] = []
+              #  gene_cds[ gene ].append( cds )
+
+    input_gff_map.close()
+
+    #initialize variables
+    overview = []
+    id_seq = {}
+
+    for next_line in input_fasta:
+
+        if next_line[ 0 ] == '>':
+            
+            identifier = next_line[ 1:-1 ].split( ' ' ) [ 0 ]
+            identifier = identifier.split( '.' )[ 0 ] # make ENSEMBL fasta match ENSEMBL GFF
+
+            id_seq[ identifier ]  = ''
+
+        else:
+            id_seq[ identifier ] += next_line[ :-1 ]            
+
+    input_fasta.close()
+
+    #initialize variables    
+    gene_longest = {}
+    gene_cds = {}
+
+    # function to test and replace for longest sequence per cds per gene
+    def check_in( gene, seqlen, identifier ):
+        
+        if gene in gene_longest:
+            oldlen = gene_longest[ gene ]
+            
+            if seqlen > oldlen:
+                gene_longest[ gene ] = seqlen
+                gene_cds[ gene ] = identifier
+
+        else:
+            gene_longest[ gene ] = seqlen
+            gene_cds[ gene ] = identifier
+
+    # read through cds isoforms and find longest per gene
+    for identifier, sequence in id_seq.items():
+
+        if identifier in cds_gene:
+            
+            gene = cds_gene[ identifier ]
+            seqlen = len(sequence)
+            check_in( gene, seqlen, identifier )
+                    
+        else:
+            error = 'Error: Parsed fasta header cds ' + identifier + ' is not recognized.\n'
+            output_error.write( error )
+            
+    # write longest isoform per gene to fasta file
+    for gene in gene_longest:
+        
+        identifier = gene_cds[ gene ]
+        sequence = id_seq[ identifier ]
+        output = '>' + gene + '___' + identifier + '\n' + sequence + '\n' 
+        output_fasta.write( output )
+        
+    output_fasta.close()
+    output_error.close()
+
+input_fastas.close()

@@ -1,0 +1,26 @@
+#! python
+# GIGANTIC ProjectDB
+
+# Metazoa-Porifera-Demospongiae-Spongillida-Spongillidae-Ephydatia-muelleri-6052
+
+input_phylonames = open( '13-list-phylonames', 'r' )
+output_cp = open('015-cp-fastas-to-phyloname-fastas', 'w')
+
+for next_name in input_phylonames:
+
+    phyloname = next_name[ :-1 ]
+
+    info = phyloname.split( '-' )
+    if info[ 1 ] == 'Phylum_unclassified':
+        info[ 1 ] = 'Unicell'
+    elif info[ 1 ] == 'Rotifera':
+        info[ 1 ] = 'Gnathifera'
+        
+    phgspp = info[ 1 ] + '-' + info[ 5 ] + '-' + info[ 6 ] 
+    fasta_original = 'output/5-output/' + phgspp + '-T1.aa'
+
+    output = 'cp ' + fasta_original + ' output/15-output/' + phyloname + '-T1.aa\n'
+    output_cp.write( output )
+
+input_phylonames.close()
+output_cp.close()

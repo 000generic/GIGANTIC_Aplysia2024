@@ -1,0 +1,25 @@
+#! /bin/bash
+# GIGANTIC ProjectDB
+
+grep 'Artibeus-jamaicensis-' 10-phyloNames >> 13-list-phylonames
+grep 'Arvicola-amphibius-' 10-phyloNames >> 13-list-phylonames
+grep 'Bufo-gargarizans-' 10-phyloNames >> 13-list-phylonames
+grep 'Cavia-aperea-' 10-phyloNames >> 13-list-phylonames
+grep 'Chrysemys-picta-' 10-phyloNames >> 13-list-phylonames
+grep 'Corvus-moneduloides-' 10-phyloNames >> 13-list-phylonames
+grep 'Crocuta-crocuta-' 10-phyloNames >> 13-list-phylonames
+grep 'Fukomys-damarensis-' 10-phyloNames >> 13-list-phylonames
+grep 'Gopherus-evgoodei-' 10-phyloNames >> 13-list-phylonames
+grep 'Heterocephalus-glaber-' 10-phyloNames >> 13-list-phylonames
+grep 'Hippopotamus-amphibius-' 10-phyloNames >> 13-list-phylonames
+grep 'Leptobrachium-leishanense-' 10-phyloNames >> 13-list-phylonames
+grep 'Meriones-unguiculatus-' 10-phyloNames >> 13-list-phylonames
+grep 'Mesocricetus-auratus-' 10-phyloNames >> 13-list-phylonames
+grep 'Naja-naja-' 10-phyloNames >> 13-list-phylonames
+grep 'Nannospalax-galili-' 10-phyloNames >> 13-list-phylonames
+grep 'Rhizomys-pruinosus-' 10-phyloNames >> 13-list-phylonames
+grep 'Sousa-chinensis-' 10-phyloNames >> 13-list-phylonames
+grep 'Strix-occidentalis-' 10-phyloNames >> 13-list-phylonames
+grep 'Vicugna-vicugna_mensalis-' 10-phyloNames >> 13-list-phylonames
+grep 'Zalophus-californianus-' 10-phyloNames >> 13-list-phylonames
+grep 'Zootoca-vivipara-' 10-phyloNames >> 13-list-phylonames

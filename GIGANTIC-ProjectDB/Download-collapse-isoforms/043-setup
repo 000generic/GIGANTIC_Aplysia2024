@@ -1,0 +1,14 @@
+#! /bin/bash
+# GIGANTIC ProjectDB
+
+#/mnlsc/data/eedsinger/databases/gigantic/omg/genomedb/gdb2/animals/2021-nov/1-downloaded/downloaded/*
+#/mnlsc/data/eedsinger/databases/gigantic/omg/genomedb/gdb2/animals/2021-nov/1-downloaded/0-map-ALL-gspp-db-source_genome_id
+
+mkdir output
+mkdir output/4-output
+mkdir output/5-output
+
+#mkdir phylogenomes
+#mkdir phylonames
+
+mkdir output/15-output

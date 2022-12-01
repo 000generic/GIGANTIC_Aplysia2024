@@ -1,0 +1,33 @@
+#! python
+# GIGANTIC ProjectDB
+
+# >Hcv1.av93.c1.g1.i1
+
+input_fasta = open( 'Ctenophora-Hormiphora-californensis/Ctenophora-Hormiphora-californensis.aa', 'r' )
+output_fasta = open( 'output/5-output/Ctenophora-Hormiphora-californensis-T1.aa', 'w' )
+
+id_seq = {}
+for next_line in input_fasta:
+
+    if next_line[ 0 ] == '>':
+
+        identifier = next_line[ 1:-1 ].split( ' ' )[ 0 ]
+        id_seq[ identifier ] = ''
+
+    else:
+
+        sequence = next_line[ :-1 ]
+        id_seq[ identifier ] = id_seq[ identifier ] + sequence
+
+for next_id in id_seq.keys():
+
+    if int( next_id.split( '.i' )[ -1 ] ) == 1:
+
+        output = '>' + next_id + '\n' + id_seq[ next_id ] + '\n'
+        output_fasta.write( output )
+
+    else:
+        pass
+
+input_fasta.close()
+output_fasta.close()

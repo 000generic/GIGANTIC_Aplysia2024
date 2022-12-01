@@ -1,0 +1,38 @@
+#! /bin/bash
+# GIGANTIC ProjectDB
+
+grep 'Amynthas-corticis-' 10-phyloNames >> 13-list-phylonames
+grep 'Lamellibrachia-luymsi-' 10-phyloNames >> 13-list-phylonames
+grep 'Apolygus-lucorum-' 10-phyloNames >> 13-list-phylonames
+grep 'Blattella-germanica-' 10-phyloNames >> 13-list-phylonames
+grep 'Chrysoperla-carnea-' 10-phyloNames >> 13-list-phylonames
+grep 'Cloeon-dipterum-' 10-phyloNames >> 13-list-phylonames
+grep 'Coccinella-septempunctata-' 10-phyloNames >> 13-list-phylonames
+grep 'Coptotermes-formosanus-' 10-phyloNames >> 13-list-phylonames
+grep 'Cryptotermes-secundus-' 10-phyloNames >> 13-list-phylonames
+grep 'Ctenocephalides-felis-' 10-phyloNames >> 13-list-phylonames
+grep 'Ephemera-danica-' 10-phyloNames >> 13-list-phylonames
+grep 'Frankliniella-occidentalis-' 10-phyloNames >> 13-list-phylonames
+grep 'Ladona-fulva-' 10-phyloNames >> 13-list-phylonames
+grep 'Lepidurus-apus_lubbocki-' 10-phyloNames >> 13-list-phylonames
+grep 'Lepidurus-arcticus-' 10-phyloNames >> 13-list-phylonames
+grep 'Macrobrachium-nipponense-' 10-phyloNames >> 13-list-phylonames
+grep 'Nilaparvata-lugens-' 10-phyloNames >> 13-list-phylonames
+grep 'Pediculus-humanus_corporis-' 10-phyloNames >> 13-list-phylonames
+grep 'Photinus-pyralis-' 10-phyloNames >> 13-list-phylonames
+grep 'Procambarus-virginalis-' 10-phyloNames >> 13-list-phylonames
+grep 'Rhopalosiphum-maidis-' 10-phyloNames >> 13-list-phylonames
+grep 'Teleogryllus-occipitalis-' 10-phyloNames >> 13-list-phylonames
+grep 'Thrips-palmi-' 10-phyloNames >> 13-list-phylonames
+grep 'Tribolium-madens-' 10-phyloNames >> 13-list-phylonames
+grep 'Triops-cancriformis-' 10-phyloNames >> 13-list-phylonames
+grep 'Triops-longicaudatus-' 10-phyloNames >> 13-list-phylonames
+grep 'Aptenodytes-patagonicus-' 10-phyloNames >> 13-list-phylonames
+grep 'Crocodylus-porosus-' 10-phyloNames >> 13-list-phylonames
+grep 'Hydrophis-curtus-' 10-phyloNames >> 13-list-phylonames
+grep 'Laticauda-laticaudata-' 10-phyloNames >> 13-list-phylonames
+grep 'Notechis-scutatus-' 10-phyloNames >> 13-list-phylonames
+grep 'Pseudonaja-textilis-' 10-phyloNames >> 13-list-phylonames
+grep 'Rattus-norvegicus-' 10-phyloNames >> 13-list-phylonames
+grep 'Sphenodon-punctatus-' 10-phyloNames >> 13-list-phylonames
+grep 'Thelohanellus-kitauei-' 10-phyloNames >> 13-list-phylonames

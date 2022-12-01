@@ -1,0 +1,4 @@
+#! /bin/bash
+# GIGANTIC ProjectDB
+
+ls output/5-output/*aa > output/11-genome-T1-fastas

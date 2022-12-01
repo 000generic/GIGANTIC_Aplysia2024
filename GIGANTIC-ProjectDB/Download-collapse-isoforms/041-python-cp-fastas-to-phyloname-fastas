@@ -1,0 +1,62 @@
+#! python
+# GIGANTIC ProjectDB
+
+# Metazoa-Porifera-Demospongiae-Spongillida-Spongillidae-Ephydatia-muelleri-6052
+
+input_t1s = open( '11-genome-T1-fastas', 'r' )
+input_phylonames = open( '13-list-phylonames', 'r' )
+output_cp = open('015-cp-fastas-to-phyloname-fastas', 'w')
+
+t1_phylos = []
+for next_name in input_phylonames:
+
+    phyloname = next_name[ :-1 ]
+
+    info = phyloname.split( '-' )
+    if info[ 1 ] == 'Phylum_unclassified':
+        info[ 1 ] = 'Unicell'
+
+    phgspp = info[ 1 ] + '-' + info[ 5 ] + '-' + info[ 6 ] 
+    t1_name = phgspp + '-T1.aa'
+    t1_phylos.append( t1_name ) 
+    fasta_original = 'output/5-output/' + t1_name
+
+    output = 'cp ' + fasta_original + ' output/15-output/' + phyloname + '-T1.aa\n'
+    output_cp.write( output )
+
+t1s = []
+t1_fasta = {}
+
+# output/5-output/Annelida-Amynthas-corticis-T1.aa
+for next_t1 in input_t1s:
+
+    t1_name = next_t1[ :-1 ].split( '/' )[ -1 ]
+    t1s.append( t1_name )
+    t1_fasta[ t1_name ] = next_t1[ :-1 ]
+    
+for next_t1 in t1s:
+
+    if next_t1 in t1_phylos:
+        pass
+    
+    else:
+
+        info = next_t1.split( '-' )
+
+        if info[ 0 ] == 'Unicell':
+            Kingdom = 'Kingdom_unclassified'
+        else:
+            Kingdom = 'Metazoa'
+            
+        Phylum = info[ 0 ]
+        Genus = info[ 1 ]
+        species = info[ 2 ].split( '.' )[ 0 ]
+
+        fasta_original = t1_fasta[ next_t1 ]
+        
+        phyloname = Kingdom + '-' + Phylum + '-Class_unresolved-Order_unresolved-Family_unresolved-' + Genus + '-' + species + '-0000_ncbiID_unresolved'
+        output = 'cp ' + fasta_original + ' output/15-output/' + phyloname + '-T1.aa\n'
+        output_cp.write( output )
+        
+input_phylonames.close()
+output_cp.close()

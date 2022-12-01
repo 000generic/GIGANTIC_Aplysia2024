@@ -1,0 +1,4 @@
+#! /bin/bash
+# GIGANTIC ProjectDB
+
+gunzip -c new_taxdump.tar.gz | tar xf -

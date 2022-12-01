@@ -1,0 +1,729 @@
+#! /bin/bash
+# GIGANTIC ProjectDB
+
+mkdir Annelida-Dimorphilus-gyrociliatus &&
+cd Annelida-Dimorphilus-gyrociliatus &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/904/063/045/GCA_904063045.1_Dgyrociliatus_assembly/GCA_904063045.1_Dgyrociliatus_assembly_protein.faa.gz -O Annelida-Dimorphilus-gyrociliatus.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/904/063/045/GCA_904063045.1_Dgyrociliatus_assembly/GCA_904063045.1_Dgyrociliatus_assembly_genomic.gff.gz -O Annelida-Dimorphilus-gyrociliatus.gff.gz &&
+cd .. &&
+mkdir Annelida-Paraescarpia-echinospica_OOO &&
+cd Annelida-Paraescarpia-echinospica_OOO &&
+wget https://figshare.com/ndownloader/files/28945467  &&
+wget https://figshare.com/ndownloader/files/28945458  &&
+cd .. &&
+mkdir Annelida-Helobdella-robusta &&
+cd Annelida-Helobdella-robusta &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/326/865/GCF_000326865.1_Helobdella_robusta_v1.0/GCF_000326865.1_Helobdella_robusta_v1.0_protein.faa.gz -O Annelida-Helobdella-robusta.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/326/865/GCF_000326865.1_Helobdella_robusta_v1.0/GCF_000326865.1_Helobdella_robusta_v1.0_genomic.gff.gz -O Annelida-Helobdella-robusta.gff.gz &&
+cd .. &&
+mkdir Arthropoda-Anopheles-gambiae &&
+cd Arthropoda-Anopheles-gambiae &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/005/575/GCF_000005575.2_AgamP3/GCF_000005575.2_AgamP3_protein.faa.gz -O Arthropoda-Anopheles-gambiae.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/005/575/GCF_000005575.2_AgamP3/GCF_000005575.2_AgamP3_genomic.gff.gz -O Arthropoda-Anopheles-gambiae.gff.gz &&
+cd .. &&
+mkdir Arthropoda-Polypedilum-vanderplanki &&
+cd Arthropoda-Polypedilum-vanderplanki &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/018/290/095/GCA_018290095.1_Pv_5.2/GCA_018290095.1_Pv_5.2_protein.faa.gz -O Arthropoda-Polypedilum-vanderplanki.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/018/290/095/GCA_018290095.1_Pv_5.2/GCA_018290095.1_Pv_5.2_genomic.gff.gz -O Arthropoda-Polypedilum-vanderplanki.gff.gz &&
+cd .. &&
+mkdir Arthropoda-Apis-mellifera &&
+cd Arthropoda-Apis-mellifera &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/254/395/GCF_003254395.2_Amel_HAv3.1/GCF_003254395.2_Amel_HAv3.1_protein.faa.gz -O Arthropoda-Apis-mellifera.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/254/395/GCF_003254395.2_Amel_HAv3.1/GCF_003254395.2_Amel_HAv3.1_genomic.gff.gz -O Arthropoda-Apis-mellifera.gff.gz &&
+cd .. &&
+mkdir Arthropoda-Solenopsis-invicta &&
+cd Arthropoda-Solenopsis-invicta &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/802/725/GCF_016802725.1_UNIL_Sinv_3.0/GCF_016802725.1_UNIL_Sinv_3.0_protein.faa.gz -O Arthropoda-Solenopsis-invicta.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/802/725/GCF_016802725.1_UNIL_Sinv_3.0/GCF_016802725.1_UNIL_Sinv_3.0_genomic.gff.gz -O Arthropoda-Solenopsis-invicta.gff.gz &&
+cd .. &&
+mkdir Arthropoda-Folsomia-candida &&
+cd Arthropoda-Folsomia-candida &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/217/175/GCF_002217175.1_ASM221717v1/GCF_002217175.1_ASM221717v1_protein.faa.gz -O Arthropoda-Folsomia-candida.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/217/175/GCF_002217175.1_ASM221717v1/GCF_002217175.1_ASM221717v1_genomic.gff.gz -O Arthropoda-Folsomia-candida.gff.gz &&
+cd .. &&
+mkdir Arthropoda-Artemia-franciscana_000 &&
+cd Arthropoda-Artemia-franciscana_000 &&
+wget https://bioinformatics.psb.ugent.be/gdb/artemia/mRNA_Artfr_active_pep_20191220.tfa.xz &&
+wget https://bioinformatics.psb.ugent.be/gdb/artemia/Artfr_gff3_20191230.tar.gz &&
+cd .. &&
+mkdir Arthropoda-Daphnia-magna &&
+cd Arthropoda-Daphnia-magna &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/020/631/705/GCF_020631705.1_ASM2063170v1.1/GCF_020631705.1_ASM2063170v1.1_protein.faa.gz -O Arthropoda-Daphnia-magna.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/020/631/705/GCF_020631705.1_ASM2063170v1.1/GCF_020631705.1_ASM2063170v1.1_genomic.gff.gz -O Arthropoda-Daphnia-magna.gff.gz &&
+cd .. &&
+mkdir Arthropoda-Amphibalanus-amphitrite &&
+cd Arthropoda-Amphibalanus-amphitrite &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/059/575/GCF_019059575.1_NRLGWU_Aamphi_draft/GCF_019059575.1_NRLGWU_Aamphi_draft_protein.faa.gz -O Arthropoda-Amphibalanus-amphitrite.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/059/575/GCF_019059575.1_NRLGWU_Aamphi_draft/GCF_019059575.1_NRLGWU_Aamphi_draft_genomic.gff.gz -O Arthropoda-Amphibalanus-amphitrite.gff.gz &&
+cd .. &&
+mkdir Arthropoda-Pollicipes-pollicipes &&
+cd Arthropoda-Pollicipes-pollicipes &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/011/947/565/GCF_011947565.2_Ppol_2/GCF_011947565.2_Ppol_2_protein.faa.gz -O Arthropoda-Pollicipes-pollicipes.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/011/947/565/GCF_011947565.2_Ppol_2/GCF_011947565.2_Ppol_2_genomic.gff.gz -O Arthropoda-Pollicipes-pollicipes.gff.gz &&
+cd .. &&
+mkdir Arthropoda-Lepas-anserifera_OOO &&
+cd Arthropoda-Lepas-anserifera_OOO &&
+wget https://figshare.com/ndownloader/files/27381107 &&
+wget https://figshare.com/ndownloader/files/27381104 &&
+cd .. &&
+mkdir Arthropoda-Eurytemora-affinis &&
+cd Arthropoda-Eurytemora-affinis &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/591/075/GCF_000591075.1_Eaff_2.0/GCF_000591075.1_Eaff_2.0_protein.faa.gz -O Arthropoda-Eurytemora-affinis.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/591/075/GCF_000591075.1_Eaff_2.0/GCF_000591075.1_Eaff_2.0_genomic.gff.gz -O Arthropoda-Eurytemora-affinis.gff.gz &&
+cd .. &&
+mkdir Arthropoda-Tigriopus-californicus &&
+cd Arthropoda-Tigriopus-californicus &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/007/210/705/GCA_007210705.1_Tcal_SD_v2.1/GCA_007210705.1_Tcal_SD_v2.1_protein.faa.gz -O Arthropoda-Tigriopus-californicus.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/007/210/705/GCA_007210705.1_Tcal_SD_v2.1/GCA_007210705.1_Tcal_SD_v2.1_genomic.gff.gz -O Arthropoda-Tigriopus-californicus.gff.gz &&
+cd .. &&
+mkdir Arthropoda-Tigriopus-kingsejongensis_OOO &&
+cd Arthropoda-Tigriopus-kingsejongensis_OOO &&
+wget https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100249/Tigriopus_kingsejongensis.protein.fa  &&
+wget https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100249/Tigriopus_kingsejongensis_genome.gff3 &&
+cd .. &&
+mkdir Arthropoda-Caligus-rogercresseyi &&
+cd Arthropoda-Caligus-rogercresseyi &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/013/387/185/GCA_013387185.1_ASM1338718v1/GCA_013387185.1_ASM1338718v1_protein.faa.gz -O Arthropoda-Caligus-rogercresseyi.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/013/387/185/GCA_013387185.1_ASM1338718v1/GCA_013387185.1_ASM1338718v1_genomic.gff.gz -O Arthropoda-Caligus-rogercresseyi.gff.gz &&
+cd .. &&
+mkdir Arthropoda-Lepeoptheirus-salmonis &&
+cd Arthropoda-Lepeoptheirus-salmonis &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/905/330/665/GCA_905330665.1_LSAL_IOA00_R2/GCA_905330665.1_LSAL_IOA00_R2_protein.faa.gz -O Arthropoda-Lepeoptheirus-salmonis.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/086/655/GCF_016086655.2_UVic_Lsal_1.1/GCF_016086655.2_UVic_Lsal_1.1_genomic.gff.gz -O Arthropoda-Lepeoptheirus-salmonis.gff.gz &&
+cd .. &&
+mkdir Arthropoda-Portunus-trituberculatus_OOO &&
+cd Arthropoda-Portunus-trituberculatus_OOO &&
+wget https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100678/Portunus_trituberculatus_gene_protein.fasta.bz2 &&
+wget https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100678/Portunus_trituberculatus_gene.gff.bz2  &&
+cd .. &&
+mkdir Arthropoda-Penaeus-monodon &&
+cd Arthropoda-Penaeus-monodon &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/015/228/065/GCF_015228065.1_NSTDA_Pmon_1/GCF_015228065.1_NSTDA_Pmon_1_protein.faa.gz -O Arthropoda-Penaeus-monodon.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/015/228/065/GCF_015228065.1_NSTDA_Pmon_1/GCF_015228065.1_NSTDA_Pmon_1_genomic.gff.gz -O Arthropoda-Penaeus-monodon.gff.gz &&
+cd .. &&
+mkdir Arthropoda-Homarus-americanus &&
+cd Arthropoda-Homarus-americanus &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/991/925/GCF_018991925.1_GMGI_Hamer_2.0/GCF_018991925.1_GMGI_Hamer_2.0_protein.faa.gz -O Arthropoda-Homarus-americanus.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/991/925/GCF_018991925.1_GMGI_Hamer_2.0/GCF_018991925.1_GMGI_Hamer_2.0_genomic.gff.gz -O Arthropoda-Homarus-americanus.gff.gz &&
+cd .. &&
+mkdir Arthropoda-Argiope-bruennichi &&
+cd Arthropoda-Argiope-bruennichi &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/015/342/795/GCA_015342795.1_ASM1534279v1/GCA_015342795.1_ASM1534279v1_protein.faa.gz -O Arthropoda-Argiope-bruennichi.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/015/342/795/GCA_015342795.1_ASM1534279v1/GCA_015342795.1_ASM1534279v1_genomic.gff.gz -O Arthropoda-Argiope-bruennichi.gff.gz &&
+cd .. &&
+mkdir Arthropoda-Nymphon-striatum &&
+cd Arthropoda-Nymphon-striatum &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/618/385/GCA_016618385.1_SNU_Nstr_1.0/GCA_016618385.1_SNU_Nstr_1.0_protein.faa.gz -O Arthropoda-Nymphon-striatum.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/618/385/GCA_016618385.1_SNU_Nstr_1.0/GCA_016618385.1_SNU_Nstr_1.0_genomic.gff.gz -O Arthropoda-Nymphon-striatum.gff.gz &&
+cd .. &&
+mkdir Arthropoda-Limulus-polyphemus &&
+cd Arthropoda-Limulus-polyphemus &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/517/525/GCF_000517525.1_Limulus_polyphemus-2.1.2/GCF_000517525.1_Limulus_polyphemus-2.1.2_protein.faa.gz -O Arthropoda-Limulus-polyphemus.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/517/525/GCF_000517525.1_Limulus_polyphemus-2.1.2/GCF_000517525.1_Limulus_polyphemus-2.1.2_genomic.gff.gz -O Arthropoda-Limulus-polyphemus.gff.gz &&
+cd .. &&
+mkdir Chordata-Ciona-intestinalis &&
+cd Chordata-Ciona-intestinalis &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/224/145/GCF_000224145.3_KH/GCF_000224145.3_KH_protein.faa.gz -O Chordata-Ciona-intestinalis.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/224/145/GCF_000224145.3_KH/GCF_000224145.3_KH_genomic.gff.gz -O Chordata-Ciona-intestinalis.gff.gz &&
+cd .. &&
+mkdir Chordata-Oikopleura-dioica &&
+cd Chordata-Oikopleura-dioica &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/209/535/GCA_000209535.1_ASM20953v1/GCA_000209535.1_ASM20953v1_protein.faa.gz -O Chordata-Oikopleura-dioica.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/209/535/GCA_000209535.1_ASM20953v1/GCA_000209535.1_ASM20953v1_genomic.gff.gz -O Chordata-Oikopleura-dioica.gff.gz &&
+cd .. &&
+mkdir Chordata-Eptatretus-burgeri_OOO &&
+cd Chordata-Eptatretus-burgeri_OOO &&
+wget https://figshare.com/authors/Phyloinformatics_Lab_in_RIKEN_Kobe/4815111 &&
+wget https://figshare.com/articles/dataset/Inshore_hagfish_gene_model_gff3_-_Kuraku_Lab/11967474  &&
+cd .. &&
+mkdir Chordata-Petromyzon-marinus &&
+cd Chordata-Petromyzon-marinus &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/010/993/605/GCF_010993605.1_kPetMar1.pri/GCF_010993605.1_kPetMar1.pri_protein.faa.gz -O Chordata-Petromyzon-marinus.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/010/993/605/GCF_010993605.1_kPetMar1.pri/GCF_010993605.1_kPetMar1.pri_genomic.gff.gz -O Chordata-Petromyzon-marinus.gff.gz &&
+cd .. &&
+mkdir Chordata-Callorhinchus-milii &&
+cd Chordata-Callorhinchus-milii &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/977/255/GCF_018977255.1_IMCB_Cmil_1.0/GCF_018977255.1_IMCB_Cmil_1.0_protein.faa.gz -O Chordata-Callorhinchus-milii.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/977/255/GCF_018977255.1_IMCB_Cmil_1.0/GCF_018977255.1_IMCB_Cmil_1.0_genomic.gff.gz -O Chordata-Callorhinchus-milii.gff.gz &&
+cd .. &&
+mkdir Chordata-Carcharodon-carcharias &&
+cd Chordata-Carcharodon-carcharias &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/017/639/515/GCF_017639515.1_sCarCar2.pri/GCF_017639515.1_sCarCar2.pri_protein.faa.gz -O Chordata-Carcharodon-carcharias.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/017/639/515/GCF_017639515.1_sCarCar2.pri/GCF_017639515.1_sCarCar2.pri_genomic.gff.gz -O Chordata-Carcharodon-carcharias.gff.gz &&
+cd .. &&
+mkdir Chordata-Chiloscyllium-plagiosum &&
+cd Chordata-Chiloscyllium-plagiosum &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/010/195/GCF_004010195.1_ASM401019v2/GCF_004010195.1_ASM401019v2_protein.faa.gz -O Chordata-Chiloscyllium-plagiosum.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/010/195/GCF_004010195.1_ASM401019v2/GCF_004010195.1_ASM401019v2_genomic.gff.gz -O Chordata-Chiloscyllium-plagiosum.gff.gz &&
+cd .. &&
+mkdir Chordata-Amblyraja-radiata &&
+cd Chordata-Amblyraja-radiata &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/010/909/765/GCF_010909765.2_sAmbRad1.1.pri/GCF_010909765.2_sAmbRad1.1.pri_protein.faa.gz -O Chordata-Amblyraja-radiata.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/010/909/765/GCF_010909765.2_sAmbRad1.1.pri/GCF_010909765.2_sAmbRad1.1.pri_genomic.gff.gz -O Chordata-Amblyraja-radiata.gff.gz &&
+cd .. &&
+mkdir Chordata-Amia-calva &&
+cd Chordata-Amia-calva &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/984/155/GCA_016984155.1_BGI_Acal_1.1/GCA_016984155.1_BGI_Acal_1.1_protein.faa.gz -O Chordata-Amia-calva.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/984/155/GCA_016984155.1_BGI_Acal_1.1/GCA_016984155.1_BGI_Acal_1.1_genomic.gff.gz -O Chordata-Amia-calva.gff.gz &&
+cd .. &&
+mkdir Chordata-Gadus-morhua &&
+cd Chordata-Gadus-morhua &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/902/167/405/GCF_902167405.1_gadMor3.0/GCF_902167405.1_gadMor3.0_protein.faa.gz -O Chordata-Gadus-morhua.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/902/167/405/GCF_902167405.1_gadMor3.0/GCF_902167405.1_gadMor3.0_genomic.gff.gz -O Chordata-Gadus-morhua.gff.gz &&
+cd .. &&
+mkdir Chordata-Salmo-salar &&
+cd Chordata-Salmo-salar &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/233/375/GCF_000233375.1_ICSASG_v2/GCF_000233375.1_ICSASG_v2_protein.faa.gz -O Chordata-Salmo-salar.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/233/375/GCF_000233375.1_ICSASG_v2/GCF_000233375.1_ICSASG_v2_genomic.gff.gz -O Chordata-Salmo-salar.gff.gz &&
+cd .. &&
+mkdir Chordata-Oncorhynchus-mykiss &&
+cd Chordata-Oncorhynchus-mykiss &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/265/735/GCF_013265735.2_USDA_OmykA_1.1/GCF_013265735.2_USDA_OmykA_1.1_protein.faa.gz -O Chordata-Oncorhynchus-mykiss.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/265/735/GCF_013265735.2_USDA_OmykA_1.1/GCF_013265735.2_USDA_OmykA_1.1_genomic.gff.gz -O Chordata-Oncorhynchus-mykiss.gff.gz &&
+cd .. &&
+mkdir Chordata-Coregonus-clupeaformis &&
+cd Chordata-Coregonus-clupeaformis &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/398/675/GCF_018398675.1_ASM1839867v1/GCF_018398675.1_ASM1839867v1_protein.faa.gz -O Chordata-Coregonus-clupeaformis.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/398/675/GCF_018398675.1_ASM1839867v1/GCF_018398675.1_ASM1839867v1_genomic.gff.gz -O Chordata-Coregonus-clupeaformis.gff.gz &&
+cd .. &&
+mkdir Chordata-Salvelinus-namaycush &&
+cd Chordata-Salvelinus-namaycush &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/432/855/GCF_016432855.1_SaNama_1.0/GCF_016432855.1_SaNama_1.0_protein.faa.gz -O Chordata-Salvelinus-namaycush.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/432/855/GCF_016432855.1_SaNama_1.0/GCF_016432855.1_SaNama_1.0_genomic.gff.gz -O Chordata-Salvelinus-namaycush.gff.gz &&
+cd .. &&
+mkdir Chordata-Danio-rerio &&
+cd Chordata-Danio-rerio &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/035/GCF_000002035.6_GRCz11/GCF_000002035.6_GRCz11_protein.faa.gz -O Chordata-Danio-rerio.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/035/GCF_000002035.6_GRCz11/GCF_000002035.6_GRCz11_genomic.gff.gz -O Chordata-Danio-rerio.gff.gz &&
+cd .. &&
+mkdir Chordata-Tetraodon-nigroviridis &&
+cd Chordata-Tetraodon-nigroviridis &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/180/735/GCA_000180735.1_ASM18073v1/GCA_000180735.1_ASM18073v1_protein.faa.gz -O Chordata-Tetraodon-nigroviridis.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/180/735/GCA_000180735.1_ASM18073v1/GCA_000180735.1_ASM18073v1_genomic.gff.gz -O Chordata-Tetraodon-nigroviridis.gff.gz &&
+cd .. &&
+mkdir Chordata-Cyprinus-carpio &&
+cd Chordata-Cyprinus-carpio &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/340/385/GCF_018340385.1_ASM1834038v1/GCF_018340385.1_ASM1834038v1_protein.faa.gz -O Chordata-Cyprinus-carpio.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/340/385/GCF_018340385.1_ASM1834038v1/GCF_018340385.1_ASM1834038v1_genomic.gff.gz -O Chordata-Cyprinus-carpio.gff.gz &&
+cd .. &&
+mkdir Chordata-Carassius-auratus &&
+cd Chordata-Carassius-auratus &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/368/295/GCF_003368295.1_ASM336829v1/GCF_003368295.1_ASM336829v1_protein.faa.gz -O Chordata-Carassius-auratus.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/368/295/GCF_003368295.1_ASM336829v1/GCF_003368295.1_ASM336829v1_genomic.gff.gz -O Chordata-Carassius-auratus.gff.gz &&
+cd .. &&
+mkdir Chordata-Pygocentrus-nattereri &&
+cd Chordata-Pygocentrus-nattereri &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/015/220/715/GCF_015220715.1_fPygNat1.pri/GCF_015220715.1_fPygNat1.pri_protein.faa.gz -O Chordata-Pygocentrus-nattereri.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/015/220/715/GCF_015220715.1_fPygNat1.pri/GCF_015220715.1_fPygNat1.pri_genomic.gff.gz -O Chordata-Pygocentrus-nattereri.gff.gz &&
+cd .. &&
+mkdir Chordata-Colossoma-macropomum &&
+cd Chordata-Colossoma-macropomum &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/904/425/465/GCF_904425465.1_Colossoma_macropomum/GCF_904425465.1_Colossoma_macropomum_protein.faa.gz -O Chordata-Colossoma-macropomum.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/904/425/465/GCF_904425465.1_Colossoma_macropomum/GCF_904425465.1_Colossoma_macropomum_genomic.gff.gz -O Chordata-Colossoma-macropomum.gff.gz &&
+cd .. &&
+mkdir Chordata-Sinocyclocheilus-grahami &&
+cd Chordata-Sinocyclocheilus-grahami &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/515/645/GCF_001515645.1_SAMN03320097.WGS_v1.1/GCF_001515645.1_SAMN03320097.WGS_v1.1_protein.faa.gz -O Chordata-Sinocyclocheilus-grahami.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/515/645/GCF_001515645.1_SAMN03320097.WGS_v1.1/GCF_001515645.1_SAMN03320097.WGS_v1.1_genomic.gff.gz -O Chordata-Sinocyclocheilus-grahami.gff.gz &&
+cd .. &&
+mkdir Chordata-Sinocyclocheilus-anshuiensis &&
+cd Chordata-Sinocyclocheilus-anshuiensis &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/515/605/GCF_001515605.1_SAMN03320099.WGS_v1.1/GCF_001515605.1_SAMN03320099.WGS_v1.1_protein.faa.gz -O Chordata-Sinocyclocheilus-anshuiensis.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/515/605/GCF_001515605.1_SAMN03320099.WGS_v1.1/GCF_001515605.1_SAMN03320099.WGS_v1.1_genomic.gff.gz -O Chordata-Sinocyclocheilus-anshuiensis.gff.gz &&
+cd .. &&
+mkdir Chordata-Sinocyclocheilus-rhinocerous &&
+cd Chordata-Sinocyclocheilus-rhinocerous &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/515/625/GCF_001515625.1_SAMN03320098_v1.1/GCF_001515625.1_SAMN03320098_v1.1_protein.faa.gz -O Chordata-Sinocyclocheilus-rhinocerous.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/515/625/GCF_001515625.1_SAMN03320098_v1.1/GCF_001515625.1_SAMN03320098_v1.1_genomic.gff.gz -O Chordata-Sinocyclocheilus-rhinocerous.gff.gz &&
+cd .. &&
+mkdir Chordata-Oryzias-latipes &&
+cd Chordata-Oryzias-latipes &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/234/675/GCF_002234675.1_ASM223467v1/GCF_002234675.1_ASM223467v1_protein.faa.gz -O Chordata-Oryzias-latipes.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/234/675/GCF_002234675.1_ASM223467v1/GCF_002234675.1_ASM223467v1_genomic.gff.gz -O Chordata-Oryzias-latipes.gff.gz &&
+cd .. &&
+mkdir Chordata-Poecilia-latipinna &&
+cd Chordata-Poecilia-latipinna &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/443/285/GCF_001443285.1_P_latipinna-1.0/GCF_001443285.1_P_latipinna-1.0_protein.faa.gz -O Chordata-Poecilia-latipinna.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/443/285/GCF_001443285.1_P_latipinna-1.0/GCF_001443285.1_P_latipinna-1.0_genomic.gff.gz -O Chordata-Poecilia-latipinna.gff.gz &&
+cd .. &&
+mkdir Chordata-Austrofundulus-limnaeus &&
+cd Chordata-Austrofundulus-limnaeus &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/266/775/GCF_001266775.1_Austrofundulus_limnaeus-1.0/GCF_001266775.1_Austrofundulus_limnaeus-1.0_protein.faa.gz -O Chordata-Austrofundulus-limnaeus.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/266/775/GCF_001266775.1_Austrofundulus_limnaeus-1.0/GCF_001266775.1_Austrofundulus_limnaeus-1.0_genomic.gff.gz -O Chordata-Austrofundulus-limnaeus.gff.gz &&
+cd .. &&
+mkdir Chordata-Fundulus-heteroclitus &&
+cd Chordata-Fundulus-heteroclitus &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/011/125/445/GCF_011125445.2_MU-UCD_Fhet_4.1/GCF_011125445.2_MU-UCD_Fhet_4.1_protein.faa.gz -O Chordata-Fundulus-heteroclitus.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/011/125/445/GCF_011125445.2_MU-UCD_Fhet_4.1/GCF_011125445.2_MU-UCD_Fhet_4.1_genomic.gff.gz -O Chordata-Fundulus-heteroclitus.gff.gz &&
+cd .. &&
+mkdir Chordata-Kryptolebias-marmoratus &&
+cd Chordata-Kryptolebias-marmoratus &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/649/575/GCF_001649575.2_ASM164957v2/GCF_001649575.2_ASM164957v2_protein.faa.gz -O Chordata-Kryptolebias-marmoratus.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/649/575/GCF_001649575.2_ASM164957v2/GCF_001649575.2_ASM164957v2_genomic.gff.gz -O Chordata-Kryptolebias-marmoratus.gff.gz &&
+cd .. &&
+mkdir Chordata-Nothobranchius-furzeri &&
+cd Chordata-Nothobranchius-furzeri &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/465/895/GCF_001465895.1_Nfu_20140520/GCF_001465895.1_Nfu_20140520_protein.faa.gz -O Chordata-Nothobranchius-furzeri.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/465/895/GCF_001465895.1_Nfu_20140520/GCF_001465895.1_Nfu_20140520_genomic.gff.gz -O Chordata-Nothobranchius-furzeri.gff.gz &&
+cd .. &&
+mkdir Chordata-Boleophthalmus-pectinirostris &&
+cd Chordata-Boleophthalmus-pectinirostris &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/788/275/GCF_000788275.1_BP.fa/GCF_000788275.1_BP.fa_protein.faa.gz -O Chordata-Boleophthalmus-pectinirostris.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/788/275/GCF_000788275.1_BP.fa/GCF_000788275.1_BP.fa_genomic.gff.gz -O Chordata-Boleophthalmus-pectinirostris.gff.gz &&
+cd .. &&
+mkdir Chordata-Periophthalmus-magnuspinnatus &&
+cd Chordata-Periophthalmus-magnuspinnatus &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/829/125/GCF_009829125.1_fPerMag1.pri/GCF_009829125.1_fPerMag1.pri_protein.faa.gz -O Chordata-Periophthalmus-magnuspinnatus.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/829/125/GCF_009829125.1_fPerMag1.pri/GCF_009829125.1_fPerMag1.pri_genomic.gff.gz -O Chordata-Periophthalmus-magnuspinnatus.gff.gz &&
+cd .. &&
+mkdir Chordata-Cyclopterus-lumpus &&
+cd Chordata-Cyclopterus-lumpus &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/769/545/GCF_009769545.1_fCycLum1.pri/GCF_009769545.1_fCycLum1.pri_protein.faa.gz -O Chordata-Cyclopterus-lumpus.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/769/545/GCF_009769545.1_fCycLum1.pri/GCF_009769545.1_fCycLum1.pri_genomic.gff.gz -O Chordata-Cyclopterus-lumpus.gff.gz &&
+cd .. &&
+mkdir Chordata-Pseudoliparis-swirei_OOO &&
+cd Chordata-Pseudoliparis-swirei_OOO &&
+wget https://figshare.com/ndownloader/files/17520197  &&
+wget https://figshare.com/ndownloader/files/17520182  &&
+cd .. &&
+mkdir Chordata-Pseudoliparis-YAP_OOO &&
+cd Chordata-Pseudoliparis-YAP_OOO &&
+wget https://figshare.com/ndownloader/files/28702791 &&
+wget https://figshare.com/ndownloader/files/31542101  &&
+cd .. &&
+mkdir Chordata-Liparis-tanakae- &&
+cd Chordata-Liparis-tanakae- &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/006/348/945/GCA_006348945.1_SNU_Ltan_1.0/GCA_006348945.1_SNU_Ltan_1.0_protein.faa.gz -O Chordata-Liparis-tanakae-.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/006/348/945/GCA_006348945.1_SNU_Ltan_1.0/GCA_006348945.1_SNU_Ltan_1.0_genomic.gff.gz -O Chordata-Liparis-tanakae-.gff.gz &&
+cd .. &&
+mkdir Chordata-Ictalurus-punctatus &&
+cd Chordata-Ictalurus-punctatus &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/660/625/GCF_001660625.1_IpCoco_1.2/GCF_001660625.1_IpCoco_1.2_protein.faa.gz -O Chordata-Ictalurus-punctatus.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/660/625/GCF_001660625.1_IpCoco_1.2/GCF_001660625.1_IpCoco_1.2_genomic.gff.gz -O Chordata-Ictalurus-punctatus.gff.gz &&
+cd .. &&
+mkdir Chordata-Pangasianodon-hypophthalmus &&
+cd Chordata-Pangasianodon-hypophthalmus &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/078/355/GCF_009078355.1_GENO_Phyp_1.0/GCF_009078355.1_GENO_Phyp_1.0_protein.faa.gz -O Chordata-Pangasianodon-hypophthalmus.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/078/355/GCF_009078355.1_GENO_Phyp_1.0/GCF_009078355.1_GENO_Phyp_1.0_genomic.gff.gz -O Chordata-Pangasianodon-hypophthalmus.gff.gz &&
+cd .. &&
+mkdir Chordata-Bagarius-yarrelli &&
+cd Chordata-Bagarius-yarrelli &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/005/784/505/GCA_005784505.1_ASM578450v1/GCA_005784505.1_ASM578450v1_protein.faa.gz -O Chordata-Bagarius-yarrelli.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/005/784/505/GCA_005784505.1_ASM578450v1/GCA_005784505.1_ASM578450v1_genomic.gff.gz -O Chordata-Bagarius-yarrelli.gff.gz &&
+cd .. &&
+mkdir Chordata-Clarias-magur &&
+cd Chordata-Clarias-magur &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/013/621/035/GCA_013621035.1_C_magur1.0/GCA_013621035.1_C_magur1.0_protein.faa.gz -O Chordata-Clarias-magur.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/013/621/035/GCA_013621035.1_C_magur1.0/GCA_013621035.1_C_magur1.0_genomic.gff.gz -O Chordata-Clarias-magur.gff.gz &&
+cd .. &&
+mkdir Chordata-Astyanax-mexicanus &&
+cd Chordata-Astyanax-mexicanus &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/372/685/GCF_000372685.2_Astyanax_mexicanus-2.0/GCF_000372685.2_Astyanax_mexicanus-2.0_protein.faa.gz -O Chordata-Astyanax-mexicanus.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/372/685/GCF_000372685.2_Astyanax_mexicanus-2.0/GCF_000372685.2_Astyanax_mexicanus-2.0_genomic.gff.gz -O Chordata-Astyanax-mexicanus.gff.gz &&
+cd .. &&
+mkdir Chordata-Electrophorus-electricus &&
+cd Chordata-Electrophorus-electricus &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/358/815/GCF_013358815.1_fEleEle1.pri/GCF_013358815.1_fEleEle1.pri_protein.faa.gz -O Chordata-Electrophorus-electricus.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/358/815/GCF_013358815.1_fEleEle1.pri/GCF_013358815.1_fEleEle1.pri_genomic.gff.gz -O Chordata-Electrophorus-electricus.gff.gz &&
+cd .. &&
+mkdir Chordata-Scleropages-formosus &&
+cd Chordata-Scleropages-formosus &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/964/775/GCF_900964775.1_fSclFor1.1/GCF_900964775.1_fSclFor1.1_protein.faa.gz -O Chordata-Scleropages-formosus.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/964/775/GCF_900964775.1_fSclFor1.1/GCF_900964775.1_fSclFor1.1_genomic.gff.gz -O Chordata-Scleropages-formosus.gff.gz &&
+cd .. &&
+mkdir Chordata-Paramormyrops-kingsleyae &&
+cd Chordata-Paramormyrops-kingsleyae &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/872/115/GCF_002872115.1_PKINGS_0.1/GCF_002872115.1_PKINGS_0.1_protein.faa.gz -O Chordata-Paramormyrops-kingsleyae.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/872/115/GCF_002872115.1_PKINGS_0.1/GCF_002872115.1_PKINGS_0.1_genomic.gff.gz -O Chordata-Paramormyrops-kingsleyae.gff.gz &&
+cd .. &&
+mkdir Chordata-Latimeria-chalumnae &&
+cd Chordata-Latimeria-chalumnae &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/225/785/GCF_000225785.1_LatCha1/GCF_000225785.1_LatCha1_protein.faa.gz -O Chordata-Latimeria-chalumnae.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/225/785/GCF_000225785.1_LatCha1/GCF_000225785.1_LatCha1_genomic.gff.gz -O Chordata-Latimeria-chalumnae.gff.gz &&
+cd .. &&
+mkdir Chordata-Protopterus-annectens &&
+cd Chordata-Protopterus-annectens &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/279/795/GCF_019279795.1_PAN1.0/GCF_019279795.1_PAN1.0_protein.faa.gz -O Chordata-Protopterus-annectens.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/279/795/GCF_019279795.1_PAN1.0/GCF_019279795.1_PAN1.0_genomic.gff.gz -O Chordata-Protopterus-annectens.gff.gz &&
+cd .. &&
+mkdir Chordata-Neoceratodus-forsteri_OOO &&
+cd Chordata-Neoceratodus-forsteri_OOO &&
+wget https://figshare.com/ndownloader/files/26370181 &&
+wget https://figshare.com/ndownloader/files/26370187 &&
+cd .. &&
+mkdir Chordata-Rana-temporaria &&
+cd Chordata-Rana-temporaria &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/905/171/775/GCF_905171775.1_aRanTem1.1/GCF_905171775.1_aRanTem1.1_protein.faa.gz -O Chordata-Rana-temporaria.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/905/171/775/GCF_905171775.1_aRanTem1.1/GCF_905171775.1_aRanTem1.1_genomic.gff.gz -O Chordata-Rana-temporaria.gff.gz &&
+cd .. &&
+mkdir Chordata-Xenopus-tropicalis &&
+cd Chordata-Xenopus-tropicalis &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/004/195/GCF_000004195.4_UCB_Xtro_10.0/GCF_000004195.4_UCB_Xtro_10.0_protein.faa.gz -O Chordata-Xenopus-tropicalis.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/004/195/GCF_000004195.4_UCB_Xtro_10.0/GCF_000004195.4_UCB_Xtro_10.0_genomic.gff.gz -O Chordata-Xenopus-tropicalis.gff.gz &&
+cd .. &&
+mkdir Chordata-Xenopus-laevis &&
+cd Chordata-Xenopus-laevis &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/017/654/675/GCF_017654675.1_Xenopus_laevis_v10.1/GCF_017654675.1_Xenopus_laevis_v10.1_protein.faa.gz -O Chordata-Xenopus-laevis.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/017/654/675/GCF_017654675.1_Xenopus_laevis_v10.1/GCF_017654675.1_Xenopus_laevis_v10.1_genomic.gff.gz -O Chordata-Xenopus-laevis.gff.gz &&
+cd .. &&
+mkdir Chordata-Alligator-mississippiensis &&
+cd Chordata-Alligator-mississippiensis &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/281/125/GCF_000281125.3_ASM28112v4/GCF_000281125.3_ASM28112v4_protein.faa.gz -O Chordata-Alligator-mississippiensis.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/281/125/GCF_000281125.3_ASM28112v4/GCF_000281125.3_ASM28112v4_genomic.gff.gz -O Chordata-Alligator-mississippiensis.gff.gz &&
+cd .. &&
+mkdir Chordata-Taeniopygia-guttata &&
+cd Chordata-Taeniopygia-guttata &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/957/565/GCF_003957565.2_bTaeGut1.4.pri/GCF_003957565.2_bTaeGut1.4.pri_protein.faa.gz -O Chordata-Taeniopygia-guttata.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/957/565/GCF_003957565.2_bTaeGut1.4.pri/GCF_003957565.2_bTaeGut1.4.pri_genomic.gff.gz -O Chordata-Taeniopygia-guttata.gff.gz &&
+cd .. &&
+mkdir Chordata-Mus-musculus &&
+cd Chordata-Mus-musculus &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/635/GCF_000001635.27_GRCm39/GCF_000001635.27_GRCm39_protein.faa.gz -O Chordata-Mus-musculus.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/635/GCF_000001635.27_GRCm39/GCF_000001635.27_GRCm39_genomic.gff.gz -O Chordata-Mus-musculus.gff.gz &&
+cd .. &&
+mkdir Cnidaria-Acropora-millepora &&
+cd Cnidaria-Acropora-millepora &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/753/865/GCF_013753865.1_Amil_v2.1/GCF_013753865.1_Amil_v2.1_protein.faa.gz -O Cnidaria-Acropora-millepora.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/753/865/GCF_013753865.1_Amil_v2.1/GCF_013753865.1_Amil_v2.1_genomic.gff.gz -O Cnidaria-Acropora-millepora.gff.gz &&
+cd .. &&
+mkdir Cnidaria-Rhopilema-esculentum_OOO &&
+cd Cnidaria-Rhopilema-esculentum_OOO &&
+wget https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100720/pep.fasta  &&
+wget https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100720/genome.gff  &&
+cd .. &&
+mkdir Cnidaria-Morbakka-virulenta &&
+cd Cnidaria-Morbakka-virulenta &&
+#wget https://marinegenomics.oist.jp/morbakka_virulenta/download/MOR05_r06_proteins.fa.gz -O Cnidaria-Morbakka-virulenta.aa.gz &&
+#wget https://marinegenomics.oist.jp/morbakka_virulenta/download/MOR05_r06_proteins.fa.gz -O Cnidaria-Morbakka-virulenta.gff.gz &&
+cd .. &&
+mkdir Cnidaria-Clytia-hemisphaerica &&
+cd Cnidaria-Clytia-hemisphaerica &&
+#wget http://ftp.ensemblgenomes.org/pub/metazoa/release-51/fasta/clytia_hemisphaerica_gca902728285/pep/Clytia_hemisphaerica_gca902728285.GCA902728285v1.pep.all.fa.gz -O Cnidaria-Clytia-hemisphaerica.aa.gz &&
+#wget http://ftp.ensemblgenomes.org/pub/metazoa/release-51/gff3/clytia_hemisphaerica_gca902728285/Clytia_hemisphaerica_gca902728285.GCA902728285v1.51.gff3.gz -O Cnidaria-Clytia-hemisphaerica.gff.gz &&
+cd .. &&
+mkdir Cnidaria-Hydra-viridissima &&
+cd Cnidaria-Hydra-viridissima &&
+#wget https://marinegenomics.oist.jp/hydra_viridissima_a99/download/hvir_r06.all.recounted.aa.gz -O Cnidaria-Hydra-viridissima.aa.gz &&
+#wget https://marinegenomics.oist.jp/hydra_viridissima_a99/download/hvir_r06.all.recounted.aa.gz -O Cnidaria-Hydra-viridissima.gff.gz &&
+cd .. &&
+mkdir Cnidaria-Hydra-vulgaris &&
+cd Cnidaria-Hydra-vulgaris &&
+#wget https://research.nhgri.nih.gov/hydra/download/genemodels_proteins/hydra2.0_genemodels.aa.gz -O Cnidaria-Hydra-vulgaris.aa.gz &&
+#wget https://research.nhgri.nih.gov/hydra/download/genemodels_gff3/hydra2.0_genemodels.gff3.gz -O Cnidaria-Hydra-vulgaris.gff.gz &&
+cd .. &&
+mkdir Ctenophore-Mnemiopsis-leidyi &&
+cd Ctenophore-Mnemiopsis-leidyi &&
+#wget http://ftp.ensemblgenomes.org/pub/metazoa/release-51/fasta/mnemiopsis_leidyi/pep/Mnemiopsis_leidyi.MneLei_Aug2011.pep.all.fa.gz -O Ctenophore-Mnemiopsis-leidyi.aa.gz &&
+#wget http://ftp.ensemblgenomes.org/pub/metazoa/release-51/gff3/mnemiopsis_leidyi/Mnemiopsis_leidyi.MneLei_Aug2011.51.gff3.gz -O Ctenophore-Mnemiopsis-leidyi.gff.gz &&
+cd .. &&
+mkdir Echinodermata-Patiria-miniata &&
+cd Echinodermata-Patiria-miniata &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/015/706/575/GCF_015706575.1_ASM1570657v1/GCF_015706575.1_ASM1570657v1_protein.faa.gz -O Echinodermata-Patiria-miniata.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/015/706/575/GCF_015706575.1_ASM1570657v1/GCF_015706575.1_ASM1570657v1_genomic.gff.gz -O Echinodermata-Patiria-miniata.gff.gz &&
+cd .. &&
+mkdir Echinodermata-Lytechinus-variegatus &&
+cd Echinodermata-Lytechinus-variegatus &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/143/015/GCF_018143015.1_Lvar_3.0/GCF_018143015.1_Lvar_3.0_protein.faa.gz -O Echinodermata-Lytechinus-variegatus.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/143/015/GCF_018143015.1_Lvar_3.0/GCF_018143015.1_Lvar_3.0_genomic.gff.gz -O Echinodermata-Lytechinus-variegatus.gff.gz &&
+cd .. &&
+mkdir Echinodermata-Strongylocentrotus-purpuratus &&
+cd Echinodermata-Strongylocentrotus-purpuratus &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/235/GCF_000002235.5_Spur_5.0/GCF_000002235.5_Spur_5.0_protein.faa.gz -O Echinodermata-Strongylocentrotus-purpuratus.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/235/GCF_000002235.5_Spur_5.0/GCF_000002235.5_Spur_5.0_genomic.gff.gz -O Echinodermata-Strongylocentrotus-purpuratus.gff.gz &&
+cd .. &&
+mkdir Echinodermata-Anneissia-japonica &&
+cd Echinodermata-Anneissia-japonica &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/011/630/105/GCF_011630105.1_ASM1163010v1/GCF_011630105.1_ASM1163010v1_protein.faa.gz -O Echinodermata-Anneissia-japonica.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/011/630/105/GCF_011630105.1_ASM1163010v1/GCF_011630105.1_ASM1163010v1_genomic.gff.gz -O Echinodermata-Anneissia-japonica.gff.gz &&
+cd .. &&
+mkdir Echinodermata-Apostichopus-japonicus &&
+cd Echinodermata-Apostichopus-japonicus &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/754/855/GCA_002754855.1_ASM275485v1/GCA_002754855.1_ASM275485v1_protein.faa.gz -O Echinodermata-Apostichopus-japonicus.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/754/855/GCA_002754855.1_ASM275485v1/GCA_002754855.1_ASM275485v1_genomic.gff.gz -O Echinodermata-Apostichopus-japonicus.gff.gz &&
+cd .. &&
+mkdir Mollusca-Acanthopleura-granulata_OOO &&
+cd Mollusca-Acanthopleura-granulata_OOO &&
+wget https://datadryad.org/stash/dataset/doi:10.5061/dryad.wstqjq2k9 &&
+wget https://datadryad.org/stash/dataset/doi:10.5061/dryad.wstqjq2k9 &&
+cd .. &&
+mkdir Mollusca-Lottia-gigantea &&
+cd Mollusca-Lottia-gigantea &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/327/385/GCF_000327385.1_Helro1/GCF_000327385.1_Helro1_protein.faa.gz -O Mollusca-Lottia-gigantea.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/327/385/GCF_000327385.1_Helro1/GCF_000327385.1_Helro1_genomic.gff.gz -O Mollusca-Lottia-gigantea.gff.gz &&
+cd .. &&
+mkdir Mollusca-Haliotis-rubra_OOO &&
+cd Mollusca-Haliotis-rubra_OOO &&
+wget https://zenodo.org/record/3320876/files/Hrubra_protein.fasta?download=1 -O Mollusca-Haliotis-rubra.aa.gz &&
+wget https://zenodo.org/record/3320876/files/Hrubra.gff3?download=1 -O Mollusca-Haliotis-rubra.gff.gz &&
+cd .. &&
+mkdir Mollusca-Lautoconus-ventricosus &&
+cd Mollusca-Lautoconus-ventricosus &&
+#wget https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100892/annotation.protein.fasta.gz -O Mollusca-Lautoconus-ventricosus.aa.gz &&
+#wget https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100892/L_ventricosus_maker_annotation.gff.gz -O Mollusca-Lautoconus-ventricosus.gff.gz &&
+cd .. &&
+mkdir Mollusca-Batillaria-attramentaria &&
+cd Mollusca-Batillaria-attramentaria &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/018/292/915/GCA_018292915.1_EWHU_Batt_1.0/GCA_018292915.1_EWHU_Batt_1.0_protein.faa.gz -O Mollusca-Batillaria-attramentaria.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/018/292/915/GCA_018292915.1_EWHU_Batt_1.0/GCA_018292915.1_EWHU_Batt_1.0_genomic.gff.gz -O Mollusca-Batillaria-attramentaria.gff.gz &&
+cd .. &&
+mkdir Mollusca-Chrysomallon-squamiferum_OOO &&
+cd Mollusca-Chrysomallon-squamiferum_OOO &&
+wget https://datadryad.org/stash/dataset/doi:10.5061/dryad.24053dn &&
+wget https://datadryad.org/stash/dataset/doi:10.5061/dryad.24053dn &&
+cd .. &&
+mkdir Mollusca-Gigantopelta-aegis &&
+cd Mollusca-Gigantopelta-aegis &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/097/555/GCF_016097555.1_Gae_host_genome/GCF_016097555.1_Gae_host_genome_protein.faa.gz -O Mollusca-Gigantopelta-aegis.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/097/555/GCF_016097555.1_Gae_host_genome/GCF_016097555.1_Gae_host_genome_genomic.gff.gz -O Mollusca-Gigantopelta-aegis.gff.gz &&
+cd .. &&
+mkdir Mollusca-Plakobranchus-ocellatus &&
+cd Mollusca-Plakobranchus-ocellatus &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/648/995/GCA_019648995.1_PoB_v1/GCA_019648995.1_PoB_v1_protein.faa.gz -O Mollusca-Plakobranchus-ocellatus.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/648/995/GCA_019648995.1_PoB_v1/GCA_019648995.1_PoB_v1_genomic.gff.gz -O Mollusca-Plakobranchus-ocellatus.gff.gz &&
+cd .. &&
+mkdir Mollusca-Biomphalaria-glabrata &&
+cd Mollusca-Biomphalaria-glabrata &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/457/365/GCF_000457365.1_ASM45736v1/GCF_000457365.1_ASM45736v1_protein.faa.gz -O Mollusca-Biomphalaria-glabrata.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/457/365/GCF_000457365.1_ASM45736v1/GCF_000457365.1_ASM45736v1_genomic.gff.gz -O Mollusca-Biomphalaria-glabrata.gff.gz &&
+cd .. &&
+mkdir Mollusca-Pomacea-canaliculata &&
+cd Mollusca-Pomacea-canaliculata &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/073/045/GCF_003073045.1_ASM307304v1/GCF_003073045.1_ASM307304v1_protein.faa.gz -O Mollusca-Pomacea-canaliculata.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/073/045/GCF_003073045.1_ASM307304v1/GCF_003073045.1_ASM307304v1_genomic.gff.gz -O Mollusca-Pomacea-canaliculata.gff.gz &&
+cd .. &&
+mkdir Mollusca-Marisa-cornuarietis_OOO &&
+cd Mollusca-Marisa-cornuarietis_OOO &&
+wget https://datadryad.org/stash/dataset/doi:10.5061/dryad.15nd8v3  &&
+wget https://datadryad.org/stash/dataset/doi:10.5061/dryad.15nd8v3  &&
+cd .. &&
+mkdir Mollusca-Achatina-fulica_OOO &&
+cd Mollusca-Achatina-fulica_OOO &&
+wget https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100647/pep.fa  &&
+wget https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100647/genome.gff &&
+cd .. &&
+mkdir Mollusca-Candidula-unifasciata &&
+cd Mollusca-Candidula-unifasciata &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/905/116/865/GCA_905116865.2_CUNI_anot_genome.v2/GCA_905116865.2_CUNI_anot_genome.v2_protein.faa.gz -O Mollusca-Candidula-unifasciata.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/905/116/865/GCA_905116865.2_CUNI_anot_genome.v2/GCA_905116865.2_CUNI_anot_genome.v2_genomic.gff.gz -O Mollusca-Candidula-unifasciata.gff.gz &&
+cd .. &&
+mkdir Mollusca-Mercenaria-mercenaria_OOO &&
+cd Mollusca-Mercenaria-mercenaria_OOO &&
+wget https://figshare.com/ndownloader/files/24753806?private_link=a8378910b437fc843a46 &&
+wget https://figshare.com/ndownloader/files/24753800?private_link=a8378910b437fc843a46 &&
+cd .. &&
+mkdir Mollusca-Scapharca-broughtonii &&
+cd Mollusca-Scapharca-broughtonii &&
+#wget https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100607/EVM.final.gene.gff3.pep -O Mollusca-Scapharca-broughtonii.aa.gz &&
+#wget https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100607/EVM.final.gene.gff3 -O Mollusca-Scapharca-broughtonii.gff.gz &&
+cd .. &&
+mkdir Mollusca-Sinonovacula-constricta_OOO &&
+cd Mollusca-Sinonovacula-constricta_OOO &&
+wget https://datadryad.org/stash/dataset/doi:10.5061/dryad.qv9s4mwc6 &&
+wget https://datadryad.org/stash/dataset/doi:10.5061/dryad.qv9s4mwc6  &&
+cd .. &&
+mkdir Mollusca-Cyclina-sinensis_OOO &&
+cd Mollusca-Cyclina-sinensis_OOO &&
+wget https://datadryad.org/stash/dataset/doi:10.5061/dryad.44j0zpcb5  &&
+wget https://datadryad.org/stash/dataset/doi:10.5061/dryad.44j0zpcb5  &&
+cd .. &&
+mkdir Mollusca-Pinctada-fucata &&
+cd Mollusca-Pinctada-fucata &&
+#wget https://marinegenomics.oist.jp/pearl/download/pfu_aug2.0.AA.fasta.zip -O Mollusca-Pinctada-fucata.aa.gz &&
+#wget https://marinegenomics.oist.jp/pearl/download/pfu_aug2.0.gff.zip -O Mollusca-Pinctada-fucata.gff.gz &&
+cd .. &&
+mkdir Mollusca-Mizuhopecten-yessoensis &&
+cd Mollusca-Mizuhopecten-yessoensis &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/113/885/GCF_002113885.1_ASM211388v2/GCF_002113885.1_ASM211388v2_protein.faa.gz -O Mollusca-Mizuhopecten-yessoensis.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/113/885/GCF_002113885.1_ASM211388v2/GCF_002113885.1_ASM211388v2_genomic.gff.gz -O Mollusca-Mizuhopecten-yessoensis.gff.gz &&
+cd .. &&
+mkdir Mollusca-Pecten-maximus &&
+cd Mollusca-Pecten-maximus &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/902/652/985/GCF_902652985.1_xPecMax1.1/GCF_902652985.1_xPecMax1.1_protein.faa.gz -O Mollusca-Pecten-maximus.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/902/652/985/GCF_902652985.1_xPecMax1.1/GCF_902652985.1_xPecMax1.1_genomic.gff.gz -O Mollusca-Pecten-maximus.gff.gz &&
+cd .. &&
+mkdir Mollusca-Mytilus-edulis &&
+cd Mollusca-Mytilus-edulis &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/905/397/895/GCA_905397895.1_MEDL1/GCA_905397895.1_MEDL1_protein.faa.gz -O Mollusca-Mytilus-edulis.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/905/397/895/GCA_905397895.1_MEDL1/GCA_905397895.1_MEDL1_genomic.gff.gz -O Mollusca-Mytilus-edulis.gff.gz &&
+cd .. &&
+mkdir Mollusca-Limnoperna-fortunei &&
+cd Mollusca-Limnoperna-fortunei &&
+#wget https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100386/lfortunei_protein.fasta.gz -O Mollusca-Limnoperna-fortunei.aa.gz &&
+#wget https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100386/lfortunei_genome.gff.gz -O Mollusca-Limnoperna-fortunei.gff.gz &&
+cd .. &&
+mkdir Mollusca-Modiolus-philippinarum_OOO &&
+cd Mollusca-Modiolus-philippinarum_OOO &&
+wget https://datadryad.org/stash/dataset/doi:10.5061/dryad.h9942 &&
+wget https://datadryad.org/stash/dataset/doi:10.5061/dryad.h9942 &&
+cd .. &&
+mkdir Mollusca-Archivesica-marissinica_OOO &&
+cd Mollusca-Archivesica-marissinica_OOO &&
+wget https://figshare.com/ndownloader/files/22447601 &&
+wget https://figshare.com/ndownloader/files/23214404 &&
+cd .. &&
+mkdir Mollusca-Bathymodiolus-platifrons_OOO &&
+cd Mollusca-Bathymodiolus-platifrons_OOO &&
+wget https://datadryad.org/stash/dataset/doi:10.5061/dryad.h9942 &&
+wget https://datadryad.org/stash/dataset/doi:10.5061/dryad.h9942 &&
+cd .. &&
+mkdir Mollusca-Saccostrea-glomerata_OOO &&
+cd Mollusca-Saccostrea-glomerata_OOO &&
+wget http://soft.bioinfo-minzhao.org/srog/data/S.glomerata_genemodels.pep.fasta &&
+wget http://soft.bioinfo-minzhao.org/srog/data/S.glomerata_genemodels.gff3 &&
+cd .. &&
+mkdir Mollusca-Crassostrea-virginica &&
+cd Mollusca-Crassostrea-virginica &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/022/765/GCF_002022765.2_C_virginica-3.0/GCF_002022765.2_C_virginica-3.0_protein.faa.gz -O Mollusca-Crassostrea-virginica.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/022/765/GCF_002022765.2_C_virginica-3.0/GCF_002022765.2_C_virginica-3.0_genomic.gff.gz -O Mollusca-Crassostrea-virginica.gff.gz &&
+cd .. &&
+mkdir Mollusca-Crassostrea-hongkongensis_OOO &&
+cd Mollusca-Crassostrea-hongkongensis_OOO &&
+wget https://figshare.com/ndownloader/files/30623958 &&
+wget https://figshare.com/ndownloader/files/30623955 &&
+cd .. &&
+mkdir Mollusca-Crassostrea-ariakensis_OOO &&
+cd Mollusca-Crassostrea-ariakensis_OOO &&
+wget https://figshare.com/ndownloader/files/30623958  &&
+wget https://figshare.com/ndownloader/files/30623955 &&
+cd .. &&
+mkdir Mollusca-Dreissena-polymorpha &&
+cd Mollusca-Dreissena-polymorpha &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/020/536/995/GCA_020536995.1_UMN_Dpol_1.0/GCA_020536995.1_UMN_Dpol_1.0_protein.faa.gz -O Mollusca-Dreissena-polymorpha.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/020/536/995/GCA_020536995.1_UMN_Dpol_1.0/GCA_020536995.1_UMN_Dpol_1.0_genomic.gff.gz -O Mollusca-Dreissena-polymorpha.gff.gz &&
+cd .. &&
+mkdir Mollusca-Dreissena-rostriformis_OOO &&
+cd Mollusca-Dreissena-rostriformis_OOO &&
+wget https://phaidra.univie.ac.at/download/o:980132 &&
+wget https://phaidra.univie.ac.at/download/o:980132 &&
+cd .. &&
+mkdir Mollusca-Margaritifera-margaritifera_OOO &&
+cd Mollusca-Margaritifera-margaritifera_OOO &&
+wget https://figshare.com/ndownloader/files/25685573 &&
+wget https://figshare.com/ndownloader/files/25685537 &&
+cd .. &&
+mkdir Mollusca-Nautilus-pompilius &&
+cd Mollusca-Nautilus-pompilius &&
+#wget ftp://download.big.ac.cn/gwh/Animals/Nautilus_pompilius_genome_of_Nautilus_pompilius_GWHBECW00000000/GWHBECW00000000.Protein.faa.gz -O Mollusca-Nautilus-pompilius.aa.gz &&
+#wget ftp://download.big.ac.cn/gwh/Animals/Nautilus_pompilius_genome_of_Nautilus_pompilius_GWHBECW00000000/GWHBECW00000000.gff.gz -O Mollusca-Nautilus-pompilius.gff.gz &&
+cd .. &&
+mkdir Mollusca-Sepia-pharaonis &&
+cd Mollusca-Sepia-pharaonis &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/903/632/075/GCA_903632075.3_SPHA2.0/GCA_903632075.3_SPHA2.0_protein.faa.gz -O Mollusca-Sepia-pharaonis.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/903/632/075/GCA_903632075.3_SPHA2.0/GCA_903632075.3_SPHA2.0_genomic.gff.gz -O Mollusca-Sepia-pharaonis.gff.gz &&
+cd .. &&
+mkdir Mollusca-Octopus-sinensis &&
+cd Mollusca-Octopus-sinensis &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/006/345/805/GCF_006345805.1_ASM634580v1/GCF_006345805.1_ASM634580v1_protein.faa.gz -O Mollusca-Octopus-sinensis.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/006/345/805/GCF_006345805.1_ASM634580v1/GCF_006345805.1_ASM634580v1_genomic.gff.gz -O Mollusca-Octopus-sinensis.gff.gz &&
+cd .. &&
+mkdir Nematoda-Diploscapter-coronatus &&
+cd Nematoda-Diploscapter-coronatus &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/diploscapter_coronatus/PRJDB3143/diploscapter_coronatus.PRJDB3143.WBPS16.protein.fa.gz -O Nematoda-Diploscapter-coronatus.aa.gz &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/diploscapter_coronatus/PRJDB3143/diploscapter_coronatus.PRJDB3143.WBPS16.annotations.gff3.gz -O Nematoda-Diploscapter-coronatus.gff.gz &&
+cd .. &&
+mkdir Nematoda-Pristionchus-pacificus &&
+cd Nematoda-Pristionchus-pacificus &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/180/635/GCA_000180635.4_El_Paco_v._4/GCA_000180635.4_El_Paco_v._4_protein.faa.gz -O Nematoda-Pristionchus-pacificus.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/180/635/GCA_000180635.4_El_Paco_v._4/GCA_000180635.4_El_Paco_v._4_genomic.gff.gz -O Nematoda-Pristionchus-pacificus.gff.gz &&
+cd .. &&
+mkdir Nematoda-Haemonchus-contortus &&
+cd Nematoda-Haemonchus-contortus &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/haemonchus_contortus/PRJEB506/haemonchus_contortus.PRJEB506.WBPS16.protein.fa.gz -O Nematoda-Haemonchus-contortus.aa.gz &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/haemonchus_contortus/PRJEB506/haemonchus_contortus.PRJEB506.WBPS16.annotations.gff3.gz -O Nematoda-Haemonchus-contortus.gff.gz &&
+cd .. &&
+mkdir Nematoda-Brugia-malayi &&
+cd Nematoda-Brugia-malayi &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/995/GCF_000002995.4_B_malayi-4.0/GCF_000002995.4_B_malayi-4.0_protein.faa.gz -O Nematoda-Brugia-malayi.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/995/GCF_000002995.4_B_malayi-4.0/GCF_000002995.4_B_malayi-4.0_genomic.gff.gz -O Nematoda-Brugia-malayi.gff.gz &&
+cd .. &&
+mkdir Nematoda-Onchocerca-volvulus &&
+cd Nematoda-Onchocerca-volvulus &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/onchocerca_volvulus/PRJEB513/onchocerca_volvulus.PRJEB513.WBPS16.protein.fa.gz -O Nematoda-Onchocerca-volvulus.aa.gz &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/onchocerca_volvulus/PRJEB513/onchocerca_volvulus.PRJEB513.WBPS16.annotations.gff3.gz -O Nematoda-Onchocerca-volvulus.gff.gz &&
+cd .. &&
+mkdir Nematoda-Plectus-sambesii &&
+cd Nematoda-Plectus-sambesii &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/plectus_sambesii/PRJNA390260/plectus_sambesii.PRJNA390260.WBPS16.annotations.gff3.gz -O Nematoda-Plectus-sambesii.aa.gz &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/plectus_sambesii/PRJNA390260/plectus_sambesii.PRJNA390260.WBPS16.protein.fa.gz -O Nematoda-Plectus-sambesii.gff.gz &&
+cd .. &&
+mkdir Nematoda-Aphelenchus-avenae &&
+cd Nematoda-Aphelenchus-avenae &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/020/875/895/GCA_020875895.1_ASM2087589v1/GCA_020875895.1_ASM2087589v1_protein.faa.gz -O Nematoda-Aphelenchus-avenae.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/020/875/895/GCA_020875895.1_ASM2087589v1/GCA_020875895.1_ASM2087589v1_genomic.gff.gz -O Nematoda-Aphelenchus-avenae.gff.gz &&
+cd .. &&
+mkdir Nematoda-Ditylenchus-dipsaci &&
+cd Nematoda-Ditylenchus-dipsaci &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/ditylenchus_dipsaci/PRJNA498219/ditylenchus_dipsaci.PRJNA498219.WBPS16.protein.fa.gz -O Nematoda-Ditylenchus-dipsaci.aa.gz &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/ditylenchus_dipsaci/PRJNA498219/ditylenchus_dipsaci.PRJNA498219.WBPS16.annotations.gff3.gz -O Nematoda-Ditylenchus-dipsaci.gff.gz &&
+cd .. &&
+mkdir Nematoda-Ditylenchus-destructor &&
+cd Nematoda-Ditylenchus-destructor &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/ditylenchus_destructor/PRJNA312427/ditylenchus_destructor.PRJNA312427.WBPS16.protein.fa.gz -O Nematoda-Ditylenchus-destructor.aa.gz &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/ditylenchus_destructor/PRJNA312427/ditylenchus_destructor.PRJNA312427.WBPS16.annotations.gff3.gz -O Nematoda-Ditylenchus-destructor.gff.gz &&
+cd .. &&
+mkdir Nematoda-Propanagrolaimus-ju765 &&
+cd Nematoda-Propanagrolaimus-ju765 &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/propanagrolaimus_ju765/PRJEB32708/propanagrolaimus_ju765.PRJEB32708.WBPS16.protein.fa.gz -O Nematoda-Propanagrolaimus-ju765.aa.gz &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/propanagrolaimus_ju765/PRJEB32708/propanagrolaimus_ju765.PRJEB32708.WBPS16.annotations.gff3.gz -O Nematoda-Propanagrolaimus-ju765.gff.gz &&
+cd .. &&
+mkdir Nematoda-Panagrolaimus-es5 &&
+cd Nematoda-Panagrolaimus-es5 &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/panagrolaimus_es5/PRJEB32708/panagrolaimus_es5.PRJEB32708.WBPS16.protein.fa.gz -O Nematoda-Panagrolaimus-es5.aa.gz &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/panagrolaimus_es5/PRJEB32708/panagrolaimus_es5.PRJEB32708.WBPS16.annotations.gff3.gz -O Nematoda-Panagrolaimus-es5.gff.gz &&
+cd .. &&
+mkdir Nematoda-Panagrolaimus-ps1159 &&
+cd Nematoda-Panagrolaimus-ps1159 &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/panagrolaimus_ps1159/PRJEB32708/panagrolaimus_ps1159.PRJEB32708.WBPS16.protein.fa.gz -O Nematoda-Panagrolaimus-ps1159.aa.gz &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/panagrolaimus_ps1159/PRJEB32708/panagrolaimus_ps1159.PRJEB32708.WBPS16.annotations.gff3.gz -O Nematoda-Panagrolaimus-ps1159.gff.gz &&
+cd .. &&
+mkdir Nematoda-Panagrolaimus-superbus &&
+cd Nematoda-Panagrolaimus-superbus &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/panagrolaimus_superbus/PRJEB32708/panagrolaimus_superbus.PRJEB32708.WBPS16.protein.fa.gz -O Nematoda-Panagrolaimus-superbus.aa.gz &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/panagrolaimus_superbus/PRJEB32708/panagrolaimus_superbus.PRJEB32708.WBPS16.annotations.gff3.gz -O Nematoda-Panagrolaimus-superbus.gff.gz &&
+cd .. &&
+mkdir Platyhelminthes-Schmidtea-mediterranea &&
+cd Platyhelminthes-Schmidtea-mediterranea &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/schmidtea_mediterranea/PRJNA379262/schmidtea_mediterranea.PRJNA379262.WBPS16.protein.fa.gz -O Platyhelminthes-Schmidtea-mediterranea.aa.gz &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/schmidtea_mediterranea/PRJNA379262/schmidtea_mediterranea.PRJNA379262.WBPS16.annotations.gff3.gz -O Platyhelminthes-Schmidtea-mediterranea.gff.gz &&
+cd .. &&
+mkdir Platyhelminthes-Schistosoma-mansoni &&
+cd Platyhelminthes-Schistosoma-mansoni &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/schistosoma_mansoni/PRJEA36577/schistosoma_mansoni.PRJEA36577.WBPS16.protein.fa.gz -O Platyhelminthes-Schistosoma-mansoni.aa.gz &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/schistosoma_mansoni/PRJEA36577/schistosoma_mansoni.PRJEA36577.WBPS16.annotations.gff3.gz -O Platyhelminthes-Schistosoma-mansoni.gff.gz &&
+cd .. &&
+mkdir Platyhelminthes-Clonorchis-sinensis &&
+cd Platyhelminthes-Clonorchis-sinensis &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/clonorchis_sinensis/PRJNA386618/clonorchis_sinensis.PRJNA386618.WBPS16.protein.fa.gz -O Platyhelminthes-Clonorchis-sinensis.aa.gz &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/clonorchis_sinensis/PRJNA386618/clonorchis_sinensis.PRJNA386618.WBPS16.annotations.gff3.gz -O Platyhelminthes-Clonorchis-sinensis.gff.gz &&
+cd .. &&
+mkdir Platyhelminthes-Taenia-multiceps &&
+cd Platyhelminthes-Taenia-multiceps &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/taenia_multiceps/PRJNA307624/taenia_multiceps.PRJNA307624.WBPS16.protein.fa.gz -O Platyhelminthes-Taenia-multiceps.aa.gz &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/taenia_multiceps/PRJNA307624/taenia_multiceps.PRJNA307624.WBPS16.annotations.gff3.gz -O Platyhelminthes-Taenia-multiceps.gff.gz &&
+cd .. &&
+mkdir Platyhelminthes-Hymenolepis-microstoma &&
+cd Platyhelminthes-Hymenolepis-microstoma &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/hymenolepis_microstoma/PRJEB124/hymenolepis_microstoma.PRJEB124.WBPS16.protein.fa.gz -O Platyhelminthes-Hymenolepis-microstoma.aa.gz &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/hymenolepis_microstoma/PRJEB124/hymenolepis_microstoma.PRJEB124.WBPS16.annotations.gff3.gz -O Platyhelminthes-Hymenolepis-microstoma.gff.gz &&
+cd .. &&
+mkdir Platyhelminthes-Echinococcus-multilocularis &&
+cd Platyhelminthes-Echinococcus-multilocularis &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/echinococcus_multilocularis/PRJEB122/echinococcus_multilocularis.PRJEB122.WBPS16.protein.fa.gz -O Platyhelminthes-Echinococcus-multilocularis.aa.gz &&
+#wget https://ftp.ebi.ac.uk/pub/databases/wormbase/parasite/releases/WBPS16/species/echinococcus_multilocularis/PRJEB122/echinococcus_multilocularis.PRJEB122.WBPS16.annotations.gff3.gz -O Platyhelminthes-Echinococcus-multilocularis.gff.gz &&
+cd .. &&
+mkdir Porifera-Amphimedon-queenslandica &&
+cd Porifera-Amphimedon-queenslandica &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/090/795/GCF_000090795.1_v1.0/GCF_000090795.1_v1.0_protein.faa.gz -O Porifera-Amphimedon-queenslandica.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/090/795/GCF_000090795.1_v1.0/GCF_000090795.1_v1.0_genomic.gff.gz -O Porifera-Amphimedon-queenslandica.gff.gz &&
+cd .. &&
+mkdir Rotifera-Rotaria-socialis &&
+cd Rotifera-Rotaria-socialis &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/905/331/475/GCA_905331475.1_Rs_AK16_reference_genomic_v1/GCA_905331475.1_Rs_AK16_reference_genomic_v1_protein.faa.gz -O Rotifera-Rotaria-socialis.aa.gz &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/905/331/475/GCA_905331475.1_Rs_AK16_reference_genomic_v1/GCA_905331475.1_Rs_AK16_reference_genomic_v1_genomic.gff.gz -O Rotifera-Rotaria-socialis.gff.gz &&
+cd .. &&
+mkdir Tardigrada-Hypsibius-dujardini &&
+cd Tardigrada-Hypsibius-dujardini &&
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/082/055/GCA_002082055.1_nHd_3.1/GCA_002082055.1_nHd_3.1_protein.faa.gz -O Tardigrada-Hypsibius-dujardini.aa.gz &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/082/055/GCA_002082055.1_nHd_3.1/GCA_002082055.1_nHd_3.1_genomic.gff.gz -O Tardigrada-Hypsibius-dujardini.gff.gz &&
+cd .. &&
+echo 

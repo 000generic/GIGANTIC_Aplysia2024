@@ -1,0 +1,7 @@
+#! /bin/bash
+# GIGANTIC ProjectDB
+
+#gunzip */* &&
+echo
+ls */*.gff > output/3-list-gffs
+ls */*.aa > output/3-list-fastas

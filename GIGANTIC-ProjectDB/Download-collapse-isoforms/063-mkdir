@@ -1,0 +1,6 @@
+#! /bin/bash
+# GIGANTIC ProjectDB
+
+mkdir downloaded-ncbi-new_taxdump-16nov2021/
+mv *dmp downloaded-ncbi-new_taxdump-16nov2021/
+rm *gz

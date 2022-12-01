@@ -1,0 +1,9 @@
+#! /bin/bash
+# GIGANTIC ProjectDB
+
+Chordata	Nannospalax galili	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/622/305/GCF_000622305.1_S.galili_v1.0/GCF_000622305.1_S.galili_v1.0_protein.faa.gz	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/622/305/GCF_000622305.1_S.galili_v1.0/GCF_000622305.1_S.galili_v1.0_genomic.gff.gz
+Chordata	Heterocephalus glaber	http://ftp.ensembl.org/pub/release-104/fasta/heterocephalus_glaber_female/pep/Heterocephalus_glaber_female.HetGla_female_1.0.pep.all.fa.gz	http://ftp.ensembl.org/pub/release-104/gff3/heterocephalus_glaber_female/Heterocephalus_glaber_female.HetGla_female_1.0.104.gff3.gz
+Chordata	Fukomys damarensis	http://ftp.ensembl.org/pub/release-104/fasta/fukomys_damarensis/pep/Fukomys_damarensis.DMR_v1.0.pep.all.fa.gz	http://ftp.ensembl.org/pub/release-104/gff3/fukomys_damarensis/Fukomys_damarensis.DMR_v1.0.104.gff3.gz
+Chordata	Cavia aperea	http://ftp.ensembl.org/pub/release-104/fasta/cavia_aperea/pep/Cavia_aperea.CavAp1.0.pep.all.fa.gz	http://ftp.ensembl.org/pub/release-104/gff3/cavia_aperea/Cavia_aperea.CavAp1.0.104.gff3.gz
+Chordata	Mesocricetus auratus	http://ftp.ensembl.org/pub/release-104/fasta/mesocricetus_auratus/pep/Mesocricetus_auratus.MesAur1.0.pep.all.fa.gz	http://ftp.ensembl.org/pub/release-104/gff3/mesocricetus_auratus/
+Chordata	Meriones unguiculatus	http://ftp.ensembl.org/pub/release-104/fasta/meriones_unguiculatus/pep/Meriones_unguiculatus.MunDraft-v1.0.pep.all.fa.gz	http://ftp.ensembl.org/pub/release-104/gff3/meriones_unguiculatus/Meriones_unguiculatus.MunDraft-v1.0.104.gff3.gz

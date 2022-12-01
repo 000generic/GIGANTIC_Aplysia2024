@@ -1,0 +1,34 @@
+#! /bin/bash
+# GIGANTIC ProjectDB
+
+mkdir Chordata-Nannospalax-galili &&
+cd Chordata-Nannospalax-galili &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/622/305/GCF_000622305.1_S.galili_v1.0/GCF_000622305.1_S.galili_v1.0_protein.faa.gz -O Chordata-Nannospalax-galili.aa.gz &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/622/305/GCF_000622305.1_S.galili_v1.0/GCF_000622305.1_S.galili_v1.0_genomic.gff.gz -O Chordata-Nannospalax-galili.gff.gz &&
+cd .. &&
+mkdir Chordata-Heterocephalus-glaber &&
+cd Chordata-Heterocephalus-glaber &&
+wget http://ftp.ensembl.org/pub/release-104/fasta/heterocephalus_glaber_female/pep/Heterocephalus_glaber_female.HetGla_female_1.0.pep.all.fa.gz -O Chordata-Heterocephalus-glaber.aa.gz &&
+wget http://ftp.ensembl.org/pub/release-104/gff3/heterocephalus_glaber_female/Heterocephalus_glaber_female.HetGla_female_1.0.104.gff3.gz -O Chordata-Heterocephalus-glaber.gff.gz &&
+cd .. &&
+mkdir Chordata-Fukomys-damarensis &&
+cd Chordata-Fukomys-damarensis &&
+wget http://ftp.ensembl.org/pub/release-104/fasta/fukomys_damarensis/pep/Fukomys_damarensis.DMR_v1.0.pep.all.fa.gz -O Chordata-Fukomys-damarensis.aa.gz &&
+wget http://ftp.ensembl.org/pub/release-104/gff3/fukomys_damarensis/Fukomys_damarensis.DMR_v1.0.104.gff3.gz -O Chordata-Fukomys-damarensis.gff.gz &&
+cd .. &&
+mkdir Chordata-Cavia-aperea &&
+cd Chordata-Cavia-aperea &&
+wget http://ftp.ensembl.org/pub/release-104/fasta/cavia_aperea/pep/Cavia_aperea.CavAp1.0.pep.all.fa.gz -O Chordata-Cavia-aperea.aa.gz &&
+wget http://ftp.ensembl.org/pub/release-104/gff3/cavia_aperea/Cavia_aperea.CavAp1.0.104.gff3.gz -O Chordata-Cavia-aperea.gff.gz &&
+cd .. &&
+mkdir Chordata-Mesocricetus-auratus &&
+cd Chordata-Mesocricetus-auratus &&
+wget http://ftp.ensembl.org/pub/release-104/fasta/mesocricetus_auratus/pep/Mesocricetus_auratus.MesAur1.0.pep.all.fa.gz -O Chordata-Mesocricetus-auratus.aa.gz &&
+wget http://ftp.ensembl.org/pub/release-104/gff3/mesocricetus_auratus/ -O Chordata-Mesocricetus-auratus.gff.gz &&
+cd .. &&
+mkdir Chordata-Meriones-unguiculatus &&
+cd Chordata-Meriones-unguiculatus &&
+wget http://ftp.ensembl.org/pub/release-104/fasta/meriones_unguiculatus/pep/Meriones_unguiculatus.MunDraft-v1.0.pep.all.fa.gz -O Chordata-Meriones-unguiculatus.aa.gz &&
+wget http://ftp.ensembl.org/pub/release-104/gff3/meriones_unguiculatus/Meriones_unguiculatus.MunDraft-v1.0.104.gff3.g -O Chordata-Meriones-unguiculatus.gff.gz &&
+cd .. &&
+echo 

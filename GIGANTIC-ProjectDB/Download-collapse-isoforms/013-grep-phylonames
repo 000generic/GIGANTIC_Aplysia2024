@@ -1,0 +1,28 @@
+#! /bin/bash
+# GIGANTIC ProjectDB
+
+grep 'Owenia-fusiformis-' 10-phyloNames >> 13-list-phylonames
+grep 'Drosophila-melanogaster-' 10-phyloNames >> 13-list-phylonames
+grep 'Bugula-neritina-' 10-phyloNames >> 13-list-phylonames
+grep 'Branchiostoma-floridae-' 10-phyloNames >> 13-list-phylonames
+grep 'Homo-sapiens-' 10-phyloNames >> 13-list-phylonames
+grep 'Styela-clava-' 10-phyloNames >> 13-list-phylonames
+grep 'Nematostella-vectensis-' 10-phyloNames >> 13-list-phylonames
+grep 'Hormiphora-californensis-' 10-phyloNames >> 13-list-phylonames
+grep 'Dicyema-japonicum-' 10-phyloNames >> 13-list-phylonames
+grep 'Asterias-rubens-' 10-phyloNames >> 13-list-phylonames
+grep 'Adineta-ricciae-' 10-phyloNames >> 13-list-phylonames
+grep 'Saccoglossus-kowalevskii-' 10-phyloNames >> 13-list-phylonames
+grep 'Crassostrea-gigas-' 10-phyloNames >> 13-list-phylonames
+grep 'Caenorhabditis-elegans-' 10-phyloNames >> 13-list-phylonames
+grep 'Notospermus-geniculatus-' 10-phyloNames >> 13-list-phylonames
+grep 'Phoronis-australis-' 10-phyloNames >> 13-list-phylonames
+grep 'Trichoplax-adhaerens-' 10-phyloNames >> 13-list-phylonames
+grep 'Macrostomum-lignano-' 10-phyloNames >> 13-list-phylonames
+grep 'Ephydatia-muelleri-' 10-phyloNames >> 13-list-phylonames
+grep 'Priapulus-caudatus-' 10-phyloNames >> 13-list-phylonames
+grep 'Ramazzottius-varieornatus-' 10-phyloNames >> 13-list-phylonames
+grep 'Capsaspora-owczarzaki-' 10-phyloNames >> 13-list-phylonames
+grep 'Monosiga-brevicollis-' 10-phyloNames >> 13-list-phylonames
+grep 'Sphaeroforma-arctica-' 10-phyloNames >> 13-list-phylonames
+grep 'Hofstenia-miamia-' 10-phyloNames >> 13-list-phylonames

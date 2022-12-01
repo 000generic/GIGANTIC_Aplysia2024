@@ -1,0 +1,4 @@
+#! /bin/bash
+# GIGANTIC ProjectDB
+
+grep 'Nematostella' output/3-list-gffs > output/3-list-gffs-Nematostella_vectensis

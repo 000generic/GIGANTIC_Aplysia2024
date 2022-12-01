@@ -1,0 +1,18 @@
+#! python
+# GIGANTIC ProjectDB
+
+input_fastas = open( 'output/11-genome-T1-fastas', 'r' )
+output_grep = open('013-grep-phylonames', 'w')
+
+for next_fasta in input_fastas:
+
+    fasta_path = next_fasta[ :-1 ]
+    fasta = fasta_path.split( '/' )[ -1 ]
+    fasta_info = fasta.split( '-' )
+    gspp = fasta_info[ 1 ] + '-' + fasta_info[ 2 ] + '-'
+
+    output = 'grep \'' + gspp + '\' 10-phyloNames >> output/13-list-phylonames\n'
+    output_grep.write( output )
+
+input_fastas.close()
+output_grep.close()

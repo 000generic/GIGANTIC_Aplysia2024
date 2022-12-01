@@ -1,0 +1,129 @@
+#! /bin/bash
+# GIGANTIC ProjectDB
+
+mkdir Annelida-Owenia-fusiformis &&
+cd Annelida-Owenia-fusiformis &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/903/813/345/GCA_903813345.1_Owenia_assembly_annotated/GCA_903813345.1_Owenia_assembly_annotated_protein.faa.gz -O Annelida-Owenia-fusiformis.aa.gz &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/903/813/345/GCA_903813345.1_Owenia_assembly_annotated/GCA_903813345.1_Owenia_assembly_annotated_genomic.gff.gz -O Annelida-Owenia-fusiformis.gff.gz &&
+cd .. &&
+mkdir Arthropoda-Drosophila-melanogaster &&
+cd Arthropoda-Drosophila-melanogaster &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/215/GCF_000001215.4_Release_6_plus_ISO1_MT/GCF_000001215.4_Release_6_plus_ISO1_MT_protein.faa.gz -O Arthropoda-Drosophila-melanogaster.aa.gz &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/215/GCF_000001215.4_Release_6_plus_ISO1_MT/GCF_000001215.4_Release_6_plus_ISO1_MT_genomic.gff.gz -O Arthropoda-Drosophila-melanogaster.gff.gz &&
+cd .. &&
+mkdir Bryozoa-Bugula-neritina &&
+cd Bryozoa-Bugula-neritina &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/010/799/875/GCA_010799875.2_ASM1079987v2/GCA_010799875.2_ASM1079987v2_protein.faa.gz -O Bryozoa-Bugula-neritina.aa.gz &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/010/799/875/GCA_010799875.2_ASM1079987v2/GCA_010799875.2_ASM1079987v2_genomic.gff.gz -O Bryozoa-Bugula-neritina.gff.gz &&
+cd .. &&
+mkdir Chordata-Branchiostoma-floridae &&
+cd Chordata-Branchiostoma-floridae &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/003/815/GCF_000003815.2_Bfl_VNyyK/GCF_000003815.2_Bfl_VNyyK_protein.faa.gz -O Chordata-Branchiostoma-floridae.aa.gz &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/003/815/GCF_000003815.2_Bfl_VNyyK/GCF_000003815.2_Bfl_VNyyK_genomic.gff.gz -O Chordata-Branchiostoma-floridae.gff.gz &&
+cd .. &&
+mkdir Chordata-Homo-sapiens &&
+cd Chordata-Homo-sapiens &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GCF_000001405.39_GRCh38.p13_protein.faa.gz -O Chordata-Homo-sapiens.aa.gz &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GCF_000001405.39_GRCh38.p13_genomic.gff.gz -O Chordata-Homo-sapiens.gff.gz &&
+cd .. &&
+mkdir Chordata-Styela-clava &&
+cd Chordata-Styela-clava &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/122/585/GCF_013122585.1_ASM1312258v2/GCF_013122585.1_ASM1312258v2_protein.faa.gz -O Chordata-Styela-clava.aa.gz &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/122/585/GCF_013122585.1_ASM1312258v2/GCF_013122585.1_ASM1312258v2_genomic.gff.gz -O Chordata-Styela-clava.gff.gz &&
+cd .. &&
+#mkdir Cnidaria-Nematostella-vectensis &&
+#cd Cnidaria-Nematostella-vectensis &&
+#wget https://genomes.stowers.org/files/pub/nematostella/Nvec/genomes/Nvec200/aligned/tcs_v2/tcs_v2.20211013.protein.versioned.fasta -O Cnidaria-Nematostella-vectensis.aa.gz &&
+#wget https://genomes.stowers.org/files/pub/nematostella/Nvec/genomes/Nvec200/aligned/tcs_v2/tcs_v2.20211013.versioned.gff -O Cnidaria-Nematostella-vectensis.gff.gz &&
+#cd .. &&
+#mkdir Ctenophore-Hormiphora-californensis &&
+#cd Ctenophore-Hormiphora-californensis &&
+#wget https://github.com/conchoecia/hormiphora/releases/download/Hcv1.av93zen/Hcv1av93_release.tar.gz -O Ctenophore-Hormiphora-californensis.aa.gz &&
+#wget https://github.com/conchoecia/hormiphora/releases/download/Hcv1.av93zen/Hcv1av93_release.tar.gz -O Ctenophore-Hormiphora-californensis.gff.gz &&
+#cd .. &&
+mkdir Dicyemida-Dicyema-japonicum &&
+cd Dicyemida-Dicyema-japonicum &&
+wget https://marinegenomics.oist.jp/dicyemid/download/dicyema_japonicum_genemodel_prot.fa.gz -O Dicyemida-Dicyema-japonicum.aa.gz &&
+wget https://marinegenomics.oist.jp/dicyemid/download/dicyema_japonicum_genemodel.gff.gz -O Dicyemida-Dicyema-japonicum.gff.gz &&
+cd .. &&
+mkdir Echinodermata-Asterias-rubens &&
+cd Echinodermata-Asterias-rubens &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/902/459/465/GCF_902459465.1_eAstRub1.3/GCF_902459465.1_eAstRub1.3_protein.faa.gz -O Echinodermata-Asterias-rubens.aa.gz &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/902/459/465/GCF_902459465.1_eAstRub1.3/GCF_902459465.1_eAstRub1.3_genomic.gff.gz -O Echinodermata-Asterias-rubens.gff.gz &&
+cd .. &&
+mkdir Gnathifera-Adineta-ricciae &&
+cd Gnathifera-Adineta-ricciae &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/905/250/025/GCA_905250025.1_Ar_ARIC003_reference_genomic_v1/GCA_905250025.1_Ar_ARIC003_reference_genomic_v1_protein.faa.gz -O Gnathifera-Adineta-ricciae.aa.gz &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/905/250/025/GCA_905250025.1_Ar_ARIC003_reference_genomic_v1/GCA_905250025.1_Ar_ARIC003_reference_genomic_v1_genomic.gff.gz -O Gnathifera-Adineta-ricciae.gff.gz &&
+cd .. &&
+mkdir Hemichordata-Saccoglossus-kowalevskii &&
+cd Hemichordata-Saccoglossus-kowalevskii &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/003/605/GCF_000003605.2_Skow_1.1/GCF_000003605.2_Skow_1.1_protein.faa.gz -O Hemichordata-Saccoglossus-kowalevskii.aa.gz &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/003/605/GCF_000003605.2_Skow_1.1/GCF_000003605.2_Skow_1.1_genomic.gff.gz -O Hemichordata-Saccoglossus-kowalevskii.gff.gz &&
+cd .. &&
+mkdir Mollusca-Crassostrea-gigas &&
+cd Mollusca-Crassostrea-gigas &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/902/806/645/GCF_902806645.1_cgigas_uk_roslin_v1/GCF_902806645.1_cgigas_uk_roslin_v1_protein.faa.gz -O Mollusca-Crassostrea-gigas.aa.gz &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/902/806/645/GCF_902806645.1_cgigas_uk_roslin_v1/GCF_902806645.1_cgigas_uk_roslin_v1_genomic.gff.gz -O Mollusca-Crassostrea-gigas.gff.gz &&
+cd .. &&
+mkdir Nematoda-Caenorhabditis-elegans &&
+cd Nematoda-Caenorhabditis-elegans &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/985/GCF_000002985.6_WBcel235/GCF_000002985.6_WBcel235_protein.faa.gz -O Nematoda-Caenorhabditis-elegans.aa.gz &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/985/GCF_000002985.6_WBcel235/GCF_000002985.6_WBcel235_genomic.gff.gz -O Nematoda-Caenorhabditis-elegans.gff.gz &&
+cd .. &&
+mkdir Nemertea-Notospermus-geniculatus &&
+cd Nemertea-Notospermus-geniculatus &&
+wget https://marinegenomics.oist.jp/nge_v2/download/nge_genome_v2.0_prot.fa.gz -O Nemertea-Notospermus-geniculatus.aa.gz &&
+wget https://marinegenomics.oist.jp/nge_v2/download/52_nge_v2.gff.gz -O Nemertea-Notospermus-geniculatus.gff.gz &&
+cd .. &&
+mkdir Phoronida-Phoronis-australis &&
+cd Phoronida-Phoronis-australis &&
+wget https://marinegenomics.oist.jp/pau_v2/download/pau_genome_v2.0_prot.fa.gz -O Phoronida-Phoronis-australis.aa.gz &&
+wget https://marinegenomics.oist.jp/pau_v2/download/51_pau_v2.gff.gz -O Phoronida-Phoronis-australis.gff.gz &&
+cd .. &&
+mkdir Placozoa-Trichoplax-adhaerens &&
+cd Placozoa-Trichoplax-adhaerens &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/150/275/GCF_000150275.1_v1.0/GCF_000150275.1_v1.0_protein.faa.gz -O Placozoa-Trichoplax-adhaerens.aa.gz &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/150/275/GCF_000150275.1_v1.0/GCF_000150275.1_v1.0_genomic.gff.gz -O Placozoa-Trichoplax-adhaerens.gff.gz &&
+cd .. &&
+mkdir Platyhelminthes-Macrostomum-lignano &&
+cd Platyhelminthes-Macrostomum-lignano &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/269/645/GCA_002269645.1_Mlig_3_7/GCA_002269645.1_Mlig_3_7_protein.faa.gz -O Platyhelminthes-Macrostomum-lignano.aa.gz &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/269/645/GCA_002269645.1_Mlig_3_7/GCA_002269645.1_Mlig_3_7_genomic.gff.gz -O Platyhelminthes-Macrostomum-lignano.gff.gz &&
+cd .. &&
+mkdir Porifera-Ephydatia-muelleri &&
+cd Porifera-Ephydatia-muelleri &&
+wget https://bitbucket.org/EphydatiaGenome/ephydatiagenome/downloads/Emu_v1_prots.fasta.gz -O Porifera-Ephydatia-muelleri.aa.gz &&
+wget https://bitbucket.org/EphydatiaGenome/ephydatiagenome/downloads/Emu_genome_v1.gff.gz -O Porifera-Ephydatia-muelleri.gff.gz &&
+cd .. &&
+mkdir Priapulida-Priapulus-caudatus &&
+cd Priapulida-Priapulus-caudatus &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/485/595/GCF_000485595.1_Priapulus_caudatus-5.0.1/GCF_000485595.1_Priapulus_caudatus-5.0.1_protein.faa.gz -O Priapulida-Priapulus-caudatus.aa.gz &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/485/595/GCF_000485595.1_Priapulus_caudatus-5.0.1/GCF_000485595.1_Priapulus_caudatus-5.0.1_genomic.gff.gz -O Priapulida-Priapulus-caudatus.gff.gz &&
+cd .. &&
+mkdir Tardigrada-Ramazzottius-varieornatus &&
+cd Tardigrada-Ramazzottius-varieornatus &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/949/185/GCA_001949185.1_Rvar_4.0/GCA_001949185.1_Rvar_4.0_protein.faa.gz -O Tardigrada-Ramazzottius-varieornatus.aa.gz &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/949/185/GCA_001949185.1_Rvar_4.0/GCA_001949185.1_Rvar_4.0_genomic.gff.gz -O Tardigrada-Ramazzottius-varieornatus.gff.gz &&
+cd .. &&
+mkdir Unicell-Monosiga-brevicollis &&
+cd Unicell-Monosiga-brevicollis &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/865/GCF_000002865.3_V1.0/GCF_000002865.3_V1.0_protein.faa.gz -O Unicell-Monosiga-brevicollis.aa.gz &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/865/GCF_000002865.3_V1.0/GCF_000002865.3_V1.0_genomic.gff.gz -O Unicell-Monosiga-brevicollis.gff.gz &&
+cd .. &&
+mkdir Unicell-Capsaspora-owczarzaki &&
+cd Unicell-Capsaspora-owczarzaki &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/151/315/GCF_000151315.2_C_owczarzaki_V2/GCF_000151315.2_C_owczarzaki_V2_protein.faa.gz -O Unicell-Capsaspora-owczarzaki.aa.gz &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/151/315/GCF_000151315.2_C_owczarzaki_V2/GCF_000151315.2_C_owczarzaki_V2_genomic.gff.gz -O Unicell-Capsaspora-owczarzaki.gff.gz &&
+cd .. &&
+mkdir Unicell-Sphaeroforma-arctica &&
+cd Unicell-Sphaeroforma-arctica &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/186/125/GCF_001186125.1_Spha_arctica_JP610_V1/GCF_001186125.1_Spha_arctica_JP610_V1_protein.faa.gz -O Unicell-Sphaeroforma-arctica.aa.gz &&
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/186/125/GCF_001186125.1_Spha_arctica_JP610_V1/GCF_001186125.1_Spha_arctica_JP610_V1_genomic.gff.gz -O Unicell-Sphaeroforma-arctica.gff.gz &&
+cd .. &&
+mkdir Xenocoelomorpha-Hofstenia-miamia &&
+cd Xenocoelomorpha-Hofstenia-miamia &&
+wget http://ftp.ebi.ac.uk/ensemblgenomes/pub/release-51/metazoa/fasta/hofstenia_miamia/pep/Hofstenia_miamia.HmiaM1.pep.all.fa.gz -O Xenocoelomorpha-Hofstenia-miamia.aa.gz &&
+wget http://ftp.ebi.ac.uk/ensemblgenomes/pub/release-51/metazoa/gff3/hofstenia_miamia/Hofstenia_miamia.HmiaM1.51.chr.gff3.gz -O Xenocoelomorpha-Hofstenia-miamia.gff.gz &&
+cd .. &&
+echo 
