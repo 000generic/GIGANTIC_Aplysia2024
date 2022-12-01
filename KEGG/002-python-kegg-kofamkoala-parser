@@ -1,0 +1,56 @@
+#! python
+# KEGG script
+
+input_report = open( 'output/1-kegg-report-Aplysia-californica', 'r' )
+output_details = open( 'output/2-aplysia-kegg-annotation-parsed', 'w' )
+
+# #       gene name       KO      thrshld score   E-value "KO definition"
+# #       ---------       ------  ------- ------  ---------       -------------
+#        Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-gigantic20220627164247_seq0006140675aa     K04194  465.33  100.8   7.1e-29 "cholecystokinin A receptor"
+
+gigantic_annotation = {}
+for next_line in input_report:
+
+    if next_line[ 0 ] == '#':
+        pass
+    else:
+        info = next_line[ :-1 ].split( '\t' )
+        gigantic_id = info[ 1 ]
+        kegg_id = info[ 2 ]
+        kegg_definition = info[ -1 ][ 1:-1 ]
+        kegg_definition_no_commas = ' '.join( kegg_definition.split( ',' ) )
+        annotation = kegg_id + '___' + kegg_definition_no_commas
+        if gigantic_id in gigantic_annotation.keys():
+            gigantic_annotation[ gigantic_id ].append( annotation )
+        else:
+            gigantic_annotation[ gigantic_id ] = []
+            gigantic_annotation[ gigantic_id ].append( annotation )
+
+for next_gigantic in gigantic_annotation.keys():
+    output = next_gigantic + '\t'
+    ids = []
+    definitions = []
+    
+    for next_annotation in gigantic_annotation[ next_gigantic ]:
+        info_annotation = next_annotation.split( '___' )
+        kegg_id = info_annotation[ 0 ]
+        kegg_definition = info_annotation[ 1 ]
+        ids.append( kegg_id )
+        if len( kegg_definition) > 1:
+            definitions.append( kegg_definition )
+        else:
+            definitions.append( 'None' )
+
+    kegg_ids = ','.join( ids )
+    kegg_definitions = ','.join( definitions )
+
+    output = output + kegg_ids + '\t' + kegg_definitions + '\n'
+    output_details.write( output )
+
+input_report.close()
+output_details.close()
+
+
+    
+
+    

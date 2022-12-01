@@ -1,0 +1,6 @@
+#! /bin/bash
+# KEGG script
+
+/home/eric/kofamscan/bin/kofam_scan-1.3.0/exec_annotation --report-unannotated --format=detail-tsv -o output/1-kegg-report-Aplysia-californica --e-value=0.001 Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-6500-T1.aa
+
+ 

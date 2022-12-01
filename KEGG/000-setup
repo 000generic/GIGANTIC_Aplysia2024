@@ -1,0 +1,4 @@
+#! /bin/bash
+# KEGG script
+
+mkdir output
