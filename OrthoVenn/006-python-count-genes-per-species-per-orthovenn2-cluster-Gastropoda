@@ -1,0 +1,300 @@
+#! python
+# OrthoVenn2 scripts
+
+input_clustering_runs = open('006-list-files-gastropoda.txt','r')
+output_counts = open('6-counts-of-genes-per-species-per-orthovenn2-cluster-Gastropoda','w' )
+
+# species = ['Lottia','Gigantopelta','Pomacea','Aplysia']
+for next_cluster_run in input_clustering_runs:
+    next_cluster_run = next_cluster_run[ :-1 ]
+    input_clustering = open( next_cluster_run,'r' )
+
+    # species-only cluster counts
+    lottia_only_clusters = 0 # total lottia  only clusters
+    gigantopelta_only_clusters = 0 # total gigantopelta  only clusters
+    pomacea_only_clusters = 0 # total pomacea  only clusters
+    aplysia_only_clusters = 0 # total lottia  only clusters
+
+    # species-only gene counts
+    lottia_only_genes = 0 # total genes in lottia  only clusters
+    gigantopelta_only_genes = 0 # total genes in gigantopelta  only clusters
+    pomacea_only_genes = 0 # total genes in pomacea  only clusters
+    aplysia_only_genes = 0 # total genes in lottia  only clusters
+
+    # all clusters per species counts
+    lottia_all_clusters = 0 # total genes for all clusters containing lottia 
+    gigantopelta_all_clusters = 0 # total genes for all clusters containing gigantopelta 
+    pomacea_all_clusters = 0 # total genes for all clusters containing pomacea 
+    aplysia_all_clusters = 0 # total genes for all clusters containing aplysia
+
+    # all genes in all clusters per species counts
+    lottia_all_genes = 0 # total genes for all clusters containing lottia 
+    gigantopelta_all_genes = 0 # total genes for all clusters containing gigantopelta 
+    pomacea_all_genes = 0 # total genes for all clusters containing pomacea 
+    aplysia_all_genes = 0 # total genes for all clusters containing aplysia
+
+    # all clusters per species-species pair counts ONLY
+    # aplysia-lottia 
+    aplysia_lottia_clusters_only = 0
+    # aplysia-gigantopelta 
+    aplysia_gigantopelta_clusters_only = 0
+    # aplysia-pomacea 
+    aplysia_pomacea_clusters_only = 0
+    # gigantopelta-lottia 
+    gigantopelta_lottia_clusters_only = 0
+    # pomacea-lottia 
+    pomacea_lottia_clusters_only = 0
+    # gigantopelta-pomacea 
+    gigantopelta_pomacea_clusters_only = 0
+
+    # all clusters per species-species pair counts ALL
+    # aplysia-lottia 
+    aplysia_lottia_clusters_all = 0
+    # aplysia-gigantopelta 
+    aplysia_gigantopelta_clusters_all = 0
+    # aplysia-pomacea 
+    aplysia_pomacea_clusters_all = 0
+    # gigantopelta-lottia 
+    gigantopelta_lottia_clusters_all = 0
+    # pomacea-lottia 
+    pomacea_lottia_clusters_all = 0
+    # gigantopelta-pomacea 
+    gigantopelta_pomacea_clusters_all = 0
+
+    # all genes in all clusters per species-species pair counts
+    # aplysia-lottia  only
+    aplysia_in_aplysia_lottia_genes_only = 0
+    lottia_in_aplysia_lottia_genes_only = 0
+    # aplysia-gigantopelta  only
+    aplysia_in_aplysia_gigantopelta_genes_only = 0
+    gigantopelta_in_aplysia_gigantopelta_genes_only = 0
+    # aplysia-pomacea  only
+    aplysia_in_aplysia_pomacea_genes_only = 0
+    pomacea_in_aplysia_pomacea_genes_only = 0
+    # gigantopelta-lottia  only
+    gigantopelta_in_gigantopelta_lottia_genes_only = 0
+    lottia_in_gigantopelta_lottia_genes_only = 0
+    # pomacea-lottia  only
+    pomacea_in_pomacea_lottia_genes_only = 0
+    lottia_in_pomacea_lottia_genes_only = 0
+    # gigantopelta-pomacea  only
+    gigantopelta_in_gigantopelta_pomacea_genes_only = 0
+    pomacea_in_gigantopelta_pomacea_genes_only = 0
+
+    # all genes in all clusters per species-species pair counts
+    # aplysia-lottia  all
+    aplysia_in_aplysia_lottia_genes_all = 0
+    lottia_in_aplysia_lottia_genes_all = 0
+    # aplysia-gigantopelta  all
+    aplysia_in_aplysia_gigantopelta_genes_all = 0
+    gigantopelta_in_aplysia_gigantopelta_genes_all = 0
+    # aplysia-pomacea  all
+    aplysia_in_aplysia_pomacea_genes_all = 0
+    pomacea_in_aplysia_pomacea_genes_all = 0
+    # gigantopelta-lottia  all
+    gigantopelta_in_gigantopelta_lottia_genes_all = 0
+    lottia_in_gigantopelta_lottia_genes_all = 0
+    # pomacea-lottia  all
+    pomacea_in_pomacea_lottia_genes_all = 0
+    lottia_in_pomacea_lottia_genes_all = 0
+    # gigantopelta-pomacea  all
+    gigantopelta_in_gigantopelta_pomacea_genes_all = 0
+    pomacea_in_gigantopelta_pomacea_genes_all = 0
+
+    # gene counts per species per cluster
+    for next_cluster in input_clustering:
+
+        # species counters per cluster
+        lottia_count = 0
+        gigantopelta_count = 0
+        pomacea_count = 0
+        aplysia_count = 0
+
+        info = next_cluster[ :-1 ].split('\t' ) # cluster info
+
+        for next_identifier in info: # read through each gene identifier in the cluster
+            species_name = next_identifier.split('|' )[ 0 ]
+            # update species counts for given cluster and total gene counts per species
+            if species_name =='Lottia':
+                lottia_count = lottia_count + 1 # gene count for lottia  in the cluster
+                lottia_all_genes = lottia_all_genes + 1 # total gene count for lottia  for all clusters
+            elif species_name =='Gigantopelta':
+                gigantopelta_count = gigantopelta_count + 1
+                gigantopelta_all_genes = gigantopelta_all_genes + 1
+            elif species_name =='Pomacea':
+                pomacea_count = pomacea_count + 1
+                pomacea_all_genes = pomacea_all_genes + 1
+            elif species_name =='Aplysia':
+                aplysia_count = aplysia_count + 1
+                aplysia_all_genes = aplysia_all_genes + 1
+            else:
+                error_message ='Error: Species name is not recognized!'
+                print( error_message )
+
+        # update total cluster counts per species
+        if lottia_count > 0:
+            lottia_all_clusters = lottia_all_clusters + 1
+        if gigantopelta_count > 0:
+            gigantopelta_all_clusters = gigantopelta_all_clusters + 1
+        if pomacea_count > 0:
+            pomacea_all_clusters = pomacea_all_clusters + 1
+        if aplysia_count > 0:
+            aplysia_all_clusters = aplysia_all_clusters + 1
+
+        # update species-only cluster and gene counts
+        # lottia  only cluster
+        if lottia_count > 0 and gigantopelta_count ==0 and pomacea_count == 0 and aplysia_count == 0:
+            lottia_only_genes = lottia_only_genes + lottia_count
+            lottia_only_clusters = lottia_only_clusters + 1
+        # gigantopelta  only cluster
+        if gigantopelta_count > 0 and lottia_count ==0 and pomacea_count == 0 and aplysia_count == 0:
+            gigantopelta_only_genes = gigantopelta_only_genes + gigantopelta_count
+            gigantopelta_only_clusters = gigantopelta_only_clusters + 1
+        # pomacea  only cluster
+        if pomacea_count > 0 and gigantopelta_count ==0 and lottia_count == 0 and aplysia_count == 0:
+            pomacea_only_genes = pomacea_only_genes + pomacea_count
+            pomacea_only_clusters = pomacea_only_clusters + 1
+        # aplysia only cluster
+        if aplysia_count > 0 and gigantopelta_count ==0 and pomacea_count == 0 and lottia_count == 0:
+            aplysia_only_genes = aplysia_only_genes + aplysia_count
+            aplysia_only_clusters = aplysia_only_clusters + 1
+
+        # ONLY aplysia- lottia  cluster
+        if lottia_count > 0 and gigantopelta_count == 0 and pomacea_count == 0 and aplysia_count > 0:
+            aplysia_in_aplysia_lottia_genes_only = aplysia_in_aplysia_lottia_genes_only + aplysia_count
+            lottia_in_aplysia_lottia_genes_only = lottia_in_aplysia_lottia_genes_only + lottia_count
+            aplysia_lottia_clusters_only = aplysia_lottia_clusters_only + 1
+        # only aplysia- gigantopelta  cluster
+        if lottia_count == 0 and gigantopelta_count > 0 and pomacea_count == 0 and aplysia_count > 0:
+            aplysia_in_aplysia_gigantopelta_genes_only = aplysia_in_aplysia_gigantopelta_genes_only + aplysia_count
+            gigantopelta_in_aplysia_gigantopelta_genes_only = gigantopelta_in_aplysia_gigantopelta_genes_only + gigantopelta_count
+            aplysia_gigantopelta_clusters_only = aplysia_gigantopelta_clusters_only + 1
+        # only aplysia- pomacea  cluster
+        if lottia_count == 0 and gigantopelta_count == 0 and pomacea_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_pomacea_genes_only = aplysia_in_aplysia_pomacea_genes_only + aplysia_count
+            pomacea_in_aplysia_pomacea_genes_only = pomacea_in_aplysia_pomacea_genes_only + pomacea_count
+            aplysia_pomacea_clusters_only = aplysia_pomacea_clusters_only + 1
+        # only gigantopelta - lottia  cluster
+        if lottia_count > 0 and gigantopelta_count > 0 and pomacea_count == 0 and aplysia_count == 0:
+            gigantopelta_in_gigantopelta_lottia_genes_only = gigantopelta_in_gigantopelta_lottia_genes_only + gigantopelta_count
+            lottia_in_gigantopelta_lottia_genes_only = lottia_in_gigantopelta_lottia_genes_only + lottia_count
+            gigantopelta_lottia_clusters_only = gigantopelta_lottia_clusters_only + 1
+        # only pomacea  lottia  cluster
+        if lottia_count > 0 and gigantopelta_count == 0 and pomacea_count > 0 and aplysia_count == 0:
+            pomacea_in_pomacea_lottia_genes_only = pomacea_in_pomacea_lottia_genes_only + pomacea_count
+            lottia_in_pomacea_lottia_genes_only = lottia_in_pomacea_lottia_genes_only + lottia_count
+            pomacea_lottia_clusters_only = pomacea_lottia_clusters_only + 1
+        # only gigantopelta  pomacea  cluster
+        if lottia_count == 0 and gigantopelta_count > 0 and pomacea_count > 0 and aplysia_count == 0:
+            gigantopelta_in_gigantopelta_pomacea_genes_only = gigantopelta_in_gigantopelta_pomacea_genes_only + gigantopelta_count
+            pomacea_in_gigantopelta_pomacea_genes_only = pomacea_in_gigantopelta_pomacea_genes_only + pomacea_count
+            gigantopelta_pomacea_clusters_only = gigantopelta_pomacea_clusters_only + 1
+
+        # ALL aplysia- lottia  cluster
+        if lottia_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_lottia_genes_all = aplysia_in_aplysia_lottia_genes_all + aplysia_count
+            lottia_in_aplysia_lottia_genes_all = lottia_in_aplysia_lottia_genes_all + lottia_count
+            aplysia_lottia_clusters_all = aplysia_lottia_clusters_all + 1
+        # only aplysia- gigantopelta  cluster
+        if gigantopelta_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_gigantopelta_genes_all = aplysia_in_aplysia_gigantopelta_genes_all + aplysia_count
+            gigantopelta_in_aplysia_gigantopelta_genes_all = gigantopelta_in_aplysia_gigantopelta_genes_all + gigantopelta_count
+            aplysia_gigantopelta_clusters_all = aplysia_gigantopelta_clusters_all + 1
+        # only aplysia- pomacea  cluster
+        if pomacea_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_pomacea_genes_all = aplysia_in_aplysia_pomacea_genes_all + aplysia_count
+            pomacea_in_aplysia_pomacea_genes_all = pomacea_in_aplysia_pomacea_genes_all + pomacea_count
+            aplysia_pomacea_clusters_all = aplysia_pomacea_clusters_all + 1
+        # only gigantopelta - lottia  cluster
+        if lottia_count > 0 and gigantopelta_count > 0:
+            gigantopelta_in_gigantopelta_lottia_genes_all = gigantopelta_in_gigantopelta_lottia_genes_all + gigantopelta_count
+            lottia_in_gigantopelta_lottia_genes_all = lottia_in_gigantopelta_lottia_genes_all + lottia_count
+            gigantopelta_lottia_clusters_all = gigantopelta_lottia_clusters_all + 1
+        # only pomacea  lottia  cluster
+        if lottia_count > 0 and pomacea_count > 0:
+            pomacea_in_pomacea_lottia_genes_all = pomacea_in_pomacea_lottia_genes_all + pomacea_count
+            lottia_in_pomacea_lottia_genes_all = lottia_in_pomacea_lottia_genes_all + lottia_count
+            pomacea_lottia_clusters_all = pomacea_lottia_clusters_all + 1
+        # only gigantopelta  pomacea  cluster
+        if gigantopelta_count > 0 and pomacea_count > 0:
+            gigantopelta_in_gigantopelta_pomacea_genes_all = gigantopelta_in_gigantopelta_pomacea_genes_all + gigantopelta_count
+            pomacea_in_gigantopelta_pomacea_genes_all = pomacea_in_gigantopelta_pomacea_genes_all + pomacea_count
+            gigantopelta_pomacea_clusters_all = gigantopelta_pomacea_clusters_all + 1
+
+    # Cluster run
+    output ='#####\n#####' + next_cluster_run +'\n#####\n\n'
+    output_counts.write(output)
+
+    # species-only cluster and gene counts
+    output ='Lottia-only clusters:\t' + str( lottia_only_clusters ) +'\nLottia-only genes:\t' + str( lottia_only_genes ) +'\n\n'
+    output_counts.write( output )
+
+    output ='Gigantopelta-only clusters:\t' + str( gigantopelta_only_clusters ) +'\nGigantopelta-only genes:\t' + str( gigantopelta_only_genes ) +'\n\n'
+    output_counts.write( output )
+
+    output ='Pomacea-only clusters:\t' + str( pomacea_only_clusters ) +'\nPomacea-only genes:\t' + str( pomacea_only_genes ) +'\n\n'
+    output_counts.write( output )
+
+    output ='Aplysia-only clusters:\t' + str( aplysia_only_clusters ) +'\nAplysia-only genes:\t' + str( aplysia_only_genes ) +'\n\n'
+    output_counts.write( output )
+
+    # all clusters per species cluster and gene counts
+    output ='Lottia-all clusters:\t' + str(lottia_all_clusters) +'\nLottia-all genes:\t' + str( lottia_all_genes) +'\n\n'
+    output_counts.write(output)
+
+    output ='Gigantopelta-all clusters:\t' + str(gigantopelta_all_clusters) +'\nGigantopelta-all genes:\t' + str(gigantopelta_all_genes) +'\n\n'
+    output_counts.write(output)
+
+    output ='Pomacea-all clusters:\t' + str(pomacea_all_clusters) +'\nPomacea-all genes:\t' + str(pomacea_all_genes) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-all clusters:\t' + str(aplysia_all_clusters) +'\nAplysia-all genes:\t' + str( aplysia_all_genes) +'\n\n'
+    output_counts.write(output)
+
+
+    # species-species pair cluster and gene counts ONLY
+    output ='Aplysia-Lottia  ONLY clusters:\t' + str( aplysia_lottia_clusters_only ) +'\nAplysia genes in Aplysia-Lottia  ONLY clusters:\t' + str( aplysia_in_aplysia_lottia_genes_only ) +'\nLottia  genes in Aplysia-Lottia  ONLY clusters:\t'  + str( lottia_in_aplysia_lottia_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-Gigantopelta  ONLY clusters:\t' + str( aplysia_gigantopelta_clusters_only ) +'\nAplysia genes in Aplysia-Gigantopelta  ONLY clusters:\t' + str( aplysia_in_aplysia_gigantopelta_genes_only ) +'\nGigantopelta  genes in Aplysia-Gigantopelta  ONLY clusters:\t'  + str( gigantopelta_in_aplysia_gigantopelta_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-Pomacea  ONLY clusters:\t' + str( aplysia_pomacea_clusters_only ) +'\nAplysia genes in Aplysia-Pomacea  ONLY clusters:\t' + str( aplysia_in_aplysia_pomacea_genes_only ) +'\nPomacea  genes in Aplysia-Pomacea  ONLY clusters:\t'  + str( pomacea_in_aplysia_pomacea_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Gigantopelta-Lottia  ONLY clusters:\t' + str( gigantopelta_lottia_clusters_only ) +'\nGigantopelta  genes in Gigantopelta-Lottia  ONLY clusters:\t' + str( gigantopelta_in_gigantopelta_lottia_genes_only ) +'\nLottia  genes in Gigantopelta-Lottia  ONLY clusters:\t'  + str( lottia_in_gigantopelta_lottia_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Pomacea-Lottia  ONLY clusters:\t' + str( pomacea_lottia_clusters_only ) +'\nPomacea  genes in Pomacea-Lottia  ONLY clusters:\t' + str( pomacea_in_pomacea_lottia_genes_only ) +'\nLottia  genes in Pomacea-Lottia  ONLY clusters:\t'  + str( lottia_in_pomacea_lottia_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Gigantopelta-Pomacea  ONLY clusters:\t' + str( gigantopelta_pomacea_clusters_only ) +'\nGigantopelta  genes in Gigantopelta-Pomacea  ONLY clusters:\t' + str( gigantopelta_in_gigantopelta_pomacea_genes_only ) +'\nPomacea  genes in Gigantopelta-Pomacea  ONLY clusters:\t'  + str( pomacea_in_gigantopelta_pomacea_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    # species-species pair cluster and gene counts ALL
+    output ='Aplysia-Lottia  ALL clusters:\t' + str( aplysia_lottia_clusters_all ) +'\nAplysia genes in Aplysia-Lottia  ALL clusters:\t' + str( aplysia_in_aplysia_lottia_genes_all ) +'\nLottia  genes in Aplysia-Lottia  ALL clusters:\t'  + str( lottia_in_aplysia_lottia_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-Gigantopelta  ALL clusters:\t' + str( aplysia_gigantopelta_clusters_all ) +'\nAplysia genes in Aplysia-Gigantopelta  ALL clusters:\t' + str( aplysia_in_aplysia_gigantopelta_genes_all ) +'\nGigantopelta  genes in Aplysia-Gigantopelta  ALL clusters:\t'  + str( gigantopelta_in_aplysia_gigantopelta_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-Pomacea  ALL clusters:\t' + str( aplysia_pomacea_clusters_all ) +'\nAplysia genes in Aplysia-Pomacea  ALL clusters:\t' + str( aplysia_in_aplysia_pomacea_genes_all ) +'\nPomacea  genes in Aplysia-Pomacea  ALL clusters:\t'  + str( pomacea_in_aplysia_pomacea_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Gigantopelta-Lottia  ALL clusters:\t' + str( gigantopelta_lottia_clusters_all ) +'\nGigantopelta  genes in Gigantopelta-Lottia  ALL clusters:\t' + str( gigantopelta_in_gigantopelta_lottia_genes_all ) +'\nLottia  genes in Gigantopelta-Lottia  ALL clusters:\t'  + str( lottia_in_gigantopelta_lottia_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Pomacea-Lottia  ALL clusters:\t' + str( pomacea_lottia_clusters_all ) +'\nPomacea  genes in Pomacea-Lottia  ALL clusters:\t' + str( pomacea_in_pomacea_lottia_genes_all ) +'\nLottia  genes in Pomacea-Lottia  ALL clusters:\t'  + str( lottia_in_pomacea_lottia_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Gigantopelta-Pomacea  ALL clusters:\t' + str( gigantopelta_pomacea_clusters_all ) +'\nGigantopelta  genes in Gigantopelta-Pomacea  ALL clusters:\t' + str( gigantopelta_in_gigantopelta_pomacea_genes_all ) +'\nPomacea  genes in Gigantopelta-Pomacea  ALL clusters:\t'  + str( pomacea_in_gigantopelta_pomacea_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+
+    output ='\n'
+    output_counts.write(output)
+
+    input_clustering.close()
+
+output_counts.close()
+input_clustering_runs.close()

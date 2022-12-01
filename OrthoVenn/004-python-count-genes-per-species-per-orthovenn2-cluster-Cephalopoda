@@ -1,0 +1,300 @@
+#! python
+# OrthoVenn2 scripts
+
+input_clustering_runs = open('004-list-files-cephalopoda.txt','r')
+output_counts = open('4-counts-of-genes-per-species-per-orthovenn2-cluster-cephalopoda','w' )
+
+# species = ['Nautilus','Argonauta','Octopus','Aplysia']
+for next_cluster_run in input_clustering_runs:
+    next_cluster_run = next_cluster_run[ :-1 ]
+    input_clustering = open( next_cluster_run,'r' )
+
+    # species-only cluster counts
+    nautilus_only_clusters = 0 # total nautilus  only clusters
+    argonauta_only_clusters = 0 # total argonauta  only clusters
+    octopus_only_clusters = 0 # total octopus  only clusters
+    aplysia_only_clusters = 0 # total nautilus  only clusters
+
+    # species-only gene counts
+    nautilus_only_genes = 0 # total genes in nautilus  only clusters
+    argonauta_only_genes = 0 # total genes in argonauta  only clusters
+    octopus_only_genes = 0 # total genes in octopus  only clusters
+    aplysia_only_genes = 0 # total genes in nautilus  only clusters
+
+    # all clusters per species counts
+    nautilus_all_clusters = 0 # total genes for all clusters containing nautilus 
+    argonauta_all_clusters = 0 # total genes for all clusters containing argonauta 
+    octopus_all_clusters = 0 # total genes for all clusters containing octopus 
+    aplysia_all_clusters = 0 # total genes for all clusters containing aplysia
+
+    # all genes in all clusters per species counts
+    nautilus_all_genes = 0 # total genes for all clusters containing nautilus 
+    argonauta_all_genes = 0 # total genes for all clusters containing argonauta 
+    octopus_all_genes = 0 # total genes for all clusters containing octopus 
+    aplysia_all_genes = 0 # total genes for all clusters containing aplysia
+
+    # all clusters per species-species pair counts ONLY
+    # aplysia-nautilus 
+    aplysia_nautilus_clusters_only = 0
+    # aplysia-argonauta 
+    aplysia_argonauta_clusters_only = 0
+    # aplysia-octopus 
+    aplysia_octopus_clusters_only = 0
+    # argonauta-nautilus 
+    argonauta_nautilus_clusters_only = 0
+    # octopus-nautilus 
+    octopus_nautilus_clusters_only = 0
+    # argonauta-octopus 
+    argonauta_octopus_clusters_only = 0
+
+    # all clusters per species-species pair counts ALL
+    # aplysia-nautilus 
+    aplysia_nautilus_clusters_all = 0
+    # aplysia-argonauta 
+    aplysia_argonauta_clusters_all = 0
+    # aplysia-octopus 
+    aplysia_octopus_clusters_all = 0
+    # argonauta-nautilus 
+    argonauta_nautilus_clusters_all = 0
+    # octopus-nautilus 
+    octopus_nautilus_clusters_all = 0
+    # argonauta-octopus 
+    argonauta_octopus_clusters_all = 0
+
+    # all genes in all clusters per species-species pair counts
+    # aplysia-nautilus  only
+    aplysia_in_aplysia_nautilus_genes_only = 0
+    nautilus_in_aplysia_nautilus_genes_only = 0
+    # aplysia-argonauta  only
+    aplysia_in_aplysia_argonauta_genes_only = 0
+    argonauta_in_aplysia_argonauta_genes_only = 0
+    # aplysia-octopus  only
+    aplysia_in_aplysia_octopus_genes_only = 0
+    octopus_in_aplysia_octopus_genes_only = 0
+    # argonauta-nautilus  only
+    argonauta_in_argonauta_nautilus_genes_only = 0
+    nautilus_in_argonauta_nautilus_genes_only = 0
+    # octopus-nautilus  only
+    octopus_in_octopus_nautilus_genes_only = 0
+    nautilus_in_octopus_nautilus_genes_only = 0
+    # argonauta-octopus  only
+    argonauta_in_argonauta_octopus_genes_only = 0
+    octopus_in_argonauta_octopus_genes_only = 0
+
+    # all genes in all clusters per species-species pair counts
+    # aplysia-nautilus  all
+    aplysia_in_aplysia_nautilus_genes_all = 0
+    nautilus_in_aplysia_nautilus_genes_all = 0
+    # aplysia-argonauta  all
+    aplysia_in_aplysia_argonauta_genes_all = 0
+    argonauta_in_aplysia_argonauta_genes_all = 0
+    # aplysia-octopus  all
+    aplysia_in_aplysia_octopus_genes_all = 0
+    octopus_in_aplysia_octopus_genes_all = 0
+    # argonauta-nautilus  all
+    argonauta_in_argonauta_nautilus_genes_all = 0
+    nautilus_in_argonauta_nautilus_genes_all = 0
+    # octopus-nautilus  all
+    octopus_in_octopus_nautilus_genes_all = 0
+    nautilus_in_octopus_nautilus_genes_all = 0
+    # argonauta-octopus  all
+    argonauta_in_argonauta_octopus_genes_all = 0
+    octopus_in_argonauta_octopus_genes_all = 0
+
+    # gene counts per species per cluster
+    for next_cluster in input_clustering:
+
+        # species counters per cluster
+        nautilus_count = 0
+        argonauta_count = 0
+        octopus_count = 0
+        aplysia_count = 0
+
+        info = next_cluster[ :-1 ].split('\t' ) # cluster info
+
+        for next_identifier in info: # read through each gene identifier in the cluster
+            species_name = next_identifier.split('|' )[ 0 ]
+            # update species counts for given cluster and total gene counts per species
+            if species_name =='Nautilus':
+                nautilus_count = nautilus_count + 1 # gene count for nautilus  in the cluster
+                nautilus_all_genes = nautilus_all_genes + 1 # total gene count for nautilus  for all clusters
+            elif species_name =='Argonauta':
+                argonauta_count = argonauta_count + 1
+                argonauta_all_genes = argonauta_all_genes + 1
+            elif species_name =='Octopus':
+                octopus_count = octopus_count + 1
+                octopus_all_genes = octopus_all_genes + 1
+            elif species_name =='Aplysia':
+                aplysia_count = aplysia_count + 1
+                aplysia_all_genes = aplysia_all_genes + 1
+            else:
+                error_message ='Error: Species name is not recognized!'
+                print( error_message )
+
+        # update total cluster counts per species
+        if nautilus_count > 0:
+            nautilus_all_clusters = nautilus_all_clusters + 1
+        if argonauta_count > 0:
+            argonauta_all_clusters = argonauta_all_clusters + 1
+        if octopus_count > 0:
+            octopus_all_clusters = octopus_all_clusters + 1
+        if aplysia_count > 0:
+            aplysia_all_clusters = aplysia_all_clusters + 1
+
+        # update species-only cluster and gene counts
+        # nautilus  only cluster
+        if nautilus_count > 0 and argonauta_count ==0 and octopus_count == 0 and aplysia_count == 0:
+            nautilus_only_genes = nautilus_only_genes + nautilus_count
+            nautilus_only_clusters = nautilus_only_clusters + 1
+        # argonauta  only cluster
+        if argonauta_count > 0 and nautilus_count ==0 and octopus_count == 0 and aplysia_count == 0:
+            argonauta_only_genes = argonauta_only_genes + argonauta_count
+            argonauta_only_clusters = argonauta_only_clusters + 1
+        # octopus  only cluster
+        if octopus_count > 0 and argonauta_count ==0 and nautilus_count == 0 and aplysia_count == 0:
+            octopus_only_genes = octopus_only_genes + octopus_count
+            octopus_only_clusters = octopus_only_clusters + 1
+        # aplysia only cluster
+        if aplysia_count > 0 and argonauta_count ==0 and octopus_count == 0 and nautilus_count == 0:
+            aplysia_only_genes = aplysia_only_genes + aplysia_count
+            aplysia_only_clusters = aplysia_only_clusters + 1
+
+        # ONLY aplysia- nautilus  cluster
+        if nautilus_count > 0 and argonauta_count == 0 and octopus_count == 0 and aplysia_count > 0:
+            aplysia_in_aplysia_nautilus_genes_only = aplysia_in_aplysia_nautilus_genes_only + aplysia_count
+            nautilus_in_aplysia_nautilus_genes_only = nautilus_in_aplysia_nautilus_genes_only + nautilus_count
+            aplysia_nautilus_clusters_only = aplysia_nautilus_clusters_only + 1
+        # only aplysia- argonauta  cluster
+        if nautilus_count == 0 and argonauta_count > 0 and octopus_count == 0 and aplysia_count > 0:
+            aplysia_in_aplysia_argonauta_genes_only = aplysia_in_aplysia_argonauta_genes_only + aplysia_count
+            argonauta_in_aplysia_argonauta_genes_only = argonauta_in_aplysia_argonauta_genes_only + argonauta_count
+            aplysia_argonauta_clusters_only = aplysia_argonauta_clusters_only + 1
+        # only aplysia- octopus  cluster
+        if nautilus_count == 0 and argonauta_count == 0 and octopus_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_octopus_genes_only = aplysia_in_aplysia_octopus_genes_only + aplysia_count
+            octopus_in_aplysia_octopus_genes_only = octopus_in_aplysia_octopus_genes_only + octopus_count
+            aplysia_octopus_clusters_only = aplysia_octopus_clusters_only + 1
+        # only argonauta - nautilus  cluster
+        if nautilus_count > 0 and argonauta_count > 0 and octopus_count == 0 and aplysia_count == 0:
+            argonauta_in_argonauta_nautilus_genes_only = argonauta_in_argonauta_nautilus_genes_only + argonauta_count
+            nautilus_in_argonauta_nautilus_genes_only = nautilus_in_argonauta_nautilus_genes_only + nautilus_count
+            argonauta_nautilus_clusters_only = argonauta_nautilus_clusters_only + 1
+        # only octopus  nautilus  cluster
+        if nautilus_count > 0 and argonauta_count == 0 and octopus_count > 0 and aplysia_count == 0:
+            octopus_in_octopus_nautilus_genes_only = octopus_in_octopus_nautilus_genes_only + octopus_count
+            nautilus_in_octopus_nautilus_genes_only = nautilus_in_octopus_nautilus_genes_only + nautilus_count
+            octopus_nautilus_clusters_only = octopus_nautilus_clusters_only + 1
+        # only argonauta  octopus  cluster
+        if nautilus_count == 0 and argonauta_count > 0 and octopus_count > 0 and aplysia_count == 0:
+            argonauta_in_argonauta_octopus_genes_only = argonauta_in_argonauta_octopus_genes_only + argonauta_count
+            octopus_in_argonauta_octopus_genes_only = octopus_in_argonauta_octopus_genes_only + octopus_count
+            argonauta_octopus_clusters_only = argonauta_octopus_clusters_only + 1
+
+        # ALL aplysia- nautilus  cluster
+        if nautilus_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_nautilus_genes_all = aplysia_in_aplysia_nautilus_genes_all + aplysia_count
+            nautilus_in_aplysia_nautilus_genes_all = nautilus_in_aplysia_nautilus_genes_all + nautilus_count
+            aplysia_nautilus_clusters_all = aplysia_nautilus_clusters_all + 1
+        # only aplysia- argonauta  cluster
+        if argonauta_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_argonauta_genes_all = aplysia_in_aplysia_argonauta_genes_all + aplysia_count
+            argonauta_in_aplysia_argonauta_genes_all = argonauta_in_aplysia_argonauta_genes_all + argonauta_count
+            aplysia_argonauta_clusters_all = aplysia_argonauta_clusters_all + 1
+        # only aplysia- octopus  cluster
+        if octopus_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_octopus_genes_all = aplysia_in_aplysia_octopus_genes_all + aplysia_count
+            octopus_in_aplysia_octopus_genes_all = octopus_in_aplysia_octopus_genes_all + octopus_count
+            aplysia_octopus_clusters_all = aplysia_octopus_clusters_all + 1
+        # only argonauta - nautilus  cluster
+        if nautilus_count > 0 and argonauta_count > 0:
+            argonauta_in_argonauta_nautilus_genes_all = argonauta_in_argonauta_nautilus_genes_all + argonauta_count
+            nautilus_in_argonauta_nautilus_genes_all = nautilus_in_argonauta_nautilus_genes_all + nautilus_count
+            argonauta_nautilus_clusters_all = argonauta_nautilus_clusters_all + 1
+        # only octopus  nautilus  cluster
+        if nautilus_count > 0 and octopus_count > 0:
+            octopus_in_octopus_nautilus_genes_all = octopus_in_octopus_nautilus_genes_all + octopus_count
+            nautilus_in_octopus_nautilus_genes_all = nautilus_in_octopus_nautilus_genes_all + nautilus_count
+            octopus_nautilus_clusters_all = octopus_nautilus_clusters_all + 1
+        # only argonauta  octopus  cluster
+        if argonauta_count > 0 and octopus_count > 0:
+            argonauta_in_argonauta_octopus_genes_all = argonauta_in_argonauta_octopus_genes_all + argonauta_count
+            octopus_in_argonauta_octopus_genes_all = octopus_in_argonauta_octopus_genes_all + octopus_count
+            argonauta_octopus_clusters_all = argonauta_octopus_clusters_all + 1
+
+    # Cluster run
+    output ='#####\n#####' + next_cluster_run +'\n#####\n\n'
+    output_counts.write(output)
+
+    # species-only cluster and gene counts
+    output ='Nautilus-only clusters:\t' + str( nautilus_only_clusters ) +'\nNautilus-only genes:\t' + str( nautilus_only_genes ) +'\n\n'
+    output_counts.write( output )
+
+    output ='Argonauta-only clusters:\t' + str( argonauta_only_clusters ) +'\nArgonauta-only genes:\t' + str( argonauta_only_genes ) +'\n\n'
+    output_counts.write( output )
+
+    output ='Octopus-only clusters:\t' + str( octopus_only_clusters ) +'\nOctopus-only genes:\t' + str( octopus_only_genes ) +'\n\n'
+    output_counts.write( output )
+
+    output ='Aplysia-only clusters:\t' + str( aplysia_only_clusters ) +'\nAplysia-only genes:\t' + str( aplysia_only_genes ) +'\n\n'
+    output_counts.write( output )
+
+    # all clusters per species cluster and gene counts
+    output ='Nautilus-all clusters:\t' + str(nautilus_all_clusters) +'\nNautilus-all genes:\t' + str( nautilus_all_genes) +'\n\n'
+    output_counts.write(output)
+
+    output ='Argonauta-all clusters:\t' + str(argonauta_all_clusters) +'\nArgonauta-all genes:\t' + str(argonauta_all_genes) +'\n\n'
+    output_counts.write(output)
+
+    output ='Octopus-all clusters:\t' + str(octopus_all_clusters) +'\nOctopus-all genes:\t' + str(octopus_all_genes) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-all clusters:\t' + str(aplysia_all_clusters) +'\nAplysia-all genes:\t' + str( aplysia_all_genes) +'\n\n'
+    output_counts.write(output)
+
+
+    # species-species pair cluster and gene counts ONLY
+    output ='Aplysia-Nautilus  ONLY clusters:\t' + str( aplysia_nautilus_clusters_only ) +'\nAplysia genes in Aplysia-Nautilus  ONLY clusters:\t' + str( aplysia_in_aplysia_nautilus_genes_only ) +'\nNautilus  genes in Aplysia-Nautilus  ONLY clusters:\t'  + str( nautilus_in_aplysia_nautilus_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-Argonauta  ONLY clusters:\t' + str( aplysia_argonauta_clusters_only ) +'\nAplysia genes in Aplysia-Argonauta  ONLY clusters:\t' + str( aplysia_in_aplysia_argonauta_genes_only ) +'\nArgonauta  genes in Aplysia-Argonauta  ONLY clusters:\t'  + str( argonauta_in_aplysia_argonauta_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-Octopus  ONLY clusters:\t' + str( aplysia_octopus_clusters_only ) +'\nAplysia genes in Aplysia-Octopus  ONLY clusters:\t' + str( aplysia_in_aplysia_octopus_genes_only ) +'\nOctopus  genes in Aplysia-Octopus  ONLY clusters:\t'  + str( octopus_in_aplysia_octopus_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Argonauta-Nautilus  ONLY clusters:\t' + str( argonauta_nautilus_clusters_only ) +'\nArgonauta  genes in Argonauta-Nautilus  ONLY clusters:\t' + str( argonauta_in_argonauta_nautilus_genes_only ) +'\nNautilus  genes in Argonauta-Nautilus  ONLY clusters:\t'  + str( nautilus_in_argonauta_nautilus_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Octopus-Nautilus  ONLY clusters:\t' + str( octopus_nautilus_clusters_only ) +'\nOctopus  genes in Octopus-Nautilus  ONLY clusters:\t' + str( octopus_in_octopus_nautilus_genes_only ) +'\nNautilus  genes in Octopus-Nautilus  ONLY clusters:\t'  + str( nautilus_in_octopus_nautilus_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Argonauta-Octopus  ONLY clusters:\t' + str( argonauta_octopus_clusters_only ) +'\nArgonauta  genes in Argonauta-Octopus  ONLY clusters:\t' + str( argonauta_in_argonauta_octopus_genes_only ) +'\nOctopus  genes in Argonauta-Octopus  ONLY clusters:\t'  + str( octopus_in_argonauta_octopus_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    # species-species pair cluster and gene counts ALL
+    output ='Aplysia-Nautilus  ALL clusters:\t' + str( aplysia_nautilus_clusters_all ) +'\nAplysia genes in Aplysia-Nautilus  ALL clusters:\t' + str( aplysia_in_aplysia_nautilus_genes_all ) +'\nNautilus  genes in Aplysia-Nautilus  ALL clusters:\t'  + str( nautilus_in_aplysia_nautilus_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-Argonauta  ALL clusters:\t' + str( aplysia_argonauta_clusters_all ) +'\nAplysia genes in Aplysia-Argonauta  ALL clusters:\t' + str( aplysia_in_aplysia_argonauta_genes_all ) +'\nArgonauta  genes in Aplysia-Argonauta  ALL clusters:\t'  + str( argonauta_in_aplysia_argonauta_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-Octopus  ALL clusters:\t' + str( aplysia_octopus_clusters_all ) +'\nAplysia genes in Aplysia-Octopus  ALL clusters:\t' + str( aplysia_in_aplysia_octopus_genes_all ) +'\nOctopus  genes in Aplysia-Octopus  ALL clusters:\t'  + str( octopus_in_aplysia_octopus_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Argonauta-Nautilus  ALL clusters:\t' + str( argonauta_nautilus_clusters_all ) +'\nArgonauta  genes in Argonauta-Nautilus  ALL clusters:\t' + str( argonauta_in_argonauta_nautilus_genes_all ) +'\nNautilus  genes in Argonauta-Nautilus  ALL clusters:\t'  + str( nautilus_in_argonauta_nautilus_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Octopus-Nautilus  ALL clusters:\t' + str( octopus_nautilus_clusters_all ) +'\nOctopus  genes in Octopus-Nautilus  ALL clusters:\t' + str( octopus_in_octopus_nautilus_genes_all ) +'\nNautilus  genes in Octopus-Nautilus  ALL clusters:\t'  + str( nautilus_in_octopus_nautilus_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Argonauta-Octopus  ALL clusters:\t' + str( argonauta_octopus_clusters_all ) +'\nArgonauta  genes in Argonauta-Octopus  ALL clusters:\t' + str( argonauta_in_argonauta_octopus_genes_all ) +'\nOctopus  genes in Argonauta-Octopus  ALL clusters:\t'  + str( octopus_in_argonauta_octopus_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+
+    output ='\n'
+    output_counts.write(output)
+
+    input_clustering.close()
+
+output_counts.close()
+input_clustering_runs.close()

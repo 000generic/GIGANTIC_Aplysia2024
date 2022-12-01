@@ -1,0 +1,300 @@
+#! python
+# OrthoVenn2 scripts
+
+input_clustering_runs = open('002-list-files-lophotrochozoa.txt','r')
+output_counts = open('2-counts-of-genes-per-species-per-orthovenn2-cluster-Lophotrochozoa','w' )
+
+# species = ['Capitella','Phoronis','Lingula','Aplysia']
+for next_cluster_run in input_clustering_runs:
+    next_cluster_run = next_cluster_run[ :-1 ]
+    input_clustering = open( next_cluster_run,'r' )
+
+    # species-only cluster counts
+    lottia_only_clusters = 0 # total lottia  only clusters
+    phoronis_only_clusters = 0 # total phoronis  only clusters
+    lingula_only_clusters = 0 # total lingula  only clusters
+    aplysia_only_clusters = 0 # total lottia  only clusters
+
+    # species-only gene counts
+    lottia_only_genes = 0 # total genes in lottia  only clusters
+    phoronis_only_genes = 0 # total genes in phoronis  only clusters
+    lingula_only_genes = 0 # total genes in lingula  only clusters
+    aplysia_only_genes = 0 # total genes in lottia  only clusters
+
+    # all clusters per species counts
+    lottia_all_clusters = 0 # total genes for all clusters containing lottia 
+    phoronis_all_clusters = 0 # total genes for all clusters containing phoronis 
+    lingula_all_clusters = 0 # total genes for all clusters containing lingula 
+    aplysia_all_clusters = 0 # total genes for all clusters containing aplysia
+
+    # all genes in all clusters per species counts
+    lottia_all_genes = 0 # total genes for all clusters containing lottia 
+    phoronis_all_genes = 0 # total genes for all clusters containing phoronis 
+    lingula_all_genes = 0 # total genes for all clusters containing lingula 
+    aplysia_all_genes = 0 # total genes for all clusters containing aplysia
+
+    # all clusters per species-species pair counts ONLY
+    # aplysia-lottia 
+    aplysia_lottia_clusters_only = 0
+    # aplysia-phoronis 
+    aplysia_phoronis_clusters_only = 0
+    # aplysia-lingula 
+    aplysia_lingula_clusters_only = 0
+    # phoronis-lottia 
+    phoronis_lottia_clusters_only = 0
+    # lingula-lottia 
+    lingula_lottia_clusters_only = 0
+    # phoronis-lingula 
+    phoronis_lingula_clusters_only = 0
+
+    # all clusters per species-species pair counts ALL
+    # aplysia-lottia 
+    aplysia_lottia_clusters_all = 0
+    # aplysia-phoronis 
+    aplysia_phoronis_clusters_all = 0
+    # aplysia-lingula 
+    aplysia_lingula_clusters_all = 0
+    # phoronis-lottia 
+    phoronis_lottia_clusters_all = 0
+    # lingula-lottia 
+    lingula_lottia_clusters_all = 0
+    # phoronis-lingula 
+    phoronis_lingula_clusters_all = 0
+
+    # all genes in all clusters per species-species pair counts
+    # aplysia-lottia  only
+    aplysia_in_aplysia_lottia_genes_only = 0
+    lottia_in_aplysia_lottia_genes_only = 0
+    # aplysia-phoronis  only
+    aplysia_in_aplysia_phoronis_genes_only = 0
+    phoronis_in_aplysia_phoronis_genes_only = 0
+    # aplysia-lingula  only
+    aplysia_in_aplysia_lingula_genes_only = 0
+    lingula_in_aplysia_lingula_genes_only = 0
+    # phoronis-lottia  only
+    phoronis_in_phoronis_lottia_genes_only = 0
+    lottia_in_phoronis_lottia_genes_only = 0
+    # lingula-lottia  only
+    lingula_in_lingula_lottia_genes_only = 0
+    lottia_in_lingula_lottia_genes_only = 0
+    # phoronis-lingula  only
+    phoronis_in_phoronis_lingula_genes_only = 0
+    lingula_in_phoronis_lingula_genes_only = 0
+
+    # all genes in all clusters per species-species pair counts
+    # aplysia-lottia  all
+    aplysia_in_aplysia_lottia_genes_all = 0
+    lottia_in_aplysia_lottia_genes_all = 0
+    # aplysia-phoronis  all
+    aplysia_in_aplysia_phoronis_genes_all = 0
+    phoronis_in_aplysia_phoronis_genes_all = 0
+    # aplysia-lingula  all
+    aplysia_in_aplysia_lingula_genes_all = 0
+    lingula_in_aplysia_lingula_genes_all = 0
+    # phoronis-lottia  all
+    phoronis_in_phoronis_lottia_genes_all = 0
+    lottia_in_phoronis_lottia_genes_all = 0
+    # lingula-lottia  all
+    lingula_in_lingula_lottia_genes_all = 0
+    lottia_in_lingula_lottia_genes_all = 0
+    # phoronis-lingula  all
+    phoronis_in_phoronis_lingula_genes_all = 0
+    lingula_in_phoronis_lingula_genes_all = 0
+
+    # gene counts per species per cluster
+    for next_cluster in input_clustering:
+
+        # species counters per cluster
+        lottia_count = 0
+        phoronis_count = 0
+        lingula_count = 0
+        aplysia_count = 0
+
+        info = next_cluster[ :-1 ].split('\t' ) # cluster info
+
+        for next_identifier in info: # read through each gene identifier in the cluster
+            species_name = next_identifier.split('|' )[ 0 ]
+            # update species counts for given cluster and total gene counts per species
+            if species_name =='Capitella':
+                lottia_count = lottia_count + 1 # gene count for lottia  in the cluster
+                lottia_all_genes = lottia_all_genes + 1 # total gene count for lottia  for all clusters
+            elif species_name =='Phoronis':
+                phoronis_count = phoronis_count + 1
+                phoronis_all_genes = phoronis_all_genes + 1
+            elif species_name =='Lingula':
+                lingula_count = lingula_count + 1
+                lingula_all_genes = lingula_all_genes + 1
+            elif species_name =='Aplysia':
+                aplysia_count = aplysia_count + 1
+                aplysia_all_genes = aplysia_all_genes + 1
+            else:
+                error_message ='Error: Species name is not recognized!'
+                print( error_message )
+
+        # update total cluster counts per species
+        if lottia_count > 0:
+            lottia_all_clusters = lottia_all_clusters + 1
+        if phoronis_count > 0:
+            phoronis_all_clusters = phoronis_all_clusters + 1
+        if lingula_count > 0:
+            lingula_all_clusters = lingula_all_clusters + 1
+        if aplysia_count > 0:
+            aplysia_all_clusters = aplysia_all_clusters + 1
+
+        # update species-only cluster and gene counts
+        # lottia  only cluster
+        if lottia_count > 0 and phoronis_count ==0 and lingula_count == 0 and aplysia_count == 0:
+            lottia_only_genes = lottia_only_genes + lottia_count
+            lottia_only_clusters = lottia_only_clusters + 1
+        # phoronis  only cluster
+        if phoronis_count > 0 and lottia_count ==0 and lingula_count == 0 and aplysia_count == 0:
+            phoronis_only_genes = phoronis_only_genes + phoronis_count
+            phoronis_only_clusters = phoronis_only_clusters + 1
+        # lingula  only cluster
+        if lingula_count > 0 and phoronis_count ==0 and lottia_count == 0 and aplysia_count == 0:
+            lingula_only_genes = lingula_only_genes + lingula_count
+            lingula_only_clusters = lingula_only_clusters + 1
+        # aplysia only cluster
+        if aplysia_count > 0 and phoronis_count ==0 and lingula_count == 0 and lottia_count == 0:
+            aplysia_only_genes = aplysia_only_genes + aplysia_count
+            aplysia_only_clusters = aplysia_only_clusters + 1
+
+        # ONLY aplysia- lottia  cluster
+        if lottia_count > 0 and phoronis_count == 0 and lingula_count == 0 and aplysia_count > 0:
+            aplysia_in_aplysia_lottia_genes_only = aplysia_in_aplysia_lottia_genes_only + aplysia_count
+            lottia_in_aplysia_lottia_genes_only = lottia_in_aplysia_lottia_genes_only + lottia_count
+            aplysia_lottia_clusters_only = aplysia_lottia_clusters_only + 1
+        # only aplysia- phoronis  cluster
+        if lottia_count == 0 and phoronis_count > 0 and lingula_count == 0 and aplysia_count > 0:
+            aplysia_in_aplysia_phoronis_genes_only = aplysia_in_aplysia_phoronis_genes_only + aplysia_count
+            phoronis_in_aplysia_phoronis_genes_only = phoronis_in_aplysia_phoronis_genes_only + phoronis_count
+            aplysia_phoronis_clusters_only = aplysia_phoronis_clusters_only + 1
+        # only aplysia- lingula  cluster
+        if lottia_count == 0 and phoronis_count == 0 and lingula_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_lingula_genes_only = aplysia_in_aplysia_lingula_genes_only + aplysia_count
+            lingula_in_aplysia_lingula_genes_only = lingula_in_aplysia_lingula_genes_only + lingula_count
+            aplysia_lingula_clusters_only = aplysia_lingula_clusters_only + 1
+        # only phoronis - lottia  cluster
+        if lottia_count > 0 and phoronis_count > 0 and lingula_count == 0 and aplysia_count == 0:
+            phoronis_in_phoronis_lottia_genes_only = phoronis_in_phoronis_lottia_genes_only + phoronis_count
+            lottia_in_phoronis_lottia_genes_only = lottia_in_phoronis_lottia_genes_only + lottia_count
+            phoronis_lottia_clusters_only = phoronis_lottia_clusters_only + 1
+        # only lingula  lottia  cluster
+        if lottia_count > 0 and phoronis_count == 0 and lingula_count > 0 and aplysia_count == 0:
+            lingula_in_lingula_lottia_genes_only = lingula_in_lingula_lottia_genes_only + lingula_count
+            lottia_in_lingula_lottia_genes_only = lottia_in_lingula_lottia_genes_only + lottia_count
+            lingula_lottia_clusters_only = lingula_lottia_clusters_only + 1
+        # only phoronis  lingula  cluster
+        if lottia_count == 0 and phoronis_count > 0 and lingula_count > 0 and aplysia_count == 0:
+            phoronis_in_phoronis_lingula_genes_only = phoronis_in_phoronis_lingula_genes_only + phoronis_count
+            lingula_in_phoronis_lingula_genes_only = lingula_in_phoronis_lingula_genes_only + lingula_count
+            phoronis_lingula_clusters_only = phoronis_lingula_clusters_only + 1
+
+        # ALL aplysia- lottia  cluster
+        if lottia_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_lottia_genes_all = aplysia_in_aplysia_lottia_genes_all + aplysia_count
+            lottia_in_aplysia_lottia_genes_all = lottia_in_aplysia_lottia_genes_all + lottia_count
+            aplysia_lottia_clusters_all = aplysia_lottia_clusters_all + 1
+        # only aplysia- phoronis  cluster
+        if phoronis_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_phoronis_genes_all = aplysia_in_aplysia_phoronis_genes_all + aplysia_count
+            phoronis_in_aplysia_phoronis_genes_all = phoronis_in_aplysia_phoronis_genes_all + phoronis_count
+            aplysia_phoronis_clusters_all = aplysia_phoronis_clusters_all + 1
+        # only aplysia- lingula  cluster
+        if lingula_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_lingula_genes_all = aplysia_in_aplysia_lingula_genes_all + aplysia_count
+            lingula_in_aplysia_lingula_genes_all = lingula_in_aplysia_lingula_genes_all + lingula_count
+            aplysia_lingula_clusters_all = aplysia_lingula_clusters_all + 1
+        # only phoronis - lottia  cluster
+        if lottia_count > 0 and phoronis_count > 0:
+            phoronis_in_phoronis_lottia_genes_all = phoronis_in_phoronis_lottia_genes_all + phoronis_count
+            lottia_in_phoronis_lottia_genes_all = lottia_in_phoronis_lottia_genes_all + lottia_count
+            phoronis_lottia_clusters_all = phoronis_lottia_clusters_all + 1
+        # only lingula  lottia  cluster
+        if lottia_count > 0 and lingula_count > 0:
+            lingula_in_lingula_lottia_genes_all = lingula_in_lingula_lottia_genes_all + lingula_count
+            lottia_in_lingula_lottia_genes_all = lottia_in_lingula_lottia_genes_all + lottia_count
+            lingula_lottia_clusters_all = lingula_lottia_clusters_all + 1
+        # only phoronis  lingula  cluster
+        if phoronis_count > 0 and lingula_count > 0:
+            phoronis_in_phoronis_lingula_genes_all = phoronis_in_phoronis_lingula_genes_all + phoronis_count
+            lingula_in_phoronis_lingula_genes_all = lingula_in_phoronis_lingula_genes_all + lingula_count
+            phoronis_lingula_clusters_all = phoronis_lingula_clusters_all + 1
+
+    # Cluster run
+    output ='#####\n#####' + next_cluster_run +'\n#####\n\n'
+    output_counts.write(output)
+
+    # species-only cluster and gene counts
+    output ='Capitella-only clusters:\t' + str( lottia_only_clusters ) +'\nCapitella-only genes:\t' + str( lottia_only_genes ) +'\n\n'
+    output_counts.write( output )
+
+    output ='Phoronis-only clusters:\t' + str( phoronis_only_clusters ) +'\nPhoronis-only genes:\t' + str( phoronis_only_genes ) +'\n\n'
+    output_counts.write( output )
+
+    output ='Lingula-only clusters:\t' + str( lingula_only_clusters ) +'\nLingula-only genes:\t' + str( lingula_only_genes ) +'\n\n'
+    output_counts.write( output )
+
+    output ='Aplysia-only clusters:\t' + str( aplysia_only_clusters ) +'\nAplysia-only genes:\t' + str( aplysia_only_genes ) +'\n\n'
+    output_counts.write( output )
+
+    # all clusters per species cluster and gene counts
+    output ='Capitella-all clusters:\t' + str(lottia_all_clusters) +'\nCapitella-all genes:\t' + str( lottia_all_genes) +'\n\n'
+    output_counts.write(output)
+
+    output ='Phoronis-all clusters:\t' + str(phoronis_all_clusters) +'\nPhoronis-all genes:\t' + str(phoronis_all_genes) +'\n\n'
+    output_counts.write(output)
+
+    output ='Lingula-all clusters:\t' + str(lingula_all_clusters) +'\nLingula-all genes:\t' + str(lingula_all_genes) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-all clusters:\t' + str(aplysia_all_clusters) +'\nAplysia-all genes:\t' + str( aplysia_all_genes) +'\n\n'
+    output_counts.write(output)
+
+
+    # species-species pair cluster and gene counts ONLY
+    output ='Aplysia-Capitella  ONLY clusters:\t' + str( aplysia_lottia_clusters_only ) +'\nAplysia genes in Aplysia-Capitella  ONLY clusters:\t' + str( aplysia_in_aplysia_lottia_genes_only ) +'\nCapitella  genes in Aplysia-Capitella  ONLY clusters:\t'  + str( lottia_in_aplysia_lottia_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-Phoronis  ONLY clusters:\t' + str( aplysia_phoronis_clusters_only ) +'\nAplysia genes in Aplysia-Phoronis  ONLY clusters:\t' + str( aplysia_in_aplysia_phoronis_genes_only ) +'\nPhoronis  genes in Aplysia-Phoronis  ONLY clusters:\t'  + str( phoronis_in_aplysia_phoronis_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-Lingula  ONLY clusters:\t' + str( aplysia_lingula_clusters_only ) +'\nAplysia genes in Aplysia-Lingula  ONLY clusters:\t' + str( aplysia_in_aplysia_lingula_genes_only ) +'\nLingula  genes in Aplysia-Lingula  ONLY clusters:\t'  + str( lingula_in_aplysia_lingula_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Phoronis-Capitella  ONLY clusters:\t' + str( phoronis_lottia_clusters_only ) +'\nPhoronis  genes in Phoronis-Capitella  ONLY clusters:\t' + str( phoronis_in_phoronis_lottia_genes_only ) +'\nCapitella  genes in Phoronis-Capitella  ONLY clusters:\t'  + str( lottia_in_phoronis_lottia_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Lingula-Capitella  ONLY clusters:\t' + str( lingula_lottia_clusters_only ) +'\nLingula  genes in Lingula-Capitella  ONLY clusters:\t' + str( lingula_in_lingula_lottia_genes_only ) +'\nCapitella  genes in Lingula-Capitella  ONLY clusters:\t'  + str( lottia_in_lingula_lottia_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Phoronis-Lingula  ONLY clusters:\t' + str( phoronis_lingula_clusters_only ) +'\nPhoronis  genes in Phoronis-Lingula  ONLY clusters:\t' + str( phoronis_in_phoronis_lingula_genes_only ) +'\nLingula  genes in Phoronis-Lingula  ONLY clusters:\t'  + str( lingula_in_phoronis_lingula_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    # species-species pair cluster and gene counts ALL
+    output ='Aplysia-Capitella  ALL clusters:\t' + str( aplysia_lottia_clusters_all ) +'\nAplysia genes in Aplysia-Capitella  ALL clusters:\t' + str( aplysia_in_aplysia_lottia_genes_all ) +'\nCapitella  genes in Aplysia-Capitella  ALL clusters:\t'  + str( lottia_in_aplysia_lottia_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-Phoronis  ALL clusters:\t' + str( aplysia_phoronis_clusters_all ) +'\nAplysia genes in Aplysia-Phoronis  ALL clusters:\t' + str( aplysia_in_aplysia_phoronis_genes_all ) +'\nPhoronis  genes in Aplysia-Phoronis  ALL clusters:\t'  + str( phoronis_in_aplysia_phoronis_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-Lingula  ALL clusters:\t' + str( aplysia_lingula_clusters_all ) +'\nAplysia genes in Aplysia-Lingula  ALL clusters:\t' + str( aplysia_in_aplysia_lingula_genes_all ) +'\nLingula  genes in Aplysia-Lingula  ALL clusters:\t'  + str( lingula_in_aplysia_lingula_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Phoronis-Capitella  ALL clusters:\t' + str( phoronis_lottia_clusters_all ) +'\nPhoronis  genes in Phoronis-Capitella  ALL clusters:\t' + str( phoronis_in_phoronis_lottia_genes_all ) +'\nCapitella  genes in Phoronis-Capitella  ALL clusters:\t'  + str( lottia_in_phoronis_lottia_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Lingula-Capitella  ALL clusters:\t' + str( lingula_lottia_clusters_all ) +'\nLingula  genes in Lingula-Capitella  ALL clusters:\t' + str( lingula_in_lingula_lottia_genes_all ) +'\nCapitella  genes in Lingula-Capitella  ALL clusters:\t'  + str( lottia_in_lingula_lottia_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Phoronis-Lingula  ALL clusters:\t' + str( phoronis_lingula_clusters_all ) +'\nPhoronis  genes in Phoronis-Lingula  ALL clusters:\t' + str( phoronis_in_phoronis_lingula_genes_all ) +'\nLingula  genes in Phoronis-Lingula  ALL clusters:\t'  + str( lingula_in_phoronis_lingula_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+
+    output ='\n'
+    output_counts.write(output)
+
+    input_clustering.close()
+
+output_counts.close()
+input_clustering_runs.close()

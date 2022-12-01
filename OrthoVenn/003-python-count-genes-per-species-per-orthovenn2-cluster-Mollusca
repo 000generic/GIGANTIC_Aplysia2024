@@ -1,0 +1,300 @@
+#! python
+# OrthoVenn2 scripts
+
+input_clustering_runs = open('003-list-files-mollusca.txt','r')
+output_counts = open('3-counts-of-genes-per-species-per-orthovenn2-cluster-Mollusca','w' )
+
+# species = ['Acanthopleura','Octopus','Mizuhopecten','Aplysia']
+for next_cluster_run in input_clustering_runs:
+    next_cluster_run = next_cluster_run[ :-1 ]
+    input_clustering = open( next_cluster_run,'r' )
+
+    # species-only cluster counts
+    acanthopleura_only_clusters = 0 # total acanthopleura  only clusters
+    octopus_only_clusters = 0 # total octopus  only clusters
+    mizuhopecten_only_clusters = 0 # total mizuhopecten  only clusters
+    aplysia_only_clusters = 0 # total acanthopleura  only clusters
+
+    # species-only gene counts
+    acanthopleura_only_genes = 0 # total genes in acanthopleura  only clusters
+    octopus_only_genes = 0 # total genes in octopus  only clusters
+    mizuhopecten_only_genes = 0 # total genes in mizuhopecten  only clusters
+    aplysia_only_genes = 0 # total genes in acanthopleura  only clusters
+
+    # all clusters per species counts
+    acanthopleura_all_clusters = 0 # total genes for all clusters containing acanthopleura 
+    octopus_all_clusters = 0 # total genes for all clusters containing octopus 
+    mizuhopecten_all_clusters = 0 # total genes for all clusters containing mizuhopecten 
+    aplysia_all_clusters = 0 # total genes for all clusters containing aplysia
+
+    # all genes in all clusters per species counts
+    acanthopleura_all_genes = 0 # total genes for all clusters containing acanthopleura 
+    octopus_all_genes = 0 # total genes for all clusters containing octopus 
+    mizuhopecten_all_genes = 0 # total genes for all clusters containing mizuhopecten 
+    aplysia_all_genes = 0 # total genes for all clusters containing aplysia
+
+    # all clusters per species-species pair counts ONLY
+    # aplysia-acanthopleura 
+    aplysia_acanthopleura_clusters_only = 0
+    # aplysia-octopus 
+    aplysia_octopus_clusters_only = 0
+    # aplysia-mizuhopecten 
+    aplysia_mizuhopecten_clusters_only = 0
+    # octopus-acanthopleura 
+    octopus_acanthopleura_clusters_only = 0
+    # mizuhopecten-acanthopleura 
+    mizuhopecten_acanthopleura_clusters_only = 0
+    # octopus-mizuhopecten 
+    octopus_mizuhopecten_clusters_only = 0
+
+    # all clusters per species-species pair counts ALL
+    # aplysia-acanthopleura 
+    aplysia_acanthopleura_clusters_all = 0
+    # aplysia-octopus 
+    aplysia_octopus_clusters_all = 0
+    # aplysia-mizuhopecten 
+    aplysia_mizuhopecten_clusters_all = 0
+    # octopus-acanthopleura 
+    octopus_acanthopleura_clusters_all = 0
+    # mizuhopecten-acanthopleura 
+    mizuhopecten_acanthopleura_clusters_all = 0
+    # octopus-mizuhopecten 
+    octopus_mizuhopecten_clusters_all = 0
+
+    # all genes in all clusters per species-species pair counts
+    # aplysia-acanthopleura  only
+    aplysia_in_aplysia_acanthopleura_genes_only = 0
+    acanthopleura_in_aplysia_acanthopleura_genes_only = 0
+    # aplysia-octopus  only
+    aplysia_in_aplysia_octopus_genes_only = 0
+    octopus_in_aplysia_octopus_genes_only = 0
+    # aplysia-mizuhopecten  only
+    aplysia_in_aplysia_mizuhopecten_genes_only = 0
+    mizuhopecten_in_aplysia_mizuhopecten_genes_only = 0
+    # octopus-acanthopleura  only
+    octopus_in_octopus_acanthopleura_genes_only = 0
+    acanthopleura_in_octopus_acanthopleura_genes_only = 0
+    # mizuhopecten-acanthopleura  only
+    mizuhopecten_in_mizuhopecten_acanthopleura_genes_only = 0
+    acanthopleura_in_mizuhopecten_acanthopleura_genes_only = 0
+    # octopus-mizuhopecten  only
+    octopus_in_octopus_mizuhopecten_genes_only = 0
+    mizuhopecten_in_octopus_mizuhopecten_genes_only = 0
+
+    # all genes in all clusters per species-species pair counts
+    # aplysia-acanthopleura  all
+    aplysia_in_aplysia_acanthopleura_genes_all = 0
+    acanthopleura_in_aplysia_acanthopleura_genes_all = 0
+    # aplysia-octopus  all
+    aplysia_in_aplysia_octopus_genes_all = 0
+    octopus_in_aplysia_octopus_genes_all = 0
+    # aplysia-mizuhopecten  all
+    aplysia_in_aplysia_mizuhopecten_genes_all = 0
+    mizuhopecten_in_aplysia_mizuhopecten_genes_all = 0
+    # octopus-acanthopleura  all
+    octopus_in_octopus_acanthopleura_genes_all = 0
+    acanthopleura_in_octopus_acanthopleura_genes_all = 0
+    # mizuhopecten-acanthopleura  all
+    mizuhopecten_in_mizuhopecten_acanthopleura_genes_all = 0
+    acanthopleura_in_mizuhopecten_acanthopleura_genes_all = 0
+    # octopus-mizuhopecten  all
+    octopus_in_octopus_mizuhopecten_genes_all = 0
+    mizuhopecten_in_octopus_mizuhopecten_genes_all = 0
+
+    # gene counts per species per cluster
+    for next_cluster in input_clustering:
+
+        # species counters per cluster
+        acanthopleura_count = 0
+        octopus_count = 0
+        mizuhopecten_count = 0
+        aplysia_count = 0
+
+        info = next_cluster[ :-1 ].split('\t' ) # cluster info
+
+        for next_identifier in info: # read through each gene identifier in the cluster
+            species_name = next_identifier.split('|' )[ 0 ]
+            # update species counts for given cluster and total gene counts per species
+            if species_name =='Acanthopleura':
+                acanthopleura_count = acanthopleura_count + 1 # gene count for acanthopleura  in the cluster
+                acanthopleura_all_genes = acanthopleura_all_genes + 1 # total gene count for acanthopleura  for all clusters
+            elif species_name =='Octopus':
+                octopus_count = octopus_count + 1
+                octopus_all_genes = octopus_all_genes + 1
+            elif species_name =='Mizuhopecten':
+                mizuhopecten_count = mizuhopecten_count + 1
+                mizuhopecten_all_genes = mizuhopecten_all_genes + 1
+            elif species_name =='Aplysia':
+                aplysia_count = aplysia_count + 1
+                aplysia_all_genes = aplysia_all_genes + 1
+            else:
+                error_message ='Error: Species name is not recognized!'
+                print( error_message )
+
+        # update total cluster counts per species
+        if acanthopleura_count > 0:
+            acanthopleura_all_clusters = acanthopleura_all_clusters + 1
+        if octopus_count > 0:
+            octopus_all_clusters = octopus_all_clusters + 1
+        if mizuhopecten_count > 0:
+            mizuhopecten_all_clusters = mizuhopecten_all_clusters + 1
+        if aplysia_count > 0:
+            aplysia_all_clusters = aplysia_all_clusters + 1
+
+        # update species-only cluster and gene counts
+        # acanthopleura  only cluster
+        if acanthopleura_count > 0 and octopus_count ==0 and mizuhopecten_count == 0 and aplysia_count == 0:
+            acanthopleura_only_genes = acanthopleura_only_genes + acanthopleura_count
+            acanthopleura_only_clusters = acanthopleura_only_clusters + 1
+        # octopus  only cluster
+        if octopus_count > 0 and acanthopleura_count ==0 and mizuhopecten_count == 0 and aplysia_count == 0:
+            octopus_only_genes = octopus_only_genes + octopus_count
+            octopus_only_clusters = octopus_only_clusters + 1
+        # mizuhopecten  only cluster
+        if mizuhopecten_count > 0 and octopus_count ==0 and acanthopleura_count == 0 and aplysia_count == 0:
+            mizuhopecten_only_genes = mizuhopecten_only_genes + mizuhopecten_count
+            mizuhopecten_only_clusters = mizuhopecten_only_clusters + 1
+        # aplysia only cluster
+        if aplysia_count > 0 and octopus_count ==0 and mizuhopecten_count == 0 and acanthopleura_count == 0:
+            aplysia_only_genes = aplysia_only_genes + aplysia_count
+            aplysia_only_clusters = aplysia_only_clusters + 1
+
+        # ONLY aplysia- acanthopleura  cluster
+        if acanthopleura_count > 0 and octopus_count == 0 and mizuhopecten_count == 0 and aplysia_count > 0:
+            aplysia_in_aplysia_acanthopleura_genes_only = aplysia_in_aplysia_acanthopleura_genes_only + aplysia_count
+            acanthopleura_in_aplysia_acanthopleura_genes_only = acanthopleura_in_aplysia_acanthopleura_genes_only + acanthopleura_count
+            aplysia_acanthopleura_clusters_only = aplysia_acanthopleura_clusters_only + 1
+        # only aplysia- octopus  cluster
+        if acanthopleura_count == 0 and octopus_count > 0 and mizuhopecten_count == 0 and aplysia_count > 0:
+            aplysia_in_aplysia_octopus_genes_only = aplysia_in_aplysia_octopus_genes_only + aplysia_count
+            octopus_in_aplysia_octopus_genes_only = octopus_in_aplysia_octopus_genes_only + octopus_count
+            aplysia_octopus_clusters_only = aplysia_octopus_clusters_only + 1
+        # only aplysia- mizuhopecten  cluster
+        if acanthopleura_count == 0 and octopus_count == 0 and mizuhopecten_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_mizuhopecten_genes_only = aplysia_in_aplysia_mizuhopecten_genes_only + aplysia_count
+            mizuhopecten_in_aplysia_mizuhopecten_genes_only = mizuhopecten_in_aplysia_mizuhopecten_genes_only + mizuhopecten_count
+            aplysia_mizuhopecten_clusters_only = aplysia_mizuhopecten_clusters_only + 1
+        # only octopus - acanthopleura  cluster
+        if acanthopleura_count > 0 and octopus_count > 0 and mizuhopecten_count == 0 and aplysia_count == 0:
+            octopus_in_octopus_acanthopleura_genes_only = octopus_in_octopus_acanthopleura_genes_only + octopus_count
+            acanthopleura_in_octopus_acanthopleura_genes_only = acanthopleura_in_octopus_acanthopleura_genes_only + acanthopleura_count
+            octopus_acanthopleura_clusters_only = octopus_acanthopleura_clusters_only + 1
+        # only mizuhopecten  acanthopleura  cluster
+        if acanthopleura_count > 0 and octopus_count == 0 and mizuhopecten_count > 0 and aplysia_count == 0:
+            mizuhopecten_in_mizuhopecten_acanthopleura_genes_only = mizuhopecten_in_mizuhopecten_acanthopleura_genes_only + mizuhopecten_count
+            acanthopleura_in_mizuhopecten_acanthopleura_genes_only = acanthopleura_in_mizuhopecten_acanthopleura_genes_only + acanthopleura_count
+            mizuhopecten_acanthopleura_clusters_only = mizuhopecten_acanthopleura_clusters_only + 1
+        # only octopus  mizuhopecten  cluster
+        if acanthopleura_count == 0 and octopus_count > 0 and mizuhopecten_count > 0 and aplysia_count == 0:
+            octopus_in_octopus_mizuhopecten_genes_only = octopus_in_octopus_mizuhopecten_genes_only + octopus_count
+            mizuhopecten_in_octopus_mizuhopecten_genes_only = mizuhopecten_in_octopus_mizuhopecten_genes_only + mizuhopecten_count
+            octopus_mizuhopecten_clusters_only = octopus_mizuhopecten_clusters_only + 1
+
+        # ALL aplysia- acanthopleura  cluster
+        if acanthopleura_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_acanthopleura_genes_all = aplysia_in_aplysia_acanthopleura_genes_all + aplysia_count
+            acanthopleura_in_aplysia_acanthopleura_genes_all = acanthopleura_in_aplysia_acanthopleura_genes_all + acanthopleura_count
+            aplysia_acanthopleura_clusters_all = aplysia_acanthopleura_clusters_all + 1
+        # only aplysia- octopus  cluster
+        if octopus_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_octopus_genes_all = aplysia_in_aplysia_octopus_genes_all + aplysia_count
+            octopus_in_aplysia_octopus_genes_all = octopus_in_aplysia_octopus_genes_all + octopus_count
+            aplysia_octopus_clusters_all = aplysia_octopus_clusters_all + 1
+        # only aplysia- mizuhopecten  cluster
+        if mizuhopecten_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_mizuhopecten_genes_all = aplysia_in_aplysia_mizuhopecten_genes_all + aplysia_count
+            mizuhopecten_in_aplysia_mizuhopecten_genes_all = mizuhopecten_in_aplysia_mizuhopecten_genes_all + mizuhopecten_count
+            aplysia_mizuhopecten_clusters_all = aplysia_mizuhopecten_clusters_all + 1
+        # only octopus - acanthopleura  cluster
+        if acanthopleura_count > 0 and octopus_count > 0:
+            octopus_in_octopus_acanthopleura_genes_all = octopus_in_octopus_acanthopleura_genes_all + octopus_count
+            acanthopleura_in_octopus_acanthopleura_genes_all = acanthopleura_in_octopus_acanthopleura_genes_all + acanthopleura_count
+            octopus_acanthopleura_clusters_all = octopus_acanthopleura_clusters_all + 1
+        # only mizuhopecten  acanthopleura  cluster
+        if acanthopleura_count > 0 and mizuhopecten_count > 0:
+            mizuhopecten_in_mizuhopecten_acanthopleura_genes_all = mizuhopecten_in_mizuhopecten_acanthopleura_genes_all + mizuhopecten_count
+            acanthopleura_in_mizuhopecten_acanthopleura_genes_all = acanthopleura_in_mizuhopecten_acanthopleura_genes_all + acanthopleura_count
+            mizuhopecten_acanthopleura_clusters_all = mizuhopecten_acanthopleura_clusters_all + 1
+        # only octopus  mizuhopecten  cluster
+        if octopus_count > 0 and mizuhopecten_count > 0:
+            octopus_in_octopus_mizuhopecten_genes_all = octopus_in_octopus_mizuhopecten_genes_all + octopus_count
+            mizuhopecten_in_octopus_mizuhopecten_genes_all = mizuhopecten_in_octopus_mizuhopecten_genes_all + mizuhopecten_count
+            octopus_mizuhopecten_clusters_all = octopus_mizuhopecten_clusters_all + 1
+
+    # Cluster run
+    output ='#####\n#####' + next_cluster_run +'\n#####\n\n'
+    output_counts.write(output)
+
+    # species-only cluster and gene counts
+    output ='Acanthopleura-only clusters:\t' + str( acanthopleura_only_clusters ) +'\nAcanthopleura-only genes:\t' + str( acanthopleura_only_genes ) +'\n\n'
+    output_counts.write( output )
+
+    output ='Octopus-only clusters:\t' + str( octopus_only_clusters ) +'\nOctopus-only genes:\t' + str( octopus_only_genes ) +'\n\n'
+    output_counts.write( output )
+
+    output ='Mizuhopecten-only clusters:\t' + str( mizuhopecten_only_clusters ) +'\nMizuhopecten-only genes:\t' + str( mizuhopecten_only_genes ) +'\n\n'
+    output_counts.write( output )
+
+    output ='Aplysia-only clusters:\t' + str( aplysia_only_clusters ) +'\nAplysia-only genes:\t' + str( aplysia_only_genes ) +'\n\n'
+    output_counts.write( output )
+
+    # all clusters per species cluster and gene counts
+    output ='Acanthopleura-all clusters:\t' + str(acanthopleura_all_clusters) +'\nAcanthopleura-all genes:\t' + str( acanthopleura_all_genes) +'\n\n'
+    output_counts.write(output)
+
+    output ='Octopus-all clusters:\t' + str(octopus_all_clusters) +'\nOctopus-all genes:\t' + str(octopus_all_genes) +'\n\n'
+    output_counts.write(output)
+
+    output ='Mizuhopecten-all clusters:\t' + str(mizuhopecten_all_clusters) +'\nMizuhopecten-all genes:\t' + str(mizuhopecten_all_genes) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-all clusters:\t' + str(aplysia_all_clusters) +'\nAplysia-all genes:\t' + str( aplysia_all_genes) +'\n\n'
+    output_counts.write(output)
+
+
+    # species-species pair cluster and gene counts ONLY
+    output ='Aplysia-Acanthopleura  ONLY clusters:\t' + str( aplysia_acanthopleura_clusters_only ) +'\nAplysia genes in Aplysia-Acanthopleura  ONLY clusters:\t' + str( aplysia_in_aplysia_acanthopleura_genes_only ) +'\nAcanthopleura  genes in Aplysia-Acanthopleura  ONLY clusters:\t'  + str( acanthopleura_in_aplysia_acanthopleura_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-Octopus  ONLY clusters:\t' + str( aplysia_octopus_clusters_only ) +'\nAplysia genes in Aplysia-Octopus  ONLY clusters:\t' + str( aplysia_in_aplysia_octopus_genes_only ) +'\nOctopus  genes in Aplysia-Octopus  ONLY clusters:\t'  + str( octopus_in_aplysia_octopus_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-Mizuhopecten  ONLY clusters:\t' + str( aplysia_mizuhopecten_clusters_only ) +'\nAplysia genes in Aplysia-Mizuhopecten  ONLY clusters:\t' + str( aplysia_in_aplysia_mizuhopecten_genes_only ) +'\nMizuhopecten  genes in Aplysia-Mizuhopecten  ONLY clusters:\t'  + str( mizuhopecten_in_aplysia_mizuhopecten_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Octopus-Acanthopleura  ONLY clusters:\t' + str( octopus_acanthopleura_clusters_only ) +'\nOctopus  genes in Octopus-Acanthopleura  ONLY clusters:\t' + str( octopus_in_octopus_acanthopleura_genes_only ) +'\nAcanthopleura  genes in Octopus-Acanthopleura  ONLY clusters:\t'  + str( acanthopleura_in_octopus_acanthopleura_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Mizuhopecten-Acanthopleura  ONLY clusters:\t' + str( mizuhopecten_acanthopleura_clusters_only ) +'\nMizuhopecten  genes in Mizuhopecten-Acanthopleura  ONLY clusters:\t' + str( mizuhopecten_in_mizuhopecten_acanthopleura_genes_only ) +'\nAcanthopleura  genes in Mizuhopecten-Acanthopleura  ONLY clusters:\t'  + str( acanthopleura_in_mizuhopecten_acanthopleura_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Octopus-Mizuhopecten  ONLY clusters:\t' + str( octopus_mizuhopecten_clusters_only ) +'\nOctopus  genes in Octopus-Mizuhopecten  ONLY clusters:\t' + str( octopus_in_octopus_mizuhopecten_genes_only ) +'\nMizuhopecten  genes in Octopus-Mizuhopecten  ONLY clusters:\t'  + str( mizuhopecten_in_octopus_mizuhopecten_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    # species-species pair cluster and gene counts ALL
+    output ='Aplysia-Acanthopleura  ALL clusters:\t' + str( aplysia_acanthopleura_clusters_all ) +'\nAplysia genes in Aplysia-Acanthopleura  ALL clusters:\t' + str( aplysia_in_aplysia_acanthopleura_genes_all ) +'\nAcanthopleura  genes in Aplysia-Acanthopleura  ALL clusters:\t'  + str( acanthopleura_in_aplysia_acanthopleura_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-Octopus  ALL clusters:\t' + str( aplysia_octopus_clusters_all ) +'\nAplysia genes in Aplysia-Octopus  ALL clusters:\t' + str( aplysia_in_aplysia_octopus_genes_all ) +'\nOctopus  genes in Aplysia-Octopus  ALL clusters:\t'  + str( octopus_in_aplysia_octopus_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-Mizuhopecten  ALL clusters:\t' + str( aplysia_mizuhopecten_clusters_all ) +'\nAplysia genes in Aplysia-Mizuhopecten  ALL clusters:\t' + str( aplysia_in_aplysia_mizuhopecten_genes_all ) +'\nMizuhopecten  genes in Aplysia-Mizuhopecten  ALL clusters:\t'  + str( mizuhopecten_in_aplysia_mizuhopecten_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Octopus-Acanthopleura  ALL clusters:\t' + str( octopus_acanthopleura_clusters_all ) +'\nOctopus  genes in Octopus-Acanthopleura  ALL clusters:\t' + str( octopus_in_octopus_acanthopleura_genes_all ) +'\nAcanthopleura  genes in Octopus-Acanthopleura  ALL clusters:\t'  + str( acanthopleura_in_octopus_acanthopleura_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Mizuhopecten-Acanthopleura  ALL clusters:\t' + str( mizuhopecten_acanthopleura_clusters_all ) +'\nMizuhopecten  genes in Mizuhopecten-Acanthopleura  ALL clusters:\t' + str( mizuhopecten_in_mizuhopecten_acanthopleura_genes_all ) +'\nAcanthopleura  genes in Mizuhopecten-Acanthopleura  ALL clusters:\t'  + str( acanthopleura_in_mizuhopecten_acanthopleura_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Octopus-Mizuhopecten  ALL clusters:\t' + str( octopus_mizuhopecten_clusters_all ) +'\nOctopus  genes in Octopus-Mizuhopecten  ALL clusters:\t' + str( octopus_in_octopus_mizuhopecten_genes_all ) +'\nMizuhopecten  genes in Octopus-Mizuhopecten  ALL clusters:\t'  + str( mizuhopecten_in_octopus_mizuhopecten_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+
+    output ='\n'
+    output_counts.write(output)
+
+    input_clustering.close()
+
+output_counts.close()
+input_clustering_runs.close()

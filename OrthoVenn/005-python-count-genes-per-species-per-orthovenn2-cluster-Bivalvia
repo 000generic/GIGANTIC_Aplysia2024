@@ -1,0 +1,300 @@
+#! python
+# OrthoVenn2 scripts
+
+input_clustering_runs = open('005-list-files-bivalvia.txt','r')
+output_counts = open('5-counts-of-genes-per-species-per-orthovenn2-cluster-Bivalvia','w' )
+
+# species = ['Cyclina','Mizuhopecten','Crassostrea','Aplysia']
+for next_cluster_run in input_clustering_runs:
+    next_cluster_run = next_cluster_run[ :-1 ]
+    input_clustering = open( next_cluster_run,'r' )
+
+    # species-only cluster counts
+    cyclina_only_clusters = 0 # total cyclina  only clusters
+    mizuhopecten_only_clusters = 0 # total mizuhopecten  only clusters
+    crassostrea_only_clusters = 0 # total crassostrea  only clusters
+    aplysia_only_clusters = 0 # total cyclina  only clusters
+
+    # species-only gene counts
+    cyclina_only_genes = 0 # total genes in cyclina  only clusters
+    mizuhopecten_only_genes = 0 # total genes in mizuhopecten  only clusters
+    crassostrea_only_genes = 0 # total genes in crassostrea  only clusters
+    aplysia_only_genes = 0 # total genes in cyclina  only clusters
+
+    # all clusters per species counts
+    cyclina_all_clusters = 0 # total genes for all clusters containing cyclina 
+    mizuhopecten_all_clusters = 0 # total genes for all clusters containing mizuhopecten 
+    crassostrea_all_clusters = 0 # total genes for all clusters containing crassostrea 
+    aplysia_all_clusters = 0 # total genes for all clusters containing aplysia
+
+    # all genes in all clusters per species counts
+    cyclina_all_genes = 0 # total genes for all clusters containing cyclina 
+    mizuhopecten_all_genes = 0 # total genes for all clusters containing mizuhopecten 
+    crassostrea_all_genes = 0 # total genes for all clusters containing crassostrea 
+    aplysia_all_genes = 0 # total genes for all clusters containing aplysia
+
+    # all clusters per species-species pair counts ONLY
+    # aplysia-cyclina 
+    aplysia_cyclina_clusters_only = 0
+    # aplysia-mizuhopecten 
+    aplysia_mizuhopecten_clusters_only = 0
+    # aplysia-crassostrea 
+    aplysia_crassostrea_clusters_only = 0
+    # mizuhopecten-cyclina 
+    mizuhopecten_cyclina_clusters_only = 0
+    # crassostrea-cyclina 
+    crassostrea_cyclina_clusters_only = 0
+    # mizuhopecten-crassostrea 
+    mizuhopecten_crassostrea_clusters_only = 0
+
+    # all clusters per species-species pair counts ALL
+    # aplysia-cyclina 
+    aplysia_cyclina_clusters_all = 0
+    # aplysia-mizuhopecten 
+    aplysia_mizuhopecten_clusters_all = 0
+    # aplysia-crassostrea 
+    aplysia_crassostrea_clusters_all = 0
+    # mizuhopecten-cyclina 
+    mizuhopecten_cyclina_clusters_all = 0
+    # crassostrea-cyclina 
+    crassostrea_cyclina_clusters_all = 0
+    # mizuhopecten-crassostrea 
+    mizuhopecten_crassostrea_clusters_all = 0
+
+    # all genes in all clusters per species-species pair counts
+    # aplysia-cyclina  only
+    aplysia_in_aplysia_cyclina_genes_only = 0
+    cyclina_in_aplysia_cyclina_genes_only = 0
+    # aplysia-mizuhopecten  only
+    aplysia_in_aplysia_mizuhopecten_genes_only = 0
+    mizuhopecten_in_aplysia_mizuhopecten_genes_only = 0
+    # aplysia-crassostrea  only
+    aplysia_in_aplysia_crassostrea_genes_only = 0
+    crassostrea_in_aplysia_crassostrea_genes_only = 0
+    # mizuhopecten-cyclina  only
+    mizuhopecten_in_mizuhopecten_cyclina_genes_only = 0
+    cyclina_in_mizuhopecten_cyclina_genes_only = 0
+    # crassostrea-cyclina  only
+    crassostrea_in_crassostrea_cyclina_genes_only = 0
+    cyclina_in_crassostrea_cyclina_genes_only = 0
+    # mizuhopecten-crassostrea  only
+    mizuhopecten_in_mizuhopecten_crassostrea_genes_only = 0
+    crassostrea_in_mizuhopecten_crassostrea_genes_only = 0
+
+    # all genes in all clusters per species-species pair counts
+    # aplysia-cyclina  all
+    aplysia_in_aplysia_cyclina_genes_all = 0
+    cyclina_in_aplysia_cyclina_genes_all = 0
+    # aplysia-mizuhopecten  all
+    aplysia_in_aplysia_mizuhopecten_genes_all = 0
+    mizuhopecten_in_aplysia_mizuhopecten_genes_all = 0
+    # aplysia-crassostrea  all
+    aplysia_in_aplysia_crassostrea_genes_all = 0
+    crassostrea_in_aplysia_crassostrea_genes_all = 0
+    # mizuhopecten-cyclina  all
+    mizuhopecten_in_mizuhopecten_cyclina_genes_all = 0
+    cyclina_in_mizuhopecten_cyclina_genes_all = 0
+    # crassostrea-cyclina  all
+    crassostrea_in_crassostrea_cyclina_genes_all = 0
+    cyclina_in_crassostrea_cyclina_genes_all = 0
+    # mizuhopecten-crassostrea  all
+    mizuhopecten_in_mizuhopecten_crassostrea_genes_all = 0
+    crassostrea_in_mizuhopecten_crassostrea_genes_all = 0
+
+    # gene counts per species per cluster
+    for next_cluster in input_clustering:
+
+        # species counters per cluster
+        cyclina_count = 0
+        mizuhopecten_count = 0
+        crassostrea_count = 0
+        aplysia_count = 0
+
+        info = next_cluster[ :-1 ].split('\t' ) # cluster info
+
+        for next_identifier in info: # read through each gene identifier in the cluster
+            species_name = next_identifier.split('|' )[ 0 ]
+            # update species counts for given cluster and total gene counts per species
+            if species_name =='Cyclina':
+                cyclina_count = cyclina_count + 1 # gene count for cyclina  in the cluster
+                cyclina_all_genes = cyclina_all_genes + 1 # total gene count for cyclina  for all clusters
+            elif species_name =='Mizuhopecten':
+                mizuhopecten_count = mizuhopecten_count + 1
+                mizuhopecten_all_genes = mizuhopecten_all_genes + 1
+            elif species_name =='Crassostrea':
+                crassostrea_count = crassostrea_count + 1
+                crassostrea_all_genes = crassostrea_all_genes + 1
+            elif species_name =='Aplysia':
+                aplysia_count = aplysia_count + 1
+                aplysia_all_genes = aplysia_all_genes + 1
+            else:
+                error_message ='Error: Species name is not recognized!'
+                print( error_message )
+
+        # update total cluster counts per species
+        if cyclina_count > 0:
+            cyclina_all_clusters = cyclina_all_clusters + 1
+        if mizuhopecten_count > 0:
+            mizuhopecten_all_clusters = mizuhopecten_all_clusters + 1
+        if crassostrea_count > 0:
+            crassostrea_all_clusters = crassostrea_all_clusters + 1
+        if aplysia_count > 0:
+            aplysia_all_clusters = aplysia_all_clusters + 1
+
+        # update species-only cluster and gene counts
+        # cyclina  only cluster
+        if cyclina_count > 0 and mizuhopecten_count ==0 and crassostrea_count == 0 and aplysia_count == 0:
+            cyclina_only_genes = cyclina_only_genes + cyclina_count
+            cyclina_only_clusters = cyclina_only_clusters + 1
+        # mizuhopecten  only cluster
+        if mizuhopecten_count > 0 and cyclina_count ==0 and crassostrea_count == 0 and aplysia_count == 0:
+            mizuhopecten_only_genes = mizuhopecten_only_genes + mizuhopecten_count
+            mizuhopecten_only_clusters = mizuhopecten_only_clusters + 1
+        # crassostrea  only cluster
+        if crassostrea_count > 0 and mizuhopecten_count ==0 and cyclina_count == 0 and aplysia_count == 0:
+            crassostrea_only_genes = crassostrea_only_genes + crassostrea_count
+            crassostrea_only_clusters = crassostrea_only_clusters + 1
+        # aplysia only cluster
+        if aplysia_count > 0 and mizuhopecten_count ==0 and crassostrea_count == 0 and cyclina_count == 0:
+            aplysia_only_genes = aplysia_only_genes + aplysia_count
+            aplysia_only_clusters = aplysia_only_clusters + 1
+
+        # ONLY aplysia- cyclina  cluster
+        if cyclina_count > 0 and mizuhopecten_count == 0 and crassostrea_count == 0 and aplysia_count > 0:
+            aplysia_in_aplysia_cyclina_genes_only = aplysia_in_aplysia_cyclina_genes_only + aplysia_count
+            cyclina_in_aplysia_cyclina_genes_only = cyclina_in_aplysia_cyclina_genes_only + cyclina_count
+            aplysia_cyclina_clusters_only = aplysia_cyclina_clusters_only + 1
+        # only aplysia- mizuhopecten  cluster
+        if cyclina_count == 0 and mizuhopecten_count > 0 and crassostrea_count == 0 and aplysia_count > 0:
+            aplysia_in_aplysia_mizuhopecten_genes_only = aplysia_in_aplysia_mizuhopecten_genes_only + aplysia_count
+            mizuhopecten_in_aplysia_mizuhopecten_genes_only = mizuhopecten_in_aplysia_mizuhopecten_genes_only + mizuhopecten_count
+            aplysia_mizuhopecten_clusters_only = aplysia_mizuhopecten_clusters_only + 1
+        # only aplysia- crassostrea  cluster
+        if cyclina_count == 0 and mizuhopecten_count == 0 and crassostrea_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_crassostrea_genes_only = aplysia_in_aplysia_crassostrea_genes_only + aplysia_count
+            crassostrea_in_aplysia_crassostrea_genes_only = crassostrea_in_aplysia_crassostrea_genes_only + crassostrea_count
+            aplysia_crassostrea_clusters_only = aplysia_crassostrea_clusters_only + 1
+        # only mizuhopecten - cyclina  cluster
+        if cyclina_count > 0 and mizuhopecten_count > 0 and crassostrea_count == 0 and aplysia_count == 0:
+            mizuhopecten_in_mizuhopecten_cyclina_genes_only = mizuhopecten_in_mizuhopecten_cyclina_genes_only + mizuhopecten_count
+            cyclina_in_mizuhopecten_cyclina_genes_only = cyclina_in_mizuhopecten_cyclina_genes_only + cyclina_count
+            mizuhopecten_cyclina_clusters_only = mizuhopecten_cyclina_clusters_only + 1
+        # only crassostrea  cyclina  cluster
+        if cyclina_count > 0 and mizuhopecten_count == 0 and crassostrea_count > 0 and aplysia_count == 0:
+            crassostrea_in_crassostrea_cyclina_genes_only = crassostrea_in_crassostrea_cyclina_genes_only + crassostrea_count
+            cyclina_in_crassostrea_cyclina_genes_only = cyclina_in_crassostrea_cyclina_genes_only + cyclina_count
+            crassostrea_cyclina_clusters_only = crassostrea_cyclina_clusters_only + 1
+        # only mizuhopecten  crassostrea  cluster
+        if cyclina_count == 0 and mizuhopecten_count > 0 and crassostrea_count > 0 and aplysia_count == 0:
+            mizuhopecten_in_mizuhopecten_crassostrea_genes_only = mizuhopecten_in_mizuhopecten_crassostrea_genes_only + mizuhopecten_count
+            crassostrea_in_mizuhopecten_crassostrea_genes_only = crassostrea_in_mizuhopecten_crassostrea_genes_only + crassostrea_count
+            mizuhopecten_crassostrea_clusters_only = mizuhopecten_crassostrea_clusters_only + 1
+
+        # ALL aplysia- cyclina  cluster
+        if cyclina_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_cyclina_genes_all = aplysia_in_aplysia_cyclina_genes_all + aplysia_count
+            cyclina_in_aplysia_cyclina_genes_all = cyclina_in_aplysia_cyclina_genes_all + cyclina_count
+            aplysia_cyclina_clusters_all = aplysia_cyclina_clusters_all + 1
+        # only aplysia- mizuhopecten  cluster
+        if mizuhopecten_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_mizuhopecten_genes_all = aplysia_in_aplysia_mizuhopecten_genes_all + aplysia_count
+            mizuhopecten_in_aplysia_mizuhopecten_genes_all = mizuhopecten_in_aplysia_mizuhopecten_genes_all + mizuhopecten_count
+            aplysia_mizuhopecten_clusters_all = aplysia_mizuhopecten_clusters_all + 1
+        # only aplysia- crassostrea  cluster
+        if crassostrea_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_crassostrea_genes_all = aplysia_in_aplysia_crassostrea_genes_all + aplysia_count
+            crassostrea_in_aplysia_crassostrea_genes_all = crassostrea_in_aplysia_crassostrea_genes_all + crassostrea_count
+            aplysia_crassostrea_clusters_all = aplysia_crassostrea_clusters_all + 1
+        # only mizuhopecten - cyclina  cluster
+        if cyclina_count > 0 and mizuhopecten_count > 0:
+            mizuhopecten_in_mizuhopecten_cyclina_genes_all = mizuhopecten_in_mizuhopecten_cyclina_genes_all + mizuhopecten_count
+            cyclina_in_mizuhopecten_cyclina_genes_all = cyclina_in_mizuhopecten_cyclina_genes_all + cyclina_count
+            mizuhopecten_cyclina_clusters_all = mizuhopecten_cyclina_clusters_all + 1
+        # only crassostrea  cyclina  cluster
+        if cyclina_count > 0 and crassostrea_count > 0:
+            crassostrea_in_crassostrea_cyclina_genes_all = crassostrea_in_crassostrea_cyclina_genes_all + crassostrea_count
+            cyclina_in_crassostrea_cyclina_genes_all = cyclina_in_crassostrea_cyclina_genes_all + cyclina_count
+            crassostrea_cyclina_clusters_all = crassostrea_cyclina_clusters_all + 1
+        # only mizuhopecten  crassostrea  cluster
+        if mizuhopecten_count > 0 and crassostrea_count > 0:
+            mizuhopecten_in_mizuhopecten_crassostrea_genes_all = mizuhopecten_in_mizuhopecten_crassostrea_genes_all + mizuhopecten_count
+            crassostrea_in_mizuhopecten_crassostrea_genes_all = crassostrea_in_mizuhopecten_crassostrea_genes_all + crassostrea_count
+            mizuhopecten_crassostrea_clusters_all = mizuhopecten_crassostrea_clusters_all + 1
+
+    # Cluster run
+    output ='#####\n#####' + next_cluster_run +'\n#####\n\n'
+    output_counts.write(output)
+
+    # species-only cluster and gene counts
+    output ='Cyclina-only clusters:\t' + str( cyclina_only_clusters ) +'\nCyclina-only genes:\t' + str( cyclina_only_genes ) +'\n\n'
+    output_counts.write( output )
+
+    output ='Mizuhopecten-only clusters:\t' + str( mizuhopecten_only_clusters ) +'\nMizuhopecten-only genes:\t' + str( mizuhopecten_only_genes ) +'\n\n'
+    output_counts.write( output )
+
+    output ='Crassostrea-only clusters:\t' + str( crassostrea_only_clusters ) +'\nCrassostrea-only genes:\t' + str( crassostrea_only_genes ) +'\n\n'
+    output_counts.write( output )
+
+    output ='Aplysia-only clusters:\t' + str( aplysia_only_clusters ) +'\nAplysia-only genes:\t' + str( aplysia_only_genes ) +'\n\n'
+    output_counts.write( output )
+
+    # all clusters per species cluster and gene counts
+    output ='Cyclina-all clusters:\t' + str(cyclina_all_clusters) +'\nCyclina-all genes:\t' + str( cyclina_all_genes) +'\n\n'
+    output_counts.write(output)
+
+    output ='Mizuhopecten-all clusters:\t' + str(mizuhopecten_all_clusters) +'\nMizuhopecten-all genes:\t' + str(mizuhopecten_all_genes) +'\n\n'
+    output_counts.write(output)
+
+    output ='Crassostrea-all clusters:\t' + str(crassostrea_all_clusters) +'\nCrassostrea-all genes:\t' + str(crassostrea_all_genes) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-all clusters:\t' + str(aplysia_all_clusters) +'\nAplysia-all genes:\t' + str( aplysia_all_genes) +'\n\n'
+    output_counts.write(output)
+
+
+    # species-species pair cluster and gene counts ONLY
+    output ='Aplysia-Cyclina  ONLY clusters:\t' + str( aplysia_cyclina_clusters_only ) +'\nAplysia genes in Aplysia-Cyclina  ONLY clusters:\t' + str( aplysia_in_aplysia_cyclina_genes_only ) +'\nCyclina  genes in Aplysia-Cyclina  ONLY clusters:\t'  + str( cyclina_in_aplysia_cyclina_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-Mizuhopecten  ONLY clusters:\t' + str( aplysia_mizuhopecten_clusters_only ) +'\nAplysia genes in Aplysia-Mizuhopecten  ONLY clusters:\t' + str( aplysia_in_aplysia_mizuhopecten_genes_only ) +'\nMizuhopecten  genes in Aplysia-Mizuhopecten  ONLY clusters:\t'  + str( mizuhopecten_in_aplysia_mizuhopecten_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-Crassostrea  ONLY clusters:\t' + str( aplysia_crassostrea_clusters_only ) +'\nAplysia genes in Aplysia-Crassostrea  ONLY clusters:\t' + str( aplysia_in_aplysia_crassostrea_genes_only ) +'\nCrassostrea  genes in Aplysia-Crassostrea  ONLY clusters:\t'  + str( crassostrea_in_aplysia_crassostrea_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Mizuhopecten-Cyclina  ONLY clusters:\t' + str( mizuhopecten_cyclina_clusters_only ) +'\nMizuhopecten  genes in Mizuhopecten-Cyclina  ONLY clusters:\t' + str( mizuhopecten_in_mizuhopecten_cyclina_genes_only ) +'\nCyclina  genes in Mizuhopecten-Cyclina  ONLY clusters:\t'  + str( cyclina_in_mizuhopecten_cyclina_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Crassostrea-Cyclina  ONLY clusters:\t' + str( crassostrea_cyclina_clusters_only ) +'\nCrassostrea  genes in Crassostrea-Cyclina  ONLY clusters:\t' + str( crassostrea_in_crassostrea_cyclina_genes_only ) +'\nCyclina  genes in Crassostrea-Cyclina  ONLY clusters:\t'  + str( cyclina_in_crassostrea_cyclina_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Mizuhopecten-Crassostrea  ONLY clusters:\t' + str( mizuhopecten_crassostrea_clusters_only ) +'\nMizuhopecten  genes in Mizuhopecten-Crassostrea  ONLY clusters:\t' + str( mizuhopecten_in_mizuhopecten_crassostrea_genes_only ) +'\nCrassostrea  genes in Mizuhopecten-Crassostrea  ONLY clusters:\t'  + str( crassostrea_in_mizuhopecten_crassostrea_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    # species-species pair cluster and gene counts ALL
+    output ='Aplysia-Cyclina  ALL clusters:\t' + str( aplysia_cyclina_clusters_all ) +'\nAplysia genes in Aplysia-Cyclina  ALL clusters:\t' + str( aplysia_in_aplysia_cyclina_genes_all ) +'\nCyclina  genes in Aplysia-Cyclina  ALL clusters:\t'  + str( cyclina_in_aplysia_cyclina_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-Mizuhopecten  ALL clusters:\t' + str( aplysia_mizuhopecten_clusters_all ) +'\nAplysia genes in Aplysia-Mizuhopecten  ALL clusters:\t' + str( aplysia_in_aplysia_mizuhopecten_genes_all ) +'\nMizuhopecten  genes in Aplysia-Mizuhopecten  ALL clusters:\t'  + str( mizuhopecten_in_aplysia_mizuhopecten_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-Crassostrea  ALL clusters:\t' + str( aplysia_crassostrea_clusters_all ) +'\nAplysia genes in Aplysia-Crassostrea  ALL clusters:\t' + str( aplysia_in_aplysia_crassostrea_genes_all ) +'\nCrassostrea  genes in Aplysia-Crassostrea  ALL clusters:\t'  + str( crassostrea_in_aplysia_crassostrea_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Mizuhopecten-Cyclina  ALL clusters:\t' + str( mizuhopecten_cyclina_clusters_all ) +'\nMizuhopecten  genes in Mizuhopecten-Cyclina  ALL clusters:\t' + str( mizuhopecten_in_mizuhopecten_cyclina_genes_all ) +'\nCyclina  genes in Mizuhopecten-Cyclina  ALL clusters:\t'  + str( cyclina_in_mizuhopecten_cyclina_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Crassostrea-Cyclina  ALL clusters:\t' + str( crassostrea_cyclina_clusters_all ) +'\nCrassostrea  genes in Crassostrea-Cyclina  ALL clusters:\t' + str( crassostrea_in_crassostrea_cyclina_genes_all ) +'\nCyclina  genes in Crassostrea-Cyclina  ALL clusters:\t'  + str( cyclina_in_crassostrea_cyclina_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Mizuhopecten-Crassostrea  ALL clusters:\t' + str( mizuhopecten_crassostrea_clusters_all ) +'\nMizuhopecten  genes in Mizuhopecten-Crassostrea  ALL clusters:\t' + str( mizuhopecten_in_mizuhopecten_crassostrea_genes_all ) +'\nCrassostrea  genes in Mizuhopecten-Crassostrea  ALL clusters:\t'  + str( crassostrea_in_mizuhopecten_crassostrea_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+
+    output ='\n'
+    output_counts.write(output)
+
+    input_clustering.close()
+
+output_counts.close()
+input_clustering_runs.close()

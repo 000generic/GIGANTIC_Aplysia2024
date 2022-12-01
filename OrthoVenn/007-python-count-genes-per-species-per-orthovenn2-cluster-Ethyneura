@@ -1,0 +1,300 @@
+#! python
+# OrthoVenn2 scripts
+
+input_clustering_runs = open('007-list-files-ethyneura.txt','r')
+output_counts = open('7-counts-of-genes-per-species-per-orthovenn2-cluster-Ethyneura','w' )
+
+# species = ['Pomacea','Achatina','Elysia','Aplysia']
+for next_cluster_run in input_clustering_runs:
+    next_cluster_run = next_cluster_run[ :-1 ]
+    input_clustering = open( next_cluster_run,'r' )
+
+    # species-only cluster counts
+    pomacea_only_clusters = 0 # total pomacea  only clusters
+    achatina_only_clusters = 0 # total achatina  only clusters
+    elysia_only_clusters = 0 # total elysia  only clusters
+    aplysia_only_clusters = 0 # total pomacea  only clusters
+
+    # species-only gene counts
+    pomacea_only_genes = 0 # total genes in pomacea  only clusters
+    achatina_only_genes = 0 # total genes in achatina  only clusters
+    elysia_only_genes = 0 # total genes in elysia  only clusters
+    aplysia_only_genes = 0 # total genes in pomacea  only clusters
+
+    # all clusters per species counts
+    pomacea_all_clusters = 0 # total genes for all clusters containing pomacea 
+    achatina_all_clusters = 0 # total genes for all clusters containing achatina 
+    elysia_all_clusters = 0 # total genes for all clusters containing elysia 
+    aplysia_all_clusters = 0 # total genes for all clusters containing aplysia
+
+    # all genes in all clusters per species counts
+    pomacea_all_genes = 0 # total genes for all clusters containing pomacea 
+    achatina_all_genes = 0 # total genes for all clusters containing achatina 
+    elysia_all_genes = 0 # total genes for all clusters containing elysia 
+    aplysia_all_genes = 0 # total genes for all clusters containing aplysia
+
+    # all clusters per species-species pair counts ONLY
+    # aplysia-pomacea 
+    aplysia_pomacea_clusters_only = 0
+    # aplysia-achatina 
+    aplysia_achatina_clusters_only = 0
+    # aplysia-elysia 
+    aplysia_elysia_clusters_only = 0
+    # achatina-pomacea 
+    achatina_pomacea_clusters_only = 0
+    # elysia-pomacea 
+    elysia_pomacea_clusters_only = 0
+    # achatina-elysia 
+    achatina_elysia_clusters_only = 0
+
+    # all clusters per species-species pair counts ALL
+    # aplysia-pomacea 
+    aplysia_pomacea_clusters_all = 0
+    # aplysia-achatina 
+    aplysia_achatina_clusters_all = 0
+    # aplysia-elysia 
+    aplysia_elysia_clusters_all = 0
+    # achatina-pomacea 
+    achatina_pomacea_clusters_all = 0
+    # elysia-pomacea 
+    elysia_pomacea_clusters_all = 0
+    # achatina-elysia 
+    achatina_elysia_clusters_all = 0
+
+    # all genes in all clusters per species-species pair counts
+    # aplysia-pomacea  only
+    aplysia_in_aplysia_pomacea_genes_only = 0
+    pomacea_in_aplysia_pomacea_genes_only = 0
+    # aplysia-achatina  only
+    aplysia_in_aplysia_achatina_genes_only = 0
+    achatina_in_aplysia_achatina_genes_only = 0
+    # aplysia-elysia  only
+    aplysia_in_aplysia_elysia_genes_only = 0
+    elysia_in_aplysia_elysia_genes_only = 0
+    # achatina-pomacea  only
+    achatina_in_achatina_pomacea_genes_only = 0
+    pomacea_in_achatina_pomacea_genes_only = 0
+    # elysia-pomacea  only
+    elysia_in_elysia_pomacea_genes_only = 0
+    pomacea_in_elysia_pomacea_genes_only = 0
+    # achatina-elysia  only
+    achatina_in_achatina_elysia_genes_only = 0
+    elysia_in_achatina_elysia_genes_only = 0
+
+    # all genes in all clusters per species-species pair counts
+    # aplysia-pomacea  all
+    aplysia_in_aplysia_pomacea_genes_all = 0
+    pomacea_in_aplysia_pomacea_genes_all = 0
+    # aplysia-achatina  all
+    aplysia_in_aplysia_achatina_genes_all = 0
+    achatina_in_aplysia_achatina_genes_all = 0
+    # aplysia-elysia  all
+    aplysia_in_aplysia_elysia_genes_all = 0
+    elysia_in_aplysia_elysia_genes_all = 0
+    # achatina-pomacea  all
+    achatina_in_achatina_pomacea_genes_all = 0
+    pomacea_in_achatina_pomacea_genes_all = 0
+    # elysia-pomacea  all
+    elysia_in_elysia_pomacea_genes_all = 0
+    pomacea_in_elysia_pomacea_genes_all = 0
+    # achatina-elysia  all
+    achatina_in_achatina_elysia_genes_all = 0
+    elysia_in_achatina_elysia_genes_all = 0
+
+    # gene counts per species per cluster
+    for next_cluster in input_clustering:
+
+        # species counters per cluster
+        pomacea_count = 0
+        achatina_count = 0
+        elysia_count = 0
+        aplysia_count = 0
+
+        info = next_cluster[ :-1 ].split('\t' ) # cluster info
+
+        for next_identifier in info: # read through each gene identifier in the cluster
+            species_name = next_identifier.split('|' )[ 0 ]
+            # update species counts for given cluster and total gene counts per species
+            if species_name =='Pomacea':
+                pomacea_count = pomacea_count + 1 # gene count for pomacea  in the cluster
+                pomacea_all_genes = pomacea_all_genes + 1 # total gene count for pomacea  for all clusters
+            elif species_name =='Achatina':
+                achatina_count = achatina_count + 1
+                achatina_all_genes = achatina_all_genes + 1
+            elif species_name =='Elysia':
+                elysia_count = elysia_count + 1
+                elysia_all_genes = elysia_all_genes + 1
+            elif species_name =='Aplysia':
+                aplysia_count = aplysia_count + 1
+                aplysia_all_genes = aplysia_all_genes + 1
+            else:
+                error_message ='Error: Species name is not recognized!'
+                print( error_message )
+
+        # update total cluster counts per species
+        if pomacea_count > 0:
+            pomacea_all_clusters = pomacea_all_clusters + 1
+        if achatina_count > 0:
+            achatina_all_clusters = achatina_all_clusters + 1
+        if elysia_count > 0:
+            elysia_all_clusters = elysia_all_clusters + 1
+        if aplysia_count > 0:
+            aplysia_all_clusters = aplysia_all_clusters + 1
+
+        # update species-only cluster and gene counts
+        # pomacea  only cluster
+        if pomacea_count > 0 and achatina_count ==0 and elysia_count == 0 and aplysia_count == 0:
+            pomacea_only_genes = pomacea_only_genes + pomacea_count
+            pomacea_only_clusters = pomacea_only_clusters + 1
+        # achatina  only cluster
+        if achatina_count > 0 and pomacea_count ==0 and elysia_count == 0 and aplysia_count == 0:
+            achatina_only_genes = achatina_only_genes + achatina_count
+            achatina_only_clusters = achatina_only_clusters + 1
+        # elysia  only cluster
+        if elysia_count > 0 and achatina_count ==0 and pomacea_count == 0 and aplysia_count == 0:
+            elysia_only_genes = elysia_only_genes + elysia_count
+            elysia_only_clusters = elysia_only_clusters + 1
+        # aplysia only cluster
+        if aplysia_count > 0 and achatina_count ==0 and elysia_count == 0 and pomacea_count == 0:
+            aplysia_only_genes = aplysia_only_genes + aplysia_count
+            aplysia_only_clusters = aplysia_only_clusters + 1
+
+        # ONLY aplysia- pomacea  cluster
+        if pomacea_count > 0 and achatina_count == 0 and elysia_count == 0 and aplysia_count > 0:
+            aplysia_in_aplysia_pomacea_genes_only = aplysia_in_aplysia_pomacea_genes_only + aplysia_count
+            pomacea_in_aplysia_pomacea_genes_only = pomacea_in_aplysia_pomacea_genes_only + pomacea_count
+            aplysia_pomacea_clusters_only = aplysia_pomacea_clusters_only + 1
+        # only aplysia- achatina  cluster
+        if pomacea_count == 0 and achatina_count > 0 and elysia_count == 0 and aplysia_count > 0:
+            aplysia_in_aplysia_achatina_genes_only = aplysia_in_aplysia_achatina_genes_only + aplysia_count
+            achatina_in_aplysia_achatina_genes_only = achatina_in_aplysia_achatina_genes_only + achatina_count
+            aplysia_achatina_clusters_only = aplysia_achatina_clusters_only + 1
+        # only aplysia- elysia  cluster
+        if pomacea_count == 0 and achatina_count == 0 and elysia_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_elysia_genes_only = aplysia_in_aplysia_elysia_genes_only + aplysia_count
+            elysia_in_aplysia_elysia_genes_only = elysia_in_aplysia_elysia_genes_only + elysia_count
+            aplysia_elysia_clusters_only = aplysia_elysia_clusters_only + 1
+        # only achatina - pomacea  cluster
+        if pomacea_count > 0 and achatina_count > 0 and elysia_count == 0 and aplysia_count == 0:
+            achatina_in_achatina_pomacea_genes_only = achatina_in_achatina_pomacea_genes_only + achatina_count
+            pomacea_in_achatina_pomacea_genes_only = pomacea_in_achatina_pomacea_genes_only + pomacea_count
+            achatina_pomacea_clusters_only = achatina_pomacea_clusters_only + 1
+        # only elysia  pomacea  cluster
+        if pomacea_count > 0 and achatina_count == 0 and elysia_count > 0 and aplysia_count == 0:
+            elysia_in_elysia_pomacea_genes_only = elysia_in_elysia_pomacea_genes_only + elysia_count
+            pomacea_in_elysia_pomacea_genes_only = pomacea_in_elysia_pomacea_genes_only + pomacea_count
+            elysia_pomacea_clusters_only = elysia_pomacea_clusters_only + 1
+        # only achatina  elysia  cluster
+        if pomacea_count == 0 and achatina_count > 0 and elysia_count > 0 and aplysia_count == 0:
+            achatina_in_achatina_elysia_genes_only = achatina_in_achatina_elysia_genes_only + achatina_count
+            elysia_in_achatina_elysia_genes_only = elysia_in_achatina_elysia_genes_only + elysia_count
+            achatina_elysia_clusters_only = achatina_elysia_clusters_only + 1
+
+        # ALL aplysia- pomacea  cluster
+        if pomacea_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_pomacea_genes_all = aplysia_in_aplysia_pomacea_genes_all + aplysia_count
+            pomacea_in_aplysia_pomacea_genes_all = pomacea_in_aplysia_pomacea_genes_all + pomacea_count
+            aplysia_pomacea_clusters_all = aplysia_pomacea_clusters_all + 1
+        # only aplysia- achatina  cluster
+        if achatina_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_achatina_genes_all = aplysia_in_aplysia_achatina_genes_all + aplysia_count
+            achatina_in_aplysia_achatina_genes_all = achatina_in_aplysia_achatina_genes_all + achatina_count
+            aplysia_achatina_clusters_all = aplysia_achatina_clusters_all + 1
+        # only aplysia- elysia  cluster
+        if elysia_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_elysia_genes_all = aplysia_in_aplysia_elysia_genes_all + aplysia_count
+            elysia_in_aplysia_elysia_genes_all = elysia_in_aplysia_elysia_genes_all + elysia_count
+            aplysia_elysia_clusters_all = aplysia_elysia_clusters_all + 1
+        # only achatina - pomacea  cluster
+        if pomacea_count > 0 and achatina_count > 0:
+            achatina_in_achatina_pomacea_genes_all = achatina_in_achatina_pomacea_genes_all + achatina_count
+            pomacea_in_achatina_pomacea_genes_all = pomacea_in_achatina_pomacea_genes_all + pomacea_count
+            achatina_pomacea_clusters_all = achatina_pomacea_clusters_all + 1
+        # only elysia  pomacea  cluster
+        if pomacea_count > 0 and elysia_count > 0:
+            elysia_in_elysia_pomacea_genes_all = elysia_in_elysia_pomacea_genes_all + elysia_count
+            pomacea_in_elysia_pomacea_genes_all = pomacea_in_elysia_pomacea_genes_all + pomacea_count
+            elysia_pomacea_clusters_all = elysia_pomacea_clusters_all + 1
+        # only achatina  elysia  cluster
+        if achatina_count > 0 and elysia_count > 0:
+            achatina_in_achatina_elysia_genes_all = achatina_in_achatina_elysia_genes_all + achatina_count
+            elysia_in_achatina_elysia_genes_all = elysia_in_achatina_elysia_genes_all + elysia_count
+            achatina_elysia_clusters_all = achatina_elysia_clusters_all + 1
+
+    # Cluster run
+    output ='#####\n#####' + next_cluster_run +'\n#####\n\n'
+    output_counts.write(output)
+
+    # species-only cluster and gene counts
+    output ='Pomacea-only clusters:\t' + str( pomacea_only_clusters ) +'\nPomacea-only genes:\t' + str( pomacea_only_genes ) +'\n\n'
+    output_counts.write( output )
+
+    output ='Achatina-only clusters:\t' + str( achatina_only_clusters ) +'\nAchatina-only genes:\t' + str( achatina_only_genes ) +'\n\n'
+    output_counts.write( output )
+
+    output ='Elysia-only clusters:\t' + str( elysia_only_clusters ) +'\nElysia-only genes:\t' + str( elysia_only_genes ) +'\n\n'
+    output_counts.write( output )
+
+    output ='Aplysia-only clusters:\t' + str( aplysia_only_clusters ) +'\nAplysia-only genes:\t' + str( aplysia_only_genes ) +'\n\n'
+    output_counts.write( output )
+
+    # all clusters per species cluster and gene counts
+    output ='Pomacea-all clusters:\t' + str(pomacea_all_clusters) +'\nPomacea-all genes:\t' + str( pomacea_all_genes) +'\n\n'
+    output_counts.write(output)
+
+    output ='Achatina-all clusters:\t' + str(achatina_all_clusters) +'\nAchatina-all genes:\t' + str(achatina_all_genes) +'\n\n'
+    output_counts.write(output)
+
+    output ='Elysia-all clusters:\t' + str(elysia_all_clusters) +'\nElysia-all genes:\t' + str(elysia_all_genes) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-all clusters:\t' + str(aplysia_all_clusters) +'\nAplysia-all genes:\t' + str( aplysia_all_genes) +'\n\n'
+    output_counts.write(output)
+
+
+    # species-species pair cluster and gene counts ONLY
+    output ='Aplysia-Pomacea  ONLY clusters:\t' + str( aplysia_pomacea_clusters_only ) +'\nAplysia genes in Aplysia-Pomacea  ONLY clusters:\t' + str( aplysia_in_aplysia_pomacea_genes_only ) +'\nPomacea  genes in Aplysia-Pomacea  ONLY clusters:\t'  + str( pomacea_in_aplysia_pomacea_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-Achatina  ONLY clusters:\t' + str( aplysia_achatina_clusters_only ) +'\nAplysia genes in Aplysia-Achatina  ONLY clusters:\t' + str( aplysia_in_aplysia_achatina_genes_only ) +'\nAchatina  genes in Aplysia-Achatina  ONLY clusters:\t'  + str( achatina_in_aplysia_achatina_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-Elysia  ONLY clusters:\t' + str( aplysia_elysia_clusters_only ) +'\nAplysia genes in Aplysia-Elysia  ONLY clusters:\t' + str( aplysia_in_aplysia_elysia_genes_only ) +'\nElysia  genes in Aplysia-Elysia  ONLY clusters:\t'  + str( elysia_in_aplysia_elysia_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Achatina-Pomacea  ONLY clusters:\t' + str( achatina_pomacea_clusters_only ) +'\nAchatina  genes in Achatina-Pomacea  ONLY clusters:\t' + str( achatina_in_achatina_pomacea_genes_only ) +'\nPomacea  genes in Achatina-Pomacea  ONLY clusters:\t'  + str( pomacea_in_achatina_pomacea_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Elysia-Pomacea  ONLY clusters:\t' + str( elysia_pomacea_clusters_only ) +'\nElysia  genes in Elysia-Pomacea  ONLY clusters:\t' + str( elysia_in_elysia_pomacea_genes_only ) +'\nPomacea  genes in Elysia-Pomacea  ONLY clusters:\t'  + str( pomacea_in_elysia_pomacea_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Achatina-Elysia  ONLY clusters:\t' + str( achatina_elysia_clusters_only ) +'\nAchatina  genes in Achatina-Elysia  ONLY clusters:\t' + str( achatina_in_achatina_elysia_genes_only ) +'\nElysia  genes in Achatina-Elysia  ONLY clusters:\t'  + str( elysia_in_achatina_elysia_genes_only ) +'\n\n'
+    output_counts.write(output)
+
+    # species-species pair cluster and gene counts ALL
+    output ='Aplysia-Pomacea  ALL clusters:\t' + str( aplysia_pomacea_clusters_all ) +'\nAplysia genes in Aplysia-Pomacea  ALL clusters:\t' + str( aplysia_in_aplysia_pomacea_genes_all ) +'\nPomacea  genes in Aplysia-Pomacea  ALL clusters:\t'  + str( pomacea_in_aplysia_pomacea_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-Achatina  ALL clusters:\t' + str( aplysia_achatina_clusters_all ) +'\nAplysia genes in Aplysia-Achatina  ALL clusters:\t' + str( aplysia_in_aplysia_achatina_genes_all ) +'\nAchatina  genes in Aplysia-Achatina  ALL clusters:\t'  + str( achatina_in_aplysia_achatina_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Aplysia-Elysia  ALL clusters:\t' + str( aplysia_elysia_clusters_all ) +'\nAplysia genes in Aplysia-Elysia  ALL clusters:\t' + str( aplysia_in_aplysia_elysia_genes_all ) +'\nElysia  genes in Aplysia-Elysia  ALL clusters:\t'  + str( elysia_in_aplysia_elysia_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Achatina-Pomacea  ALL clusters:\t' + str( achatina_pomacea_clusters_all ) +'\nAchatina  genes in Achatina-Pomacea  ALL clusters:\t' + str( achatina_in_achatina_pomacea_genes_all ) +'\nPomacea  genes in Achatina-Pomacea  ALL clusters:\t'  + str( pomacea_in_achatina_pomacea_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Elysia-Pomacea  ALL clusters:\t' + str( elysia_pomacea_clusters_all ) +'\nElysia  genes in Elysia-Pomacea  ALL clusters:\t' + str( elysia_in_elysia_pomacea_genes_all ) +'\nPomacea  genes in Elysia-Pomacea  ALL clusters:\t'  + str( pomacea_in_elysia_pomacea_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+    output ='Achatina-Elysia  ALL clusters:\t' + str( achatina_elysia_clusters_all ) +'\nAchatina  genes in Achatina-Elysia  ALL clusters:\t' + str( achatina_in_achatina_elysia_genes_all ) +'\nElysia  genes in Achatina-Elysia  ALL clusters:\t'  + str( elysia_in_achatina_elysia_genes_all ) +'\n\n'
+    output_counts.write(output)
+
+
+    output ='\n'
+    output_counts.write(output)
+
+    input_clustering.close()
+
+output_counts.close()
+input_clustering_runs.close()

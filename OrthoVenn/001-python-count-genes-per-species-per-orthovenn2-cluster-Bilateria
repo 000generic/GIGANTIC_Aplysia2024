@@ -1,0 +1,300 @@
+#! python
+# OrthoVenn2 scripts
+
+input_clustering_runs = open('001-list-files-bilateria.txt', 'r')
+output_counts = open( '1-counts-of-genes-per-species-per-orthovenn2-cluster-Bilateria', 'w' )
+
+# species = [ 'Human', 'Fly', 'Worm', 'Aplysia']
+for next_cluster_run in input_clustering_runs:
+    next_cluster_run = next_cluster_run[ :-1 ]
+    input_clustering = open( next_cluster_run, 'r' )
+
+    # species-only cluster counts
+    human_only_clusters = 0 # total human only clusters
+    fly_only_clusters = 0 # total fly only clusters
+    worm_only_clusters = 0 # total worm only clusters
+    aplysia_only_clusters = 0 # total human only clusters
+
+    # species-only gene counts
+    human_only_genes = 0 # total genes in human only clusters
+    fly_only_genes = 0 # total genes in fly only clusters
+    worm_only_genes = 0 # total genes in worm only clusters
+    aplysia_only_genes = 0 # total genes in human only clusters
+
+    # all clusters per species counts
+    human_all_clusters = 0 # total genes for all clusters containing human
+    fly_all_clusters = 0 # total genes for all clusters containing fly
+    worm_all_clusters = 0 # total genes for all clusters containing worm
+    aplysia_all_clusters = 0 # total genes for all clusters containing aplysia
+
+    # all genes in all clusters per species counts
+    human_all_genes = 0 # total genes for all clusters containing human
+    fly_all_genes = 0 # total genes for all clusters containing fly
+    worm_all_genes = 0 # total genes for all clusters containing worm
+    aplysia_all_genes = 0 # total genes for all clusters containing aplysia
+
+    # all clusters per species-species pair counts ONLY
+    # aplysia-human
+    aplysia_human_clusters_only = 0
+    # aplysia-fly
+    aplysia_fly_clusters_only = 0
+    # aplysia-worm
+    aplysia_worm_clusters_only = 0
+    # fly-human
+    fly_human_clusters_only = 0
+    # worm-human
+    worm_human_clusters_only = 0
+    # fly-worm
+    fly_worm_clusters_only = 0
+
+    # all clusters per species-species pair counts ALL
+    # aplysia-human
+    aplysia_human_clusters_all = 0
+    # aplysia-fly
+    aplysia_fly_clusters_all = 0
+    # aplysia-worm
+    aplysia_worm_clusters_all = 0
+    # fly-human
+    fly_human_clusters_all = 0
+    # worm-human
+    worm_human_clusters_all = 0
+    # fly-worm
+    fly_worm_clusters_all = 0
+
+    # all genes in all clusters per species-species pair counts
+    # aplysia-human only
+    aplysia_in_aplysia_human_genes_only = 0
+    human_in_aplysia_human_genes_only = 0
+    # aplysia-fly only
+    aplysia_in_aplysia_fly_genes_only = 0
+    fly_in_aplysia_fly_genes_only = 0
+    # aplysia-worm only
+    aplysia_in_aplysia_worm_genes_only = 0
+    worm_in_aplysia_worm_genes_only = 0
+    # fly-human only
+    fly_in_fly_human_genes_only = 0
+    human_in_fly_human_genes_only = 0
+    # worm-human only
+    worm_in_worm_human_genes_only = 0
+    human_in_worm_human_genes_only = 0
+    # fly-worm only
+    fly_in_fly_worm_genes_only = 0
+    worm_in_fly_worm_genes_only = 0
+
+    # all genes in all clusters per species-species pair counts
+    # aplysia-human all
+    aplysia_in_aplysia_human_genes_all = 0
+    human_in_aplysia_human_genes_all = 0
+    # aplysia-fly all
+    aplysia_in_aplysia_fly_genes_all = 0
+    fly_in_aplysia_fly_genes_all = 0
+    # aplysia-worm all
+    aplysia_in_aplysia_worm_genes_all = 0
+    worm_in_aplysia_worm_genes_all = 0
+    # fly-human all
+    fly_in_fly_human_genes_all = 0
+    human_in_fly_human_genes_all = 0
+    # worm-human all
+    worm_in_worm_human_genes_all = 0
+    human_in_worm_human_genes_all = 0
+    # fly-worm all
+    fly_in_fly_worm_genes_all = 0
+    worm_in_fly_worm_genes_all = 0
+
+    # gene counts per species per cluster
+    for next_cluster in input_clustering:
+
+        # species counters per cluster
+        human_count = 0
+        fly_count = 0
+        worm_count = 0
+        aplysia_count = 0
+
+        info = next_cluster[ :-1 ].split( '\t' ) # cluster info
+
+        for next_identifier in info: # read through each gene identifier in the cluster
+            species_name = next_identifier.split( '|' )[ 0 ]
+            # update species counts for given cluster and total gene counts per species
+            if species_name == 'Human':
+                human_count = human_count + 1 # gene count for human in the cluster
+                human_all_genes = human_all_genes + 1 # total gene count for human for all clusters
+            elif species_name == 'Fly':
+                fly_count = fly_count + 1
+                fly_all_genes = fly_all_genes + 1
+            elif species_name == 'Worm':
+                worm_count = worm_count + 1
+                worm_all_genes = worm_all_genes + 1
+            elif species_name == 'Aplysia':
+                aplysia_count = aplysia_count + 1
+                aplysia_all_genes = aplysia_all_genes + 1
+            else:
+                error_message = 'Error: Species name is not recognized!'
+                print( error_message )
+
+        # update total cluster counts per species
+        if human_count > 0:
+            human_all_clusters = human_all_clusters + 1
+        if fly_count > 0:
+            fly_all_clusters = fly_all_clusters + 1
+        if worm_count > 0:
+            worm_all_clusters = worm_all_clusters + 1
+        if aplysia_count > 0:
+            aplysia_all_clusters = aplysia_all_clusters + 1
+
+        # update species-only cluster and gene counts
+        # human only cluster
+        if human_count > 0 and fly_count ==0 and worm_count == 0 and aplysia_count == 0:
+            human_only_genes = human_only_genes + human_count
+            human_only_clusters = human_only_clusters + 1
+        # fly only cluster
+        if fly_count > 0 and human_count ==0 and worm_count == 0 and aplysia_count == 0:
+            fly_only_genes = fly_only_genes + fly_count
+            fly_only_clusters = fly_only_clusters + 1
+        # worm only cluster
+        if worm_count > 0 and fly_count ==0 and human_count == 0 and aplysia_count == 0:
+            worm_only_genes = worm_only_genes + worm_count
+            worm_only_clusters = worm_only_clusters + 1
+        # aplysia only cluster
+        if aplysia_count > 0 and fly_count ==0 and worm_count == 0 and human_count == 0:
+            aplysia_only_genes = aplysia_only_genes + aplysia_count
+            aplysia_only_clusters = aplysia_only_clusters + 1
+
+        # ONLY aplysia - human cluster
+        if human_count > 0 and fly_count == 0 and worm_count == 0 and aplysia_count > 0:
+            aplysia_in_aplysia_human_genes_only = aplysia_in_aplysia_human_genes_only + aplysia_count
+            human_in_aplysia_human_genes_only = human_in_aplysia_human_genes_only + human_count
+            aplysia_human_clusters_only = aplysia_human_clusters_only + 1
+        # only aplysia - fly cluster
+        if human_count == 0 and fly_count > 0 and worm_count == 0 and aplysia_count > 0:
+            aplysia_in_aplysia_fly_genes_only = aplysia_in_aplysia_fly_genes_only + aplysia_count
+            fly_in_aplysia_fly_genes_only = fly_in_aplysia_fly_genes_only + fly_count
+            aplysia_fly_clusters_only = aplysia_fly_clusters_only + 1
+        # only aplysia - worm cluster
+        if human_count == 0 and fly_count == 0 and worm_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_worm_genes_only = aplysia_in_aplysia_worm_genes_only + aplysia_count
+            worm_in_aplysia_worm_genes_only = worm_in_aplysia_worm_genes_only + worm_count
+            aplysia_worm_clusters_only = aplysia_worm_clusters_only + 1
+        # only fly - human cluster
+        if human_count > 0 and fly_count > 0 and worm_count == 0 and aplysia_count == 0:
+            fly_in_fly_human_genes_only = fly_in_fly_human_genes_only + fly_count
+            human_in_fly_human_genes_only = human_in_fly_human_genes_only + human_count
+            fly_human_clusters_only = fly_human_clusters_only + 1
+        # only worm human cluster
+        if human_count > 0 and fly_count == 0 and worm_count > 0 and aplysia_count == 0:
+            worm_in_worm_human_genes_only = worm_in_worm_human_genes_only + worm_count
+            human_in_worm_human_genes_only = human_in_worm_human_genes_only + human_count
+            worm_human_clusters_only = worm_human_clusters_only + 1
+        # only fly worm cluster
+        if human_count == 0 and fly_count > 0 and worm_count > 0 and aplysia_count == 0:
+            fly_in_fly_worm_genes_only = fly_in_fly_worm_genes_only + fly_count
+            worm_in_fly_worm_genes_only = worm_in_fly_worm_genes_only + worm_count
+            fly_worm_clusters_only = fly_worm_clusters_only + 1
+
+        # ALL aplysia - human cluster
+        if human_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_human_genes_all = aplysia_in_aplysia_human_genes_all + aplysia_count
+            human_in_aplysia_human_genes_all = human_in_aplysia_human_genes_all + human_count
+            aplysia_human_clusters_all = aplysia_human_clusters_all + 1
+        # only aplysia - fly cluster
+        if fly_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_fly_genes_all = aplysia_in_aplysia_fly_genes_all + aplysia_count
+            fly_in_aplysia_fly_genes_all = fly_in_aplysia_fly_genes_all + fly_count
+            aplysia_fly_clusters_all = aplysia_fly_clusters_all + 1
+        # only aplysia - worm cluster
+        if worm_count > 0 and aplysia_count > 0:
+            aplysia_in_aplysia_worm_genes_all = aplysia_in_aplysia_worm_genes_all + aplysia_count
+            worm_in_aplysia_worm_genes_all = worm_in_aplysia_worm_genes_all + worm_count
+            aplysia_worm_clusters_all = aplysia_worm_clusters_all + 1
+        # only fly - human cluster
+        if human_count > 0 and fly_count > 0:
+            fly_in_fly_human_genes_all = fly_in_fly_human_genes_all + fly_count
+            human_in_fly_human_genes_all = human_in_fly_human_genes_all + human_count
+            fly_human_clusters_all = fly_human_clusters_all + 1
+        # only worm human cluster
+        if human_count > 0 and worm_count > 0:
+            worm_in_worm_human_genes_all = worm_in_worm_human_genes_all + worm_count
+            human_in_worm_human_genes_all = human_in_worm_human_genes_all + human_count
+            worm_human_clusters_all = worm_human_clusters_all + 1
+        # only fly worm cluster
+        if fly_count > 0 and worm_count > 0:
+            fly_in_fly_worm_genes_all = fly_in_fly_worm_genes_all + fly_count
+            worm_in_fly_worm_genes_all = worm_in_fly_worm_genes_all + worm_count
+            fly_worm_clusters_all = fly_worm_clusters_all + 1
+
+    # Cluster run
+    output = '#####\n##### ' + next_cluster_run + '\n#####\n\n'
+    output_counts.write(output)
+
+    # species-only cluster and gene counts
+    output = 'Human-only clusters:\t' + str( human_only_clusters ) + '\nHuman-only genes:\t' + str( human_only_genes ) + '\n\n'
+    output_counts.write( output )
+
+    output = 'Fly-only clusters:\t' + str( fly_only_clusters ) + '\nFly-only genes:\t' + str( fly_only_genes ) + '\n\n'
+    output_counts.write( output )
+
+    output = 'Worm-only clusters:\t' + str( worm_only_clusters ) + '\nWorm-only genes:\t' + str( worm_only_genes ) + '\n\n'
+    output_counts.write( output )
+
+    output = 'Aplysia-only clusters:\t' + str( aplysia_only_clusters ) + '\nAplysia-only genes:\t' + str( aplysia_only_genes ) + '\n\n'
+    output_counts.write( output )
+
+    # all clusters per species cluster and gene counts
+    output = 'Human-all clusters:\t' + str(human_all_clusters) + '\nHuman-all genes:\t' + str( human_all_genes) + '\n\n'
+    output_counts.write(output)
+
+    output = 'Fly-all clusters:\t' + str(fly_all_clusters) + '\nFly-all genes:\t' + str(fly_all_genes) + '\n\n'
+    output_counts.write(output)
+
+    output = 'Worm-all clusters:\t' + str(worm_all_clusters) + '\nWorm-all genes:\t' + str(worm_all_genes) + '\n\n'
+    output_counts.write(output)
+
+    output = 'Aplysia-all clusters:\t' + str(aplysia_all_clusters) + '\nAplysia-all genes:\t' + str( aplysia_all_genes) + '\n\n'
+    output_counts.write(output)
+
+
+    # species-species pair cluster and gene counts ONLY
+    output = 'Aplysia-Human ONLY clusters:\t' + str( aplysia_human_clusters_only ) + '\nAplysia genes in Aplysia-Human ONLY clusters:\t' + str( aplysia_in_aplysia_human_genes_only ) + '\nHuman genes in Aplysia-Human ONLY clusters:\t'  + str( human_in_aplysia_human_genes_only ) + '\n\n'
+    output_counts.write(output)
+
+    output = 'Aplysia-Fly ONLY clusters:\t' + str( aplysia_fly_clusters_only ) + '\nAplysia genes in Aplysia-Fly ONLY clusters:\t' + str( aplysia_in_aplysia_fly_genes_only ) + '\nFly genes in Aplysia-Fly ONLY clusters:\t'  + str( fly_in_aplysia_fly_genes_only ) + '\n\n'
+    output_counts.write(output)
+
+    output = 'Aplysia-Worm ONLY clusters:\t' + str( aplysia_worm_clusters_only ) + '\nAplysia genes in Aplysia-Worm ONLY clusters:\t' + str( aplysia_in_aplysia_worm_genes_only ) + '\nWorm genes in Aplysia-Worm ONLY clusters:\t'  + str( worm_in_aplysia_worm_genes_only ) + '\n\n'
+    output_counts.write(output)
+
+    output = 'Fly-Human ONLY clusters:\t' + str( fly_human_clusters_only ) + '\nFly genes in Fly-Human ONLY clusters:\t' + str( fly_in_fly_human_genes_only ) + '\nHuman genes in Fly-Human ONLY clusters:\t'  + str( human_in_fly_human_genes_only ) + '\n\n'
+    output_counts.write(output)
+
+    output = 'Worm-Human ONLY clusters:\t' + str( worm_human_clusters_only ) + '\nWorm genes in Worm-Human ONLY clusters:\t' + str( worm_in_worm_human_genes_only ) + '\nHuman genes in Worm-Human ONLY clusters:\t'  + str( human_in_worm_human_genes_only ) + '\n\n'
+    output_counts.write(output)
+
+    output = 'Fly-Worm ONLY clusters:\t' + str( fly_worm_clusters_only ) + '\nFly genes in Fly-Worm ONLY clusters:\t' + str( fly_in_fly_worm_genes_only ) + '\nWorm genes in Fly-Worm ONLY clusters:\t'  + str( worm_in_fly_worm_genes_only ) + '\n\n'
+    output_counts.write(output)
+
+    # species-species pair cluster and gene counts ALL
+    output = 'Aplysia-Human ALL clusters:\t' + str( aplysia_human_clusters_all ) + '\nAplysia genes in Aplysia-Human ALL clusters:\t' + str( aplysia_in_aplysia_human_genes_all ) + '\nHuman genes in Aplysia-Human ALL clusters:\t'  + str( human_in_aplysia_human_genes_all ) + '\n\n'
+    output_counts.write(output)
+
+    output = 'Aplysia-Fly ALL clusters:\t' + str( aplysia_fly_clusters_all ) + '\nAplysia genes in Aplysia-Fly ALL clusters:\t' + str( aplysia_in_aplysia_fly_genes_all ) + '\nFly genes in Aplysia-Fly ALL clusters:\t'  + str( fly_in_aplysia_fly_genes_all ) + '\n\n'
+    output_counts.write(output)
+
+    output = 'Aplysia-Worm ALL clusters:\t' + str( aplysia_worm_clusters_all ) + '\nAplysia genes in Aplysia-Worm ALL clusters:\t' + str( aplysia_in_aplysia_worm_genes_all ) + '\nWorm genes in Aplysia-Worm ALL clusters:\t'  + str( worm_in_aplysia_worm_genes_all ) + '\n\n'
+    output_counts.write(output)
+
+    output = 'Fly-Human ALL clusters:\t' + str( fly_human_clusters_all ) + '\nFly genes in Fly-Human ALL clusters:\t' + str( fly_in_fly_human_genes_all ) + '\nHuman genes in Fly-Human ALL clusters:\t'  + str( human_in_fly_human_genes_all ) + '\n\n'
+    output_counts.write(output)
+
+    output = 'Worm-Human ALL clusters:\t' + str( worm_human_clusters_all ) + '\nWorm genes in Worm-Human ALL clusters:\t' + str( worm_in_worm_human_genes_all ) + '\nHuman genes in Worm-Human ALL clusters:\t'  + str( human_in_worm_human_genes_all ) + '\n\n'
+    output_counts.write(output)
+
+    output = 'Fly-Worm ALL clusters:\t' + str( fly_worm_clusters_all ) + '\nFly genes in Fly-Worm ALL clusters:\t' + str( fly_in_fly_worm_genes_all ) + '\nWorm genes in Fly-Worm ALL clusters:\t'  + str( worm_in_fly_worm_genes_all ) + '\n\n'
+    output_counts.write(output)
+
+
+    output = '\n'
+    output_counts.write(output)
+
+    input_clustering.close()
+
+output_counts.close()
+input_clustering_runs.close()
