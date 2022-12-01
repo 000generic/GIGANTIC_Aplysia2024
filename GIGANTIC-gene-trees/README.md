@@ -4,7 +4,7 @@ This directory contains scripts used to generate GIGANTIC gene tree analyses of 
 
 The scripts and work was done by Jan Hsaio and Lola Chenxi Deng from summer 2020 to winter 2022, both in part as interns at the Salk Institute in the Chalasani Lab, and by Eric Edsinger summer 2019 to fall 2022 as a research scientist at the Salk Institute in the Chalasani Lab and fall 2022 as a visiting researcher at the University of Washington's Friday Harbor Laboratories marine field station.
 
-Gene trees were generated for the following gene families:
+Gene trees were generated for the following gene superfamilies and families:
 
 channels ANO hgncgg865 Ano tmem16
 
