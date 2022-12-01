@@ -1,0 +1,1 @@
+cat projectdb-buscos/busco_metazoa-*/short* > 9-busco-short-summaries

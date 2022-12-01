@@ -1,0 +1,23 @@
+#! python
+# metazoa306/projectdb-fastas/projectdb-Kingdom_unclassified-Phylum_unclassified-Choanoflagellata-Craspedida-Salpingoecidae-Monosiga-brevicollis-81824-T1.aa:9202
+
+
+input_grep = open( 'output/2-genes-per-metazoa307-T1-genome', 'r' )
+output_map = open( 'output/3-map-gspp-phyloname-count', 'w' )
+
+for next_genome in input_grep:
+
+    info = next_genome[ :-1 ].split( ':' )
+    count = info[ -1 ]
+    fasta = info[ 0 ].split( '/' )[ -1 ]
+    info_fasta = fasta.split( '-' )
+    print( info_fasta )
+    phyloname = '-'.join( info_fasta[ 1:-1 ] )
+    phyloshort = '-'.join( info_fasta[ 1:-2 ] )
+    gspp = info_fasta[ 6 ] + ' ' + info_fasta[ 7 ]
+
+    output = phyloname + '\t' + phyloshort + '\t' + gspp + '\t' + count + '\n'
+    output_map.write( output )
+
+input_grep.close()
+output_map.close()

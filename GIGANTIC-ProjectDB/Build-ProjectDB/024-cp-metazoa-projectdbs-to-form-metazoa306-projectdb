@@ -1,0 +1,18 @@
+#! /bin/bash
+
+# make metazoa306 directories
+mkdir metazoa307
+mkdir metazoa307/projectdb-fastas
+mkdir output
+#mkdir metazoa307/projectdb-buscos
+echo
+
+# copy projectdbs to metazoa306 projectdb
+cp -r ../../metazoa26/2-projectDB/projectdb-fastas/* metazoa307/projectdb-fastas/
+#cp -r ../../metazoa26/2-projectDB/projectdb-buscos/* metazoa307/projectdb-buscos/
+cp -r metazoa307-minus-26/projectdb-fastas/* metazoa307/projectdb-fastas/
+#cp -r metazoa307-minus-26/projectdb-buscos/* metazoa307/projectdb-buscos/
+
+# combine busco results for Metazoa26 and MetazoaALL minus metazoa26
+#cat ../../metazoa26/2-projectDB/7-busco-short-summaries metazoaALL-306-minus-metazoa26/7-busco-short-summaries > metazoa306/7-busco-short-summaries
+#cat ../../metazoa26/2-projectDB/3-map-projectdb-headers-to-old-headers metazoaALL-306-minus-metazoa26/3-map-projectdb-headers-to-old-headers > metazoa306/3-map-projectdb-headers-to-old-headers

@@ -1,0 +1,3 @@
+#! /bin/bash
+
+cat metazoa307-minus-26/projectdb-buscos/busco_*/short_summary*  > output/5-busco-short-summaries-metazoa308-minus-metazoa26

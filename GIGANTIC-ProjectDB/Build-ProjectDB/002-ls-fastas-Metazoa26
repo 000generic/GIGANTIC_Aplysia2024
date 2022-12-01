@@ -1,0 +1,1 @@
+ls -1 output/1-output/* > output/2-list-fastas

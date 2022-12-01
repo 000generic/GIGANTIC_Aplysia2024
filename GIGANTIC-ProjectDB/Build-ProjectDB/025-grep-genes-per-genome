@@ -1,0 +1,1 @@
+grep -c '>' metazoa307/projectdb-fastas/*aa > output/2-genes-per-metazoa307-T1-genome

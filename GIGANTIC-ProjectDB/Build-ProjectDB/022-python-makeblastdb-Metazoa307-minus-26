@@ -1,0 +1,13 @@
+#! python
+
+input_list = open( 'output/6-list-fastas', 'r' )
+output_makeblastdb = open( '011-makeblastdb', 'w' )
+
+for next_line in input_list:
+
+    fasta = next_line[ :-1 ]
+    output = '/usr/bin/makeblastdb -in ' + fasta + ' -parse_seqids  -dbtype prot\n'
+    output_makeblastdb.write( output )
+
+input_list.close()
+output_makeblastdb.close()

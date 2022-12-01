@@ -1,0 +1,13 @@
+#! /bin/bash
+
+mkdir projectdb-buscos
+mkdir projectdb-fastas
+mkdir output
+echo
+mkdir output/1-output
+midir output/3-output
+
+echo
+
+cp ../1-downloaded/output/15-output/*aa output/1-output/
+

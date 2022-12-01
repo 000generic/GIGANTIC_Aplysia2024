@@ -1,0 +1,3 @@
+#! /bin/bash
+
+cat ../../../../metazoa26/pipeline-blocks/1-databases/3-projectDB/output/3-map-projectdb-headers-to-old-headers metazoa307-minus-26/output/3-map-projectdb-headers-to-old-headers > output/4-map-Metazoa307-projectdb-to-source-headers
