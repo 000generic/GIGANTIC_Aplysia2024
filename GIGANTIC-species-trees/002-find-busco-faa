@@ -1,0 +1,4 @@
+#! /bin/bash
+# GIGANTIC species tree script
+
+find  ../busco/output/3*/run_metazoa_odb10/busco_sequences/single_copy_busco_sequences/ -name "*faa" > output/2-list-busco-faa

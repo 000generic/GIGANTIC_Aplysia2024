@@ -1,0 +1,5 @@
+#! /bin/bash
+# BUSCO script
+
+mkdir output
+mkdir output/6-busco-short-summaries

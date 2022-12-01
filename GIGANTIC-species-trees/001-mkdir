@@ -1,0 +1,6 @@
+#! /bin/bash
+# GIGANTIC species tree script
+
+mkdir output
+mkdir output/eachbusco_X_allspecies output/eachspecies_X_allbusco 
+

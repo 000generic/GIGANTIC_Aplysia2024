@@ -1,0 +1,4 @@
+#! /bin/bash
+# BUSCO script
+
+ls projectdb/*aa > output/1-list-fastas

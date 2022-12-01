@@ -1,0 +1,27 @@
+#! python
+# BUSCO script
+
+# projectdb/Metazoa-Annelida-Polychaeta-Order_unclassified14-Capitellidae-Capitella-teleta-283909-T1.aa
+
+input_fastas = open( 'output/1-list-fastas', 'r' )
+output_commands = open('003-busco-metazoa', 'w')
+
+for next_line in input_fastas:
+
+    fasta = next_line[ :-1 ]
+    phylogenome = fasta.split( '/' )[ -1 ]
+    info_1 = phylogenome.split( '-' )
+    name_1 = '-'.join( info_1[ 1: ] )
+    info_2 = name_1.split( '.' )
+    name_2 = '.'.join( info_2[ :-1 ] )
+
+    # busco -i ../assemblies-iridian-public/zanfona/ --lineage_dataset metazoa_odb10 -m genome -o 22-output-busco-metazoa-zanfona --out_path output --cpu 30 --force
+    output = 'busco -i ' + fasta + '  --lineage_dataset metazoa_odb10 --mode proteins -o 3-busco_metazoa-' + name_2 + ' --out_path output --cpu 20 --force &&\n'
+ 
+    output_commands.write( output )
+
+output = 'echo\n'
+output_commands.write( output )
+
+input_fastas.close()
+output_commands.close()

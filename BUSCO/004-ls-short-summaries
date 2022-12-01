@@ -1,0 +1,4 @@
+#! /bin/bash
+# BUSCO script
+
+ls output/3-*/short_summary*txt > output/4-list-short-summaries

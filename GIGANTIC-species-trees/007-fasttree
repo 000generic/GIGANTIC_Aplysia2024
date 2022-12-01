@@ -1,0 +1,4 @@
+#! /bin/bash
+# GIGANTIC species tree script
+
+fasttree -spr 4 -mlacc 2 -slownni -gamma -boot 2000 -log output/6-log-species19-supermatrix-species-tree output/5-catsequences/5-input  > output/7-species19-supermatrix-species-tree.fasttree
