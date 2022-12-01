@@ -1,0 +1,4 @@
+#! /bin/bash
+# SignalP script
+
+ls ../../species19/projectdb/Metazoa-*aa > output/11-list-fastas

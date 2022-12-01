@@ -1,0 +1,20 @@
+#! python
+# SignalP script
+
+input_fastas = open( '1-list-fastas', 'r' )
+output_command = open( '003-signalp', 'w' )
+
+output = ''
+
+for next_fasta in input_fastas:
+    
+    info = next_fasta.split( '/' )
+    info_2 = info[ -1 ].split( '-' )
+    gspp = '-'.join( info_2[ :-2 ] )
+    output = output + 'signalp6  --fastafile ' + next_fasta[ :-1 ] + ' --output_dir ' + gspp + ' --format txt --organism eukarya --mode fast --bsize 72 --write_procs 72 && \n'
+
+output = output[ :-4 ] + '\n'
+output_command.write( output )
+
+input_fastas.close()
+output_command.close()
