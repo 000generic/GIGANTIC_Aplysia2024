@@ -1,0 +1,77 @@
+#! python
+# GIGANTIC HGNC script
+
+#  HGNC ID Approved symbol Approved name   Status  Locus type      Previous symbols        Alias symbols   Chromosome      NCBI Gene ID    Ensembl gene ID Vega gene ID    Group ID        Group name
+# HGNC:5286       HTR1A   5-hydroxytryptamine receptor 1A Approved        gene with protein product       ADRB2RL1, ADRBRL1       5-HT1A  5q12.3  3350    ENSG00000178394 OTTHUMG00000162279      1705-hydroxytryptamine receptors, G protein-coupled
+
+# >Metazoa-Chordata-Mammalia-Primates-Hominidae-Homo-sapiens-RNF14___XP_047273857.1
+
+### USER INPUT
+USER_INPUT_provide_your_HGNC_annotation_file_here = open( 'HGNCgg28-zinc-finger-C2H2.txt', 'r' )
+###
+
+### DO NOT MODIFY PAST HERE
+input_fasta = open( 'Chordata-Homo-sapiens-T1-HGNC-PARSING.aa', 'r' )
+
+id_seq = {}
+id_ncbiID = {}
+for next_line in input_fasta:
+
+    if next_line[ 0 ] == '>' :
+
+        info_ids = next_line[ 1:-1 ].split( '-' )[ -1 ]
+        gene_symbol = info_ids.split( '___')[ 0 ]
+        ncbi_id = info_ids.split( '___')[ 1 ]
+        id_seq[ gene_symbol ] = ''
+        id_ncbiID[ gene_symbol ] = ncbi_id
+
+    else:
+
+        id_seq[ gene_symbol ] = id_seq[ gene_symbol ] + next_line[ :-1 ]
+
+current_group_id = ''
+count = 0
+for next_line in USER_INPUT_provide_your_HGNC_annotation_file_here:
+
+    if count == 0:
+        count = count + 1
+
+    else:
+
+        info = next_line[ :-1 ].split( '\t' )
+        gene_symbol = info[ 1 ]
+        gene_name = info[ 2 ]
+        group_id = info[ -2 ]
+        group_name = '_'.join( info[ -1].split( ' ' ) )
+        group_name = '_'.join( group_name.split( ',' ) )
+
+
+        if gene_symbol in id_seq.keys():
+            print( '!!!' )
+            ncbi_id = id_ncbiID[ gene_symbol ]
+            header  = '>rgs-human-' + gene_symbol + '-HGNC_group_' + group_id + '-' + group_name + '-' + ncbi_id
+            sequence = id_seq[ gene_symbol ]
+
+            if group_id == current_group_id:
+
+                output = header + '\n' + sequence + '\n'
+                output_fasta.write( output )
+                map = 'Metazoa-Chordata-Mammalia-Primates-Hominidae-Homo-sapiens' + '\n' + 'rgs-human-' + gene_symbol + '-HGNC_group_' + group_id + '-' + group_name + '\n' + gene_name + '\n\n\n'
+                output_map.write( map )
+
+            else:
+
+                current_group_id = group_id
+                output_fasta = open( '1-hgnc-group-' + current_group_id + '.aa', 'w' )
+                output_map = open( '1-hgnc-group-' + current_group_id + '-MAP', 'w' )
+
+                output = header + '\n' + sequence + '\n'
+                output_fasta.write( output )
+                map = 'Metazoa-Chordata-Mammalia-Primates-Hominidae-Homo-sapiens' + '\n' + 'rgs-human-' + gene_symbol + '-HGNC_group_' + group_id + '-' + group_name + '\n' + gene_name + '\n\n\n'
+                output_map.write( map )
+
+        else:
+            pass
+
+input_fasta.close()
+USER_INPUT_provide_your_HGNC_annotation_file_here.close()

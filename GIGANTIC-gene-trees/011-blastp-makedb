@@ -1,0 +1,4 @@
+#! /bin/bash
+# GIGANTIC gene trees script
+
+/usr/bin/makeblastdb -in output/9-rgs-all-genomes-combined.fasta-rgs -dbtype prot

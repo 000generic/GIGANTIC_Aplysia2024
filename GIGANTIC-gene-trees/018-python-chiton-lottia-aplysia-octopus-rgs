@@ -1,0 +1,45 @@
+#! python
+# GIGANTIC gene trees script
+
+# human, chiton, aplysia, octopus
+
+input_fasta = open( 'output/17-AGS_blastp-rgs-hgnc-human-transcription_factor_zinc_finger_family_X_species19.aa', 'r' )
+output_fasta_3 = open( 'output/18-AGS_blastp-rgs-hgnc-human-transcription_factor_zinc_finger_family_X_keepers3.aa', 'w' )
+output_fasta_5 = open( 'output/18-AGS_blastp-rgs-hgnc-human-transcription_factor_zinc_finger_family_X_keepers5.aa', 'w' )
+
+headers_seqs = {}
+keepers_5 = [ 'Acanthopleura-granulata', 'Lottia-gigantea', 'Aplysia-californica', 'Nautilus-pompilius', 'Octopus-bimaculoides' ]
+keepers_3 = [ 'Acanthopleura-granulata', 'Aplysia-californica', 'Octopus-bimaculoides' ]
+
+for next_line in input_fasta:
+
+    if next_line[ 0 ] == '>':
+        header = next_line[ 1:-1 ]
+        headers_seqs[ header ] = ''
+
+    else:
+        sequence = next_line[ :-1 ]
+        headers_seqs[ header ] = headers_seqs[ header ] + sequence
+
+for next_header in headers_seqs:
+    info = next_header.split( '-' )
+    output = '>' + next_header + '\n' + headers_seqs[ next_header ] + '\n'
+    
+    if info[ 0 ] == 'rgs':
+        output_fasta_3.write( output )
+        output_fasta_5.write( output )
+        
+    else:
+        genus = info[ 5 ]
+        species = info [ 6 ]
+        gspp = genus + '-' + species
+        
+        if gspp in keepers_3:
+            output_fasta_3.write( output )
+
+        if gspp in keepers_5:
+            output_fasta_5.write( output )
+
+input_fasta.close()
+output_fasta_3.close()
+output_fasta_5.close()

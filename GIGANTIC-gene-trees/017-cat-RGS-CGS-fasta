@@ -1,0 +1,4 @@
+#! /bin/bash
+# GIGANTIC gene trees script
+
+cat input/rgs*.aa output/16-CGS-final-sequences-by-blastp-RBF.fasta > output/17-AGS_blastp-rgs-hgnc-human-transcription_factor_zinc_finger_family_X_species19.aa

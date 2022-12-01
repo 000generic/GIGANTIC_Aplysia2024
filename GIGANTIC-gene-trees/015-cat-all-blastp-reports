@@ -1,0 +1,4 @@
+#! /bin/bash
+# GIGANTIC gene trees script
+
+cat output/14-* > output/15-all-blastp-all-reports

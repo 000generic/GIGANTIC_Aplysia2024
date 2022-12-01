@@ -1,0 +1,7 @@
+#! /bin/bash
+# GIGANTIC gene trees script
+
+mkdir output
+echo
+ls -1 ../../../../projectdbs/species19/*aa > output/1-list-projectdb-blastdbs
+ls -1 input/rgs*.aa > output/1-list-rgs

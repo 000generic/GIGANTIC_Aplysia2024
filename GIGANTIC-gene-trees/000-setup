@@ -1,0 +1,6 @@
+#! /bin/bash
+# GIGANTIC gene trees script
+
+mkdir output
+mkdir input
+cp ../../rgs-preparation/2-all-families-in-superfamily.aa input/rgs-human-transcription_factor_zinc_finger.aa

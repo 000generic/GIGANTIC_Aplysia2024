@@ -1,0 +1,4 @@
+#! /bin/bash
+# GIGANTIC gene trees script
+
+mafft  --originalseqonly --maxiterate 1000 --reorder  --bl 45 --thread 62 output/2-AGS-hgnc-transcription_factor_zinc_finger_C2H2_family-family-blastp_X_species19.aa > output/3-AGS-hgnc-transcription_factor_zinc_finger_C2H2_family-family-blastp_X_species19.mafft

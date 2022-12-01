@@ -1,0 +1,7 @@
+#! /bin/bash
+# GIGANTIC gene trees script
+
+ls output/6*genome* > output/7-list-reports
+ls ../../../../projectdbs/species19/*Homo-sapiens*aa > output/7-list-rgs-projectdb-fastas
+#ls ../../../projectdb/*Drosophila-melanogaster*aa >> output/7-list-rgs-projectdb-fastas
+#ls ../../../projectdb/*Caenorhabditis-elegans*aa >> output/7-list-rgs-projectdb-fastas

@@ -1,0 +1,5 @@
+#! /bin/bash
+# GIGANTIC gene trees script
+
+ls output/3-blast-report-rgs_X_projectdb-* > output/4-list-reports
+ls ../../../../projectdbs/species19/*aa > output/4-list-fastas

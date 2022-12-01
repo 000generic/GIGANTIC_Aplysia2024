@@ -1,0 +1,4 @@
+#! /bin/bash
+# GIGANTIC gene trees script
+
+iqtree -s output/4-AGS-hgncXXXX-family-blastp_X_species19.clipkit-smartgap -m MFP --prefix output/5-AGS-hgncXXXX-family-blastp_X_species19 --rate -B 2000 -alrt 2000 -T AUTO -bnni 

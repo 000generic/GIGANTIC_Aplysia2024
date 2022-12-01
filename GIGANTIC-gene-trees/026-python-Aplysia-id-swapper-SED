@@ -1,0 +1,50 @@
+#! python
+# GIGANTIC gene trees script
+
+# output/5-aplysia-signalp-deeploc-no-pfam-filtered-sps
+
+# Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-moroz2022_GeneID:101850063_XP_012947014.1  Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-gigantic20220627164247_seq0006160618aa
+
+# Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-gigantic20220627164247_seq0006140683aa/Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-moroz2022_GeneID:101857451_XP_005089416.2
+
+# Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-gigantic20220627164247_seq0006151839aa
+# Aplysia-californica-gigantic20220627164247_seq0006141555aa
+
+input_files = open( 'output/7-list-files-to-update-identifiers-in', 'r' )
+output_core = '009-sed-Aplysia-seqid-swapper'
+
+counter = 0
+for next_file in input_files:
+        counter = counter + 1
+        filename_output = output_core + '-' + str( counter )
+        output_command = open( filename_output, 'w' )
+
+        input_map = open( '/scratch2/eedsinger/projects/aplysia/projectdbs/species313/2-map-source-gigantic-species311-ids', 'r')
+        filepath = next_file[ :-1 ]
+        info_file_1 = filepath.split( '/' )[ -1 ]
+        info_file_2 = info_file_1.split( '-' )
+        new_file = 'output/9-' + '-'.join( info_file_2[ 1: ] )
+        output = 'cp ' + filepath + ' ' + new_file + '\n'
+        output_command.write( output )
+
+        for next_line in input_map:
+                info = next_line[ :-1 ].split( '\t' )
+                source_id = info[ 0 ]
+                source_info = source_id.split( '-' )
+                source_short_id = '_'.join( source_info[ -1 ].split( '_' )[ 1: ] )
+                gigantic_id = info[ 1 ]
+                gigantic_short_id = gigantic_id.split( '-' )[ -1 ]
+
+                gspp = '-'.join( source_id.split( '-' )[ :7 ] )
+
+                if gspp == 'Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica':
+                        output = 'sed -i \'s/' + gigantic_id + '/' + source_id + '/g\' ' + new_file + '\n'
+                        output_command.write( output )
+                        output = 'sed -i \'s/' + gigantic_short_id + '/' + source_short_id + '/g\' ' + new_file + '\n'
+                        output_command.write( output )
+                else:
+                        pass
+
+        input_map.close()
+        output_command.close()
+output_command.close()

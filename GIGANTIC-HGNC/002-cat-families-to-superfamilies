@@ -1,0 +1,4 @@
+#! /bin/bash
+# GIGANTIC HGNC script
+
+cat 1-*aa > 2-all-families-in-superfamily.aa
