@@ -1,0 +1,6 @@
+#! /bin/bash
+# DeepTmHMM script
+
+ls species19-fastas/projectdb/* > output/1-list-fastas
+
+

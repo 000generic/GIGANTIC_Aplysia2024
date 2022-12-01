@@ -1,0 +1,4 @@
+#! /bin/bash
+# DeepTmHMM script
+
+ls /scratch2/eedsinger/projects/aplysia/projectdbs/species19/projectdb/Metazoa-*aa > output/11-list-species19-fastas
