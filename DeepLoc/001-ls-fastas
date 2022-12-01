@@ -1,0 +1,5 @@
+#! /bin/bash
+# DeepLoc script
+
+ls species19/projectdb/*aa > output/1-list-fastas
+
