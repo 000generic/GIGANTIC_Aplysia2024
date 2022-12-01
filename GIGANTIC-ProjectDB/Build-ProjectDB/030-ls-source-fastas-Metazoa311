@@ -1,0 +1,1 @@
+ls -1 source-fastas/* > 1-list-source-fastas

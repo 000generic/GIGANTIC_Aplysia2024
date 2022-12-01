@@ -1,0 +1,9 @@
+#mkdir species311-fastas
+#mkdir source-fastas
+#mkdir species311-interproscan
+
+# fastas are sourced from metazoa307 and euprymna and bimaculoides come from octopus plus vitellongenin projectdb
+
+date_time=$(date '+%Y%m%d%H%M%S')
+echo $date_time > 0-date_time
+

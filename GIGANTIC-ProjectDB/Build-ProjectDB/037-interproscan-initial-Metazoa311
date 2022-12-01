@@ -1,0 +1,28 @@
+/home/eedsinger/software/interproscan/interproscan-5.48-83.0/interproscan.sh --applications Pfam --input  ../species311/species311-fastas/*Acanthopleura-granulata*aa --cpu 45 --disable-precalc
+/home/eedsinger/software/interproscan/interproscan-5.48-83.0/interproscan.sh --applications Pfam --input  ../species311/species311-fastas/*Lottia-gigantea*aa  --cpu 45 --disable-precalc
+/home/eedsinger/software/interproscan/interproscan-5.48-83.0/interproscan.sh --applications Pfam --input  ../species311/species311-fastas/*Gigantopelta-aegis*aa  --cpu 45 --disable-precalc
+/home/eedsinger/software/interproscan/interproscan-5.48-83.0/interproscan.sh --applications Pfam --input  ../species311/species311-fastas/*Pomacea-canaliculata*aa  --cpu 45 --disable-precalc
+/home/eedsinger/software/interproscan/interproscan-5.48-83.0/interproscan.sh --applications Pfam --input  ../species311/species311-fastas/*Nautilus-pompilius*aa  --cpu 45 --disable-precalc
+/home/eedsinger/software/interproscan/interproscan-5.48-83.0/interproscan.sh --applications Pfam --input  ../species311/species311-fastas/*Octopus-bimaculoides*aa  --cpu 45 --disable-precalc
+/home/eedsinger/software/interproscan/interproscan-5.48-83.0/interproscan.sh --applications Pfam --input  ../species311/species311-fastas/*Octopus-sinensis*aa --cpu 45 --disable-precalc
+/home/eedsinger/software/interproscan/interproscan-5.48-83.0/interproscan.sh --applications Pfam --input  ../species311/species311-fastas/*Elysia-chlorotica*aa  --cpu 45 --disable-precalc
+/home/eedsinger/software/interproscan/interproscan-5.48-83.0/interproscan.sh --applications Pfam --input  ../species311/species311-fastas/*Achatina-immaculata*aa  --cpu 45 --disable-precalc
+/home/eedsinger/software/interproscan/interproscan-5.48-83.0/interproscan.sh --applications Pfam --input  ../species311/species311-fastas/*Cyclina-sinensis*aa  --cpu 45 --disable-precalc
+/home/eedsinger/software/interproscan/interproscan-5.48-83.0/interproscan.sh --applications Pfam --input  ../species311/species311-fastas/*Mizuhopecten-yessoensis*aa  --cpu 45 --disable-precalc
+/home/eedsinger/software/interproscan/interproscan-5.48-83.0/interproscan.sh --applications Pfam --input  ../species311/species311-fastas/*Perna-viridis*aa  --cpu 45 --disable-precalc
+/home/eedsinger/software/interproscan/interproscan-5.48-83.0/interproscan.sh --applications Pfam --input  ../species311/species311-fastas/*Crassostrea-gigas*aa  --cpu 45 --disable-precalc
+
+#Acanthopleura-granulata
+#Aplysia-californica  #### need to RUN
+#Lottia-gigantea
+#Gigantopelta-aegis
+#Pomacea-canaliculata
+#Nautilus-pompilius
+#Octopus-bimaculoides
+#Octopus-sinensis
+#Elysia-chlorotica
+#Achatina-immaculata
+#Cyclina-sinensis
+#Mizuhopecten-yessoensis
+#Perna-viridis
+#Crassostrea-gigas

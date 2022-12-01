@@ -1,0 +1,62 @@
+#! python
+
+input_list = open( '1-list-source-fastas', 'r' )
+input_datetime = open( '0-date_time', 'r' )
+
+output_map_ids = open( '2-map-source-gigantic-species311-ids', 'w' )
+output_map_fastas = open( '2-map-source-gigantic-species311-fastas', 'w' )
+
+for next_line in input_datetime:
+
+    datetime = next_line[ :-1 ]
+
+counter = 0
+unclassified_counter = 0
+for next_fasta in input_list:
+
+    input_fasta = open( next_fasta[ :-1 ], 'r' )
+    fasta_core = next_fasta[ :-1 ].split( '/' )[ -1 ]
+    fasta_core_clean = 'unclassified'.join( fasta_core.split( 'unresolved' ) )
+    
+    if len( fasta_core_clean.split( 'unclassified' ) ) > 1:
+        new_core = ''
+        for next_element in fasta_core_clean.split( 'unclassified' )[ :-1 ]:
+            unclassified_counter = unclassified_counter + 1
+            new_core = new_core + next_element + 'unclassified' + str(unclassified_counter )
+        new_core = new_core + fasta_core_clean.split( 'unclassified' )[ -1 ]
+    else:
+        new_core = fasta_core_clean
+
+    new_core = '-'.join( new_core.split( '-' )[ 1: ] )
+    gspp = '-'.join( new_core.split( '-' )[ :-2 ] )
+    new_path = 'species311-fastas/' + new_core
+    output_fasta = open( new_path, 'w' )
+                         
+    source = fasta_core
+    output = fasta_core + '\t' + new_core + '\n'
+    output_map_fastas.write( output )
+    
+    for next_line in input_fasta:
+
+        if next_line[ 0 ] == '>':
+
+            counter = counter + 1
+            source = next_line[ 1:-1 ]
+            header =  '>' + gspp + '-gigantic' + datetime + '_seq' + str( counter ).zfill(10) + 'aa\n'
+            output_fasta.write( header )
+
+            output = source + '\t' + header[ 1: ]
+            output_map_ids.write( output )
+            
+        else:
+
+            sequence = next_line
+            output_fasta.write( sequence )
+
+    input_fasta.close()
+    output_fasta.close()
+
+input_list.close()
+input_datetime.close()
+output_map_ids.close()
+output_map_fastas.close()

@@ -1,0 +1,14 @@
+#! python
+
+input_list = open( '3-list-species-set-fastas', 'r' )
+output_makeblastdb = open( '005-makeblastdb', 'w' )
+
+for next_line in input_list:
+
+    fasta = next_line[ :-1 ]
+    database_name = '.'.join( fasta.split( '.' )[ :-1 ] )
+    output = '/usr/bin/makeblastdb -in ' + fasta + ' -dbtype prot -out ' + fasta + '\n'
+    output_makeblastdb.write( output )
+
+input_list.close()
+output_makeblastdb.close()
