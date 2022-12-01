@@ -1,0 +1,52 @@
+#! python
+# MetaPredict scripts
+
+input_idrs = open( 'output/10-list-metapredict-idrs-files', 'r' )
+input_fastas = open( 'output/11-list-fastas', 'r' )
+
+# >Metazoa-Chordata-Mammalia-Primates-Hominidae-Homo-sapiens-gigantic20220627164247_seq0004217310aa IDR_START=319 IDR_END=387
+
+seqid_idrs = {}
+for next_idr in input_idrs:
+    input_idr = open( next_idr[ :-1 ], 'r' )
+    for next_line in input_idr:
+        if next_line[ 0 ] == '>':
+            info = next_line[ :-1 ].split( ' ' )
+            seqid = info[ 0 ][ 1: ]
+
+            if seqid in seqid_idrs.keys():
+                start = info[ 1 ].split( '=' )[ -1 ]
+                stop = info[ 2 ].split( '=' )[ -1 ]
+                idr = '_IDR_' + start + '_' + stop 
+                seqid_idrs[ seqid ] = seqid_idrs[ seqid ] + idr
+            else:
+                seqid_idrs[ seqid ] = 'MetaPredict'
+                start = info[ 1 ].split( '=' )[ -1 ]
+                stop = info[ 2 ].split( '=' )[ -1 ]
+                idr = '_IDR_' + start + '_' + stop 
+                seqid_idrs[ seqid ] = seqid_idrs[ seqid ] + idr
+
+for next_fasta in input_fastas:
+    input_fasta = open( next_fasta[ :-1 ], 'r' )
+    file_name = next_fasta.split( '/' )[ -1 ]
+    core_name = '-'.join( file_name.split( '-' )[ :7 ] )
+    new_file = 'output/12-metapredict-idr-annotations-' + core_name
+    output_annotations = open( new_file, 'w' )
+    output = '[ Sequence Id ]' + '\t' + '[ Metapredict Inherent Disorganized Region Annotation ]' + '\n'
+    output_annotations.write( output )
+    
+    for next_line in input_fasta:
+        if next_line[ 0 ] == '>':
+            seqid = next_line[ 1:-1 ]
+            if seqid in seqid_idrs.keys():
+                idrs = seqid_idrs[ seqid ]
+                output = seqid + '\t' + idrs + '\n'
+            else:
+                output = seqid + '\t' + 'None' + '\n'
+            output_annotations.write( output )
+        else:
+            pass
+    input_fasta.close()
+    output_annotations.close()
+input_idrs.close()
+input_fastas.close()

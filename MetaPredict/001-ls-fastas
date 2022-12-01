@@ -1,0 +1,4 @@
+#! /bin/bash
+# MetaPredict scripts
+
+ls ../../species19/projectdb/Metazoa-* > output/1-list-fastas

@@ -1,0 +1,17 @@
+#! python
+# MetaPredict scripts
+
+input_fastas = open( 'output/1-list-fastas', 'r' )
+output_metapredict = open( '003-metapredict', 'w' )
+
+
+for next_fasta in input_fastas:
+
+    fasta = next_fasta[ :-1 ]
+    fasta_name = fasta.split( '/' ) [ -1 ]
+    core_name = '-'.join( fasta_name.split('-' )[ :7 ] )
+    output = 'metapredict-predict-disorder ' + fasta + ' -o output/metapredict-' + core_name + '\n'
+    output_metapredict.write( output )
+
+input_fastas.close()
+output_metapredict.close()

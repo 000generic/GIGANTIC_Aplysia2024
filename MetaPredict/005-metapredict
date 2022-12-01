@@ -1,0 +1,22 @@
+#! /bin/bash
+# MetaPredict scripts
+
+metapredict-predict-idrs ../species19/projectdb/Metazoa-Annelida-Polychaeta-Order_unclassified14-Capitellidae-Capitella-teleta-283909-T1.aa -o output/metapredict-Metazoa-Annelida-Polychaeta-Order_unclassified14-Capitellidae-Capitella-teleta-idrs
+metapredict-predict-idrs ../species19/projectdb/Metazoa-Arthropoda-Insecta-Diptera-Drosophilidae-Drosophila-melanogaster-7227-T1.aa -o output/metapredict-Metazoa-Arthropoda-Insecta-Diptera-Drosophilidae-Drosophila-melanogaster-idrs
+metapredict-predict-idrs ../species19/projectdb/Metazoa-Brachiopoda-Lingulata-Lingulida-Lingulidae-Lingula-anatina-7574-T1.aa -o output/metapredict-Metazoa-Brachiopoda-Lingulata-Lingulida-Lingulidae-Lingula-anatina-idrs
+metapredict-predict-idrs ../species19/projectdb/Metazoa-Chordata-Mammalia-Primates-Hominidae-Homo-sapiens-9606-T1.aa -o output/metapredict-Metazoa-Chordata-Mammalia-Primates-Hominidae-Homo-sapiens-idrs
+metapredict-predict-idrs ../species19/projectdb/Metazoa-Mollusca-Bivalvia-Ostreida-Ostreidae-Crassostrea-gigas-29159-T1.aa -o output/metapredict-Metazoa-Mollusca-Bivalvia-Ostreida-Ostreidae-Crassostrea-gigas-idrs
+metapredict-predict-idrs ../species19/projectdb/Metazoa-Mollusca-Bivalvia-Pectinida-Pectinidae-Mizuhopecten-yessoensis-6573-T1.aa -o output/metapredict-Metazoa-Mollusca-Bivalvia-Pectinida-Pectinidae-Mizuhopecten-yessoensis-idrs
+metapredict-predict-idrs ../species19/projectdb/Metazoa-Mollusca-Bivalvia-Venerida-Veneridae-Cyclina-sinensis-120566-T1.aa -o output/metapredict-Metazoa-Mollusca-Bivalvia-Venerida-Veneridae-Cyclina-sinensis-idrs
+metapredict-predict-idrs ../species19/projectdb/Metazoa-Mollusca-Cephalopoda-Nautilida-Nautilidae-Nautilus-pompilius-34573-T1.aa -o output/metapredict-Metazoa-Mollusca-Cephalopoda-Nautilida-Nautilidae-Nautilus-pompilius-idrs
+metapredict-predict-idrs ../species19/projectdb/Metazoa-Mollusca-Cephalopoda-Octopoda-Argonautidae-Argonauta-argo-294695-T1.aa -o output/metapredict-Metazoa-Mollusca-Cephalopoda-Octopoda-Argonautidae-Argonauta-argo-idrs
+metapredict-predict-idrs ../species19/projectdb/Metazoa-Mollusca-Cephalopoda-Octopoda-Octopodidae-Octopus-bimaculoides-37653-T1.aa -o output/metapredict-Metazoa-Mollusca-Cephalopoda-Octopoda-Octopodidae-Octopus-bimaculoides-idrs
+metapredict-predict-idrs ../species19/projectdb/Metazoa-Mollusca-Class_unclassified38-Order_unclassified39-Family_unclassified40-Achatina-fulica-0000_ncbiID_unclassified41-T1.aa -o output/metapredict-Metazoa-Mollusca-Class_unclassified38-Order_unclassified39-Family_unclassified40-Achatina-fulica-idrs
+metapredict-predict-idrs ../species19/projectdb/Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-6500-T1.aa -o output/metapredict-Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-idrs
+metapredict-predict-idrs ../species19/projectdb/Metazoa-Mollusca-Gastropoda-Architaenioglossa-Ampullariidae-Pomacea-canaliculata-400727-T1.aa -o output/metapredict-Metazoa-Mollusca-Gastropoda-Architaenioglossa-Ampullariidae-Pomacea-canaliculata-idrs
+metapredict-predict-idrs ../species19/projectdb/Metazoa-Mollusca-Gastropoda-Order_unclassified55-Lottiidae-Lottia-gigantea-225164-T1.aa -o output/metapredict-Metazoa-Mollusca-Gastropoda-Order_unclassified55-Lottiidae-Lottia-gigantea-idrs
+metapredict-predict-idrs ../species19/projectdb/Metazoa-Mollusca-Gastropoda-Order_unclassified57-Peltospiridae-Gigantopelta-aegis-1735272-T1.aa -o output/metapredict-Metazoa-Mollusca-Gastropoda-Order_unclassified57-Peltospiridae-Gigantopelta-aegis-idrs
+metapredict-predict-idrs ../species19/projectdb/Metazoa-Mollusca-Gastropoda-Order_unclassified58-Plakobranchidae-Elysia-chlorotica-188477-T1.aa -o output/metapredict-Metazoa-Mollusca-Gastropoda-Order_unclassified58-Plakobranchidae-Elysia-chlorotica-idrs
+metapredict-predict-idrs ../species19/projectdb/Metazoa-Mollusca-Polyplacophora-Chitonida-Chitonidae-Acanthopleura-granulata-61363-T1.aa -o output/metapredict-Metazoa-Mollusca-Polyplacophora-Chitonida-Chitonidae-Acanthopleura-granulata-idrs
+metapredict-predict-idrs ../species19/projectdb/Metazoa-Nematoda-Chromadorea-Rhabditida-Rhabditidae-Caenorhabditis-elegans-6239-T1.aa -o output/metapredict-Metazoa-Nematoda-Chromadorea-Rhabditida-Rhabditidae-Caenorhabditis-elegans-idrs
+metapredict-predict-idrs ../species19/projectdb/Metazoa-Phoronida-Class_unclassified74-Order_unclassified75-Family_unclassified76-Phoronis-australis-115415-T1.aa -o output/metapredict-Metazoa-Phoronida-Class_unclassified74-Order_unclassified75-Family_unclassified76-Phoronis-australis-idrs

@@ -1,0 +1,4 @@
+#! /bin/bash
+# MetaPredict scripts
+
+ls output/*idrs > output/10-list-metapredict-idrs-files
