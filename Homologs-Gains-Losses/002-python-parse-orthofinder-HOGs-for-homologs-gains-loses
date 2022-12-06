@@ -1,5 +1,4 @@
 #! python
-import numpy as np
 
 input_nodes = open( '2-list-nodes', 'r' )
 output_counts = open( 'output/2-orthofinder-orthogroups-gains-losses-per-species-tree-node', 'w' )
@@ -42,7 +41,6 @@ N17 = 'N17'
 # count orthogroups, orthogroup gains, and orthogroup losses per species tree node
 
 # OrthoFinder node N0 = analysis Clade C37
-nodes_orthogroups[ N0 ]
 orthogroups = str( len( nodes_orthogroups[ N0 ] ) )
 gains = 'NA'
 losses = 'NA'
@@ -52,160 +50,160 @@ output_counts.write( output )
 # OrthoFinder node N1 = analysis Clade C36
 # N1 vs ancestral N0
 orthogroups = str( len( nodes_orthogroups[ N1 ] ) )
-clade = np.array( nodes_orthogroups[ N1 ] )
-ancestral = np.array( nodes_orthogroups[ N0 ] )
-gains = str( len( list( np.subtract(clade, ancestral) ) ) )
-losses = str( len( list( np.subtract(ancestral, clade) ) ) )
+clade = set( nodes_orthogroups[ N1 ]  )
+ancestral = set( nodes_orthogroups[ N0 ] )
+gains = str( len( list( clade - ancestral ) ) )
+losses = str( len( list( ancestral - clade ) ) )
 output = 'C36' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
 output_counts.write( output )
 
 # OrthoFinder node N2 = analysis Clade C35
 # N2 vs ancestral N1
 orthogroups = str( len( nodes_orthogroups[ N2 ] ) )
-clade = np.array( nodes_orthogroups[ N2 ] )
-ancestral = np.array( nodes_orthogroups[ N1 ] )
-gains = str( len( list( np.subtract(clade, ancestral) ) ) )
-losses = str( len( list( np.subtract(ancestral, clade) ) ) )
+clade = set( nodes_orthogroups[ N2 ] )
+ancestral = set( nodes_orthogroups[ N1 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
 output = 'C35' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
 output_counts.write( output )
 
 # OrthoFinder node N3 = analysis Clade C34
 # N3 vs ancestral N1
 orthogroups = str( len( nodes_orthogroups[ N3 ] ) )
-clade = np.array( nodes_orthogroups[ N3 ] )
-ancestral = np.array( nodes_orthogroups[ N1 ] )
-gains = str( len( list( np.subtract(clade, ancestral) ) ) )
-losses = str( len( list( np.subtract(ancestral, clade) ) ) )
+clade = set(nodes_orthogroups[ N3 ] )
+ancestral = set(nodes_orthogroups[ N1 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
 output = 'C34' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
 output_counts.write( output )
 
 # OrthoFinder node N4 = analysis Clade C33
 # N4 vs ancestral N3
 orthogroups = str( len( nodes_orthogroups[ N4 ] ) )
-clade = np.array( nodes_orthogroups[ N4 ] )
-ancestral = np.array( nodes_orthogroups[ N3 ] )
-gains = str( len( list( np.subtract(clade, ancestral) ) ) )
-losses = str( len( list( np.subtract(ancestral, clade) ) ) )
+clade = set(nodes_orthogroups[ N4 ] )
+ancestral = set(nodes_orthogroups[ N3 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
 output = 'C33' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
 output_counts.write( output )
 
 # OrthoFinder node N6 = analysis Clade C32
 # N6 vs ancestral N4
 orthogroups = str( len( nodes_orthogroups[ N6 ] ) )
-clade = np.array( nodes_orthogroups[ N6 ] )
-ancestral = np.array( nodes_orthogroups[ N4 ] )
-gains = str( len( list( np.subtract(clade, ancestral) ) ) )
-losses = str( len( list( np.subtract(ancestral, clade) ) ) )
+clade = set(nodes_orthogroups[ N6 ] )
+ancestral = set(nodes_orthogroups[ N4 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
 output = 'C32' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
 output_counts.write( output )
 
 # OrthoFinder node N7 = analysis Clade C30
 # N7 vs ancestral N5
 orthogroups = str( len( nodes_orthogroups[ N7 ] ) )
-clade = np.array( nodes_orthogroups[ N7 ] )
-ancestral = np.array( nodes_orthogroups[ N5 ] )
-gains = str( len( list( np.subtract(clade, ancestral) ) ) )
-losses = str( len( list( np.subtract(ancestral, clade) ) ) )
+clade = set(nodes_orthogroups[ N7 ] )
+ancestral = set(nodes_orthogroups[ N5 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
 output = 'C30' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
 output_counts.write( output )
 
 # OrthoFinder node N8 = analysis Clade C29
 # N8 vs ancestral N7
 orthogroups = str( len( nodes_orthogroups[ N8 ] ) )
-clade = np.array( nodes_orthogroups[ N8 ] )
-ancestral = np.array( nodes_orthogroups[ N7 ] )
-gains = str( len( list( np.subtract(clade, ancestral) ) ) )
-losses = str( len( list( np.subtract(ancestral, clade) ) ) )
+clade = set(nodes_orthogroups[ N8 ] )
+ancestral = set(nodes_orthogroups[ N7 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
 output = 'C29' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
 output_counts.write( output )
 
 # OrthoFinder node N9 = analysis Clade C27
 # N9 vs ancestral N7
 orthogroups = str( len( nodes_orthogroups[ N9 ] ) )
-clade = np.array( nodes_orthogroups[ N9 ] )
-ancestral = np.array( nodes_orthogroups[ N7 ] )
-gains = str( len( list( np.subtract(clade, ancestral) ) ) )
-losses = str( len( list( np.subtract(ancestral, clade) ) ) )
+clade = set(nodes_orthogroups[ N9 ] )
+ancestral = set(nodes_orthogroups[ N7 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
 output = 'C27' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
 output_counts.write( output )
 
 # OrthoFinder node N10 = analysis Clade C28
 # N10 vs ancestral N8
 orthogroups = str( len( nodes_orthogroups[ N10 ] ) )
-clade = np.array( nodes_orthogroups[ N10 ] )
-ancestral = np.array( nodes_orthogroups[ N8 ] )
-gains = str( len( list( np.subtract(clade, ancestral) ) ) )
-losses = str( len( list( np.subtract(ancestral, clade) ) ) )
+clade = set(nodes_orthogroups[ N10 ] )
+ancestral = set(nodes_orthogroups[ N8 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
 output = 'C28' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
 output_counts.write( output )
 
 # OrthoFinder node N11 = analysis Clade C26
 # N11 vs ancestral N9
 orthogroups = str( len( nodes_orthogroups[ N11 ] ) )
-clade = np.array( nodes_orthogroups[ N11 ] )
-ancestral = np.array( nodes_orthogroups[ N9 ] )
-gains = str( len( list( np.subtract(clade, ancestral) ) ) )
-losses = str( len( list( np.subtract(ancestral, clade) ) ) )
+clade = set(nodes_orthogroups[ N11 ] )
+ancestral = set(nodes_orthogroups[ N9 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
 output = 'C26' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
 output_counts.write( output )
 
 # OrthoFinder node N12 = analysis Clade C24
 # N12 vs ancestral N9
 orthogroups = str( len( nodes_orthogroups[ N12 ] ) )
-clade = np.array( nodes_orthogroups[ N12 ] )
-ancestral = np.array( nodes_orthogroups[ N9 ] )
-gains = str( len( list( np.subtract(clade, ancestral) ) ) )
-losses = str( len( list( np.subtract(ancestral, clade) ) ) )
+clade = set(nodes_orthogroups[ N12 ] )
+ancestral = set(nodes_orthogroups[ N9 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
 output = 'C24' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
 output_counts.write( output )
 
 # OrthoFinder node N13 = analysis Clade C25
 # N13 vs ancestral N11
 orthogroups = str( len( nodes_orthogroups[ N13 ] ) )
-clade = np.array( nodes_orthogroups[ N13 ] )
-ancestral = np.array( nodes_orthogroups[ N11 ] )
-gains = str( len( list( np.subtract(clade, ancestral) ) ) )
-losses = str( len( list( np.subtract(ancestral, clade) ) ) )
+clade = set(nodes_orthogroups[ N13 ] )
+ancestral = set(nodes_orthogroups[ N11 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
 output = 'C25' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
 output_counts.write( output )
 
 # OrthoFinder node N14 = analysis Clade C23
 # N14 vs ancestral N12
 orthogroups = str( len( nodes_orthogroups[ N14 ] ) )
-clade = np.array( nodes_orthogroups[ N14 ] )
-ancestral = np.array( nodes_orthogroups[ N12 ] )
-gains = str( len( list( np.subtract(clade, ancestral) ) ) )
-losses = str( len( list( np.subtract(ancestral, clade) ) ) )
+clade = set(nodes_orthogroups[ N14 ] )
+ancestral = set(nodes_orthogroups[ N12 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
 output = 'C23' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
 output_counts.write( output )
 
 # OrthoFinder node N15 = analysis Clade C22
 # N15 vs ancestral N12
 orthogroups = str( len( nodes_orthogroups[ N15 ] ) )
-clade = np.array( nodes_orthogroups[ N15 ] )
-ancestral = np.array( nodes_orthogroups[ N12 ] )
-gains = str( len( list( np.subtract(clade, ancestral) ) ) )
-losses = str( len( list( np.subtract(ancestral, clade) ) ) )
+clade = set(nodes_orthogroups[ N15 ] )
+ancestral = set(nodes_orthogroups[ N12 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
 output = 'C22' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
 output_counts.write( output )
 
 # OrthoFinder node N16 = analysis Clade C21
 # N16 vs ancestral N15
 orthogroups = str( len( nodes_orthogroups[ N16 ] ) )
-clade = np.array( nodes_orthogroups[ N16 ] )
-ancestral = np.array( nodes_orthogroups[ N15 ] )
-gains = str( len( list( np.subtract(clade, ancestral) ) ) )
-losses = str( len( list( np.subtract(ancestral, clade) ) ) )
+clade = set(nodes_orthogroups[ N16 ] )
+ancestral = set(nodes_orthogroups[ N15 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
 output = 'C21' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
 output_counts.write( output )
 
 # OrthoFinder node N17 = analysis Clade C20
 # N17 vs ancestral N16
 orthogroups = str( len( nodes_orthogroups[ N17 ] ) )
-clade = np.array( nodes_orthogroups[ N17 ] )
-ancestral = np.array( nodes_orthogroups[ N16 ] )
-gains = str( len( list( np.subtract(clade, ancestral) ) ) )
-losses = str( len( list( np.subtract(ancestral, clade) ) ) )
+clade = set(nodes_orthogroups[ N17 ] )
+ancestral = set(nodes_orthogroups[ N16 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
 output = 'C20' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
 output_counts.write( output )
 
