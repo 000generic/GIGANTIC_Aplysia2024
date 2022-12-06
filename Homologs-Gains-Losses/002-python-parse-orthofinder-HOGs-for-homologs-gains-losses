@@ -31,8 +31,8 @@ for next_node in input_nodes:
                 for next_clade_2 in clade_2:
                     if len(next_seqid.split(next_clade_2)) > 1:
                         test_clade_2 = True
-        if test_clade_1 == True and test_clade_2 == True:
-            nodes_orthogroups[ node_id ].append( orthogroup_id )
+            if test_clade_1 == True and test_clade_2 == True:
+                nodes_orthogroups[ node_id ].append( orthogroup_id )
 
         # ancestral Protostomia N1 orthogroups
         if node_id == 'N1':
@@ -47,8 +47,8 @@ for next_node in input_nodes:
                 for next_clade_2 in clade_2:
                     if len(next_seqid.split(next_clade_2)) > 1:
                         test_clade_2 = True
-        if test_clade_1 == True and test_clade_2 == True:
-            nodes_orthogroups[ node_id ].append( orthogroup_id )
+            if test_clade_1 == True and test_clade_2 == True:
+                nodes_orthogroups[ node_id ].append( orthogroup_id )
 
         # ancestral Ecdysozoa N2 orthogroups
         if node_id == 'N2':
@@ -63,8 +63,8 @@ for next_node in input_nodes:
                 for next_clade_2 in clade_2:
                     if len(next_seqid.split(next_clade_2)) > 1:
                         test_clade_2 = True
-        if test_clade_1 == True and test_clade_2 == True:
-            nodes_orthogroups[ node_id ].append( orthogroup_id )
+            if test_clade_1 == True and test_clade_2 == True:
+                nodes_orthogroups[ node_id ].append( orthogroup_id )
 
         # ancestral Spiralia N3 orthogroups
         if node_id == 'N3':
@@ -79,8 +79,8 @@ for next_node in input_nodes:
                 for next_clade_2 in clade_2:
                     if len(next_seqid.split(next_clade_2)) > 1:
                         test_clade_2 = True
-        if test_clade_1 == True and test_clade_2 == True:
-            nodes_orthogroups[ node_id ].append( orthogroup_id )
+         if test_clade_1 == True and test_clade_2 == True:
+                nodes_orthogroups[ node_id ].append( orthogroup_id )
 
         # ancestral Spiralian Clade 4 N4 orthogroups
         if node_id == 'N4':
@@ -95,8 +95,8 @@ for next_node in input_nodes:
                 for next_clade_2 in clade_2:
                     if len(next_seqid.split(next_clade_2)) > 1:
                         test_clade_2 = True
-        if test_clade_1 == True and test_clade_2 == True:
-            nodes_orthogroups[ node_id ].append( orthogroup_id )
+            if test_clade_1 == True and test_clade_2 == True:
+                nodes_orthogroups[ node_id ].append( orthogroup_id )
 
         # ancestral Tetraneuralia / Mollusca N5 orthogroups
         if node_id == 'N5':
@@ -111,8 +111,8 @@ for next_node in input_nodes:
                 for next_clade_2 in clade_2:
                     if len(next_seqid.split(next_clade_2)) > 1:
                         test_clade_2 = True
-        if test_clade_1 == True and test_clade_2 == True:
-            nodes_orthogroups[node_id].append(orthogroup_id)
+            if test_clade_1 == True and test_clade_2 == True:
+                nodes_orthogroups[node_id].append(orthogroup_id)
 
         # ancestral Spiralian Clade 2 / Lophorata N6 orthogroups
         if node_id == 'N6':
@@ -127,8 +127,8 @@ for next_node in input_nodes:
                 for next_clade_2 in clade_2:
                     if len(next_seqid.split(next_clade_2)) > 1:
                         test_clade_2 = True
-        if test_clade_1 == True and test_clade_2 == True:
-            nodes_orthogroups[node_id].append(orthogroup_id)
+            if test_clade_1 == True and test_clade_2 == True:
+                nodes_orthogroups[node_id].append(orthogroup_id)
 
         # ancestral Conchifera N7 orthogroups
         if node_id == 'N7':
@@ -143,8 +143,8 @@ for next_node in input_nodes:
                 for next_clade_2 in clade_2:
                     if len(next_seqid.split(next_clade_2)) > 1:
                         test_clade_2 = True
-        if test_clade_1 == True and test_clade_2 == True:
-            nodes_orthogroups[node_id].append(orthogroup_id)
+            if test_clade_1 == True and test_clade_2 == True:
+                nodes_orthogroups[node_id].append(orthogroup_id)
 
         # ancestral  Cephalopoda N8 orthogroups
         if node_id == 'N8':
@@ -159,8 +159,8 @@ for next_node in input_nodes:
                 for next_clade_2 in clade_2:
                     if len(next_seqid.split(next_clade_2)) > 1:
                         test_clade_2 = True
-        if test_clade_1 == True and test_clade_2 == True:
-            nodes_orthogroups[node_id].append(orthogroup_id)
+            if test_clade_1 == True and test_clade_2 == True:
+                nodes_orthogroups[node_id].append(orthogroup_id)
 
         # ancestral  Molluscan Clade 2 N9 orthogroups
         if node_id == 'N9':
@@ -175,8 +175,8 @@ for next_node in input_nodes:
                 for next_clade_2 in clade_2:
                     if len(next_seqid.split(next_clade_2)) > 1:
                         test_clade_2 = True
-        if test_clade_1 == True and test_clade_2 == True:
-            nodes_orthogroups[node_id].append(orthogroup_id)
+            if test_clade_1 == True and test_clade_2 == True:
+                nodes_orthogroups[node_id].append(orthogroup_id)
 
         # ancestral  Coleoidea / Octopoda N10 orthogroups
         if node_id == 'N10':
@@ -191,8 +191,8 @@ for next_node in input_nodes:
                 for next_clade_2 in clade_2:
                     if len(next_seqid.split(next_clade_2)) > 1:
                         test_clade_2 = True
-        if test_clade_1 == True and test_clade_2 == True:
-            nodes_orthogroups[node_id].append(orthogroup_id)
+            if test_clade_1 == True and test_clade_2 == True:
+                nodes_orthogroups[node_id].append(orthogroup_id)
 
         # ancestral Bivalvia / ??? N11 orthogroups
         if node_id == 'N11':
@@ -207,8 +207,8 @@ for next_node in input_nodes:
                 for next_clade_2 in clade_2:
                     if len(next_seqid.split(next_clade_2)) > 1:
                         test_clade_2 = True
-        if test_clade_1 == True and test_clade_2 == True:
-            nodes_orthogroups[node_id].append(orthogroup_id)
+            if test_clade_1 == True and test_clade_2 == True:
+                nodes_orthogroups[node_id].append(orthogroup_id)
 
         # ancestral  Gastropoda N12 orthogroups
         if node_id == 'N12':
@@ -223,8 +223,8 @@ for next_node in input_nodes:
                 for next_clade_2 in clade_2:
                     if len(next_seqid.split(next_clade_2)) > 1:
                         test_clade_2 = True
-        if test_clade_1 == True and test_clade_2 == True:
-            nodes_orthogroups[node_id].append(orthogroup_id)
+            if test_clade_1 == True and test_clade_2 == True:
+                nodes_orthogroups[node_id].append(orthogroup_id)
 
         # ancestral Pteriomorphia / ??? N13 orthogroups
         if node_id == 'N13':
@@ -239,8 +239,8 @@ for next_node in input_nodes:
                 for next_clade_2 in clade_2:
                     if len(next_seqid.split(next_clade_2)) > 1:
                         test_clade_2 = True
-        if test_clade_1 == True and test_clade_2 == True:
-            nodes_orthogroups[node_id].append(orthogroup_id)
+            if test_clade_1 == True and test_clade_2 == True:
+                nodes_orthogroups[node_id].append(orthogroup_id)
 
         # ancestral  Psilogastropoda N14 orthogroups
         if node_id == 'N14':
@@ -255,8 +255,8 @@ for next_node in input_nodes:
                 for next_clade_2 in clade_2:
                     if len(next_seqid.split(next_clade_2)) > 1:
                         test_clade_2 = True
-        if test_clade_1 == True and test_clade_2 == True:
-            nodes_orthogroups[node_id].append(orthogroup_id)
+            if test_clade_1 == True and test_clade_2 == True:
+                nodes_orthogroups[node_id].append(orthogroup_id)
 
         # ancestral  Angiogastropoda N15 orthogroups
         if node_id == 'N15':
@@ -271,8 +271,8 @@ for next_node in input_nodes:
                 for next_clade_2 in clade_2:
                     if len(next_seqid.split(next_clade_2)) > 1:
                         test_clade_2 = True
-        if test_clade_1 == True and test_clade_2 == True:
-            nodes_orthogroups[node_id].append(orthogroup_id)
+            if test_clade_1 == True and test_clade_2 == True:
+                nodes_orthogroups[node_id].append(orthogroup_id)
 
         # ancestral  Heterobranchia / Euthyneura N16 orthogroups
         if node_id == 'N16':
@@ -287,8 +287,8 @@ for next_node in input_nodes:
                 for next_clade_2 in clade_2:
                     if len(next_seqid.split(next_clade_2)) > 1:
                         test_clade_2 = True
-        if test_clade_1 == True and test_clade_2 == True:
-            nodes_orthogroups[node_id].append(orthogroup_id)
+            if test_clade_1 == True and test_clade_2 == True:
+                nodes_orthogroups[node_id].append(orthogroup_id)
 
         # ancestral  Panpulmonata N17 orthogroups
         if node_id == 'N17':
@@ -303,8 +303,8 @@ for next_node in input_nodes:
                 for next_clade_2 in clade_2:
                     if len(next_seqid.split(next_clade_2)) > 1:
                         test_clade_2 = True
-        if test_clade_1 == True and test_clade_2 == True:
-            nodes_orthogroups[node_id].append(orthogroup_id)
+            if test_clade_1 == True and test_clade_2 == True:
+                nodes_orthogroups[node_id].append(orthogroup_id)
     input_node.close()
 
 # Assign OrthoFinder species tree node names to variables of same name
