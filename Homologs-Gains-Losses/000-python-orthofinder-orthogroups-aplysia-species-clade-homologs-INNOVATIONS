@@ -1,0 +1,1316 @@
+#! python
+
+input_counts = open( 'output/1-aplysia-genes_X_orthogroup_innovation_counts', 'r' )
+
+# species
+homo_sapiens = 'Metazoa-Chordata-Mammalia-Primates-Hominidae-Homo-sapiens'
+drosophila_melanogaster = 'Metazoa-Arthropoda-Insecta-Diptera-Drosophilidae-Drosophila-melanogaster'
+caenorhabditis_elegans = 'Metazoa-Nematoda-Chromadorea-Rhabditida-Rhabditidae-Caenorhabditis-elegans'
+capitella_teleta = 'Metazoa-Annelida-Polychaeta-Order_unclassified14-Capitellidae-Capitella-teleta'
+phoronis_australis = 'Metazoa-Phoronida-Class_unclassified74-Order_unclassified75-Family_unclassified76-Phoronis-australis'
+lingula_anatina = 'Metazoa-Brachiopoda-Lingulata-Lingulida-Lingulidae-Lingula-anatina'
+acanthopleura_granulata = 'Metazoa-Mollusca-Polyplacophora-Chitonida-Chitonidae-Acanthopleura-granulata'
+crassostrea_gigas = 'Metazoa-Mollusca-Bivalvia-Ostreida-Ostreidae-Crassostrea-gigas'
+mizuhopecten_yessoensis = 'Metazoa-Mollusca-Bivalvia-Pectinida-Pectinidae-Mizuhopecten-yessoensis'
+cyclina_sinensis = 'Metazoa-Mollusca-Bivalvia-Venerida-Veneridae-Cyclina-sinensis'
+nautilus_pompilius = 'Metazoa-Mollusca-Cephalopoda-Nautilida-Nautilidae-Nautilus-pompilius'
+argonauta_argo = 'Metazoa-Mollusca-Cephalopoda-Octopoda-Argonautidae-Argonauta-argo'
+octopus_bimaculoides = 'Metazoa-Mollusca-Cephalopoda-Octopoda-Octopodidae-Octopus-bimaculoides'
+lottia_gigantea = 'Metazoa-Mollusca-Gastropoda-Order_unclassified_17-Lottiidae-Lottia-gigantea'
+gigantopelta_aegis = 'Metazoa-Mollusca-Gastropoda-Order_unclassified-Peltospiridae-Gigantopelta-aegis'
+pomacea_canaliculata = 'Metazoa-Mollusca-Gastropoda-Architaenioglossa-Ampullariidae-Pomacea-canaliculata'
+elysia_chlorotica = 'Metazoa-Mollusca-Gastropoda-Order_unclassified-Plakobranchidae-Elysia-chlorotica'
+achatina_fulica = 'Metazoa-Mollusca-Class_unclassified-Order_unclassified-Family_unclassified-Achatina-fulica'
+aplysia_californica = 'Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica'
+
+# species short
+homo_sapiens_short = 'Homo-sapiens'
+drosophila_melanogaster_short = 'Drosophila-melanogaster'
+caenorhabditis_elegans_short = 'Caenorhabditis-elegans'
+capitella_teleta_short = 'Capitella-teleta'
+phoronis_australis_short = 'Phoronis-australis'
+lingula_anatina_short = 'Lingula-anatina'
+acanthopleura_granulata_short = 'Acanthopleura-granulata'
+crassostrea_gigas_short = 'Crassostrea-gigas'
+mizuhopecten_yessoensis_short = 'Mizuhopecten-yessoensis'
+cyclina_sinensis_short = 'Cyclina-sinensis'
+nautilus_pompilius_short = 'Nautilus-pompilius'
+argonauta_argo_short = 'Argonauta-argo'
+octopus_bimaculoides_short = 'Octopus-bimaculoides'
+achatina_fulica_short = 'Achatina-fulica'
+aplysia_californica_short = 'Aplysia-californica'
+pomacea_canaliculata_short = 'Pomacea-canaliculata'
+lottia_gigantea_short = 'Lottia-gigantea'
+gigantopelta_aegis_short = 'Gigantopelta-aegis'
+elysia_chlorotica_short = 'Elysia-chlorotica'
+
+# define clades
+all_all = [ homo_sapiens, drosophila_melanogaster, caenorhabditis_elegans, capitella_teleta, phoronis_australis, lingula_anatina, acanthopleura_granulata, crassostrea_gigas, mizuhopecten_yessoensis, cyclina_sinensis, achatina_fulica, aplysia_californica, pomacea_canaliculata, lottia_gigantea, gigantopelta_aegis, elysia_chlorotica, nautilus_pompilius, argonauta_argo, octopus_bimaculoides ]
+outgroup = [ homo_sapiens, drosophila_melanogaster, caenorhabditis_elegans, capitella_teleta, phoronis_australis, lingula_anatina ]
+outgroup_lophotrochozoa = [  capitella_teleta, phoronis_australis, lingula_anatina ]
+mollusca = [ acanthopleura_granulata, crassostrea_gigas, mizuhopecten_yessoensis, cyclina_sinensis, achatina_fulica, aplysia_californica, pomacea_canaliculata, lottia_gigantea, gigantopelta_aegis, elysia_chlorotica, nautilus_pompilius, argonauta_argo, octopus_bimaculoides ]
+polyplacophora = [ acanthopleura_granulata ]
+conchifera = [ crassostrea_gigas, mizuhopecten_yessoensis, cyclina_sinensis, achatina_fulica, aplysia_californica, pomacea_canaliculata, lottia_gigantea, gigantopelta_aegis, elysia_chlorotica, nautilus_pompilius, argonauta_argo, octopus_bimaculoides ]
+bivalvia = [ crassostrea_gigas, mizuhopecten_yessoensis, cyclina_sinensis ]
+gastropoda = [ achatina_fulica, aplysia_californica, pomacea_canaliculata, lottia_gigantea, gigantopelta_aegis, elysia_chlorotica ]
+aplysia_gastropoda = [ achatina_fulica, aplysia_californica, elysia_chlorotica ]
+outgroup_aplysia_gastropoda = [ pomacea_canaliculata, lottia_gigantea, gigantopelta_aegis ]
+cephalopoda = [ nautilus_pompilius, argonauta_argo, octopus_bimaculoides ]
+
+# define clades for short species names
+all_all_short = [ homo_sapiens_short, drosophila_melanogaster_short, caenorhabditis_elegans_short, capitella_teleta_short, phoronis_australis_short, lingula_anatina_short, acanthopleura_granulata_short, crassostrea_gigas_short, mizuhopecten_yessoensis_short, cyclina_sinensis_short, achatina_fulica_short, aplysia_californica_short, pomacea_canaliculata_short, lottia_gigantea_short, gigantopelta_aegis_short, elysia_chlorotica_short, nautilus_pompilius_short, argonauta_argo_short, octopus_bimaculoides_short ]
+outgroup_short = [ homo_sapiens_short, drosophila_melanogaster_short, caenorhabditis_elegans_short, capitella_teleta_short, phoronis_australis_short, lingula_anatina_short ]
+outgroup_lophotrochozoa_short = [ capitella_teleta_short, phoronis_australis_short, lingula_anatina_short ]
+mollusca_short = [ acanthopleura_granulata_short, crassostrea_gigas_short, mizuhopecten_yessoensis_short, cyclina_sinensis_short, achatina_fulica_short, aplysia_californica_short, pomacea_canaliculata_short, lottia_gigantea_short, gigantopelta_aegis_short, elysia_chlorotica_short, nautilus_pompilius_short, argonauta_argo_short, octopus_bimaculoides_short]
+polyplacophora_short = [ acanthopleura_granulata_short ]
+conchifera_short = [ crassostrea_gigas_short, mizuhopecten_yessoensis_short, cyclina_sinensis_short, achatina_fulica_short, aplysia_californica_short, pomacea_canaliculata_short, lottia_gigantea_short, gigantopelta_aegis_short, elysia_chlorotica_short, nautilus_pompilius_short, argonauta_argo_short, octopus_bimaculoides_short ]
+bivalvia_short = [ crassostrea_gigas_short, mizuhopecten_yessoensis_short, cyclina_sinensis_short ]
+gastropoda_short = [ achatina_fulica_short, aplysia_californica_short, pomacea_canaliculata_short, lottia_gigantea_short, gigantopelta_aegis_short, elysia_chlorotica_short ]
+aplysia_gastropoda_short = [ achatina_fulica_short, aplysia_californica_short, elysia_chlorotica_short ]
+outgroup_aplysia_gastropoda_short = [ pomacea_canaliculata_short, lottia_gigantea_short, gigantopelta_aegis_short ]
+cephalopoda_short = [ nautilus_pompilius_short, argonauta_argo_short, octopus_bimaculoides_short ]
+
+#clades = [ all_all, outgroup, mollusca, polyplacophora, conchifera, bivalvia, gastropoda, aplysia_gastropoda, outgroup_aplysia_gastropoda, cephalopoda, nautiloides, octopodes, octopus, homo_sapiens, drosophila_melanogaster, caenorhabditis_elegans, owenia_fusiformis, notospermus_geniculatus, lingula_anatina, acanthopleura_granulata, sinonovacula_constricta, dreissena_polymorpha, perna_viridis, crassostrea_gigas, mizuhopecten_yessoensis, margaritifera_margaritifera, cyclina_sinensis, nautilus_pompilius, argonauta_argo, octopus_bimaculoides, octopus_sinensis, achatina_fulica, aplysia_californica, pomacea_canaliculata, lottia_gigantea, gigantopelta_aegis, elysia_chlorotica ]
+#clades_names = [ 'Clade Species24', 'Clade Outgroup', 'Clade Mollusca', 'Clade Polyplacophora', 'Clade Conchifera', 'Clade Bivalvia', 'Clade Gastropoda', 'Clade Aplysia_Gastropoda', 'Clade Outgroup_Aplysia_Gastropoda', 'Clade Cephalopoda', 'Clade Nautiloides', 'Clade Octopodes', 'Clade Octopus', 'Species Homo sapiens', 'Species Drosophila melanogaster', 'Species Caenorhabditis elegans', 'Species Owenia fusiformis', 'Species Notospermus geniculatus', 'Species Lingula anatina', 'Species Acanthopleura granulata', 'Species Sinonovacula constricta', 'Species Dreissena polymorpha', 'Species Perna viridis', 'Species Crassostrea gigas', 'Species Mizuhopecten yessoensis', 'Species Margaritifera margaritifera', 'Species Cyclina sinensis', 'Species Nautilus pompilius', 'Species Argonauta argo', 'Species Octopus bimaculoides', 'Species Octopus sinensis', 'Species Achatina fulica', 'Species Aplysia californica', 'Species Pomacea canaliculata', 'Species Lottia gigantea', 'Species Gigantopelta aegis', 'Species Elysia chlorotica' ]
+
+# Aplysia 
+aplysia_innovations = []
+# Elysia
+elysia_innovations = []
+# Achatina
+achatina_innovations = []
+# Pomacea
+pomacea_innovations = []
+# Gigantopelta
+gigantopelta_innovations = []
+# Lottia
+lottia_innovations = []
+# Crassostrea
+crassostrea_innovations = []
+# Mizuhopecten
+mizuhopecten_innovations = []
+# Cyclina
+cyclina_innovations = []
+# Octopus
+octopus_innovations = []
+# Argonauta
+argonauta_innovations = []
+# Nautilus
+nautilus_innovations = []
+# Lingula
+lingula_innovations = []
+# Phoronis
+phoronis_innovations = []
+# Capitella
+capitella_innovations = []
+# Drosophila
+drosophila_innovations = []
+# Caenorhabditis
+caenorhabditis_innovations = []
+# Euthyneura
+euthyneura_innovations = []
+# Polyplacophora
+polyplacophora_innovations = []
+# Gastropoda
+gastropoda_innovations = []
+# Bivalvia
+bivalvia_innovations = []
+# Cephalopoda
+cephalopoda_innovations = []
+# Conchifera
+conchifera_innovations = []
+# Mollusca
+mollusca_innovations = []
+# Lophotrochozoa
+lophotrochozoa_innovations = []
+# Protosotomes
+protostomia_innovations = []
+# Ecdysozoa
+ecdysozoa_innovations = []
+# Deuterostomia
+deuterostomia_innovations = []
+# Bilateria
+bilateria_innovations = []
+
+
+# Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-gigantic20220627164247_seq0006143454aa	Orthogroup_OG0000001 Owenia-fusiformis_206 Drosophila-melanogaster_46 Lingula-anatina_81 Homo-sapiens_435 Sinonovacula-constricta_69 Dreissena-polymorpha_305 Perna-viridis_57 Crassostrea-gigas_36 Mizuhopecten-yessoensis_81 Margaritifera-margaritifera_115 Cyclina-sinensis_64 Nautilus-pompilius_80 Argonauta-argo_260 Octopus-bimaculoides_763 Octopus-sinensis_974 Achatina-fulica_79 Aplysia-californica_76 Pomacea-canaliculata_61 Lottia-gigantea_155 Gigantopelta-aegis_191 Elysia-chlorotica_51 Acanthopleura-granulata_48 Caenorhabditis-elegans_13 Notospermus-geniculatus_63
+counter = 0
+for next_line in input_counts:
+        info = next_line[ :-1 ].split( '\t' )
+        seqid = info[ 0 ]
+        info_counts = info[ 1 ].split( ' ' )
+
+        orthogroup = False
+
+        test_aplysia_californica_homologs = False
+        test_elysia_chlorotica_homologs = False
+        test_achatina_fulica_homologs = False
+        test_gigantopelta_aegis_homologs = False
+        test_lottia_gigantea_homologs = False
+        test_acanthopleura_granulata_homologs = False
+        test_crassostrea_gigas_homologs = False
+        test_mizuhopecten_yessoensis_homologs = False
+        test_cyclina_sinensis_homologs = False
+        test_nautilus_pompilius_homologs = False
+        test_argonauta_argo_homologs = False
+        test_octopus_bimaculoides_homologs = False
+        test_pomacea_canaliculata_homologs = False
+        test_homo_sapiens_homologs = False
+        test_drosophila_melanogaster_homologs = False
+        test_caenorhabditis_elegans_homologs = False
+        test_lingula_anatina_homologs = False
+        test_capitella_teleta_homologs = False
+        test_phoronis_australis_homologs = False
+        test_gastropoda_homologs = False
+        test_bivalvia_homologs = False
+        test_cephalopoda_homologs = False
+        test_polyplacophora_homologs = False
+
+        for next_data in info_counts:
+                if orthogroup == False:
+                        orthogroup = True
+                        orthogroup_id = next_data
+                else:
+                        gspp = next_data.split( '_' )[ 0 ]
+                        if gspp in gastropoda_short:
+                                test_gastropoda_homologs = True
+                        else:
+                                pass
+                        if gspp in bivalvia_short:
+                                test_bivalvia_homologs = True
+                        else:
+                                pass
+                        if gspp in cephalopoda_short:
+                                test_cephalopoda_homologs = True
+                        else:
+                                pass
+                        if gspp in polyplacophora_short:
+                                test_polyplacophora_homologs = True
+                        else:
+                                pass
+                        if gspp in outgroup_lophotrochozoa_short:
+                                test_outgroup_lophotrochozoa_homologs = True
+                        else:
+                                pass
+                        if gspp in outgroup_short:
+                                test_outgroup_homologs = True
+                        else:
+                                pass
+                        if gspp == 'Homo-sapiens':
+                                test_homo_sapiens_homologs = True
+                        else:
+                                pass
+                        if gspp == 'Drosophila-melanogaster': 
+                                test_drosophila_melanogaster_homologs = True
+                        else:
+                                pass
+                        if gspp == 'Caenorhabditis-elegans':
+                                test_caenorhabditis_elegans_homologs = True
+                        else:
+                                pass
+                        if gspp == 'Lingula-anatina':
+                                test_lingula_anatina_homologs = True
+                        else:
+                                pass
+                        if gspp == 'Capitella-teleta':
+                                test_capitella_teleta_homologs = True
+                        else:
+                                pass
+                        if gspp == 'Phoronis-australis':
+                                test_phoronis_australis_homologs = True
+                        else:
+                                pass
+                        if gspp == 'Acanthopleura-granulata':
+                                test_acanthopleura_granulata_homologs = True
+                        else:
+                                pass
+                        if gspp == 'Crassostrea-gigas':
+                                test_crassostrea_gigas_homologs = True
+                        else:
+                                pass
+                        if gspp == 'Mizuhopecten-yessoensis':
+                                test_mizuhopecten_yessoensis_homologs = True
+                        else:
+                                pass
+                        if gspp == 'Cyclina-sinensis':
+                                test_cyclina_sinensis_homologs = True
+                        else:
+                                pass
+                        if gspp == 'Nautilus-pompilius':
+                                test_nautilus_pompilius_homologs = True
+                        else:
+                                pass
+                        if gspp == 'Argonauta-argo':
+                                test_argonauta_argo_homologs = True
+                        else:
+                                pass
+                        if gspp == 'Octopus-bimaculoides':
+                                test_octopus_bimaculoides_homologs = True
+                        else:
+                                pass
+                        if gspp == 'Achatina-fulica':
+                                test_achatina_fulica_homologs = True
+                        else:
+                                pass
+                        if gspp == 'Aplysia-californica':
+                                test_aplysia_californica_homologs = True
+                        else:
+                                pass
+                        if gspp == 'Pomacea-canaliculata':
+                                test_pomacea_canaliculata_homologs = True
+                        else:
+                                pass
+                        if gspp == 'Lottia-gigantea':
+                                test_lottia_gigantea_homologs = True
+                        else:
+                                pass
+                        if gspp == 'Gigantopelta-aegis':
+                                test_gigantopelta_aegis_homologs = True
+                        else:
+                                pass
+                        if gspp == 'Elysia-chlorotica':
+                                test_elysia_chlorotica_homologs = True
+                        else:
+                                pass
+
+        # Aplysia californica gene family / orthogroup innovations
+        if test_aplysia_californica_homologs == True and test_achatina_fulica_homologs == False and test_elysia_chlorotica_homologs == False and test_gigantopelta_aegis_homologs == False and test_lottia_gigantea_homologs == False and test_pomacea_canaliculata_homologs == False and test_cephalopoda_homologs == False and test_bivalvia_homologs == False and test_polyplacophora_homologs == False and test_outgroup_homologs == False:
+                aplysia_innovations.append( next_line[ :-1 ] )
+
+        # Aplysia - Achatina fulica gene family / orthogroup innovations
+        if test_aplysia_californica_homologs == True and test_achatina_fulica_homologs == True:
+                achatina_innovations.append(next_line[:-1])
+
+        # Aplysia - Elysia chlorotica gene family / orthogroup innovations
+        if test_aplysia_californica_homologs == True and test_elysia_chlorotica_homologs == True:
+                elysia_innovations.append(next_line[:-1])
+
+        # Aplysia - Crassostrea gigas gene family / orthogroup innovations
+        if test_aplysia_californica_homologs == True and test_crassostrea_gigas_homologs == True:
+                crassostrea_innovations.append(next_line[:-1])
+
+        # Aplysia - Mizuhopecten yessoensis gene family / orthogroup innovations
+        if test_aplysia_californica_homologs == True and test_mizuhopecten_yessoensis_homologs == True:
+                mizuhopecten_innovations.append(next_line[:-1])
+
+        # Aplysia - Cyclina sinensis gene family / orthogroup innovations
+        if test_aplysia_californica_homologs == True and test_cyclina_sinensis_homologs == True:
+                cyclina_innovations.append(next_line[:-1])
+
+        # Aplysia - Nautilus pompilius gene family / orthogroup innovations
+        if test_aplysia_californica_homologs == True and test_nautilus_pompilius_homologs == True:
+                nautilus_innovations.append(next_line[:-1])
+
+        # Aplysia - Argonauta argo gene family / orthogroup innovations
+        if test_aplysia_californica_homologs == True and test_argonauta_argo_homologs == True:
+                argonauta_innovations.append(next_line[:-1])
+
+        # Aplysia - Lingula anatina gene family / orthogroup innovations
+        if test_aplysia_californica_homologs == True and test_lingula_anatina_homologs == True:
+                lingula_innovations.append(next_line[:-1])
+
+        # Aplysia - Phoronis australis gene family / orthogroup innovations
+        if test_aplysia_californica_homologs == True and test_phoronis_australis_homologs == True:
+                phoronis_innovations.append(next_line[:-1])
+
+        # Aplysia - Capitella teleta gene family / orthogroup innovations
+        if test_aplysia_californica_homologs == True and test_capitella_teleta_homologs == True:
+                capitella_innovations.append(next_line[:-1])
+
+        # Aplysia - Drosophila melanogaster gene family / orthogroup innovations
+        if test_aplysia_californica_homologs == True and test_drosophila_melanogaster_homologs == True:
+                drosophila_innovations.append(next_line[:-1])
+
+        # Aplysia - Caenorhabditis elegans gene family / orthogroup innovations
+        if test_aplysia_californica_homologs == True and test_caenorhabditis_elegans_homologs == True:
+                caenorhabditis_innovations.append(next_line[:-1])
+
+        # Aplysia - Euthyneura gene family / orthogroup innovations
+        # euthyneura_innovations = []
+        if test_aplysia_californica_homologs == True and test_achatina_fulica_homologs == True and test_elysia_chlorotica_homologs == True:
+                euthyneura_innovations.append( next_line[ :-1 ]  )
+
+        # Aplysia - Gastropoda gene family / orthogroup innovations
+        # gastropoda_innovations = []
+        if test_aplysia_californica_homologs == True and test_pomacea_canaliculata_homologs == True and test_lottia_gigantea_homologs == True and test_gigantopelta_aegis_innovations == True:
+                gastropoda_innovations.append( next_line[ :-1 ]  )
+
+        # Aplysia - Polyplacophora gene family / orthogroup innovations 
+        # polyplacophora_innovations = []
+        if test_aplysia_californica_homologs == True and test_polyplacophora_homologs == True:
+                polyplacophora_innovations.append( next_line[ :-1 ]  )
+
+        # Aplysia - Bivalvia gene family / orthogroup innovations 
+        # bivalvia_innovations = []
+        if test_aplysia_californica_homologs == True and test_bivalvia_homologs == True:
+                bivalvia_innovations.append( next_line[ :-1 ]  )
+
+        # Aplysia - Cephalopoda gene family / orthogroup innovations 
+        # cephalopoda_innovations = []
+        if test_aplysia_californica_homologs == True and test_cephalopoda_homologs == True:
+                cephalopoda_innovations.append( next_line[ :-1 ]  )
+
+        # Aplysia - Conchifera: Gastropoda + Bivalvia + Cephalopoda gene family / orthogroup innovations
+        # conchifera_innovations = []
+        if test_aplysia_californica_homologs == True and test_bivalvia_homologs == True and test_cephalopoda_homologs == True:
+                conchifera_innovations.append( next_line[ :-1 ]  )
+
+        # Aplysia - Mollusca: Gastropoda + Bivalvia + Cephalopoda + Polyplacophora gene family / orthogroup innovations
+        # mollusca_innovations = []
+        if test_aplysia_californica_homologs == True and test_bivalvia_homologs == True and test_cephalopoda_homologs == True and test_polyplacophora_homologs == True:
+                mollusca_innovations.append( next_line[ :-1 ]  )
+
+        # Aplysia - Lophotrochozoa gene family / orthogroup innovations
+        # lophotrochozoa_innovations = []
+        if test_aplysia_californica_homologs == True and (test_capitella_teleta_homologs == True or test_phoronis_australis_homologs == True or test_lingula_anatina_homologs == True):
+                lophotrochozoa_innovations.append( next_line[ :-1 ]  )
+
+        # Aplysia - Ecdysozoa gene family / orthogroup innovations
+        # ecdysozoa_innovations = []
+        if test_aplysia_californica_homologs == True and (test_drosophila_melanogaster_homologs == True or test_caenorhabditis_elegans_homologs == True):
+                ecdysozoa_innovations.append( next_line[ :-1 ] )
+
+        # Aplysia - Protostome gene family / orthogroup innovations
+        # protostome_innovations = []
+        if test_aplysia_californica_homologs == True and (test_capitella_teleta_homologs == True or test_phoronis_australis_homologs == True or test_lingula_anatina_homologs == True) and (test_caenorhabditis_elegans_homologs == True or test_drosophila_melanogaster_homologs == True):
+                protostomia_innovations.append( next_line[ :-1 ]  )
+
+        # Aplysia - Deuterostome gene family / orthogroup innovations
+        # deuterostomia_innovations = []
+        if test_aplysia_californica_homologs == True and test_homo_sapiens_homologs == True:
+                deuterostomia_innovations.append( next_line[ :-1 ] )
+                
+        # Aplysia - Bilateria gene family / orthogroup innovations
+        # bilateria_innovations = []
+        if test_aplysia_californica_homologs == True and test_homo_sapiens_homologs == True and (test_capitella_teleta_homologs == True or test_phoronis_australis_homologs == True or test_lingula_anatina_homologs == True) and (test_caenorhabditis_elegans_homologs == True or test_drosophila_melanogaster_homologs == True):
+                bilateria_innovations.append( next_line[ :-1 ]  )
+
+# Aplysia - Aplysia innovations
+output_aplysia = open( 'output/2-ofogs-aplysia-aplysia-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_aplysia.write( output )
+
+for next_data in aplysia_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_aplysia.write( output )
+output_aplysia.close()
+
+# Aplysia - Elysia innovations
+output_elysia = open( 'output/2-ofogs-aplysia-elysia-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_elysia.write( output )
+
+for next_data in elysia_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_elysia.write( output )
+output_elysia.close()
+
+# Aplysia - Achatina innovations
+output_achatina = open( 'output/2-ofogs-aplysia-achatina-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_achatina.write( output )
+
+for next_data in achatina_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_achatina.write( output )
+output_achatina.close()
+
+# Aplysia - Pomacea innovations
+output_pomacea = open( 'output/2-ofogs-aplysia-pomacea-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_pomacea.write( output )
+
+for next_data in pomacea_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_pomacea.write( output )
+output_pomacea.close()
+
+# Aplysia - Gigantopelta innovations
+output_gigantopelta = open( 'output/2-ofogs-aplysia-gigantopelta-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_gigantopelta.write( output )
+
+for next_data in gigantopelta_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_gigantopelta.write( output )
+output_gigantopelta.close()
+
+# Aplysia - Lottia innovations
+output_lottia = open( 'output/2-ofogs-aplysia-lottia-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_lottia.write( output )
+
+for next_data in lottia_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_lottia.write( output )
+output_lottia.close()
+
+# Aplysia - Crassostrea innovations
+output_crassostrea = open( 'output/2-ofogs-aplysia-crassostrea-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_crassostrea.write( output )
+
+for next_data in lottia_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_crassostrea.write( output )
+output_crassostrea.close()
+
+# Aplysia - Mizuhopecten innovations
+output_mizuhopecten = open( 'output/2-ofogs-aplysia-mizuhopecten-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_mizuhopecten.write( output )
+
+for next_data in mizuhopecten_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_mizuhopecten.write( output )
+output_mizuhopecten.close()
+
+# Aplysia - Cyclina innovations
+output_cyclina = open( 'output/2-ofogs-aplysia-cyclina-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_cyclina.write( output )
+
+for next_data in cyclina_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_cyclina.write( output )
+output_cyclina.close()
+
+# Aplysia - Octopus innovations
+output_octopus = open( 'output/2-ofogs-aplysia-octopus-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_octopus.write( output )
+
+for next_data in octopus_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_octopus.write( output )
+output_octopus.close()
+
+# Aplysia - Argonauta innovations
+output_argonauta = open( 'output/2-ofogs-aplysia-argonauta-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_argonauta.write( output )
+
+for next_data in argonauta_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_argonauta.write( output )
+output_argonauta.close()
+
+# Aplysia - Nautilus innovations
+output_nautilus = open( 'output/2-ofogs-aplysia-nautilus-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_nautilus.write( output )
+
+for next_data in nautilus_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_nautilus.write( output )
+output_nautilus.close()
+
+# Aplysia - Lingula innovations
+output_lingula = open( 'output/2-ofogs-aplysia-lingula-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_lingula.write( output )
+
+for next_data in lingula_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_lingula.write( output )
+output_lingula.close()
+
+# Aplysia - Phoronis innovations
+output_phoronis = open( 'output/2-ofogs-aplysia-phoronis-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_phoronis.write( output )
+
+for next_data in phoronis_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_phoronis.write( output )
+output_phoronis.close()
+
+# Aplysia - Capitella innovations
+output_capitella = open( 'output/2-ofogs-aplysia-capitella-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_capitella.write( output )
+
+for next_data in capitella_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_capitella.write( output )
+output_capitella.close()
+
+# Aplysia - Drosophila innovations
+output_drosophila = open( 'output/2-ofogs-aplysia-drosophila-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_drosophila.write( output )
+
+for next_data in drosophila_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_drosophila.write( output )
+output_drosophila.close()
+
+# Aplysia - Caenorhabditis innovations
+output_caenorhabditis = open( 'output/2-ofogs-aplysia-caenorhabditis-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_caenorhabditis.write( output )
+
+for next_data in caenorhabditis_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_caenorhabditis.write( output )
+output_caenorhabditis.close()
+
+# Aplysia - Euthyneura innovations output
+output_euthyneura = open( 'output/2-ofogs-aplysia-euthyneura-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_euthyneura.write( output )
+
+for next_data in euthyneura_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_euthyneura.write( output )
+output_euthyneura.close()
+
+# Aplysia - Gastropod innovations output
+output_gastropoda = open( 'output/2-ofogs-aplysia-gastropoda-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_gastropoda.write( output )
+
+for next_data in gastropoda_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_gastropoda.write( output )
+output_gastropoda.close()
+
+# Aplacophora innovations
+output_polyplacophora = open( 'output/2-ofogs-aplysia-polyplacophora', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_polyplacophora.write( output )
+
+for next_data in polyplacophora_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_polyplacophora.write( output )
+output_polyplacophora.close()
+
+# Aplysia - Bivalvia innovations
+output_bivalvia = open( 'output/2-ofogs-aplysia-bivalvia-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_bivalvia.write( output )
+
+for next_data in bivalvia_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_bivalvia.write( output )
+output_bivalvia.close()
+
+# Aplysia - Cephalopoda innovations
+output_cephalopoda = open( 'output/2-ofogs-aplysia-cephalopoda-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_cephalopoda.write( output )
+
+for next_data in cephalopoda_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_cephalopoda.write( output )
+output_cephalopoda.close()
+
+# Aplysia - Conchifera innovations
+output_conchifera = open( 'output/2-ofogs-aplysia-conchifera-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_conchifera.write( output )
+
+for next_data in conchifera_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_conchifera.write( output )
+output_conchifera.close()
+        
+# Aplysia - Mollusca innovations
+output_mollusca = open( 'output/2-ofogs-aplysia-mollusca-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_mollusca.write( output )
+
+for next_data in mollusca_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_mollusca.write( output )
+output_mollusca.close()
+
+# Aplysia - Lophotrochozoa innovations
+output_lophotrochozoa = open( 'output/2-ofogs-aplysia-lophotrochozoa-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_lophotrochozoa.write( output )
+
+for next_data in lophotrochozoa_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_lophotrochozoa.write( output )
+output_lophotrochozoa.close()
+
+# Aplysia - Ecdysozoa innovations
+output_ecdysozoa = open( 'output/2-ofogs-aplysia-ecdysozoa-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_ecdysozoa.write( output )
+
+for next_data in ecdysozoa_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_ecdysozoa.write( output )
+output_ecdysozoa.close()
+
+# Aplysia - Protostomia innovations
+output_protostomia = open( 'output/2-ofogs-aplysia-protostomia-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_protostomia.write( output )
+
+for next_data in protostomia_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_protostomia.write( output )
+output_protostomia.close()
+
+# Aplysia - Deuterostomia innovations
+output_deuterostomia = open( 'output/2-ofogs-aplysia-deuterostomia-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_deuterostomia.write( output )
+
+for next_data in deuterostomia_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_deuterostomia.write( output )
+output_deuterostomia.close()
+
+# Aplysia - Bilateria innovations
+output_bilateria = open( 'output/2-ofogs-aplysia-bilateria-or-earlier-innovations', 'w' )
+output = '[ Seq Id ]' + '\t' + '[ Orthogroup Id ]' + '\t' + '[ All Orthogroup Counts ]' + '\t'
+for next_species in all_all_short:
+        output =  output + next_species + '\t'
+output = output[ :-1 ] + '\n'
+output_bilateria.write( output )
+
+for next_data in bilateria_innovations:
+        info = next_data.split( '\t' )
+        seqid = info[  0 ]
+        orthoid = info[ 1 ].split( ' ' )[ 0 ]
+        gspp_orthocounts = info[ 1 ].split( ' ' )[ 1: ]
+        all_gspp_orthocounts = ' '.join( gspp_orthocounts )
+        output = seqid + '\t' + orthoid + '\t' + all_gspp_orthocounts + '\t'
+        gspps_counts = {}
+
+        for next_gspp_orthocount in gspp_orthocounts:
+                gspp = next_gspp_orthocount.split( '_' )[ 0 ]
+                count = next_gspp_orthocount.split( '_' )[ 1 ]
+                gspps_counts[ gspp ] = count
+
+        for next_gspp in all_all_short:
+                if next_gspp in gspps_counts.keys():
+                        count = gspps_counts[ next_gspp ]
+                        output = output + count + '\t'
+                else:
+                        output = output + '0' + '\t'
+        output = output[ :-1 ] + '\n'
+        output_bilateria.write( output )
+output_bilateria.close()
+
+input_counts.close()
