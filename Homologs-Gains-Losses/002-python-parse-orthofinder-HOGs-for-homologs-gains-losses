@@ -1,0 +1,500 @@
+#! python
+
+input_nodes = open( '2-list-nodes', 'r' )
+output_counts = open( 'output/2-orthofinder-orthogroups-gains-losses-per-species-tree-node', 'w' )
+
+# read orthogroups per species tree node into dictionary
+nodes_orthogroups = {}
+for next_node in input_nodes:
+    next_node = next_node[ :-1 ]
+    node_id = next_node.split( '.' )[ 0 ]
+    nodes_orthogroups[ node_id ] = []
+
+    input_node = open( next_node, 'r' )
+    for next_line in input_node:
+        next_line = next_line[ :-1 ]
+        info = next_line.split( '\t' )
+        orthogroup_id = info[ 0 ]
+        seqids = info[ 3 ]
+        info_seqids = seqids.split(', ')
+
+        # ancestral Bilateria N0 orthogroups
+        if node_id == 'N0':
+            clade_1 = [ 'Homo' ]
+            clade_2 = [ 'Drosophila', 'Caenorhabditis', 'Capitella', 'Phoronis', 'Lingula', 'Acanthopleura', 'Nautilus', 'Argonauta', 'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea', 'Achatina', 'Elysia', 'Aplysia']
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                for next_clade_1 in clade_1:
+                    if len( next_seqid.split( next_clade_1 ) ) > 1:
+                        test_clade_1 = True
+                for next_clade_2 in clade_2:
+                    if len(next_seqid.split(next_clade_2)) > 1:
+                        test_clade_2 = True
+        if test_clade_1 == True and test_clade_2 == True:
+            nodes_orthogroups[ node_id ].append( orthogroup_id )
+
+        # ancestral Protostomia N1 orthogroups
+        if node_id == 'N1':
+            clade_1 = [ 'Drosophila', 'Caenorhabditis' ]
+            clade_2 = [ 'Capitella', 'Phoronis', 'Lingula', 'Acanthopleura', 'Nautilus', 'Argonauta', 'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea', 'Achatina', 'Elysia', 'Aplysia']
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                for next_clade_1 in clade_1:
+                    if len( next_seqid.split( next_clade_1 ) ) > 1:
+                        test_clade_1 = True
+                for next_clade_2 in clade_2:
+                    if len(next_seqid.split(next_clade_2)) > 1:
+                        test_clade_2 = True
+        if test_clade_1 == True and test_clade_2 == True:
+            nodes_orthogroups[ node_id ].append( orthogroup_id )
+
+        # ancestral Ecdysozoa N2 orthogroups
+        if node_id == 'N2':
+            clade_1 = [ 'Drosophila' ]
+            clade_2 = [  'Caenorhabditis' ]
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                for next_clade_1 in clade_1:
+                    if len( next_seqid.split( next_clade_1 ) ) > 1:
+                        test_clade_1 = True
+                for next_clade_2 in clade_2:
+                    if len(next_seqid.split(next_clade_2)) > 1:
+                        test_clade_2 = True
+        if test_clade_1 == True and test_clade_2 == True:
+            nodes_orthogroups[ node_id ].append( orthogroup_id )
+
+        # ancestral Spiralia N3 orthogroups
+        if node_id == 'N3':
+            clade_1 = [ 'Capitella', 'Phoronis', 'Lingula' ]
+            clade_2 = [  'Acanthopleura', 'Nautilus', 'Argonauta', 'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea', 'Achatina', 'Elysia', 'Aplysia']
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                for next_clade_1 in clade_1:
+                    if len( next_seqid.split( next_clade_1 ) ) > 1:
+                        test_clade_1 = True
+                for next_clade_2 in clade_2:
+                    if len(next_seqid.split(next_clade_2)) > 1:
+                        test_clade_2 = True
+        if test_clade_1 == True and test_clade_2 == True:
+            nodes_orthogroups[ node_id ].append( orthogroup_id )
+
+        # ancestral Spiralian Clade 4 N4 orthogroups
+        if node_id == 'N4':
+            clade_1 = [ 'Capitella' ]
+            clade_2 = [  'Phoronis', 'Lingula' ]
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                for next_clade_1 in clade_1:
+                    if len( next_seqid.split( next_clade_1 ) ) > 1:
+                        test_clade_1 = True
+                for next_clade_2 in clade_2:
+                    if len(next_seqid.split(next_clade_2)) > 1:
+                        test_clade_2 = True
+        if test_clade_1 == True and test_clade_2 == True:
+            nodes_orthogroups[ node_id ].append( orthogroup_id )
+
+        # ancestral Tetraneuralia / Mollusca N5 orthogroups
+        if node_id == 'N5':
+            clade_1 = [ 'Acanthopleura' ]
+            clade_2 = [ 'Nautilus', 'Argonauta', 'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea', 'Achatina', 'Elysia', 'Aplysia' ]
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                for next_clade_1 in clade_1:
+                    if len(next_seqid.split(next_clade_1)) > 1:
+                        test_clade_1 = True
+                for next_clade_2 in clade_2:
+                    if len(next_seqid.split(next_clade_2)) > 1:
+                        test_clade_2 = True
+        if test_clade_1 == True and test_clade_2 == True:
+            nodes_orthogroups[node_id].append(orthogroup_id)
+
+        # ancestral Spiralian Clade 2 / Lophorata N6 orthogroups
+        if node_id == 'N6':
+            clade_1 = [ 'Phoronis' ]
+            clade_2 = [  'Lingula' ]
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                for next_clade_1 in clade_1:
+                    if len(next_seqid.split(next_clade_1)) > 1:
+                        test_clade_1 = True
+                for next_clade_2 in clade_2:
+                    if len(next_seqid.split(next_clade_2)) > 1:
+                        test_clade_2 = True
+        if test_clade_1 == True and test_clade_2 == True:
+            nodes_orthogroups[node_id].append(orthogroup_id)
+
+        # ancestral Conchifera N7 orthogroups
+        if node_id == 'N7':
+            clade_1 = [ 'Nautilus', 'Argonauta', 'Octopus' ]
+            clade_2 = [ 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea', 'Achatina', 'Elysia', 'Aplysia' ]
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                for next_clade_1 in clade_1:
+                    if len(next_seqid.split(next_clade_1)) > 1:
+                        test_clade_1 = True
+                for next_clade_2 in clade_2:
+                    if len(next_seqid.split(next_clade_2)) > 1:
+                        test_clade_2 = True
+        if test_clade_1 == True and test_clade_2 == True:
+            nodes_orthogroups[node_id].append(orthogroup_id)
+
+        # ancestral  Cephalopoda N8 orthogroups
+        if node_id == 'N8':
+            clade_1 = [ 'Nautilus' ]
+            clade_2 = [ 'Argonauta', 'Octopus' ]
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                for next_clade_1 in clade_1:
+                    if len(next_seqid.split(next_clade_1)) > 1:
+                        test_clade_1 = True
+                for next_clade_2 in clade_2:
+                    if len(next_seqid.split(next_clade_2)) > 1:
+                        test_clade_2 = True
+        if test_clade_1 == True and test_clade_2 == True:
+            nodes_orthogroups[node_id].append(orthogroup_id)
+
+        # ancestral  Molluscan Clade 2 N9 orthogroups
+        if node_id == 'N9':
+            clade_1 = [ 'Cyclina', 'Crassostrea', 'Mizuhopecten' ]
+            clade_2 = [ 'Lottia', 'Gigantopelta', 'Pomacea', 'Achatina', 'Elysia', 'Aplysia' ]
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                for next_clade_1 in clade_1:
+                    if len(next_seqid.split(next_clade_1)) > 1:
+                        test_clade_1 = True
+                for next_clade_2 in clade_2:
+                    if len(next_seqid.split(next_clade_2)) > 1:
+                        test_clade_2 = True
+        if test_clade_1 == True and test_clade_2 == True:
+            nodes_orthogroups[node_id].append(orthogroup_id)
+
+        # ancestral  Coleoidea / Octopoda N10 orthogroups
+        if node_id == 'N10':
+            clade_1 = [ 'Argonauta' ]
+            clade_2 = [ 'Octopus' ]
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                for next_clade_1 in clade_1:
+                    if len(next_seqid.split(next_clade_1)) > 1:
+                        test_clade_1 = True
+                for next_clade_2 in clade_2:
+                    if len(next_seqid.split(next_clade_2)) > 1:
+                        test_clade_2 = True
+        if test_clade_1 == True and test_clade_2 == True:
+            nodes_orthogroups[node_id].append(orthogroup_id)
+
+        # ancestral Bivalvia / ??? N11 orthogroups
+        if node_id == 'N11':
+            clade_1 = [ 'Cyclina' ]
+            clade_2 = [ 'Crassostrea', 'Mizuhopecten' ]
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                for next_clade_1 in clade_1:
+                    if len(next_seqid.split(next_clade_1)) > 1:
+                        test_clade_1 = True
+                for next_clade_2 in clade_2:
+                    if len(next_seqid.split(next_clade_2)) > 1:
+                        test_clade_2 = True
+        if test_clade_1 == True and test_clade_2 == True:
+            nodes_orthogroups[node_id].append(orthogroup_id)
+
+        # ancestral  Gastropoda N12 orthogroups
+        if node_id == 'N12':
+            clade_1 = [ 'Lottia', 'Gigantopelta']
+            clade_2 = [ 'Pomacea', 'Achatina', 'Elysia', 'Aplysia' ]
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                for next_clade_1 in clade_1:
+                    if len(next_seqid.split(next_clade_1)) > 1:
+                        test_clade_1 = True
+                for next_clade_2 in clade_2:
+                    if len(next_seqid.split(next_clade_2)) > 1:
+                        test_clade_2 = True
+        if test_clade_1 == True and test_clade_2 == True:
+            nodes_orthogroups[node_id].append(orthogroup_id)
+
+        # ancestral Pteriomorphia / ??? N13 orthogroups
+        if node_id == 'N13':
+            clade_1 = [ 'Crassostrea' ]
+            clade_2 = [ 'Mizuhopecten' ]
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                for next_clade_1 in clade_1:
+                    if len(next_seqid.split(next_clade_1)) > 1:
+                        test_clade_1 = True
+                for next_clade_2 in clade_2:
+                    if len(next_seqid.split(next_clade_2)) > 1:
+                        test_clade_2 = True
+        if test_clade_1 == True and test_clade_2 == True:
+            nodes_orthogroups[node_id].append(orthogroup_id)
+
+        # ancestral  Psilogastropoda N14 orthogroups
+        if node_id == 'N14':
+            clade_1 = [ 'Lottia' ]
+            clade_2 = [ 'Gigantopelta' ]
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                for next_clade_1 in clade_1:
+                    if len(next_seqid.split(next_clade_1)) > 1:
+                        test_clade_1 = True
+                for next_clade_2 in clade_2:
+                    if len(next_seqid.split(next_clade_2)) > 1:
+                        test_clade_2 = True
+        if test_clade_1 == True and test_clade_2 == True:
+            nodes_orthogroups[node_id].append(orthogroup_id)
+
+        # ancestral  Angiogastropoda N15 orthogroups
+        if node_id == 'N15':
+            clade_1 = [ 'Pomacea' ]
+            clade_2 = [  'Achatina', 'Elysia', 'Aplysia' ]
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                for next_clade_1 in clade_1:
+                    if len(next_seqid.split(next_clade_1)) > 1:
+                        test_clade_1 = True
+                for next_clade_2 in clade_2:
+                    if len(next_seqid.split(next_clade_2)) > 1:
+                        test_clade_2 = True
+        if test_clade_1 == True and test_clade_2 == True:
+            nodes_orthogroups[node_id].append(orthogroup_id)
+
+        # ancestral  Heterobranchia / Euthyneura N16 orthogroups
+        if node_id == 'N16':
+            clade_1 = [ 'Aplysia'  ]
+            clade_2 = [   'Elysia', 'Achatina'  ]
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                for next_clade_1 in clade_1:
+                    if len(next_seqid.split(next_clade_1)) > 1:
+                        test_clade_1 = True
+                for next_clade_2 in clade_2:
+                    if len(next_seqid.split(next_clade_2)) > 1:
+                        test_clade_2 = True
+        if test_clade_1 == True and test_clade_2 == True:
+            nodes_orthogroups[node_id].append(orthogroup_id)
+
+        # ancestral  Panpulmonata N17 orthogroups
+        if node_id == 'N17':
+            clade_1 = [ 'Achatina', ]
+            clade_2 = [  'Elysia' ]
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                for next_clade_1 in clade_1:
+                    if len(next_seqid.split(next_clade_1)) > 1:
+                        test_clade_1 = True
+                for next_clade_2 in clade_2:
+                    if len(next_seqid.split(next_clade_2)) > 1:
+                        test_clade_2 = True
+        if test_clade_1 == True and test_clade_2 == True:
+            nodes_orthogroups[node_id].append(orthogroup_id)
+    input_node.close()
+
+# Assign OrthoFinder species tree node names to variables of same name
+N0 = 'N0'
+N1 = 'N1'
+N2 = 'N2'
+N3 = 'N3'
+N4 = 'N4'
+N5 = 'N5'
+N6 = 'N6'
+N7 = 'N7'
+N8 = 'N8'
+N9 = 'N9'
+N10 = 'N10'
+N11 = 'N11'
+N12 = 'N12'
+N13 = 'N13'
+N14 = 'N14'
+N15 = 'N15'
+N16 = 'N16'
+N17 = 'N17'
+
+# count orthogroups, orthogroup gains, and orthogroup losses per species tree node
+
+# OrthoFinder node N0 = analysis Clade C37
+orthogroups = str( len( nodes_orthogroups[ N0 ] ) )
+gains = 'NA'
+losses = 'NA'
+output = 'C37' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
+output_counts.write( output )
+
+# OrthoFinder node N1 = analysis Clade C36
+# N1 vs ancestral N0
+orthogroups = str( len( nodes_orthogroups[ N1 ] ) )
+clade = set( nodes_orthogroups[ N1 ]  )
+ancestral = set( nodes_orthogroups[ N0 ] )
+gains = str( len( list( clade - ancestral ) ) )
+losses = str( len( list( ancestral - clade ) ) )
+output = 'C36' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
+output_counts.write( output )
+
+# OrthoFinder node N2 = analysis Clade C35
+# N2 vs ancestral N1
+orthogroups = str( len( nodes_orthogroups[ N2 ] ) )
+clade = set( nodes_orthogroups[ N2 ] )
+ancestral = set( nodes_orthogroups[ N1 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
+output = 'C35' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
+output_counts.write( output )
+
+# OrthoFinder node N3 = analysis Clade C34
+# N3 vs ancestral N1
+orthogroups = str( len( nodes_orthogroups[ N3 ] ) )
+clade = set(nodes_orthogroups[ N3 ] )
+ancestral = set(nodes_orthogroups[ N1 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
+output = 'C34' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
+output_counts.write( output )
+
+# OrthoFinder node N4 = analysis Clade C33
+# N4 vs ancestral N3
+orthogroups = str( len( nodes_orthogroups[ N4 ] ) )
+clade = set(nodes_orthogroups[ N4 ] )
+ancestral = set(nodes_orthogroups[ N3 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
+output = 'C33' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
+output_counts.write( output )
+
+# OrthoFinder node N6 = analysis Clade C32
+# N6 vs ancestral N4
+orthogroups = str( len( nodes_orthogroups[ N6 ] ) )
+clade = set(nodes_orthogroups[ N6 ] )
+ancestral = set(nodes_orthogroups[ N4 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
+output = 'C32' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
+output_counts.write( output )
+
+# OrthoFinder node N7 = analysis Clade C30
+# N7 vs ancestral N5
+orthogroups = str( len( nodes_orthogroups[ N7 ] ) )
+clade = set(nodes_orthogroups[ N7 ] )
+ancestral = set(nodes_orthogroups[ N5 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
+output = 'C30' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
+output_counts.write( output )
+
+# OrthoFinder node N8 = analysis Clade C29
+# N8 vs ancestral N7
+orthogroups = str( len( nodes_orthogroups[ N8 ] ) )
+clade = set(nodes_orthogroups[ N8 ] )
+ancestral = set(nodes_orthogroups[ N7 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
+output = 'C29' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
+output_counts.write( output )
+
+# OrthoFinder node N9 = analysis Clade C27
+# N9 vs ancestral N7
+orthogroups = str( len( nodes_orthogroups[ N9 ] ) )
+clade = set(nodes_orthogroups[ N9 ] )
+ancestral = set(nodes_orthogroups[ N7 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
+output = 'C27' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
+output_counts.write( output )
+
+# OrthoFinder node N10 = analysis Clade C28
+# N10 vs ancestral N8
+orthogroups = str( len( nodes_orthogroups[ N10 ] ) )
+clade = set(nodes_orthogroups[ N10 ] )
+ancestral = set(nodes_orthogroups[ N8 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
+output = 'C28' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
+output_counts.write( output )
+
+# OrthoFinder node N11 = analysis Clade C26
+# N11 vs ancestral N9
+orthogroups = str( len( nodes_orthogroups[ N11 ] ) )
+clade = set(nodes_orthogroups[ N11 ] )
+ancestral = set(nodes_orthogroups[ N9 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
+output = 'C26' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
+output_counts.write( output )
+
+# OrthoFinder node N12 = analysis Clade C24
+# N12 vs ancestral N9
+orthogroups = str( len( nodes_orthogroups[ N12 ] ) )
+clade = set(nodes_orthogroups[ N12 ] )
+ancestral = set(nodes_orthogroups[ N9 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
+output = 'C24' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
+output_counts.write( output )
+
+# OrthoFinder node N13 = analysis Clade C25
+# N13 vs ancestral N11
+orthogroups = str( len( nodes_orthogroups[ N13 ] ) )
+clade = set(nodes_orthogroups[ N13 ] )
+ancestral = set(nodes_orthogroups[ N11 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
+output = 'C25' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
+output_counts.write( output )
+
+# OrthoFinder node N14 = analysis Clade C23
+# N14 vs ancestral N12
+orthogroups = str( len( nodes_orthogroups[ N14 ] ) )
+clade = set(nodes_orthogroups[ N14 ] )
+ancestral = set(nodes_orthogroups[ N12 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
+output = 'C23' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
+output_counts.write( output )
+
+# OrthoFinder node N15 = analysis Clade C22
+# N15 vs ancestral N12
+orthogroups = str( len( nodes_orthogroups[ N15 ] ) )
+clade = set(nodes_orthogroups[ N15 ] )
+ancestral = set(nodes_orthogroups[ N12 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
+output = 'C22' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
+output_counts.write( output )
+
+# OrthoFinder node N16 = analysis Clade C21
+# N16 vs ancestral N15
+orthogroups = str( len( nodes_orthogroups[ N16 ] ) )
+clade = set(nodes_orthogroups[ N16 ] )
+ancestral = set(nodes_orthogroups[ N15 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
+output = 'C21' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
+output_counts.write( output )
+
+# OrthoFinder node N17 = analysis Clade C20
+# N17 vs ancestral N16
+orthogroups = str( len( nodes_orthogroups[ N17 ] ) )
+clade = set(nodes_orthogroups[ N17 ] )
+ancestral = set(nodes_orthogroups[ N16 ] )
+gains = str( len( list( clade - ancestral) ) )
+losses = str( len( list( ancestral - clade ) ) )
+output = 'C20' + '\t' + orthogroups + ' / ' + gains + ' / ' + losses + '\n'
+output_counts.write( output )
+
+input_nodes.close()
+output_counts.close()
