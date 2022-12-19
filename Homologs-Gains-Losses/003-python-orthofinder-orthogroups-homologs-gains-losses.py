@@ -49,8 +49,11 @@ for next_node in input_nodes:
     next_node = next_node[ :-1 ]
     node_id = next_node.split( '.' )[ 0 ]
     clade_id = nodes_clades[ node_id ]
-    clade_name = clade_name[ clade_id ]
-    ancestor_id = clades_ancestors[ clade_id ]
+    clade_name = clades_names[ clade_id ]
+    if clade_id == 'C37'
+        pass
+    else:
+        ancestor_id = clades_ancestors[ clade_id ]
 
 ########## Begin processing OrthoFinder clustering of species tree nodes N0-N17
 
