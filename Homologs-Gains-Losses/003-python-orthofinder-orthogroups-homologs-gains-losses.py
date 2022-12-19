@@ -50,7 +50,7 @@ for next_node in input_nodes:
     node_id = next_node.split( '.' )[ 0 ]
     clade_id = nodes_clades[ node_id ]
     clade_name = clades_names[ clade_id ]
-    if clade_id == 'C37'
+    if clade_id == 'C37':
         pass
     else:
         ancestor_id = clades_ancestors[ clade_id ]
