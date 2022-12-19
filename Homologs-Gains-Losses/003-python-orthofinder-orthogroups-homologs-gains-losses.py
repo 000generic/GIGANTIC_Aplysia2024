@@ -1,4 +1,6 @@
 #! python
+# Code Eric Edsinger
+# Identify and count homologs, gains, and losses per species in OrthoFinder Species19 genomes clustering
 
 input_map_nodes_to_clades = open( 'list-nodes-clades', 'r' )
 input_map_clades_to_ancestors = open( 'list-clades-ancestors', 'r' )
@@ -903,7 +905,7 @@ for next_node in input_nodes:
         # ancestral Panpulmonata N17 orthogroups C20
         if node_id == 'N17':
             clade_1 = [ 'Achatina' ]  # C03
-            clade_2 = [ , 'Elysia' ]  # C02
+            clade_2 = [ 'Elysia' ]  # C02
             test_clade_1 = False
             test_clade_2 = False
             for next_seqid in info_seqids:
