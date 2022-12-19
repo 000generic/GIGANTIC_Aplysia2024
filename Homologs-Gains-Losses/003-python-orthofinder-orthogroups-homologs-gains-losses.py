@@ -947,7 +947,7 @@ for next_clade in sorted( clades_orthogroups_total.keys() ):
     conserved_orthogroups = str( len( list( set( clades_orthogroups_total[ next_clade ] ) ) )  -  len( list( set( clades_orthogroups_gains[ next_clade ] ) ) ) )
     lost_orthogroups = str( len( list( set( clades_orthogroups_losses[ next_clade ] ) ) ) )
     clade_name = clades_names[ next_clade ]
-    output = next_clade + '\t' + clade_name  + '\t' +  total_orthogroups + '\t' conserved_orthogroups + '\t' + gained_orthogroups + '\t' + lost_orthogroups + '\n'
+    output = next_clade + '\t' + clade_name  + '\t' +  total_orthogroups + '\t' + conserved_orthogroups + '\t' + gained_orthogroups + '\t' + lost_orthogroups + '\n'
     output_counts.write( output )
 
 input_map_nodes_to_clades.close()
