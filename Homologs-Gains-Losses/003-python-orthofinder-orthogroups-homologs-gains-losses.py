@@ -19,21 +19,21 @@ clades_orthogroups_losses = {}
 
 # read in node to clade map
 for next_line in input_map_nodes_to_clades:
-    info = next_line[ :-1 ].split( 't')
+    info = next_line[ :-1 ].split( '\t')
     node = info[ 0 ]
     clade = info[ 1 ]
     nodes_clades[ node ] = clade
 
 # read in clade to ancestor map
 for next_line in input_map_clades_to_ancestors:
-    info = next_line[ :-1 ].split( 't')
+    info = next_line[ :-1 ].split( '\t')
     clade = info[ 0 ]
     ancestor = info[ 1 ]
     clades_ancestors[ clade ] = ancestor
 
 # read in clade to name map
 for next_line in input_map_clades_to_names:
-    info = next_line[:-1].split('t')
+    info = next_line[:-1].split('\t')
     clade = info[ 0 ]
     name = info[ 1 ]
     clades_names[ clade ] = name
