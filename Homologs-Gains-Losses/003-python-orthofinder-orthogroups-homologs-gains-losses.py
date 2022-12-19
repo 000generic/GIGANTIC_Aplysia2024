@@ -949,6 +949,7 @@ for next_clade in sorted( clades_orthogroups_total.keys() ):
     output_counts.write( output )
 
 input_map_nodes_to_clades.close()
+input_map_clades_to_ancestors.close()
 input_map_clades_to_names.close()
 input_nodes.close()
 output_counts.close()
