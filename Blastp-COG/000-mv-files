@@ -1,7 +1,7 @@
 #! python
 
 input_reports = open( 'trash', 'r' )
-output_command = open( '000-python-mv-files', 'w' )
+output_command = open('000-python-mv-files', 'w')
 # 3-blast-report-Hominidae-Homo_x_Rhabditidae-Caenorhabditis
 for next_report in input_reports:
     
