@@ -2,11 +2,11 @@
 # Code Eric Edsinger
 # Identify and count homologs, gains, and losses per species in OrthoFinder Species19 genomes clustering
 
-input_map_nodes_to_clades = open( 'list-nodes-clades', 'r' )
-input_map_clades_to_ancestors = open( 'list-clades-ancestors', 'r' )
-input_map_clades_to_names = open( 'list-clades-names', 'r' )
+input_map_nodes_to_clades = open( 'input/list-nodes-clades', 'r' )
+input_map_clades_to_ancestors = open( 'input/list-clades-ancestors', 'r' )
+input_map_clades_to_names = open( 'input/list-clades-names', 'r' )
 input_nodes = open( 'output/2-list-Ns', 'r' )
-output_counts = open( 'output/3-orthofinder-orthogroups-gains-losses-per-species-tree-node', 'w' )
+output_counts = open( 'output/quick3-orthofinder-orthogroups-gains-losses-per-species-tree-node', 'w' )
 
 ######### Process input files
 
