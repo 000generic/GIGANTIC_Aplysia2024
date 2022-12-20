@@ -51,7 +51,7 @@ for next_node in input_nodes:
     clade_id = nodes_clades[ node_id ]
     clade_name = clades_names[ clade_id ]
     if clade_id == 'C37':
-        pass
+        ancestor_id = 'NA'
     else:
         ancestor_id = clades_ancestors[ clade_id ]
 
@@ -63,7 +63,7 @@ for next_node in input_nodes:
         info = next_line.split( '\t' )
         orthogroup_id = info[ 1 ]
         seqids = ', '.join( info[ 3: ] )
-        info_seqids = seqids.split( ', ' ) # dictionary of seqids that form the orthogroup
+        info_seqids = seqids.split( ', ' )  # dictionary of seqids that form the orthogroup
 
         # ancestral Bilateria N0 orthogroups C37
 
@@ -249,7 +249,7 @@ for next_node in input_nodes:
                 for next_clade_2_species in clade_2:
                     if len(next_seqid.split(next_clade_2_species)) > 1:
                         test_clade_2 = True
-            if test_clade_1 == True and test_clade_2 == False:   # process single-species lineage C09 Heterconchia-Cyclina
+            if test_clade_1 == True and test_clade_2 == False:   # process single-species lineage C09 Heteroconchia-Cyclina
                 clades_orthogroups_total[ 'C09' ].append( orthogroup_id )
                 clades_orthogroups_gains[ 'C09' ].append( orthogroup_id )
 
@@ -949,7 +949,6 @@ for next_clade in sorted( clades_orthogroups_total.keys() ):
     gained_orthogroups =  str( len( list( set( clades_orthogroups_gains[ next_clade ] ) ) ) )
     conserved_orthogroups = str( len( list( set( clades_orthogroups_total[ next_clade ] ) ) )  -  len( list( set( clades_orthogroups_gains[ next_clade ] ) ) ) )
     lost_orthogroups = str( len( list( set( clades_orthogroups_losses[ next_clade ] ) ) ) )
-    clade_name = clades_names[ next_clade ]
     output = next_clade + '\t' + clade_name  + '\t' +  total_orthogroups + '\t' + conserved_orthogroups + '\t' + gained_orthogroups + '\t' + lost_orthogroups + '\n'
     output_counts.write( output )
 
