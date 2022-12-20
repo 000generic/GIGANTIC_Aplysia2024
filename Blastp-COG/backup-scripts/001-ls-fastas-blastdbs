@@ -1,0 +1,1 @@
+ls species19-fastas/projectdb/M*aa > output/1-list-fastas-blastdbs

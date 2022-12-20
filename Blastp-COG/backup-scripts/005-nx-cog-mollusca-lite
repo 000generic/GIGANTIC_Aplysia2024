@@ -1,0 +1,106 @@
+#! python
+import networkx as nx
+
+input_reports = open( 'output/4-list-mollusca', 'r' )
+output_fail_evalue = open( 'output/5-species19-blastp-evalue-fails-eminus5-mollusca', 'w' )
+output_cogs = open( 'output/5-COGmollusca-species19-blastp-rbh-eminus5-core-ortholog-gene-sets-HOMOLOGS-lite', 'w' )
+output_not_rbh = open( 'output/5-not-rbh-mollusca', 'w' )
+output_rbh_count = open( 'output/5-rbh-count-mollusca', 'w' )
+queries_subjects = {}
+
+for next_report in input_reports:
+    input_report = open( next_report[ :-1 ], 'r' )
+    for next_qs in input_report:
+        info = next_qs.split( '\t' )
+        query = info[ 0 ]
+        subject = info[ 1 ]
+        evalue = info[ 2 ]
+        gspp = query.split( '-' )[ 5 ] + '-' + query.split( '-' )[ 6 ]
+        
+        if float( evalue ) <= float( 1e-5 ):
+            if gspp in queries_subjects.keys():
+                if query in queries_subjects[ gspp ].keys():
+                    queries_subjects[ gspp ][ query ].append( subject )
+                else:
+                    queries_subjects[ gspp ][ query ] = []
+                    queries_subjects[ gspp ][ query ].append( subject )
+            else:
+                queries_subjects[ gspp ] = {}
+                queries_subjects[ gspp ][ query ] = []
+                queries_subjects[ gspp ][ query ].append( subject )
+        else:
+            output_fail_evalue.write( next_qs )
+
+rbhs = []
+skip = []
+query_count = 0
+rbh_count = 0
+for next_gspp in queries_subjects.keys():
+
+    gspp_1 = next_gspp
+    for next_query in queries_subjects[ gspp_1 ]:
+        query_1 = next_query
+    
+        for next_subject in queries_subjects[ gspp_1 ][ query_1 ]:
+        
+            subject_1 = next_subject
+            query_2 = subject_1
+            gspp_2 = query_2.split( '-' )[ 5 ] + '-' + query_2.split( '-' )[ 6 ]
+
+            if query_2 in queries_subjects[ gspp_2 ].keys():
+                subjects_2 = queries_subjects[ gspp_2 ][ query_2 ]
+                if query_1 in subjects_2:
+                    rbh = (query_1, subject_1 )
+                    if rbh in skip:
+                        pass
+                    else:
+                        rbhs.append( rbh )
+                        mirror = (subject_1, query_1)
+                        skip.append( mirror )
+                        skip = list( set( skip ) )
+
+                        rbh_count = rbh_count + 1
+                        output = str( rbh_count ) + '\n'
+                        output_rbh_count.write( output )
+                else:
+                    output = query_1 + '\t' + subject_1 + '\n'
+                    output_not_rbh.write( output )
+            else:
+                pass
+
+# {'Metazoa-Mollusca-Bivalvia-Pectinida-Pectinidae-Mizuhopecten-yessoensis-gigantic20220627164247_seq0005638098aa', 'Metazoa-Mollusca-Bivalvia-Venerida-Veneridae-Cyclina-sinensis-gigantic20220627164247_seq0005800730aa', 'Metazoa-Mollusca-Bivalvia-Ostreida-Ostreidae-Crassostrea-gigas-gigantic20220627164247_seq0005532428aa'}
+
+G = nx.Graph()
+G.add_edges_from( rbhs )
+cog_count = 0
+
+either = [ 'Octopus', 'Mizuhopecten', 'Aplysia' ]
+base = [ 'Acanthopleura' ]
+
+for next_cog in nx.connected_components(G):
+    test_either = False
+    test_base = False
+    output = ''
+    for next_cog_sequence in next_cog:
+        genus = next_cog_sequence.split( '-' )[ 5 ]
+        if genus in either:
+            test_either = True
+        elif genus in base:
+            test_base = True
+        else:
+            pass
+        output = output + next_cog_sequence + '\t'
+
+    if (test_either == True ) and ( test_base == True ):
+        cog_count = cog_count + 1
+        cog_id = 'COGmollusca' + str( cog_count )
+        output = cog_id + '\t' + output[ :-1 ] + '\n'
+        output_cogs.write( output )
+    else:
+        pass
+
+input_reports.close()
+output_fail_evalue.close()
+output_cogs.close()
+output_not_rbh.close()
+output_rbh_count.close()

@@ -1,0 +1,1 @@
+ls output/5*-COG* > output/7-list-COGs

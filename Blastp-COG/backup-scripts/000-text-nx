@@ -1,0 +1,21 @@
+#! python
+import networkx as nx
+
+data = [
+ ('productA','productB'),
+  ('productB','productC'),
+   ('productC','productD'),
+    ('productA','productD'),
+     ('productD','productB'),
+      ('productC','productA'),
+       ('productE','productF'),
+        ('productF','productG'),
+	 ('productG','productH'),
+	  ('productG','productE')
+	  ]
+
+G = nx.Graph()
+G.add_edges_from(data)
+for connected_component in nx.connected_components(G):
+    print(connected_component)
+    

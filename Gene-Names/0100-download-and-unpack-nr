@@ -1,0 +1,5 @@
+#! /bin/bash
+
+/mnlsc/home/eedsinger/software/ncbiTools/ncbi-blast-2.10.0+/bin/update_blastdb.pl  --passive --timeout 300 --force --verbose nr &&
+ls *.gz |xargs -n1 tar -xzvf &&
+rm *.gz

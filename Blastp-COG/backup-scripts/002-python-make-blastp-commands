@@ -1,0 +1,29 @@
+#! python
+
+# blastp -db /scratch/eedsinger/database/ncbi/nr/nr -query ../species19/projectdb/Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-6500-T1.aa -out output/3-blast-report-Aplysia-californica_X_ncbi_nr -num_threads 70 -outfmt "6 qseqid sseqid evalue staxids sscinames scomnames" -evalue 1e-05 -max_hsps 1 -max_target_seqs 5 -negative_taxids 6500
+
+input_blastdbs = open( 'output/1-list-fastas-blastdbs', 'r' )
+output_command = open( '003-blastp-species19-all_x_all', 'w' )
+
+gspp_blastdbs = {}
+for next_blastdb in input_blastdbs:
+    info = next_blastdb[ :-1 ].split( '-' )
+    gspp = info[ 5 ] + '-' + info[ 6 ]
+    gspp_blastdbs[ gspp ] = next_blastdb[ :-1 ]
+
+
+for gspp_1 in gspp_blastdbs:
+    fasta = gspp_blastdbs[ gspp_1 ]
+
+    for gspp_2 in gspp_blastdbs:
+
+        if gspp_1 == gspp_2:
+            pass
+        else:
+            blastdb = gspp_blastdbs[ gspp_2 ]
+            
+            output = 'blastp -db ' + blastdb + ' -query ' + fasta + ' -out output/3-blast-report-' + gspp_1 + '_x_' + gspp_2 + ' -num_threads 30 -outfmt "6 qseqid sseqid evalue" -evalue 1e-03 -max_hsps 1 -max_target_seqs 1 &&' + '\n'
+            output_command.write( output )
+
+input_blastdbs.close()
+output_command.close()

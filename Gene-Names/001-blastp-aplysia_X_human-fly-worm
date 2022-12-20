@@ -1,0 +1,5 @@
+blastp -query ../species19/projectdb/Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-6500-T1.aa -db blastdbs/Metazoa-Chordata-Mammalia-Primates-Hominidae-Homo-sapiens-9606-T1.aa -evalue 1e-5 -outfmt "6 qseqid sseqid evalue" -out output/1-blast-report-aplysia_X_human -max_target_seqs 1 -max_hsps 1 -num_threads 70 &&
+
+blastp -query ../species19/projectdb/Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-6500-T1.aa -db blastdbs/Metazoa-Arthropoda-Insecta-Diptera-Drosophilidae-Drosophila-melanogaster-7227-T1.aa -evalue 1e-5 -outfmt "6 qseqid sseqid evalue" -out output/1-blast-report-aplysia_X_fly -max_target_seqs 1 -max_hsps 1 -num_threads 70 &&
+
+blastp -query ../species19/projectdb/Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-6500-T1.aa -db blastdbs/Metazoa-Nematoda-Chromadorea-Rhabditida-Rhabditidae-Caenorhabditis-elegans-6239-T1.aa -evalue 1e-5 -outfmt "6 qseqid sseqid evalue" -out output/1-blast-report-aplysia_X_worm -max_target_seqs 1 -max_hsps 1 -num_threads 70 

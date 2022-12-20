@@ -1,0 +1,16 @@
+#! python
+
+input_subsets = open( 'output/102-list-hogs', 'r' )
+output_blastp = open( '0108-blastp-hog-substs_X_nr', 'w' )
+
+# blastp -query ../../projectdbs/species19/Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-6500-T1.aa -db ./nr -evalue 1e-5 -outfmt "6 qseqid staxids sseqid sgi sacc evalue" -out output/101-blast-report-aplysia_X_nr -max_target_seqs 10 -max_hsps 1 -num_threads 32 -negative_taxids 6500
+for next_hog in input_subsets:
+
+    info = next_hog.split( '/' )
+    hog_subset = info [ -1 ].split( '.' )[ 0 ]
+    hog_subset = '-'.join( hog_subset.split( '-' )[ 1: ] )
+    output = 'blastp -query ' + next_hog[ :-1 ] +  ' -db ./nr -evalue 1e-5 -outfmt "6 qseqid staxids sseqid sgi sacc evalue" -out output-blast-reports/108-blast-report-aplysia-' + hog_subset + '_X_nr -max_target_seqs 10 -max_hsps 1 -num_threads 1 -negative_taxids 6500 &\n'
+    output_blastp.write( output )
+
+input_subsets.close()
+output_blastp.close()

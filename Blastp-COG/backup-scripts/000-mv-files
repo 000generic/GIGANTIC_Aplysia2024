@@ -1,0 +1,31 @@
+#! python
+
+input_reports = open( 'trash', 'r' )
+output_command = open( '000-python-mv-files', 'w' )
+# 3-blast-report-Hominidae-Homo_x_Rhabditidae-Caenorhabditis
+for next_report in input_reports:
+    
+    input_report = open( next_report[ :-1 ], 'r' )
+
+    first_line = True
+
+    for next_line in input_report:
+
+        if first_line == True:
+            first_line = False
+
+            info = next_line.split( '\t' )
+            query = info[ 0 ]
+            subject = info[ 1 ]
+
+            info_query = query.split( '-' )
+            query_gspp = info_query[ 5 ] + '-' + info_query[ 6 ]
+            info_subject = subject.split( '-' )
+            subject_gspp = info_subject[ 5 ] + '-' + info_subject[ 6 ]
+            output = 'mv ' + next_report[ :-1 ] + ' output/3-blast-report-' + query_gspp + '_x_' + subject_gspp + '\n'
+            output_command.write( output )
+        else:
+            pass
+
+input_reports.close()
+output_command.close()
