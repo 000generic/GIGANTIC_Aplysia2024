@@ -70,10 +70,10 @@ for next_node in input_nodes:
         if node_id == 'N0':
 
             # C37 Bilateria
-            clade_1 = [ 'Homo' ] # C19
+            clade_1 = [ 'Homo' ]  # C19
             clade_2 = [ 'Drosophila', 'Caenorhabditis', 'Capitella', 'Phoronis', 'Lingula', 'Acanthopleura', 'Nautilus',
                         'Argonauta', 'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta',
-                        'Pomacea', 'Achatina', 'Elysia', 'Aplysia'] # C36
+                        'Pomacea', 'Achatina', 'Elysia', 'Aplysia']  # C36
             test_clade_1 = False
             test_clade_2 = False
             for next_seqid in info_seqids:
@@ -482,9 +482,7 @@ for next_node in input_nodes:
         # ancestral Spiralia N3 orthogroups C34
         if node_id == 'N3':
             clade_1 = [ 'Capitella', 'Phoronis', 'Lingula', ]  # C33
-            clade_2 = [ 'Acanthopleura', 'Nautilus', 'Argonauta', 'Octopus',
-                       'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea', 'Achatina',
-                       'Elysia', 'Aplysia' ]  # C31
+            clade_2 = [ 'Acanthopleura', 'Nautilus', 'Argonauta', 'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea', 'Achatina', 'Elysia', 'Aplysia' ]  # C31
             test_clade_1 = False
             test_clade_2 = False
             for next_seqid in info_seqids:
@@ -541,9 +539,7 @@ for next_node in input_nodes:
         # ancestral Tetraneuralia-Mollusca N5 orthogroups C31
         if node_id == 'N5':
             clade_1 = [ 'Acanthopleura' ]  # C13
-            clade_2 = [ 'Nautilus', 'Argonauta', 'Octopus',
-                       'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea', 'Achatina',
-                       'Elysia', 'Aplysia'  ]  # C30
+            clade_2 = [ 'Nautilus', 'Argonauta', 'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea', 'Achatina', 'Elysia', 'Aplysia'  ]  # C30
             test_clade_1 = False
             test_clade_2 = False
             for next_seqid in info_seqids:
@@ -606,8 +602,7 @@ for next_node in input_nodes:
         # ancestral Conchifera-Molluscan_Clade_1 N7 orthogroups C30
         if node_id == 'N7':
             clade_1 = [ 'Nautilus', 'Argonauta', 'Octopus' ]  # C29
-            clade_2 = [ 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea', 'Achatina',
-                       'Elysia', 'Aplysia' ]  # C27
+            clade_2 = [ 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea', 'Achatina', 'Elysia', 'Aplysia' ]  # C27
             test_clade_1 = False
             test_clade_2 = False
             for next_seqid in info_seqids:
@@ -664,8 +659,7 @@ for next_node in input_nodes:
         # ancestral Molluscan_Clade_2 N9 orthogroups C27
         if node_id == 'N9':
             clade_1 = [ 'Cyclina', 'Crassostrea', 'Mizuhopecten' ]  # C26
-            clade_2 = [ 'Lottia', 'Gigantopelta', 'Pomacea', 'Achatina',
-                       'Elysia', 'Aplysia'  ]  # C24
+            clade_2 = [ 'Lottia', 'Gigantopelta', 'Pomacea', 'Achatina', 'Elysia', 'Aplysia'  ]  # C24
             test_clade_1 = False
             test_clade_2 = False
             for next_seqid in info_seqids:
@@ -946,10 +940,10 @@ output_counts.write( output )
 for next_clade in sorted( clades_orthogroups_total.keys() ):
     clade_name = clades_names[ next_clade ]
     total_orthogroups = str( len( list( set( clades_orthogroups_total[ next_clade ] ) ) ) )
-    gained_orthogroups =  str( len( list( set( clades_orthogroups_gains[ next_clade ] ) ) ) )
-    conserved_orthogroups = str( len( list( set( clades_orthogroups_total[ next_clade ] ) ) )  -  len( list( set( clades_orthogroups_gains[ next_clade ] ) ) ) )
+    gained_orthogroups = str( len( list( set( clades_orthogroups_gains[ next_clade ] ) ) ) )
+    conserved_orthogroups = str( len( list( set( clades_orthogroups_total[ next_clade ] ) ) )  - len( list( set( clades_orthogroups_gains[ next_clade ] ) ) ) )
     lost_orthogroups = str( len( list( set( clades_orthogroups_losses[ next_clade ] ) ) ) )
-    output = next_clade + '\t' + clade_name  + '\t' +  total_orthogroups + '\t' + conserved_orthogroups + '\t' + gained_orthogroups + '\t' + lost_orthogroups + '\n'
+    output = next_clade + '\t' + clade_name  + '\t' + total_orthogroups + '\t' + conserved_orthogroups + '\t' + gained_orthogroups + '\t' + lost_orthogroups + '\n'
     output_counts.write( output )
 
 input_map_nodes_to_clades.close()
