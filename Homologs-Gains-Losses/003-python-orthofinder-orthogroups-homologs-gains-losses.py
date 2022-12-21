@@ -48,7 +48,7 @@ for next_clade in clades_names.keys():
 for next_node in input_nodes:
     next_node = next_node[ :-1 ]
     node_id = next_node.split( '.' )[ 0 ]
-    clade_id = nodes_clades[ node_id ]
+    clade_id: str = nodes_clades[ node_id ]
     clade_name = clades_names[ clade_id ]
     if clade_id == 'C37':
         ancestor_id = 'NA'
@@ -61,7 +61,7 @@ for next_node in input_nodes:
     for next_line in input_node:
         next_line = next_line[ :-1 ]
         info = next_line.split( '\t' )
-        orthogroup_id = info[ 1 ]
+        orthogroup_id: str = info[ 1 ]
         seqids = ', '.join( info[ 3: ] )
         info_seqids = seqids.split( ', ' )  # dictionary of seqids that form the orthogroup
 
@@ -84,7 +84,8 @@ for next_node in input_nodes:
                     if len(next_seqid.split(next_clade_2_species)) > 1:
                         test_clade_2 = True
             if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
-                clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[clade_id].append(orthogroup_id)
                 clades_orthogroups_total[ 'C19' ].append( orthogroup_id )
             if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2
                 clades_orthogroups_total[ 'C19' ].append( orthogroup_id )
@@ -433,18 +434,23 @@ for next_node in input_nodes:
                     if len( next_seqid.split( next_clade_2_species ) ) > 1:
                         test_clade_2 = True
             if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
-                clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                 if orthogroup_id not in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup gained: orthogroup in clade 1 and 2 but not ancestor
-                    clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_gains[ clade_id ]:
+                        clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
             if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[clade_id]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
             if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
             for next_orthogroup in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup lost: orthogroup present in ancestor but not clades 1 and 2
                 if next_orthogroup not in clades_orthogroups_total[ clade_id ]:
-                    clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_losses[ clade_id ]:
+                        clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
 
         # ancestral Ecdysozoa N2 orthogroups C35
         if node_id == 'N2':
@@ -460,24 +466,29 @@ for next_node in input_nodes:
                     if len( next_seqid.split( next_clade_2_species ) ) > 1:
                         test_clade_2 = True
             if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
-                clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                 clades_orthogroups_total[ 'C17' ].append( orthogroup_id )
                 clades_orthogroups_total[ 'C18' ].append( orthogroup_id )
                 if orthogroup_id not in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup gained: orthogroup in clade 1 and 2 but not ancestor
-                    clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_gains[ clade_id ]:
+                        clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
             if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                     clades_orthogroups_total[ 'C17' ].append( orthogroup_id )
                     clades_orthogroups_losses[ 'C18' ].append( orthogroup_id )
             if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[clade_id]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                     clades_orthogroups_total[ 'C18' ].append( orthogroup_id )
                     clades_orthogroups_losses[ 'C17' ].append( orthogroup_id )
             for next_orthogroup in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup lost: orthogroup present in ancestor but not clades 1 and 2
                 if next_orthogroup not in clades_orthogroups_total[ clade_id ]:
-                    clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_losses[ clade_id ]:
+                        clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
 
         # ancestral Spiralia N3 orthogroups C34
         if node_id == 'N3':
@@ -493,18 +504,23 @@ for next_node in input_nodes:
                     if len( next_seqid.split( next_clade_2_species ) ) > 1:
                         test_clade_2 = True
             if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
-                clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                 if orthogroup_id not in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup gained: orthogroup in clade 1 and 2 but not ancestor
-                    clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_gains[ clade_id ]:
+                        clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
             if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
             if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
             for next_orthogroup in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup lost: orthogroup present in ancestor but not clades 1 and 2
                 if next_orthogroup not in clades_orthogroups_total[ clade_id ]:
-                    clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_losses[ clade_id ]:
+                        clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
 
         # ancestral Spiralian_Clade_4 N4 orthogroups C33
         if node_id == 'N4':
@@ -520,21 +536,26 @@ for next_node in input_nodes:
                     if len( next_seqid.split( next_clade_2_species ) ) > 1:
                         test_clade_2 = True
             if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
-                clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                 clades_orthogroups_total[ 'C16' ].append( orthogroup_id )
                 if orthogroup_id not in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup gained: orthogroup in clade 1 and 2 but not ancestor
-                    clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_gains[ clade_id ]:
+                        clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
             if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                     clades_orthogroups_total[ 'C16' ].append( orthogroup_id )
             if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                     clades_orthogroups_losses[ 'C16' ].append( orthogroup_id )
             for next_orthogroup in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup lost: orthogroup present in ancestor but not clades 1 and 2
                 if next_orthogroup not in clades_orthogroups_total[ clade_id ]:
-                    clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_losses[ clade_id ]:
+                        clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
 
         # ancestral Tetraneuralia-Mollusca N5 orthogroups C31
         if node_id == 'N5':
@@ -550,21 +571,26 @@ for next_node in input_nodes:
                     if len( next_seqid.split( next_clade_2_species ) ) > 1:
                         test_clade_2 = True
             if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
-                clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                 clades_orthogroups_total[ 'C13' ].append( orthogroup_id )
                 if orthogroup_id not in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup gained: orthogroup in clade 1 and 2 but not ancestor
-                    clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_gains[ clade_id ]:
+                        clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
             if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                     clades_orthogroups_total[ 'C13' ].append( orthogroup_id )
             if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                     clades_orthogroups_losses[ 'C13' ].append( orthogroup_id )
             for next_orthogroup in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup lost: orthogroup present in ancestor but not clades 1 and 2
                 if next_orthogroup not in clades_orthogroups_total[ clade_id ]:
-                    clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_losses[ clade_id ]:
+                        clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
 
         # ancestral Spiralian_Clade_2-Lophophorata N6 orthogroups C32
         if node_id == 'N6':
@@ -580,24 +606,29 @@ for next_node in input_nodes:
                     if len( next_seqid.split( next_clade_2_species ) ) > 1:
                         test_clade_2 = True
             if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
-                clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                 clades_orthogroups_total[ 'C14' ].append( orthogroup_id )
                 clades_orthogroups_total[ 'C15' ].append( orthogroup_id )
                 if orthogroup_id not in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup gained: orthogroup in clade 1 and 2 but not ancestor
-                    clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_gains[ clade_id ]:
+                        clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
             if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                     clades_orthogroups_total[ 'C14' ].append( orthogroup_id )
                     clades_orthogroups_losses[ 'C15' ].append( orthogroup_id )
             if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                     clades_orthogroups_total[ 'C15' ].append( orthogroup_id )
                     clades_orthogroups_losses[ 'C14' ].append( orthogroup_id )
             for next_orthogroup in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup lost: orthogroup present in ancestor but not clades 1 and 2
                 if next_orthogroup not in clades_orthogroups_total[ clade_id ]:
-                    clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_losses[ clade_id ]:
+                        clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
 
         # ancestral Conchifera-Molluscan_Clade_1 N7 orthogroups C30
         if node_id == 'N7':
@@ -613,18 +644,23 @@ for next_node in input_nodes:
                     if len( next_seqid.split( next_clade_2_species ) ) > 1:
                         test_clade_2 = True
             if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
-                clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                 if orthogroup_id not in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup gained: orthogroup in clade 1 and 2 but not ancestor
-                    clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_gains[ clade_id ]:
+                        clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
             if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
             if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
             for next_orthogroup in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup lost: orthogroup present in ancestor but not clades 1 and 2
                 if next_orthogroup not in clades_orthogroups_total[ clade_id ]:
-                    clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_losses[ clade_id ]:
+                        clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
 
         # ancestral Cephalopoda N8 orthogroups C29
         if node_id == 'N8':
@@ -640,21 +676,26 @@ for next_node in input_nodes:
                     if len( next_seqid.split( next_clade_2_species ) ) > 1:
                         test_clade_2 = True
             if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
-                clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                 clades_orthogroups_total[ 'C12' ].append( orthogroup_id )
                 if orthogroup_id not in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup gained: orthogroup in clade 1 and 2 but not ancestor
-                    clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_gains[ clade_id ]:
+                        clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
             if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                     clades_orthogroups_total[ 'C12' ].append( orthogroup_id )
             if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                     clades_orthogroups_losses[ 'C12' ].append( orthogroup_id )
             for next_orthogroup in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup lost: orthogroup present in ancestor but not clades 1 and 2
                 if next_orthogroup not in clades_orthogroups_total[ clade_id ]:
-                    clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_losses[ clade_id ]:
+                        clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
 
         # ancestral Molluscan_Clade_2 N9 orthogroups C27
         if node_id == 'N9':
@@ -670,18 +711,23 @@ for next_node in input_nodes:
                     if len( next_seqid.split( next_clade_2_species ) ) > 1:
                         test_clade_2 = True
             if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
-                clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                 if orthogroup_id not in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup gained: orthogroup in clade 1 and 2 but not ancestor
-                    clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_gains[ clade_id ]:
+                        clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
             if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
             if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
             for next_orthogroup in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup lost: orthogroup present in ancestor but not clades 1 and 2
                 if next_orthogroup not in clades_orthogroups_total[ clade_id ]:
-                    clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_losses[ clade_id ]:
+                        clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
 
         # ancestral Coleoidea/Octopoda N10 orthogroups C28
         if node_id == 'N10':
@@ -697,24 +743,29 @@ for next_node in input_nodes:
                     if len( next_seqid.split( next_clade_2_species ) ) > 1:
                         test_clade_2 = True
             if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
-                clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                 clades_orthogroups_total[ 'C11' ].append( orthogroup_id )
                 clades_orthogroups_total[ 'C10' ].append( orthogroup_id )
                 if orthogroup_id not in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup gained: orthogroup in clade 1 and 2 but not ancestor
-                    clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_gains[ clade_id ]:
+                        clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
             if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                     clades_orthogroups_total[ 'C11' ].append( orthogroup_id )
                     clades_orthogroups_losses[ 'C10' ].append( orthogroup_id )
             if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                     clades_orthogroups_total[ 'C10' ].append( orthogroup_id )
                     clades_orthogroups_losses[ 'C11' ].append( orthogroup_id )
             for next_orthogroup in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup lost: orthogroup present in ancestor but not clades 1 and 2
                 if next_orthogroup not in clades_orthogroups_total[ clade_id ]:
-                    clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_losses[ clade_id ]:
+                        clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
 
         # ancestral Bivalvia N11 orthogroups C26
         if node_id == 'N11':
@@ -730,21 +781,26 @@ for next_node in input_nodes:
                     if len( next_seqid.split( next_clade_2_species ) ) > 1:
                         test_clade_2 = True
             if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
-                clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                 clades_orthogroups_total[ 'C09' ].append( orthogroup_id )
                 if orthogroup_id not in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup gained: orthogroup in clade 1 and 2 but not ancestor
-                    clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_gains[ clade_id ]:
+                        clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
             if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                     clades_orthogroups_total[ 'C09' ].append( orthogroup_id )
             if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                     clades_orthogroups_losses[ 'C09' ].append( orthogroup_id )
             for next_orthogroup in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup lost: orthogroup present in ancestor but not clades 1 and 2
                 if next_orthogroup not in clades_orthogroups_total[ clade_id ]:
-                    clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_losses[ clade_id ]:
+                        clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
 
         # ancestral Gastropoda N12 orthogroups C24
         if node_id == 'N12':
@@ -760,18 +816,23 @@ for next_node in input_nodes:
                     if len( next_seqid.split( next_clade_2_species ) ) > 1:
                         test_clade_2 = True
             if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
-                clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                 if orthogroup_id not in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup gained: orthogroup in clade 1 and 2 but not ancestor
-                    clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_gains[ clade_id ]:
+                        clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
             if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
             if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
             for next_orthogroup in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup lost: orthogroup present in ancestor but not clades 1 and 2
                 if next_orthogroup not in clades_orthogroups_total[ clade_id ]:
-                    clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_losses[ clade_id ]:
+                        clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
 
         # ancestral Pteriomorphia N13 orthogroups C25
         if node_id == 'N13':
@@ -787,24 +848,29 @@ for next_node in input_nodes:
                     if len( next_seqid.split( next_clade_2_species ) ) > 1:
                         test_clade_2 = True
             if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
-                clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                 clades_orthogroups_total[ 'C08' ].append( orthogroup_id )
                 clades_orthogroups_total[ 'C07' ].append( orthogroup_id )
                 if orthogroup_id not in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup gained: orthogroup in clade 1 and 2 but not ancestor
-                    clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_gains[ clade_id ]:
+                        clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
             if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                     clades_orthogroups_total[ 'C08' ].append( orthogroup_id )
                     clades_orthogroups_losses[ 'C07' ].append( orthogroup_id )
             if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                     clades_orthogroups_total[ 'C07' ].append( orthogroup_id )
                     clades_orthogroups_losses[ 'C08' ].append( orthogroup_id )
             for next_orthogroup in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup lost: orthogroup present in ancestor but not clades 1 and 2
                 if next_orthogroup not in clades_orthogroups_total[ clade_id ]:
-                    clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_losses[ clade_id ]:
+                        clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
 
         # ancestral Psilogastropoda N14 orthogroups C23
         if node_id == 'N14':
@@ -820,24 +886,29 @@ for next_node in input_nodes:
                     if len( next_seqid.split( next_clade_2_species ) ) > 1:
                         test_clade_2 = True
             if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
-                clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                 clades_orthogroups_total[ 'C06' ].append( orthogroup_id )
                 clades_orthogroups_total[ 'C05' ].append( orthogroup_id )
                 if orthogroup_id not in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup gained: orthogroup in clade 1 and 2 but not ancestor
-                    clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_gains[ clade_id ]:
+                        clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
             if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                     clades_orthogroups_total[ 'C06' ].append( orthogroup_id )
                     clades_orthogroups_losses[ 'C05' ].append( orthogroup_id )
             if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                     clades_orthogroups_total[ 'C05' ].append( orthogroup_id )
                     clades_orthogroups_losses[ 'C06' ].append( orthogroup_id )
             for next_orthogroup in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup lost: orthogroup present in ancestor but not clades 1 and 2
                 if next_orthogroup not in clades_orthogroups_total[ clade_id ]:
-                    clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_losses[ clade_id ]:
+                        clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
 
         # ancestral Angiogastropoda N15 orthogroups C22
         if node_id == 'N15':
@@ -853,21 +924,26 @@ for next_node in input_nodes:
                     if len( next_seqid.split( next_clade_2_species ) ) > 1:
                         test_clade_2 = True
             if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
-                clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                 clades_orthogroups_total[ 'C04' ].append( orthogroup_id )
                 if orthogroup_id not in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup gained: orthogroup in clade 1 and 2 but not ancestor
-                    clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_gains[ clade_id ]:
+                        clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
             if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                     clades_orthogroups_total[ 'C04' ].append( orthogroup_id )
             if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                     clades_orthogroups_losses[ 'C04' ].append( orthogroup_id )
             for next_orthogroup in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup lost: orthogroup present in ancestor but not clades 1 and 2
                 if next_orthogroup not in clades_orthogroups_total[ clade_id ]:
-                    clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_losses[ clade_id ]:
+                        clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
 
         # ancestral Heterobranchia-Euthyneura N16 orthogroups C21
         if node_id == 'N16':
@@ -883,21 +959,26 @@ for next_node in input_nodes:
                     if len( next_seqid.split( next_clade_2_species ) ) > 1:
                         test_clade_2 = True
             if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
-                clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                 clades_orthogroups_total[ 'C01' ].append( orthogroup_id )
                 if orthogroup_id not in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup gained: orthogroup in clade 1 and 2 but not ancestor
-                    clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_gains[ clade_id ]:
+                        clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
             if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                     clades_orthogroups_total[ 'C01' ].append( orthogroup_id )
             if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                     clades_orthogroups_losses[ 'C01' ].append( orthogroup_id )
             for next_orthogroup in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup lost: orthogroup present in ancestor but not clades 1 and 2
                 if next_orthogroup not in clades_orthogroups_total[ clade_id ]:
-                    clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_losses[ clade_id ]:
+                        clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
 
         # ancestral Panpulmonata N17 orthogroups C20
         if node_id == 'N17':
@@ -913,24 +994,29 @@ for next_node in input_nodes:
                     if len( next_seqid.split( next_clade_2_species ) ) > 1:
                         test_clade_2 = True
             if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
-                clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                 clades_orthogroups_total[ 'C03' ].append( orthogroup_id )
                 clades_orthogroups_total[ 'C02' ].append( orthogroup_id )
                 if orthogroup_id not in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup gained: orthogroup in clade 1 and 2 but not ancestor
-                    clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_gains[ clade_id ]:
+                        clades_orthogroups_gains[ clade_id ].append( orthogroup_id )
             if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                     clades_orthogroups_total[ 'C03' ].append( orthogroup_id )
                     clades_orthogroups_losses[ 'C02' ].append( orthogroup_id )
             if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
                 if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
-                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
                     clades_orthogroups_total[ 'C02' ].append( orthogroup_id )
                     clades_orthogroups_losses[ 'C03' ].append( orthogroup_id )
             for next_orthogroup in clades_orthogroups_total[ ancestor_id ]:   # test if orthogroup lost: orthogroup present in ancestor but not clades 1 and 2
                 if next_orthogroup not in clades_orthogroups_total[ clade_id ]:
-                    clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
+                    if orthogroup_id not in clades_orthogroups_losses[ clade_id ]:
+                        clades_orthogroups_losses[ clade_id ].append( orthogroup_id )
 
 ########## Read counts to output
 
