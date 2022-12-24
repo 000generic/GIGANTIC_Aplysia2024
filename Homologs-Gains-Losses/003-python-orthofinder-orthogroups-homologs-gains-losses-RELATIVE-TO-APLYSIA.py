@@ -874,6 +874,8 @@ print( 'Calculating gains and losses...')
 output = 'Clade ID' + '\t' + 'Clade Name' + '\t' + 'Orthogroups Total' + '\t' + 'Orthogroups Conserved' + '\t' + 'Orthogroups Gained' + '\t' + 'Orthogroups Lost' + '\t' + 'Aplysia Conserved' + '\t' + 'Aplysia Gained' + '\t' + 'Aplysia Lost' + '\n'
 output_counts.write( output )
 
+aplysia_orthogroups = clades_orthogroups_total[ 'C01' ]
+
 for next_clade in sorted( clades_orthogroups_total.keys() ):
 
     clade_name = clades_names[ next_clade ]
