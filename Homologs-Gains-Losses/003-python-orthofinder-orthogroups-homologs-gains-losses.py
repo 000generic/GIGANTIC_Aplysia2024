@@ -881,7 +881,7 @@ for next_clade in sorted( clades_orthogroups_total.keys() ):
     total_orthogroups = str( len( list( set( clades_orthogroups_total[ next_clade ] ) ) ) )
     clade_orthogroups = list( set( clades_orthogroups_total[ next_clade ] ) )
 
-    if next_clade != 'N37':
+    if next_clade != 'C37':
         ancestor_id = clades_ancestors[ next_clade ]
         ancestor_orthogroups = list( set(  clades_orthogroups_total[ ancestor_id ] ) )
 
