@@ -881,23 +881,29 @@ for next_clade in sorted( clades_orthogroups_total.keys() ):
     total_orthogroups = str( len( list( set( clades_orthogroups_total[ next_clade ] ) ) ) )
     clade_orthogroups = list( set( clades_orthogroups_total[ next_clade ] ) )
 
-    ancestor_id = clades_ancestors[ next_clade ]
-    ancestor_orthogroups = list( set(  clades_orthogroups_total[ ancestor_id ] ) )
+    if next_clade != 'N37':
+        ancestor_id = clades_ancestors[ next_clade ]
+        ancestor_orthogroups = list( set(  clades_orthogroups_total[ ancestor_id ] ) )
 
-    conserved_orthogroups = 0
-    gained_orthogroups = 0
-    for next_orthogroup in clade_orthogroups:
-        if next_orthogroup in ancestor_orthogroups:
-            conserved_orthogroups = conserved_orthogroups + 1
-        else:
-            gained_orthogroups = gained_orthogroups + 1
+        conserved_orthogroups = 0
+        gained_orthogroups = 0
+        for next_orthogroup in clade_orthogroups:
+            if next_orthogroup in ancestor_orthogroups:
+                conserved_orthogroups = conserved_orthogroups + 1
+            else:
+                gained_orthogroups = gained_orthogroups + 1
 
-    lost_orthogroups = 0
-    for next_orthogroup in ancestor_orthogroups:
-        if next_orthogroup not in clade_orthogroups:
-            lost_orthogroups = lost_orthogroups + 1
+        lost_orthogroups = 0
+        for next_orthogroup in ancestor_orthogroups:
+            if next_orthogroup not in clade_orthogroups:
+                lost_orthogroups = lost_orthogroups + 1
 
-    output = next_clade + '\t' + clade_name  + '\t' + total_orthogroups + '\t' + conserved_orthogroups + '\t' + gained_orthogroups + '\t' + lost_orthogroups + '\n'
+    else:
+        conserved_orthogroups = 'NA'
+        gained_orthogroups = 'NA'
+        lost_orthogroups = 'NA'
+
+    output = next_clade + '\t' + clade_name  + '\t' + total_orthogroups + '\t' + str( conserved_orthogroups ) + '\t' + str( gained_orthogroups ) + '\t' + str( lost_orthogroups ) + '\n'
     output_counts.write( output )
 
 input_map_nodes_to_clades.close()
