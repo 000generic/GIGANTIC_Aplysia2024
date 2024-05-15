@@ -1,0 +1,101 @@
+#! python
+
+input_map = open( '/scratch/eric/projects/aplysia/idswapper/USEME-CLEAN-species19-idswapper-from-script-008', 'r' )
+input_fastas = open( 'output/3-list-fastas', 'r' )
+input_clusters = open( 'output/2-clusters-of-integration-blast-gene-set_X_annotation-superrelaxed-query-based-gene-sets-SPECIES19', 'r' )
+output_aplysia = open( 'output/5-seqids-clusters-per-secretome-aplysia-genome', 'w' )
+
+gigantics_cleans = {}
+for next_line in input_map:
+    info = next_line[ :-1 ].split( '\t' )
+    gigantic = info[ 0 ]
+    clean = info[ -1 ]
+    gigantics_cleans[ gigantic ] = clean
+
+seqids_sequences = {}
+for next_fasta in input_fastas:
+    input_fasta = open( next_fasta[ :-1 ], 'r' )
+    for next_line in input_fasta:
+        if next_line[ 0 ] == '>':
+            gigantic = next_line[ 1:-1 ]
+            seqid = gigantics_cleans[ gigantic ]
+            seqids_sequences[ seqid ] = ''
+        else:
+            sequence = next_line[ :-1 ]
+            seqids_sequences[ seqid ] = seqids_sequences[ seqid ] + sequence
+
+header = 'Sequence ID' + '\t' + 'Sequence ID Clean' + '\t' + 'Source ID' + '\t' +  'Reference Gene Set' + '\t' + 'Blast Run' + '\t' + 'Annotation Filter' + '\t' + 'Cluster ID' + '\t' + 'Cluster Size' + '\t' + 'Species Counts' + '\t' + 'Cluster Seqids' + '\t' + 'Sequence' + '\n'
+
+output_aplysia.write( header )
+
+genera = [ 'Aplysia', 'Elysia', 'Achatina', 'Pomacea', 'Gigantopelta', 'Lottia', 'Crassostrea', 'Mizuhopecten', 'Cyclina', 'Octopus', 'Argonauta', 'Nautilus', 'Acanthopleura', 'Lingula', 'Phoronis', 'Capitella', 'Caenorhabditis', 'Drosophila', 'Homo' ]
+
+species_seqids_clusters_outputs = {}
+
+for next_genus in genera:
+    species_seqids_clusters_outputs[ next_genus ] = {}
+    
+# leonid_ssp204_blast_evalue_minus_2_annotation_superrelaxed_query_based_cluster_7        3       Apl_1 Ely_0 Ach_1 Pom_0 Gig_0 Lot_0 Cra_0 Miz_0 Cyc_0 Oct_0 Arg_0 Nau_0 Aca_0 Lin_0 Pho_1 Cap_0 Cae_0 Dro_0 Hom_0       Phoronis-australis-g10412_g10412_t1, Aplysia-californica-LOC101857653-SIS-rgs_leonid_ssp204, Achatina-fulica-Afu016147
+for next_data in input_clusters:
+
+    info = next_data[ :-1 ].split( '\t' )
+    cluster_id = info[ 0 ]
+    info_cluster_1 = cluster_id.split( '_annotation_' )
+    rgs = info_cluster_1[ 0 ].split( '_blast' )[ 0 ]
+    blast_run = info_cluster_1[ 0 ].split( 'blast_' )[ 1 ]
+    info_cluster_2 = info_cluster_1[ 1 ].split( '_cluster' )
+    annotation_filter = info_cluster_2[ 0 ]
+    
+    cluster_size = info[ 1 ]
+    species_counts = info[ 2 ]
+    seqids = info[ 3 ].split( ', ' )
+
+    for next_seqid in seqids:
+
+        next_genus = next_seqid.split( '-' )[ 0 ]
+
+        if len( next_seqid.split( '-' ) ) > 3: # cleans up rgs sequences
+            next_seqid_clean = '-'.join( next_seqid.split( '-' )[ :3 ] )
+        else:
+            next_seqid_clean = next_seqid
+
+        sourceid = next_seqid_clean.split( '-' )[ -1 ]
+            
+        next_sequence = seqids_sequences[ next_seqid_clean ]
+        output = next_seqid + '\t' + next_seqid_clean + '\t' + sourceid +  '\t' + rgs + '\t' + blast_run + '\t' + annotation_filter + '\t' + cluster_id + '\t' + cluster_size + '\t' + species_counts + '\t' + ', '.join( seqids ) + '\t' + next_sequence + '\n'
+
+        if next_seqid not in species_seqids_clusters_outputs[ next_genus ].keys():
+            species_seqids_clusters_outputs[ next_genus ][ next_seqid ] = {}
+        species_seqids_clusters_outputs[ next_genus ][ next_seqid ][ cluster_id ] = output
+
+
+for next_genus in genera:
+    new_file = 'output/5-seqids-clusters-per-secretome-' + next_genus
+    output_file = open( new_file, 'w' )
+    output_file.write( header )
+    
+    for next_seqid in sorted( species_seqids_clusters_outputs[ next_genus ].keys() ):
+        for next_clusterid in sorted( species_seqids_clusters_outputs[ next_genus ][ next_seqid ].keys() ):
+            output = species_seqids_clusters_outputs[ next_genus ][ next_seqid ][ next_clusterid ]
+            output_file.write( output )
+
+    output_file.close()  
+for next_seqid in seqids_sequences:
+    if len( next_seqid.split( 'californica' ) ) > 1:
+        if next_seqid not in species_seqids_clusters_outputs[ 'Aplysia' ].keys():
+            next_sequence = seqids_sequences[ next_seqid ]
+            output = next_seqid + '\t' + 'NA' + '\t'  + 'NA' + '\t' + 'NA' + '\t' + 'NA' + '\t' + 'NA' + '\t' + 'NA' + '\t' + 'NA' + '\t' + 'NA' + '\t' + next_sequence + '\n'
+        else:
+            output = ''
+            for next_cluster in sorted( species_seqids_clusters_outputs[ 'Aplysia' ][ next_seqid ].keys() ):
+                output = output + species_seqids_clusters_outputs[ 'Aplysia' ][ next_seqid ][ next_cluster ] 
+            
+        output_aplysia.write( output )
+
+input_map.close()
+input_fastas.close()
+input_clusters.close()
+output_aplysia.close()
+        
+            
+    

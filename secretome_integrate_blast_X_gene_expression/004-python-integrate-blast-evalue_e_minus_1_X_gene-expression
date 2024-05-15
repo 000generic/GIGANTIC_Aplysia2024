@@ -1,0 +1,65 @@
+#! python
+
+input_blast = open( '../../leonid_ssp204/output/17-aplysia-homologs-leonid_ssp204-blastp-evalue_minus_1', 'r' )
+input_expression = open( 'input/1-leonid_ssp204.fasta', 'r' )
+#output_integration = open( 'output/1-integrated-blast-leonid_ssp204-evalue_e_minus_4_X_ALL-peptides-isoforms-expression-data-from-leonid-05apr2023', 'w' )
+output_data = open( 'output/4-blast-leonid_ssp204-evalue_e_minus_1-data-for-hand-integration-into-excel', 'w' )
+
+# Homolog Homolog Symbol  Homolog Name    Homolog Symbol-Name     Cluster Size    References      References-based Cluster        Homolog Sequence
+symbols_data = {}
+first_line = False
+
+header = 'Homolog Identifier' + '\t' + 'Homolog Symbol' + '\t' + 'Homolog Name' + '\t' + 'Cluster Size' + '\t'  + 'Blast References' + '\t' + 'Blast Cluster Sequences' + '\t' + 'Homolog Sequence' + '\n'
+output_data.write( header )
+
+for next_line in input_blast:
+    if first_line == False:
+        first_line = True
+    else:
+        info = next_line[ :-1 ].split( '\t' )
+        symbol = info[ 1 ]
+        old_id = info[ 0 ].split( '-' )
+        new_id = old_id[ 0 ] + '-' + old_id[ 1 ] + '-' + old_id[ 2 ]
+        symbol = info[ 1 ]
+        name = info[ 2 ]
+        name = '-'.join( name.split( '___' ) )
+        size = info[ 4 ]
+        references = info[ 5 ]
+        cluster = info[ 6 ]
+        sequence = info[ 7 ]
+        blast_data = new_id + '\t' + symbol + '\t' + name + '\t' + size + '\t' + references + '\t' + cluster + '\t' + sequence 
+        
+        # symbols_data[ symbol ] = blast_data
+        output = blast_data + '\n'
+        output_data.write( output )
+
+#first_line = False
+#for next_line in input_expression:
+#    if first_line == False:
+#        first_line = True
+#        header = 'Homolog Identifier' + '\t' + 'Homolog Symbol' + '\t' + 'Homolog Name' + '\t' +  'Cluster Size'  + '\t' + 'Blast References' + '\t' + 'Blast Cluster Sequences' + '\t' + 'Homolog Sequence' + '\t' + next_line
+#        output_integration.write( header )
+        
+#    else:
+#        if next_line[ 0 ] == '>':
+            
+#            info = next_line.split( '\t' )
+#            symbol = info[ 1:-1 ]
+#            symbol_short = symbol.split( '-' )[ 0 ]
+#            if symbol_short in symbols_data.keys():
+            
+#                blast_data = symbols_data[ symbol_short ]
+#            else:
+#                blast_data = 'NA' + '\t' + 'NA' + '\t' + 'NA' + '\t' + 'NA' + '\t' + 'NA' + '\t' + 'NA' + '\t'
+#        output = blast_data + '\t' + next_line
+#        output_integration.write( output )
+
+#        output = blast_data + '\n'
+#        output_data.write( output )        
+
+input_blast.close()
+input_expression.close()
+#output_integration.close()
+output_data.close()
+
+    

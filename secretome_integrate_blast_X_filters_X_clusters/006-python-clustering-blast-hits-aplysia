@@ -1,0 +1,86 @@
+#! python
+
+input_integrations = open( 'output/1-integration-blast-gene-set_X_query-based-annotation-filter-keepers', 'r' )
+output_clusters = open( 'output/6-clusters-of-integration-blast-gene-set_X_annotation-superrelaxed-query-based-gene-sets-APLYSIA', 'w' )
+
+genera = [ 'Aplysia', 'Elysia', 'Achatina', 'Pomacea', 'Gigantopelta', 'Lottia', 'Crassostrea', 'Mizuhopecten', 'Cyclina', 'Octopus', 'Argonauta', 'Nautilus', 'Acanthopleura', 'Lingula', 'Phoronis', 'Capitella', 'Caenorhabditis', 'Drosophila', 'Homo' ]
+
+# evalue_minus_2  Aplysia-californica-LOC100533370-Achatin-rgs_leonid_ssp204      Aplysia-californica-LOC100533370-Achatin-rgs_leonid_ssp204, Elysia-chlorotica-EGW08_021097_RUS71144_1, Achatina-fulica-Afu017399, Achatina-fulica-Afu021427, Pomacea-canaliculata-LOC112557935_XP_025083880_1, Pomacea-canaliculata-LOC112563346_XP_025093041_1, Gigantopelta-aegis-LOC121385637_XP_041372327_1, Lottia-gigantea-LOTGIDRAFT_59837_XP_009062438_1, Mizuhopecten-yessoensis-LOC110463376_XP_021373586_1, Cyclina-sinensis-evm_model_Hic_asm_7_716, Octopus-bimaculoides-LOC106874957_XP_014778366_1, Octopus-bimaculoides-LOC106869081_XP_014770093_1, Argonauta-argo-Aargo006449, Nautilus-pompilius-GWHPBECW005319, Acanthopleura-granulata-model_g6261_t1
+evalues_references_data = {}
+for next_data in input_integrations:
+
+    info = next_data[ :-1 ].split( '\t' )
+    next_evalue = info[ 0 ]
+    next_reference = info[ 1 ]
+
+    if len( next_reference.split( 'californica' ) ) > 1:
+
+        if next_evalue not in evalues_references_data.keys():
+            evalues_references_data[ next_evalue ] = {}
+        evalues_references_data[ next_evalue ][ next_reference ] = next_data[ :-1 ]
+
+for next_evalue in evalues_references_data.keys():
+    cluster_count = 0
+    clusters_seqids = {}
+    seqids_clusters = {}
+    for next_reference in evalues_references_data[ next_evalue ].keys():
+        next_data = evalues_references_data[ next_evalue ][ next_reference ]
+
+        info = next_data.split( '\t' )
+        cluster = info[ -1 ]
+        info_cluster = cluster.split( ', ' )
+        new_cluster = info_cluster
+        homolog_clusters = []
+    
+        for next_sequence in info_cluster:
+            if next_sequence in seqids_clusters.keys():
+                next_homolog_cluster = seqids_clusters[ next_sequence ]
+                homolog_clusters.append( next_homolog_cluster )
+
+        homolog_clusters = list( set( homolog_clusters ) )
+        for next_homolog_cluster  in homolog_clusters:
+            for next_seqid in clusters_seqids[ next_homolog_cluster ]:
+                new_cluster.append( next_seqid )
+            clusters_seqids.pop( next_homolog_cluster )
+
+        cluster_count = cluster_count + 1
+        new_cluster_id = 'leonid_ssp204_blast_' + next_evalue + '_annotation_superrelaxed_query_based_cluster_' + str( cluster_count )
+        new_cluster = list( set( new_cluster ) )
+        clusters_seqids[ new_cluster_id ] = new_cluster
+        for next_seqid in clusters_seqids[ new_cluster_id ]:
+            seqids_clusters[ next_seqid ] = new_cluster_id
+
+    final_count = 0
+    for next_clusterid in sorted( clusters_seqids.keys() ):
+        genus_hits = {}
+        for next_genus in genera:
+            genus_hits[ next_genus ] = []
+        for next_hit in clusters_seqids[ next_clusterid ]:
+            next_genus = next_hit.split( '-' )[ 0 ]
+            genus_hits[ next_genus ].append( next_hit )
+
+        species_counts = ''
+        cluster_total = len( clusters_seqids[ next_clusterid ] )
+        for next_genus in genera:
+            species_counts = species_counts + next_genus[ :3 ] + '_' + str( len( genus_hits[ next_genus ] ) ) + ' ' 
+        species_counts = species_counts[ :-1 ]
+        final_count = final_count + 1
+        output = 'leonid_ssp204_blast_' + next_evalue + '_annotation_superrelaxed_query_based_cluster_' +  str( final_count ) + '\t' + str( cluster_total ) + '\t' + species_counts + '\t' 
+
+        genera_seqids = {}
+        for next_genus in genera:
+            genera_seqids[ next_genus ] = []
+        for next_seqid in clusters_seqids[ next_clusterid ]:
+            next_genus = next_seqid.split( '-' )[ 0 ]
+            genera_seqids[ next_genus ].append( next_seqid )
+            
+        for next_genus in genera:
+            for next_seqid in sorted( genera_seqids[ next_genus ] ):
+                output = output + next_seqid + ', '
+    
+        output = output[ :-2 ] + '\n'
+        output_clusters.write( output )
+
+input_integrations.close()
+output_clusters.close()
+

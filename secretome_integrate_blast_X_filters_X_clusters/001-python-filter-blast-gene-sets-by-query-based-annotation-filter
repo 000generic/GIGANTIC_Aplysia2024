@@ -1,0 +1,188 @@
+#! python
+
+input_idswapper = open( '/scratch/eric/projects/aplysia/idswapper/USEME-CLEAN-species19-idswapper-from-script-008', 'r' )
+input_annotations = open( '/scratch/eric/projects/aplysia/annotations-features/annotations-features-species19-map/output/2-map-species19-annotations-features-interproscan-deeploc2-signalp6-deeptmhmm-metapredict-giganticids', 'r' )
+input_blast_runs = open( 'input/27-list-references-hits-evalues-ALL', 'r' )
+#input_blast_runs = open( '/scratch/eric/projects/aplysia/secretome/cgs-blast/leonid_ssp204/output/27-list-references-hits-evalues-ALL', 'r' )
+output_keepers = open( 'output/1-integration-blast-gene-set_X_query-based-annotation-filter-keepers', 'w' )
+output_droppers = open( 'output/1-integration-blast-gene-set_X_query-based-annotation-filter-droppers', 'w' )
+
+
+### read in idswapper
+gigantics_cleans = {}
+for next_line in input_idswapper:
+    info = next_line[ :-1 ].split( '\t' )
+    gigantic = info[ 0 ]
+    clean = info[ 2 ]
+    gigantics_cleans[ gigantic ] = clean
+
+### read in annotation data per seqid
+
+# [ giganticID ]  [ DeepLoc2_SM Annotations ]     [ DeepLoc2_SP Annotations ]     [ DeepLoc2_TM Annotations ]     [ DeepTMHMM SP Annotations ]    [ DeepTMHMM TM Annotations ]    [ Metapredict Inherent Disorganized Region Annotation ] [ SignalP6 Signal Peptide Annotation ]     [ InterProScan AntiFam ]        [ InterProScan CDD ]    [ InterProScan Coils ]  [ InterProScan FunFam ] [ InterProScan Gene3D ] [ InterProScan Hamap ]  [ InterProScan MobiDBLite ]     [ InterProScan PANTHER ]  [ InterProScan PIRSF ]   [ InterProScan PRINTS ] [ InterProScan Pfam ]   [ InterProScan ProSitePatterns ]        [ InterProScan ProSiteProfiles ]        [ InterProScan SFLD ]   [ InterProScan SMART ]  [ InterProScan SUPERFAMILY ]    [ InterProScan TIGRFAM ]   [ InterProScan GO ]
+
+# Metazoa-Annelida-Polychaeta-Order_unclassified14-Capitellidae-Capitella-teleta-gigantic20220627164247_seq0000244112aa   DeepLoc2_SM:Extracellular_Signalpeptide DeepLoc2_LOCAL:Extracellular_SIGNAL:Signalpeptide       None    None    None    None       None    None    None    None    None    None    None    None    None    None    None    Pfam_PF08434_3_187      None    None    None    None    None    None    None
+seqids_annotations = {}
+first_line = False
+for next_annotation in input_annotations:
+    if first_line == False:
+        first_line = True
+    else:
+        info = next_annotation[ :-1 ].split( '\t' )
+        next_seqid_gigantic = info[ 0 ]
+        next_seqid = gigantics_cleans[ next_seqid_gigantic ]
+
+        # signal peptides 2, 4, 7 - disorganized regions 6, 14 - TMs 3, 5 - Pfams 18
+        next_annotations = info[ 2 ] + '\t' + info[ 4 ] + '\t' +  info[ 7 ] + '\t' +  info[ 6 ] + '\t' +  info[ 14 ] + '\t' +  info[ 3 ] + '\t' +  info[ 5 ] + '\t' +  info[ 18 ]
+        seqids_annotations[ next_seqid ] = next_annotations
+
+### read in blast hits per blast run per leonid_ssp204
+
+# output/13-references-hits-evalue_minus_2
+for next_run in input_blast_runs:
+    next_file = '/scratch/eric/projects/aplysia/secretome/cgs-blast/leonid_ssp204/' + next_run[ :-1 ]
+    input_run = open( next_file, 'r' )
+    info_run = next_run[ :-1 ].split( '-' )
+    run_id = info_run[ -1 ]
+
+    # Aplysia-californica-LOC101859165-Bursicon_A-rgs_leonid_ssp204   LOC101859165    Bursicon_A      Apl_2 Ely_2 Ach_4 Pom_0 Gig_0 Lot_0 Cra_0 Miz_0 Cyc_6 Oct_0 Arg_0 Nau_1 Aca_1 Lin_0 Pho_0 Cap_1 Cae_0 Dro_1 Hom_2       Aplysia-californica-LOC101859165-Bursicon_A-rgs_leonid_ssp204, Aplysia-californica-LOC101844971    Elysia-chlorotica-EGW08_019055_RUS73181_1, Elysia-chlorotica-EGW08_014831_RUS77412_1    Achatina-fulica-Afu000615, Achatina-fulica-Afu000314, Achatina-fulica-Afu001996, Achatina-fulica-Afu001995 None    None    None    None    None    Cyclina-sinensis-evm_model_Hic_asm_17_1741, Cyclina-sinensis-evm_model_Hic_asm_17_361, Cyclina-sinensis-evm_model_Hic_asm_17_404, Cyclina-sinensis-evm_model_original_scaffold_440_pilon_330, Cyclina-sinensis-evm_model_Hic_asm_12_439, Cyclina-sinensis-evm_model_Hic_asm_3_887_1        None    None    Nautilus-pompilius-GWHPBECW006925       Acanthopleura-granulata-model_g20066_t1 None    None    Capitella-teleta-CAPTEDRAFT_113601_ELT93240_1      None    Drosophila-melanogaster-Dmel_CG13419_NP_650983_1        Homo-sapiens-MICOS10_NBL1_NP_001191017_1, Homo-sapiens-NBL1_NP_877421_2
+
+    first_line = False
+    for next_blast_data in input_run:
+
+        if first_line == False:
+            first_line = True
+        else:
+            info = next_blast_data[ :-1 ].split( '\t' )
+
+            next_query = info[ 0 ]
+            next_query_clean = '-'.join( next_query.split( '-' )[ :3 ] )
+
+            all_hits = []
+            keepers = []
+            droppers = []
+            
+            hits_structured = info[ 4: ]
+            for next_species_hits in hits_structured:
+                if next_species_hits != 'None':
+                    info_hits = next_species_hits.split( ', ')
+                    for next_hit in info_hits:
+                        all_hits.append( next_hit )            
+                
+            # build annotation filter based on query annotation features
+            query_annotations = seqids_annotations[ next_query_clean ].split( '\t' )
+        
+            signal_peptide_test = 'YES'
+            if query_annotations[ 0 ] == 'None':
+                if query_annotations[ 1 ] == 'None':
+                    if query_annotations[ 2 ] == 'None':
+                        signal_peptide_test = 'NO'
+
+            disorganized_region_test = 'YES'
+            if query_annotations[ 3 ] == 'None':
+                if query_annotations[ 4 ] == 'None':
+                    disorganized_region_test = 'NO'
+
+            transmembrane_domain_test = 'NO'
+            if query_annotations[ 5 ] != 'None':
+                transmembrane_domain_test = 'YES'
+            if query_annotations[ 6 ] != 'None':
+                transmembrane_domain_test = 'YES'
+
+            pfam_test = 'NO'
+            if query_annotations[ 7 ] != 'None':
+                pfam_test = 'YES'
+                pfam_content = query_annotations[ 7 ]
+ 
+            # evaluate annotation features in query hits
+            for next_hit in all_hits:
+                    
+                if len( next_hit.split( '-' ) ) > 3:
+                    next_clean = '-'.join( next_hit.split( '-' )[ :3 ] )
+                    hit_annotations = seqids_annotations[ next_clean ].split( '\t' )
+                else:
+                    hit_annotations = seqids_annotations[ next_hit ].split( '\t' )
+
+                signal_peptide_hit = 'YES'
+                if hit_annotations[ 0 ] == 'None':
+                    if hit_annotations[ 1 ] == 'None':
+                        if hit_annotations[ 2 ] == 'None':
+                            signal_peptide_hit = 'NO'
+
+                disorganized_region_hit = 'YES'
+                if hit_annotations[ 3 ] == 'None':
+                    if hit_annotations[ 4 ] == 'None':
+                        disorganized_region_hit = 'NO'
+
+                transmembrane_domain_hit = 'NO'
+                if hit_annotations[ 5 ] != 'None':
+                    transmembrane_domain_hit = 'YES' # MAY WANT TO DISABLE THIS ADJUSTMENT IN THE FILTER!!!
+                if hit_annotations[ 6 ] != 'None':
+                    transmembrane_domain_hit = 'YES' # MAY WANT TO DISABLE THIS ADJUSTMENT IN THE FILTER!!!
+
+                pfam_hit = 'NO'
+                if hit_annotations[ 7 ] != 'None':
+                    pfam_hit = 'YES'
+                    pfam_content = hit_annotations[ 7 ]
+
+                # Test if the next hit passes query-based annotation filter
+                integation_signal_peptide_test = 'FAIL'
+                if signal_peptide_hit == signal_peptide_test:
+                    integation_signal_peptide_test = 'PASS'
+                else:
+                    if signal_peptide_test == 'NO':
+                        if signal_peptide_hit == 'YES':
+                            integation_signal_peptide_test = 'PASS'
+
+                integration_disorganized_test = 'FAIL'
+                if disorganized_region_hit == disorganized_region_test:
+                    integation_signal_peptide_test = 'PASS'
+                else:
+                    if disorganized_region_test == 'NO':
+                        if disorganized_region_hit == 'YES':
+                            integation_signal_peptide_test = 'PASS'
+
+                integration_transmembrane_test = 'FAIL'
+                if transmembrane_domain_hit == transmembrane_domain_test:
+                    integration_transmembrane_test = 'PASS'
+                else:
+                    if transmembrane_domain_test == 'YES':
+                        if transmembrane_domain_hit == 'NO':
+                            integration_transmembrane_test = 'PASS'
+
+                integration_pfam_test = 'FAIL'
+                if pfam_hit == pfam_test:
+                    integration_pfam_test = 'PASS'
+                else:
+                    if pfam_test != 'None':
+                        if pfam_hit == 'None':
+                            integration_pfam_test = 'PASS'
+
+                integration_test = 'FAIL'
+                if integation_signal_peptide_test == 'PASS':
+                    if integation_signal_peptide_test == 'PASS':
+                        if integration_transmembrane_test == 'PASS':
+                            if integration_pfam_test == 'PASS':
+                                integration_test = 'PASS'
+
+                if integration_test == 'PASS':
+                    keepers.append( next_hit )
+                else:
+                    droppers.append( next_hit )
+
+            # Read query-based annotation filtering of query hits to files
+            if len( keepers ) == 0:
+                keepers.append( 'None' )
+            if len( droppers ) == 0:
+                droppers.append( 'None' )
+            
+            output = run_id + '\t' + next_query + '\t' + ', '.join( keepers ) + '\n'
+            output_keepers.write( output )
+
+            output = run_id + '\t' + next_query + '\t' + ', '.join( droppers ) + '\n'
+            output_droppers.write( output )
+
+input_idswapper.close()
+input_annotations.close()
+input_blast_runs.close()
+output_keepers.close()
+output_droppers.close()

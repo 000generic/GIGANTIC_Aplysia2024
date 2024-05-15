@@ -1,0 +1,83 @@
+#! python
+
+input_fastas = open( 'output/3-list-fastas', 'r' )
+input_map = open( '/scratch/eric/projects/aplysia/idswapper/USEME-CLEAN-species19-idswapper-from-script-008', 'r' )
+input_clusters = open( 'output/2-clusters-of-integration-blast-gene-set_X_annotation-superrelaxed-query-based-gene-sets-SPECIES19', 'r' )
+output_counts = open( 'output/4-aplysia-counts-per-cluster', 'w' )
+
+header = 'Cluster ID' + '\t' + 'Aplysia Cluster Sequences Count' + '\t' + 'Aplysia Leonid_ssp Count' + '\t' + 'Aplysia Non-Leonid_ssp Count' + '\n'
+output_counts.write( header )
+
+gigantics_cleans = {}
+for next_line in input_map:
+    info = next_line[ :-1 ].split( '\t' )
+    gigantic = info[ 0 ]
+    clean = info[ 2 ]
+    gigantics_cleans[ gigantic ] = clean
+    
+seqids_sequences = {}
+for next_fasta in input_fastas:
+
+    input_fasta = open( next_fasta[ :-1 ], 'r' )
+    for next_line in input_fasta:
+        if next_line[ 0 ] == '>':
+            gigantic = next_line[ 1:-1 ]
+            seqid = gigantics_cleans[ gigantic ]
+            seqids_sequences[ seqid ] = ''
+        else:
+            sequence = next_line[ :-1 ]
+            seqids_sequences[ seqid ] = seqids_sequences[ seqid ] + sequence
+            
+# leonid_ssp204_blast_evalue_minus_2_annotation_superrelaxed_query_based_cluster_1        15      Apl_1 Ely_1 Ach_2 Pom_2 Gig_1 Lot_1 Cra_0 Miz_1 Cyc_1 Oct_2 Arg_1 Nau_1 Aca_1 Lin_0 Pho_0 Cap_0 Cae_0 Dro_0 Hom_0       Gigantopelta-aegis-LOC121385637_XP_041372327_1, Lottia-gigantea-LOTGIDRAFT_59837_XP_009062438_1, Aplysia-californica-LOC100533370-Achatin-rgs_leonid_ssp204, Cyclina-sinensis-evm_model_Hic_asm_7_716, Achatina-fulica-Afu017399, Argonauta-argo-Aargo006449, Pomacea-canaliculata-LOC112563346_XP_025093041_1, Mizuhopecten-yessoensis-LOC110463376_XP_021373586_1, Octopus-bimaculoides-LOC106869081_XP_014770093_1, Acanthopleura-granulata-model_g6261_t1, Pomacea-canaliculata-LOC112557935_XP_025083880_1, Elysia-chlorotica-EGW08_021097_RUS71144_1, Nautilus-pompilius-GWHPBECW005319, Octopus-bimaculoides-LOC106874957_XP_014778366_1, Achatina-fulica-Afu021427
+evalues_clusters_data = {}
+for next_data in input_clusters:
+    info = next_data[ :-1 ].split( '\t' )
+    clusterid = info[ 0 ]
+    info_clusterid_1 = clusterid.split( '_annotation' )[ 0 ] 
+    evalue = info_clusterid_1.split( 'blast_' )[ -1 ] 
+    if evalue not in evalues_clusters_data.keys():
+        evalues_clusters_data[ evalue ] = {}
+    evalues_clusters_data[ evalue ][ clusterid ] = next_data[ :-1 ]
+
+for next_evalue in sorted( evalues_clusters_data.keys() ):
+    new_file = 'output/4-blast_' + next_evalue + '-annotation_filtered-clustered.fasta'
+    output_fasta = open( new_file, 'w' )
+    
+    for next_cluster in sorted( evalues_clusters_data[ next_evalue ].keys() ):
+        next_data = evalues_clusters_data[ next_evalue ][ next_cluster ]
+        info = next_data.split( '\t' )
+        seqids = info[ -1 ]
+        info_seqids = sorted( seqids.split( ', ' ) )
+
+        aplysia_count = 0
+        rgs_count = 0
+
+        aplysia_seqids = []
+        for next_seqid in info_seqids:
+            
+            original_seqid = next_seqid
+
+            if len( next_seqid.split( 'Aplysia' ) ) > 1:
+                aplysia_count = aplysia_count + 1
+                aplysia_seqids.append( next_seqid )
+
+            if len( next_seqid.split( '-rgs_' ) ) > 1:
+                rgs_count = rgs_count + 1
+
+            header = '>' + next_cluster + '-'  + next_seqid
+            if len( next_seqid.split( '-' ) ) > 3:
+                next_seqid = '-'.join( next_seqid.split( '-' )[ :3 ] ) 
+            sequence = seqids_sequences[ next_seqid ]
+            output = header + '\n' + sequence + '\n'
+            output_fasta.write( output )
+            
+        new_homologs = aplysia_count - rgs_count
+        output = next_cluster + '\t' + str( aplysia_count ) + '\t' + str( rgs_count ) + '\t' + str( new_homologs ) + '\n'
+        output_counts.write( output )
+        
+    output_fasta.close()
+    
+input_fastas.close()
+input_map.close()
+input_clusters.close()
+output_counts.close()
