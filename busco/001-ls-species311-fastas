@@ -1,3 +1,0 @@
-#! /bin/bash
-
-ls ../preparations-pre-30apr2023/projectdb-species311-fastas-and-blastdbs/*aa > output/1-list-species311-fastas
