@@ -1,5 +1,0 @@
-#! /bin/bash
-
-ls output-fasta-subsets/*-sog* > output/102-list-sogs
-ls output-fasta-subsets/*-hog* > output/102-list-hogs
-ls output-fasta-subsets/*-sohog* > output/102-list-sohogs
