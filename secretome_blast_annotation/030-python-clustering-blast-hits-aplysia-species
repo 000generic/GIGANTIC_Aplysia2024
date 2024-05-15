@@ -1,0 +1,97 @@
+#! python
+
+input_files = open( 'output/29-list-homologs-species19-and-aplysia', 'r' )
+
+genera = [ 'Aplysia', 'Elysia', 'Achatina', 'Pomacea', 'Gigantopelta', 'Lottia', 'Crassostrea', 'Mizuhopecten', 'Cyclina', 'Octopus', 'Argonauta', 'Nautilus', 'Acanthopleura', 'Lingula', 'Phoronis', 'Capitella', 'Caenorhabditis', 'Drosophila', 'Homo' ]
+
+# output/9-homologs-leonid_ssp709-blastp-evalue_minus_3
+for next_file in input_files:
+
+    print( next_file )
+
+    aplysia = False
+    if len( next_file.split( 'aplysia' ) ) > 1:
+        aplysia = True
+
+    cluster_count = 0
+    clusters_seqids = {}
+    seqids_clusters = {}
+    
+    input_file = open( next_file[ :-1 ], 'r' )
+    
+    info_file = next_file[ :-1 ].split( '-' )
+    new_file = 'output/30-clusters-Species19-' + '-'.join( info_file[ 2: ] )
+
+    if aplysia == True:
+        new_file = 'output/30-clusters-Aplysia_only-' + '-'.join( info_file[ 2: ] )
+    output_file = open( new_file, 'w' )
+    evalue = info_file[ -1 ]
+
+    
+    # Homolog Homolog Symbol  Homolog Name    Homolog Symbol-Name     Cluster Size    References      References-based Cluster        Homolog Sequence
+    first_line = False
+    for next_reference_data in input_file:
+        if first_line == False:
+            first_line = True
+        else:
+            info = next_reference_data[ :-1 ].split( '\t' )
+            if aplysia == True:
+                cluster = info[ 6 ]
+            else:
+                cluster = info[ 2 ]
+            info_cluster = cluster.split( ', ' )
+            new_cluster = info_cluster
+            homolog_clusters = []
+            
+            for next_sequence in info_cluster:
+                if next_sequence in seqids_clusters.keys():
+                    next_homolog_cluster = seqids_clusters[ next_sequence ]
+                    homolog_clusters.append( next_homolog_cluster )
+
+            homolog_clusters = list( set( homolog_clusters ) )
+            for next_homolog_cluster  in homolog_clusters:
+                for next_seqid in clusters_seqids[ next_homolog_cluster ]:
+                    new_cluster.append( next_seqid )
+                clusters_seqids.pop( next_homolog_cluster )
+
+            cluster_count = cluster_count + 1
+            new_cluster_id = 'leonid_ssp709_' + evalue + '_cluster_' + str( cluster_count )
+            new_cluster = list( set( new_cluster ) )
+            clusters_seqids[ new_cluster_id ] = new_cluster
+            for next_seqid in clusters_seqids[ new_cluster_id ]:
+                seqids_clusters[ next_seqid ] = new_cluster_id
+
+    final_count = 0
+    for next_clusterid in sorted( clusters_seqids.keys() ):
+        if aplysia == False:
+            genus_hits = {}
+            for next_genus in genera:
+                genus_hits[ next_genus ] = []
+            for next_hit in clusters_seqids[ next_clusterid ]:
+                next_genus = next_hit.split( '-' )[ 0 ]
+                genus_hits[ next_genus ].append( next_hit )
+
+            species_counts = ''
+            cluster_total = len( clusters_seqids[ next_clusterid ] )
+            for next_genus in genera:
+                species_counts = species_counts + next_genus[ :3 ] + '_' + str( len( genus_hits[ next_genus ] ) ) + ' ' 
+            species_counts = species_counts[ :-1 ]
+            final_count = final_count + 1
+            output = 'leonid_ssp709_' + evalue + '_cluster_' +  str( final_count ) + '\t' + str( cluster_total ) + '\t' + species_counts + '\t' 
+            for next_seqid in clusters_seqids[ next_clusterid ]:
+                output = output + next_seqid + ', '
+
+        else:
+            final_count = final_count + 1
+            cluster_total = len( clusters_seqids[ next_clusterid ] )
+            output = 'leonid_ssp709_' + evalue + '_cluster_' + str( final_count ) + '\t' + str( cluster_total ) + '\t'
+            for next_seqid in clusters_seqids[ next_clusterid ]:
+                output = output + next_seqid + ', '
+
+        output = output[ :-2 ] + '\n'
+        output_file.write( output )
+
+    input_file.close()
+    output_file.close()
+
+input_files.close()

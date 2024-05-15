@@ -1,0 +1,44 @@
+#! python
+
+input_fastas = open( 'output/23-list-fastas', 'r' )
+input_map = open( '/scratch/eric/projects/aplysia/idswapper/USEME-CLEAN-species19-idswapper-from-script-008', 'r' )
+input_assessments = open( 'output/23-list-assessments' ,'r' )
+
+gigantics_seqs = {}
+for next_fasta in input_fastas:
+    input_fasta = open( next_fasta[ :-1 ], 'r' )
+    for next_line in input_fasta:
+        if next_line[ 0 ] == '>':
+            gigantic = next_line[ 1:-1 ]
+            gigantics_seqs[ gigantic ] = ''
+
+        else:
+            sequence = next_line[ :-1 ]
+            gigantics_seqs[ gigantic ] = gigantics_seqs[ gigantic ] + sequence
+
+gigantics_sources = {}
+for next_line in input_map:
+    info = next_line[ :-1 ].split( '\t' )
+    source = info[ -1 ]
+    gigantic = info[ 0 ]
+    gigantics_sources[ gigantic ] = source
+            
+for next_assessment in input_assessments:
+    if len( next_assessment.split( 'species19' ) ) == 1:
+        input_assessment = open( next_assessment[ :-1 ], 'r' )
+        next_fasta = 'output/24-output/' + '-'.join( next_assessment[ :-1 ].split( '-' )[ 1: ] ) + '.fasta'
+        output_fasta = open( next_fasta, 'w' )
+    
+        for next_data in input_assessment:
+            gigantic = next_data[ :-1 ]
+            source = gigantics_sources[ gigantic ]
+            sequence = gigantics_seqs[ gigantic ]
+            header = '>' + source 
+            output = header + '\n' + sequence + '\n'
+            output_fasta.write( output )
+        input_assessment.close()
+        output_fasta.close()
+
+input_fastas.close()
+input_map.close()
+input_assessments.close()

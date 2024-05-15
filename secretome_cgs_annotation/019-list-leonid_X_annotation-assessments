@@ -1,0 +1,4 @@
+#! /bin/bash
+
+ls -1 output/*leonid*X* > output/19-list-leonid_ssps_X_annotions-assessments
+ls -1 output/*X*leonid* > output/19-list-annotions-assessments_X_leonid_ssps

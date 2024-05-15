@@ -1,0 +1,2 @@
+#! /bin/bash
+ls /scratch/eric/projects/aplysia/projectdbs/species19/*aa > output/20-list-fastas

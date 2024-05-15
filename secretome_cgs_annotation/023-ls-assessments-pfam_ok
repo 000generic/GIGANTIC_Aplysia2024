@@ -1,0 +1,4 @@
+#! /bin/bash
+
+ls output/3-* > output/23-list-assessments
+ls /scratch/eric/projects/aplysia/projectdbs/species19/*aa > output/23-list-fastas

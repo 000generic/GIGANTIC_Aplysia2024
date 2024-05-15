@@ -1,0 +1,216 @@
+#! python
+
+input_blast = open( 'output/8-blast-reports-all', 'r' )
+input_rgs = open( 'input/rgs_leonid_ssp709-20230508_1302.fasta', 'r' )
+input_fastas = open( 'output/1-list-fastas', 'r' )
+input_idswapper = open( '/scratch/eric/projects/aplysia/idswapper/USEME-CLEAN-species19-idswapper-from-script-008', 'r' )
+output_hits_references = open( 'output/9-hits-references-evalue_minus_3', 'w' )
+output_references_hits = open( 'output/9-references-hits-evalue_minus_3', 'w' )
+output_homologs = open( 'output/9-homologs-leonid_ssp709-blastp-evalue_minus_3', 'w' )
+output_aplysia = open( 'output/9-aplysia-homologs-leonid_ssp709-blastp-evalue_minus_3', 'w' )
+
+genera = [ 'Aplysia', 'Elysia', 'Achatina', 'Pomacea', 'Gigantopelta', 'Lottia', 'Crassostrea', 'Mizuhopecten', 'Cyclina', 'Octopus', 'Argonauta', 'Nautilus', 'Acanthopleura', 'Lingula', 'Phoronis', 'Capitella', 'Caenorhabditis', 'Drosophila', 'Homo' ]
+
+# GIGANTIC Identifier     Genus-species-Source_Identifiers        Genus-species-Clean_Source_Identifiers
+# Metazoa-Annelida-Polychaeta-Order_unclassified14-Capitellidae-Capitella-teleta-gigantic20220627164247_seq0000244112aa   Capitella-teleta-CAPTEDRAFT_204949-ELT86964.1   Capitella-teleta-CAPTEDRAFT_204949_ELT86964_1
+sources_gigantics = {}
+gigantics_sources = {}
+for next_line in input_idswapper:
+    info = next_line[ :-1 ].split( '\t' )
+    gigantic = info[ 0 ]
+    source = info[ -1 ]
+    sources_gigantics[ source ] = gigantic
+    gigantics_sources[ gigantic ] = source
+
+# >Aplysia-californica-LOC100533239-Abdominal_ganglion_PH_Luquin-rgs_leonid_ssp709
+rgs_sourceids = []
+for next_line in input_rgs:
+    if next_line[ 0 ] == '>':
+        info = next_line[ 1 ].split( '-' )
+        next_source = '-'.join( info[ :3 ] )
+        rgs_sourceids.append( next_source )
+
+# >Metazoa-Arthropoda-Insecta-Diptera-Drosophilidae-Drosophila-melanogaster-gigantic20220627164247_seq0000822298aa
+sources_sequences = {}
+for next_fasta in input_fastas:
+    input_fasta = open( next_fasta[ :-1 ], 'r' )
+    for next_line in input_fasta:
+        if next_line[ 0 ] == '>':
+            gigantic_id = next_line[ 1:-1 ]
+            source_id = gigantics_sources[ gigantic_id ]
+            sources_sequences[ source_id ] = ''
+        else:
+            sequence = next_line[ :-1 ]
+            sources_sequences[ source_id ] = sequence
+            
+# Aplysia-californica-LOC100533239-Abdominal_ganglion_PH_Luquin-rgs_leonid_ssp709 Metazoa-Mollusca-Polyplacophora-Chitonida-Chitonidae-Acanthopleura-granulata-gigantic20220627164247_seq0006666994aa     31.579  57      39      0       6       62977      1033    0.23    30.0
+references_hits = {}
+hits_references = {}
+sourceids_queries = {}
+for next_line in input_blast:
+    info = next_line[ :-1 ].split( '\t' )
+    rgs_query = info[ 0 ]
+    info_rgs = rgs_query.split( '-' )
+    query_sourceid = '-'.join( info_rgs[ :3 ] ) # position of locid in rgs identifiers - adding gspp makes the locid a source id 
+    sourceids_queries[ query_sourceid ] = rgs_query
+    
+    hit_gigantic = info[ 1 ] # candidate as gigantic id
+    hit_sourceid = gigantics_sources[ hit_gigantic ] # candidate as source id
+
+    if hit_sourceid not in hits_references.keys():
+        hits_references[ hit_sourceid ] = []
+    if query_sourceid not in hits_references[ hit_sourceid ]:
+        hits_references[ hit_sourceid ].append( query_sourceid )
+        
+    if query_sourceid not in references_hits.keys():
+        references_hits[ query_sourceid ] = [] # query is structures as source id
+    if hit_sourceid not in references_hits[ query_sourceid ]:
+        references_hits[ query_sourceid ].append( hit_sourceid )
+
+all_homologs = []
+for next_hit in hits_references.keys():
+    
+    if next_hit not in all_homologs:
+        all_homologs.append( next_hit )
+    
+    if next_hit in sourceids_queries.keys():
+        next_query = sourceids_queries[ next_hit ]
+        output = next_query + '\t'
+    else:
+        output = next_hit + '\t' 
+
+    for next_reference in hits_references[ next_hit ]:
+        if next_reference not in all_homologs:
+            all_homologs.append( next_reference )
+            
+        next_query = sourceids_queries[ next_reference ]
+        output = output + next_query + ', '
+    output = output[ :-2 ] + '\n'
+    output_hits_references.write( output )
+
+header = 'Reference Gene ID' + '\t' + 'Reference Symbol' + '\t' + 'Reference Name' + '\t' + 'Cluster Count' + '\t'
+for next_genus in genera:
+    header = header + next_genus + '\t'
+header = header[ :-1 ] + '\n'
+output_references_hits.write( header )
+
+homologs_hits = {}
+homologs_references = {}
+for next_reference in references_hits.keys():
+    next_query = sourceids_queries[ next_reference ]
+    info_query = next_query.split( '-' )
+    next_symbol = info_query[ 2 ]
+    next_name = info_query[ 3 ]
+    output = next_query + '\t' + next_symbol + '\t' + next_name + '\t'
+
+    homologs_hits[ next_query ] = []
+    homologs_references[ next_query ] = []
+    
+    genus_hits = {}
+    for next_genus in genera:
+        genus_hits[ next_genus ] = []
+    for next_hit in references_hits[ next_reference ]:
+        next_genus = next_hit.split( '-' )[ 0 ]
+        genus_hits[ next_genus ].append( next_hit )
+
+    species_counts = ''
+    for next_genus in genera:
+        species_counts = species_counts + next_genus[ :3 ] + '_' + str( len( genus_hits[ next_genus ] ) ) + ' '
+        
+        if len( genus_hits[ next_genus ] ) == 0:
+            next_hit = 'None'
+            output = output + next_hit + '\t'     
+        else:
+            for next_hit in genus_hits[ next_genus ]:
+                if next_hit in sourceids_queries.keys():
+                    next_genus_species_sourceid = next_hit
+                    next_hit = sourceids_queries[ next_hit ]
+                output = output + next_hit + ', '
+
+                if next_hit not in homologs_references:
+                    homologs_references[ next_hit ] = []
+                homologs_references[ next_hit ].append( next_query )
+                homologs_hits[ next_query ].append( next_hit )
+                
+            output = output[ :-2 ] + '\t' 
+    output = output[ :-1 ] + '\n'
+    info_output = output.split( '\t' )
+    output = '\t'.join( info_output[ :3 ] ) + '\t' + species_counts[ :-1 ] + '\t' + '\t'.join( info_output[ 3: ] )
+    output_references_hits.write( output )
+
+header = 'Homolog' + '\t' + 'References' + '\t' + 'References-based Cluster' + '\t' + 'Homolog Sequence' + '\n'
+output_homologs.write( header )
+
+header = 'Homolog' + '\t' 'Homolog Symbol' + '\t' +  'Homolog Name' + '\t' + 'Homolog Symbol-Name' + '\t' + 'Cluster Size' + '\t'  + 'References' + '\t' + 'References-based Cluster' + '\t' + 'Homolog Sequence' + '\n'
+output_aplysia.write( header )
+
+for next_homolog in all_homologs:
+    next_homolog = '-'.join( next_homolog.split( '___' ) )
+    next_sequence = sources_sequences[ next_homolog ]
+                       
+    if next_homolog in sourceids_queries.keys():
+        next_genus_species_sourceid = next_homolog
+        next_homolog = sourceids_queries[ next_homolog ]
+    
+    all_references = ', '.join( homologs_references[ next_homolog ] )
+    references_cluster = []
+    for next_reference in homologs_references[ next_homolog ]:
+        for next_hit in homologs_hits[ next_reference ]:
+            if next_hit not in references_cluster:
+                references_cluster.append( next_hit )
+    all_cluster_sequences = ', '.join( references_cluster )
+
+    output = next_homolog + '\t' + all_references + '\t' + all_cluster_sequences + '\t' + next_sequence + '\n'
+    output_homologs.write( output )
+
+    if len( next_homolog.split( 'californica' ) ) > 1:
+
+        info_homolog = next_homolog.split( '-' )
+        homolog_symbol = info_homolog[ 2 ]
+        if len( info_homolog ) == 3:
+            homolog_name = 'NA'
+        else:
+            homolog_name = info_homolog[ 3 ]
+
+        info_references = all_references.split( ', ' )
+        all_short_references = []
+        for next_reference in info_references:
+            info_reference = next_reference.split( '-' )
+            reference_symbol = info_reference[ 2 ]
+            if len( info_reference ) == 3:
+                reference_name = 'NA'
+            else:
+                reference_name = info_reference[ 3 ]
+            reference_short = reference_symbol + '-' + reference_name
+            all_short_references.append( reference_short )
+
+        info_all_cluster_sequences = all_cluster_sequences.split( ', ' )
+        
+        all_short_clusters = []
+        for next_cluster_sequence in info_all_cluster_sequences:
+            if len( next_cluster_sequence.split( 'californica' ) ) > 1:
+                info_next_cluster_sequence = next_cluster_sequence.split( '-' )
+                cluster_symbol = info_next_cluster_sequence[ 2 ]
+                if len( info_next_cluster_sequence ) == 3:
+                    cluster_name = 'NA'
+                else:
+                    cluster_name = info_next_cluster_sequence[ 3 ]
+                cluster_short = cluster_symbol + '-' + cluster_name
+                all_short_clusters.append( cluster_short )
+
+        final_short_references = ', '.join( all_short_references )
+        final_short_clusters = ', '.join( all_short_clusters )
+        
+        homolog_symbol_name = homolog_symbol + '-' + homolog_name
+        cluster_count_aplysia_sequences = str( len( all_short_clusters ) )
+        output = next_homolog + '\t' + homolog_symbol + '\t' + homolog_name + '\t' + homolog_symbol_name + '\t' + cluster_count_aplysia_sequences  + '\t' + final_short_references + '\t' + final_short_clusters + '\t' + next_sequence + '\n'
+        output_aplysia.write( output )
+
+input_blast.close()
+input_rgs.close()
+input_fastas.close()
+input_idswapper.close()
+output_hits_references.close()
+output_references_hits.close()
+output_homologs.close()
+output_aplysia.close()

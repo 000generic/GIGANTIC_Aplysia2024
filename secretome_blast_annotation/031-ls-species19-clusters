@@ -1,0 +1,3 @@
+#! /bin/bash
+
+ls output/30* > output/31-list-species19-clusters

@@ -1,0 +1,23 @@
+#! /bin/bash
+
+cat output/24-output/*deeploc* > output/25-output/25-secretome-species19-deeploc-pfam_ok.fasta
+cat output/24-output/*deeptmhmm* > output/25-output/25-secretome-species19-deeptmhmm-pfam_ok.fasta
+cat output/24-output/*relaxed* > output/25-output/25-secretome-species19-relaxed-pfam_ok.fasta
+cat output/24-output/*signalp* > output/25-output/25-secretome-species19-signalp-pfam_ok.fasta
+cat output/24-output/*strict* > output/25-output/25-secretome-species19-strict-pfam_ok.fasta
+cat output/24-output/*superrelaxed* > output/25-output/25-secretome-species19-superrelaxed-pfam_ok.fasta
+cat output/24-output/*superstrict* > output/25-output/25-secretome-species19-superstrict-pfam_ok.fasta
+
+cat output/24-output/*Aplysia*deeploc* output/24-output/*Octopus*deeploc* output/24-output/*Homo*deeploc* output/24-output/*Drosophila*deeploc* output/24-output/*Caenorhabditis*deeploc* > output/25-output/25-secretome-species5-deeploc-pfam_ok.fasta
+
+cat output/24-output/*Aplysia*deeploc* output/24-output/*Octopus*deeptmhmm* output/24-output/*Homo*deeptmhmm* output/24-output/*Drosophila*deeptmhmm* output/24-output/*Caenorhabditis*deeptmhmm* > output/25-output/25-secretome-species5-deeptmhmm-pfam_ok.fasta
+
+cat output/24-output/*Aplysia*relaxed* output/24-output/*Octopus*relaxed* output/24-output/*Homo*relaxed* output/24-output/*Drosophila*relaxed* output/24-output/*Caenorhabditis*relaxed* > output/25-output/25-secretome-species5-relaxed-pfam_ok.fasta
+
+cat output/24-output/*Aplysia*signalp* output/24-output/*Octopus*signalp* output/24-output/*Homo*signalp* output/24-output/*Drosophila*signalp* output/24-output/*Caenorhabditis*signalp* > output/25-output/25-secretome-species5-signalp-pfam_ok.fasta
+
+cat output/24-output/*Aplysia*strict* output/24-output/*Octopus*strict* output/24-output/*Homo*strict* output/24-output/*Drosophila*strict* output/24-output/*Caenorhabditis*strict* > output/25-output/25-secretome-species5-strict-pfam_ok.fasta
+
+cat output/24-output/*Aplysia*superstrict* output/24-output/*Octopus*superstrict* output/24-output/*Homo*superstrict* output/24-output/*Drosophila*superstrict* output/24-output/*Caenorhabditis*superstrict* > output/25-output/25-secretome-species5-superstrict-pfam_ok.fasta
+
+cat output/24-output/*Aplysia*superrelaxed* output/24-output/*Octopus*superrelaxed* output/24-output/*Homo*superrelaxed* output/24-output/*Drosophila*superrelaxed* output/24-output/*Caenorhabditis*superrelaxed* > output/25-output/25-secretome-species5-superrelaxed-pfam_ok.fasta

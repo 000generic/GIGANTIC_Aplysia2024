@@ -1,0 +1,53 @@
+#! python
+
+input_files = open( 'output/27-list-references-hits-evalues-ALL', 'r' )
+output_summary = open( 'output/28-summary-references-hits-evalues-ALL', 'w' )
+
+header = 'Homolog ID' + '\t' + 'Homolog Symbol' + '\t' + 'Homolog Name' + '\t' + 'Blast Run' + '\t' + 'Cluster Species Counts' + '\t' + 'Reference Genes' + '\n'
+output_summary.write( header )
+
+homologs_run_counts = {}
+for next_file in input_files:
+
+    info = next_file[ :-1 ].split( '-' )
+    next_run = '-'.join( info[ 1: ] ).split( '-' )[ -1 ]
+    if next_run == 'evalue_minus_4':
+        next_run = 'Run_1-' + next_run
+    elif next_run == 'evalue_minus_3':
+        next_run = 'Run_2-' + next_run
+    elif next_run == 'evalue_minus_2':
+        next_run = 'Run_3-' + next_run
+    elif next_run == 'evalue_minus_1':
+        next_run = 'Run_4-' + next_run
+    elif next_run == 'evalue_1':
+        next_run = 'Run_5-' + next_run
+    elif next_run == 'evalue_2':
+        next_run = 'Run_6-' + next_run
+        
+    input_file = open( next_file[ :-1 ], 'r' )
+
+    first_line = False
+    for next_line in input_file:
+        if first_line == False:
+            first_line = True
+        else:
+            info = next_line[ :-1 ].split( '\t' )
+            next_homolog = info[ 0 ]
+            next_homolog_info = info[ 1 ] + '\t' + info[ 2 ]
+            next_counts = info[ 3 ]
+            next_references = info[ 4 ]
+
+            next_data = next_homolog_info + '\t' + next_run + '\t' + next_counts + '\t' + next_references
+
+            if next_homolog not in homologs_run_counts.keys():
+                homologs_run_counts[ next_homolog ] = {}
+            homologs_run_counts[ next_homolog ][ next_run ] = next_data
+
+for next_homolog in sorted( homologs_run_counts.keys() ):
+    for next_run in sorted( homologs_run_counts[ next_homolog ].keys() ):
+        next_data = homologs_run_counts[ next_homolog ][ next_run ]
+        output = next_homolog + '\t' + next_data + '\n'
+        output_summary.write( output )
+
+input_files.close()
+output_summary.close()

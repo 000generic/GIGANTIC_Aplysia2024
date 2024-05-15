@@ -1,0 +1,3 @@
+#! /bin/bash
+
+ls -1 output/*homologs-leonid* > output/29-list-homologs-species19-and-aplysia

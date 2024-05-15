@@ -1,0 +1,20 @@
+#! python
+
+input_fastas = open( 'output/1-list-fastas', 'r' )
+output_blast = open( '015-blastp-leonid_ssp709_X_species19_projectdb-evalue_minus_1' ,'w' )
+
+# /scratch/eric/projects/aplysia/projectdbs/species19/Metazoa-Annelida-Polychaeta-Order_unclassified14-Capitellidae-Capitella-teleta-283909-T1.aa
+
+for next_fasta in input_fastas:
+    next_fasta_path = next_fasta[ :-1 ]
+    next_fasta = next_fasta_path.split( '/' )[ -1 ]
+    info = next_fasta.split( '-' )
+    gspp = info[ 5 ] + '-' + info[ 6 ]
+    output = '/usr/bin/blastp -db ' + next_fasta_path  + ' -num_threads 60 -outfmt 6 -out output/15-blast-report-rgs_X_projectdb-evalue_minus_1-' + gspp + ' -max_hsps 1 -max_target_seqs 1000 -query input/rgs_leonid_ssp709-20230508_1302.fasta -evalue 1e-1  &&\n'
+    output_blast.write( output )
+    
+output = 'echo \n'
+output_blast.write( output )
+
+input_fastas.close()
+output_blast.close()

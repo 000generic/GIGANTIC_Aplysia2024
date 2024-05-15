@@ -1,0 +1,3 @@
+#! /bin/bash
+
+cat output/*references-hits-evalue* > output/26-references-hits-evalue-ALL

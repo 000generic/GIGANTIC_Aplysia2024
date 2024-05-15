@@ -1,0 +1,2 @@
+#! /bin/bash
+ls output/*references-hits-evalue* > output/27-list-references-hits-evalues-ALL

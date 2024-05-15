@@ -1,0 +1,3 @@
+#! /bin/bash
+
+cat output/11-blast-report-rgs_X_projectdb-* > output/12-blast-reports-all

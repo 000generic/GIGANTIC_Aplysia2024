@@ -1,0 +1,91 @@
+#! python
+
+input_runs = open( 'output/31-list-species19-clusters', 'r' )
+input_rgs = open( 'input/rgs_leonid_ssp709-20230508_1302.fasta', 'r' )
+genera = [ 'Aplysia', 'Elysia', 'Achatina', 'Pomacea', 'Gigantopelta', 'Lottia', 'Crassostrea', 'Mizuhopecten', 'Cyclina', 'Octopus', 'Argonauta', 'Nautilus', 'Acanthopleura', 'Lingula', 'Phoronis', 'Capitella', 'Caenorhabditis', 'Drosophila', 'Homo' ]
+
+rgsids = []
+for next_line in input_rgs:
+    if next_line[ 0 ] == '>':
+        rgsid = next_line.split( '-' )[ 2 ]
+        rgsids.append( rgsid )
+
+gspp_genus = {}
+
+# output/30-clusters-Species19-leonid_ssp709-blastp-evalue_1
+for next_run in input_runs:
+    
+    input_run = open( next_run[ :-1 ], 'r' )
+
+    run_name = '-'.join( next_run[ :-1 ].split( '-' )[ 2: ] ) 
+    new_file_clusters = 'output/32-clusters_X_cluster_counts-per-species-' + run_name
+    output_clusters = open( new_file_clusters, 'w' )
+
+    new_file_sequences = 'output/32-sequences_X_cluster_counts-per-species-' + run_name
+    output_sequences = open( new_file_sequences, 'w' )
+
+    new_file_rgs = 'output/32-rgs_X_cluster_counts-per-species-' + run_name
+    output_rgs = open( new_file_rgs, 'w' )
+
+    header = 'Cluster ID' + '\t' + 'Cluster Count' + '\t'
+    for next_genus in genera:
+        header = header + next_genus + '\t'
+        
+    header_clusters = header + 'Cluster Seqids' + '\n'
+    output_clusters.write ( header_clusters )
+
+    header_sequences = 'Cluster Sequence' + '\t' + header[ :-1 ] + '\n'
+    output_sequences.write( header_sequences )
+
+    header_rgs = 'Reference Sequence' + '\t' + header[ :-1 ] + '\n'
+    output_rgs.write( header_rgs )
+
+    # leonid_ssp709_blast_evalue_minus_2-cluster_1    1       Apl_1 Ely_0 Ach_0 Pom_0 Gig_0 Lot_0 Cra_0 Miz_0 Cyc_0 Oct_0 Arg_0 Nau_0 Aca_0 Lin_0 Pho_0 Cap_0 Cae_0 Dro_0 Hom_0       Aplysia-californica-ATT-Attractin-rgs_leonid_ssp709
+    # leonid_ssp709_blast_evalue_minus_1-cluster_5    5       Apl_3 Ely_0 Ach_2 Pom_0 Gig_0 Lot_0 Cra_0 Miz_0 Cyc_0 Oct_0 Arg_0 Nau_0 Aca_0 Lin_0 Pho_0 Cap_0 Cae_0 Dro_0 Hom_0       Aplysia-californica-LOC101854404, Aplysia-californica-LOC101864554, Achatina-fulica-Afu013912, Achatina-fulica-Afu013913, Aplysia-californica-LOC101854786-Sp26-rgs_leonid_ssp709
+
+    for next_line in input_run:
+
+        info = next_line[ :-1 ].split( '\t' )
+        cluster = info[ 0 ]
+        cluster_count = info[ 1 ]
+
+        if len( run_name.split( 'Species' ) ) > 1:
+            info_species = info[ 2 ].split( ' ' )
+            counts = ''
+            for next_species_count in info_species:
+                info_gspp_count = next_species_count.split( '_' )
+                next_count = info_gspp_count[ 1 ]
+                counts = counts + next_count + '\t'
+            counts = counts[ :-1 ]
+
+            seqids = info[ 3 ]
+            
+            output = cluster + '\t' + cluster_count + '\t' + counts + '\t' + seqids + '\n' 
+            output_clusters.write( output )
+
+            info_seqids = seqids.split( ', ' )
+            for next_seqid in info_seqids:
+                output_seqid = next_seqid + '\t' + output
+                output_sequences.write( output_seqid )
+
+                if len( next_seqid.split( 'leonid' ) ) > 1:
+                    output_rgs.write( output_seqid )
+            
+        else:
+            seqids = info[ 2 ]
+            output = cluster + '\t' + cluster_count  + '\t' + seqids + '\n'
+            output_clusters.write( output )
+ 
+            info_seqids = seqids.split( ', ' )
+            for next_seqid in info_seqids:
+                output_seqid = next_seqid + '\t' + output
+                output_sequences.write( output_seqid )
+
+                if next_seqid.split( '-' )[ 0 ]  in rgsids:
+                    output_rgs.write( output_seqid )
+                
+    input_run.close()
+    output_clusters.close()
+    output_sequences.close()
+    output_rgs.close()
+input_runs.close()

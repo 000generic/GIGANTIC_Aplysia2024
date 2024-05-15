@@ -1,0 +1,133 @@
+#! python
+
+input_summaries = open ( 'output/19-list-annotions-assessments_X_leonid_ssps', 'r' )
+input_fastas = open( 'output/20-list-fastas', 'r' )
+input_leonid204 = open( '/scratch/eric/projects/aplysia/secretome/cgs-manual/leonid_ssp204/output/rgs_leonid_ssp204-clean-20230508_1215.fasta' ,'r' )
+input_leonid709 = open( '/scratch/eric/projects/aplysia/secretome/cgs-manual/leonid_ssp709/output/rgs_leonid_ssp709-clean-20230508_1302.fasta', 'r' )
+input_map = open( '/scratch/eric/projects/aplysia/idswapper/USEME-CLEAN-species19-idswapper-from-script-008', 'r' )
+
+output_summary = open( 'output/22-summary-leonid_ssps_X_annotations', 'w' )
+
+leonid204_sourceid_rgsid = {}
+for next_line in input_leonid204:
+    if next_line[ 0 ] == '>':
+        rgsid = next_line[ 1:-1 ]
+        locid = rgsid.split( '-'  )[ 1 ]
+        leonid204_sourceid_rgsid[ locid ] = rgsid
+        
+leonid709_sourceid_rgsid = {}
+for next_line in input_leonid709:
+    if next_line[ 0 ] == '>':
+        rgsid = next_line[ 1:-1 ]
+        locid = rgsid.split( '-'  )[ 1 ]
+        leonid709_sourceid_rgsid[ locid ] = rgsid
+
+gigantics_sources = {}
+for next_line in input_map:
+    info = next_line[ :-1 ].split( '\t' )
+    gigantic = info[ 0 ]
+    source = info[ 1 ]
+    gigantics_sources[ gigantic ] = source
+    
+sources_sequences = {}
+for next_fasta in input_fastas:
+    input_fasta = open( next_fasta[ :-1 ], 'r' )
+    for next_line in input_fasta:
+        if next_line[ 0 ] == '>':
+            gigantic = next_line[ 1:-1 ]
+            source = gigantics_sources[ gigantic ]
+            
+        else:
+            sequence = next_line[ :-1 ]
+            sources_sequences[ source ] = sequence
+
+genera_gspps = {}
+genera_gspps[ 'Homo'] = 'Homo-sapiens'
+genera_gspps[ 'Drosophila'] = 'Drosophila-melanogaster'
+genera_gspps[ 'Caenorhabditis'] = 'Caenorhabditis-elegans'
+genera_gspps[ 'Capitella'] = 'Capitella-teleta'
+genera_gspps[ 'Phoronis'] = 'Phoronis-australis'
+genera_gspps[ 'Lingula'] = 'Lingula-anatina'
+genera_gspps[ 'Acanthopleura'] = 'Acanthopleura-granulata'
+genera_gspps[ 'Nautilus'] = 'Nautilus-pompilius'
+genera_gspps[ 'Argonauta'] = 'Argonauta-argo'
+genera_gspps[ 'Octopus'] = 'Octopus-bimaculoides'
+genera_gspps[ 'Cyclina'] = 'Cyclina-sinensis'
+genera_gspps[ 'Mizuhopecten'] = 'Mizuhopecten-yessoensis'
+genera_gspps[ 'Lottia'] = 'Lottia-gigantea'
+genera_gspps[ 'Gigantopelta'] = 'Gigantopelta-aegis'
+genera_gspps[ 'Pomacea'] = 'Pomacea-canaliculata'
+genera_gspps[ 'Achatina'] = 'Achatina-fulica'
+genera_gspps[ 'Elysia'] = 'Elysia-chlorotica'
+genera_gspps[ 'Crassostrea'] = 'Crassostrea-gigas'
+genera_gspps[ 'Aplysia'] = 'Aplysia-californica'
+
+run_order = [ 'leonid_ssp204_X_superrelaxed_no_pfam', 'leonid_ssp204_X_relaxed_no_pfam', 'leonid_ssp204_X_strict_no_pfam', 'leonid_ssp204_X_superstrict_no_pfam', 'leonid_ssp204_X_deeploc_no_pfam', 'leonid_ssp204_X_deeptmhmm_no_pfam', 'leonid_ssp204_X_signalp_no_pfam', 'leonid_ssp709_X_superrelaxed_no_pfam', 'leonid_ssp709_X_relaxed_no_pfam', 'leonid_ssp709_X_strict_no_pfam', 'leonid_ssp709_X_superstrict_no_pfam', 'leonid_ssp709_X_deeploc_no_pfam', 'leonid_ssp709_X_deeptmhmm_no_pfam', 'leonid_ssp709_X_signalp_no_pfam', 'leonid_ssp204_X_superrelaxed_pfam_ok', 'leonid_ssp204_X_relaxed_pfam_ok', 'leonid_ssp204_X_strict_pfam_ok', 'leonid_ssp204_X_superstrict_pfam_ok', 'leonid_ssp204_X_superrelaxed_pfam_ok', 'leonid_ssp204_X_deeptmhmm_pfam_ok', 'leonid_ssp204_X_signalp_pfam_ok', 'leonid_ssp709_X_superrelaxed_pfam_ok', 'leonid_ssp709_X_relaxed_pfam_ok', 'leonid_ssp709_X_strict_pfam_ok', 'leonid_ssp709_X_superstrict_pfam_ok', 'leonid_ssp709_X_superrelaxed_pfam_ok', 'leonid_ssp709_X_deeptmhmm_pfam_ok', 'leonid_ssp709_X_signalp_pfam_ok' ]
+
+sequences_runs_assessments = {}
+sequences_data = {}
+
+# output/5-leonid_ssp204_X_superrelaxed_no_pfam
+for next_summary in input_summaries:
+
+    next_run = next_summary[ :-1 ].split( '-' ) [ -1 ]
+    input_summary = open( next_summary[ :-1 ], 'r' )
+    
+    # Keeper  Aplysia ATRP    YES_SSP_superrelaxed    NO_SSP_relaxed  NO_SSP_strict   NO_SSP_superstrict      YES_SSP_deeploc NO_SSP_deeptmhmm        NO_SSP_signalp  DeepLoc2_SM:Extracellular_Signalpeptide DeepLoc2_LOCAL:Extracellular_SIGNAL:Signalpeptide  None    None    DeepTMHMM_TMs=1_TM62:71 None    MetaPredict_IDR_0_113   MobiDBLite_mobidb-lite_16_44, MobiDBLite_mobidb-lite_19_44
+
+    for next_sequence_data in input_summary:
+
+        info = next_sequence_data[ :-1 ].split( '\t' )                  
+        next_assessment = info[ 0 ]
+        next_source = info[ 2 ]
+        next_genus = info[ 1 ]
+        next_gspp = genera_gspps[ next_genus ]
+        next_sequence = next_gspp + '-' + next_source
+        data = '\t'.join( info[ 10: ] )
+        sequences_data[ next_sequence ] = data
+        
+        if next_sequence not in sequences_runs_assessments.keys():
+            sequences_runs_assessments[ next_sequence ] = {}
+
+        sequences_runs_assessments[ next_sequence ][ next_run ] = next_assessment
+
+header = 'Sequence ID' + '\t' + 'Locid / Source ID' + '\t'  'Leonid_spp204 ID' + '\t' + 'Leonid_spp699 ID' + '\t'
+for next_run in run_order:
+    header = header + next_run + '\t'
+header = header + 'DeepLoc SM' + '\t' + 'DeepLoc SP' + '\t' + 'DeepLoc TM' + '\t' + 'DeepTMHMM SP' + '\t' + 'DeepTMHMM TM' + '\t' + 'SignalP SP' + '\t' + ' MetaPredict IDR' + '\t' + 'MobiDBLite IDR' + '\t' + 'Sequence'  + '\n'
+output_summary.write( header )
+
+for next_sequence in sorted( sequences_runs_assessments.keys() ):
+
+    next_source = next_sequence.split( '-' )[ -1 ]
+    if  next_source in leonid204_sourceid_rgsid.keys():
+        leonid_ssp204_id = leonid204_sourceid_rgsid[ next_source ]
+    else:
+        leonid_ssp204_id = 'NA'
+        
+    if next_source in leonid709_sourceid_rgsid.keys():
+        leonid_ssp709_id = leonid709_sourceid_rgsid[ next_source ]
+    else:
+        leonid_ssp709_id = 'NA'
+        
+    output = next_sequence + '\t' + next_source + '\t' + leonid_ssp204_id + '\t' + leonid_ssp709_id + '\t' 
+    for next_run in run_order:
+        if next_run in sequences_runs_assessments[ next_sequence ].keys(): # not all of leonid_ssp204 is in leonid_ssp699 and reverse
+            next_assessment = sequences_runs_assessments[ next_sequence ][ next_run ]
+        else:
+            next_assessment = 'NA'
+        output = output + next_assessment + '\t'
+
+    next_data = sequences_data[ next_sequence ]
+    
+    if next_sequence in sources_sequences.keys():
+        sequence = sources_sequences[ next_sequence ] 
+    else:
+        sequence = 'Add sequence'
+    output = output + next_data + '\t' + sequence + '\n'
+    output_summary.write( output )
+    
+input_summaries.close()
+input_leonid204.close()
+input_leonid709.close()
+output_summary.close()
