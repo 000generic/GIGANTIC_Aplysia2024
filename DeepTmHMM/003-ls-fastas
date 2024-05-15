@@ -1,6 +1,0 @@
-#! /bin/bash
-# DeepTmHMM script
-
-ls output/2* > output/3-list-fastas
-
-

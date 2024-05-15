@@ -1,5 +1,0 @@
-#! /bin/bash
-# DeepTmHMM script
-
-mkdir output
-
