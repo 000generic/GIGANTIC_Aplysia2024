@@ -1,3 +1,0 @@
-#! /bin/bash
-
-ls -1 output/3-output/* > output/4-list-fastas
