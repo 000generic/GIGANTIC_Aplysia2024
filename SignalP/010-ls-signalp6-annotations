@@ -1,4 +1,0 @@
-#! /bin/bash
-# SignalP script
-
-ls output/M*/region* > output/10-list-signalp6-annotations
