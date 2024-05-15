@@ -1,0 +1,3 @@
+#! /bin/bash
+
+ls output/3-output-buscos/busco*/short_summary*txt > output/4-list-short-summaries

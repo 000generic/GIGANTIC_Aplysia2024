@@ -1,0 +1,19 @@
+#! /bin/bash
+
+# USER INPUT
+
+# Gene_symbol-big_project_id-big_database_id-job_id
+# TMC-homologs-Aequorea-database_2023dec25_1-job_2023dec29_1
+
+family_id='gene_family_1' # Example: TMC
+
+big_project_id='project_1' # Example: project_Aequorea
+
+big_db_id='database_1' # Example database_2023dec25_1
+
+job_id='job_1' # Example: job_2023dec29_1 
+
+###
+###
+
+mafft --originalseqonly --maxiterate 1000 --reorder  --bl 45 --thread 30 output/19-$family_id-homologs-$big_project_id-$big_db_id-$job_id.aa > output/20-$family_id-homologs-$big_project_id-$big_db_id-$job_id.mafft

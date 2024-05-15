@@ -1,0 +1,50 @@
+#! python
+
+input_summaries = open( 'output/4-list-short-summaries', 'r' )
+output_summary = open( 'output/8-busco-metazoa-short-summaries-all-species', 'w' )
+
+output = 'Species19 Species' + '\t' + 'Busco Metaoza: Single-copy Complete' + '\t' + 'Duplicate Complete' + '\t' + 'Fragmented' + '\t' + 'Missing' + '\n'
+output_summary.write( output )
+
+# output/3-busco_metazoa-Mollusca-Bivalvia-Venerida-Veneridae-Cyclina-sinensis-120566-T1/short_summary.specific.metazoa_odb10.3-busco_metazoa-Mollusca-Bivalvia-Venerida-Veneridae-Cyclina-sinensis-120566-T1.txt
+# C:96.8%[S:90.6%,D:6.2%],F:0.3%,M:2.9%,n:954
+for next_summary in input_summaries:
+
+    filename = next_summary.split( '/' )[ -1 ]
+    phylum = filename.split( '-' )[ 1  ]
+    genus = filename.split( '-' )[ 5 ]
+    species = filename.split( '-' )[ 6 ]
+
+    pgspp = phylum + ' ' + genus + ' ' + species
+
+    # C:97.8%[S:97.1%,D:0.7%],F:0.5%,M:1.7%,n:954 
+    input_summary = open( next_summary[ :-1 ], 'r' )
+    for next_line in input_summary:
+        if len( next_line.split( '%[' ) ) > 1:
+                info_1 = next_line.split( '\t' )
+                for next_detail in info_1:
+                    if len( next_detail ) > 2:
+                        print( next_detail )
+                        if next_detail[ 1 ] == ':':
+                            info_2 = next_detail.split( '%[' )
+                            complete = info_2[ 0 ].split( ':' )[ -1 ]
+
+                            info_3 = info_2[ -1 ].split( '%,' )
+                            single = info_3[ 0 ].split( ':' )[ -1 ]
+
+                            info_4 = info_3[ 1 ].split( '%]' )[ 0 ]
+                            duplicate = info_4.split( ':' )[ -1 ]
+
+                            info_5 = next_detail.split( 'F:' )[ -1 ]
+                            fragment = info_5.split( '%,M:' )[ 0 ]
+
+                            info_6 = next_detail.split( '%,M:' )[ -1 ]
+                            missing = info_6.split( '%,n:' )[ 0 ]
+
+                            output = pgspp + '\t' + complete + '\t' + single + '\t' + duplicate + '\t' + fragment + '\t' + missing + '\n'
+                            output_summary.write( output )
+
+    input_summary.close()
+
+input_summaries.close()
+output_summary.close()

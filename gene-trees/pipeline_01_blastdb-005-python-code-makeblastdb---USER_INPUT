@@ -1,0 +1,22 @@
+#! python
+
+# USER INPUT
+
+# Please provide the name of your Blast Mamba environment
+mamba_environment='blast-2.15.0' # Example: blast-2.15.0
+
+###
+###
+
+input_fastas = open( '4-list-big-blastdb-fastas', 'r' )
+output_make = open( '006-makeblastdb-big-projectdb', 'w' )
+
+# /usr/bin/makeblastdb -dbtype prot -in
+
+for next_fasta in input_fastas:
+
+    output = 'makeblastdb -dbtype prot -in ' + next_fasta[ :-1 ] + '\n'
+    output_make.write( output )
+
+input_fastas.close()
+output_make.close()

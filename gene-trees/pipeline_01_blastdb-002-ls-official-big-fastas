@@ -1,0 +1,3 @@
+#! /bin/bash
+
+ls ../official_big_fastas/fastas/*aa output/2-list-official-big-fastas

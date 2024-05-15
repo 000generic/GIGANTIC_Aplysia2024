@@ -1,0 +1,15 @@
+#! /bin/bash
+
+# User Input
+# Please update the code below to include all and only those species used as reference genomes
+
+blastp -db ../../../../projectdbs/database_1/big_database_1/*Homo-sapiens*aa -query input/reference-gene-sequences/rgs.aa -out output/7-blast-report-rgs_X_human-genome -outfmt 6  -max_hsps 1 -num_threads 30
+
+#blastp -db ../../../../projectdbs/database_1/big_database_1/*Drosophila-melanogaster*aa -query input/reference-gene-sequences/rgs.aa -out output/7-blast-report-rgs_X_fly-genome -outfmt 6  -max_hsps 1 -num_threads 30
+
+#blastp -db ../../../../projectdbs/database_1/big_database_1/*Caenorhabditis-elegans*aa -query input/reference-gene-sequences/rgs.aa -out output/7-blast-report-rgs_X_worm-genome -outfmt 6  -max_hsps 1 -num_threads 30
+
+###
+###
+
+echo

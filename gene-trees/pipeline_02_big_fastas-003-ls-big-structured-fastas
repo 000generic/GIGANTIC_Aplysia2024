@@ -1,0 +1,3 @@
+#! /bin/bash
+
+ls output/2-big-structured-fastas/* > output/3-list-big-structured-fastas

@@ -1,0 +1,28 @@
+#! python
+
+# USER INPUT
+
+rgs_fasta = 'rgs_fox-human-fox-gene-family.aa' # Example: 
+
+###
+###
+
+input_list = open( 'output/2-list-fastas', 'r' )
+output_command = open( '004-blastp_X_projectDB-blast-suite', 'w' )
+
+for next_line in input_list:
+
+    db_path = next_line[ :-1 ]
+    info = next_line[ :-1 ].split( '-' )
+    genus = info[ 5 ]
+    species = info[ 6 ]
+    gspp = genus + '-' + species
+    
+    output = 'blastp -db ' + db_path  + ' -outfmt 6 -out output/4-blast-report-rgs_X_projectdb-' + gspp + ' -max_hsps 1 -query ' + rgs_fasta + ' -evalue 1e-3 -num_threads 30 \n'
+    output_command.write( output )
+    
+output = 'echo\n'
+output_command.write( output )
+
+input_list.close()
+output_command.close()

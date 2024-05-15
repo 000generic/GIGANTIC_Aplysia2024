@@ -1,0 +1,11 @@
+#! /bin/bash
+
+# USER INPUT
+
+# Please provide the name of the BIG GenomesDB database to be used
+user_database='database_1' # Example: database_1
+
+###
+###
+
+ls -1 ../../../../databases/$user_database/official_big_blastdb/database/*-bdb > output/2-list-fastas

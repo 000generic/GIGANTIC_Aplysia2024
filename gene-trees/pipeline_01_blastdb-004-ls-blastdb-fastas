@@ -1,0 +1,3 @@
+#! /bin/bash
+
+ls -1 database/* > output/5-list-big-blastdb-fastas

@@ -1,0 +1,16 @@
+#! python
+
+input_fastas = open( '2-list-official-big-fastas', 'r' )
+output_cp = open( '004-cp-official-big-fastas', 'w' )
+
+for next_fasta in input_fastas:
+
+    next_fasta = next_fasta[ :-1 ]
+
+    next_fasta_name = next_fasta.split( '/' )[ -1 ]
+    new_fasta = '.'.join( next_fasta_name.split( '.' )[ :-1 ] ) + '-bdb'
+    output = 'cp ' + next_fasta + ' blastdb/' + new_fasta + '\n'
+    output_cp.write( output )
+
+input_fastas.close()
+output_cp.close()

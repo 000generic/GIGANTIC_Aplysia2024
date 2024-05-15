@@ -1,0 +1,38 @@
+#! python
+
+input_fastas = open( 'output/3-list-big-structured-fastas', 'r' )
+
+# output/1-precleaned-fastas/precleaned-Arthropoda-Drosophila-melanogaster-big2022_T1_source-big2024_all_X.aa
+for next_fasta in input_fastas:
+
+    input_fasta = open( next_fasta[ :-1 ], 'r' )
+    
+    fasta_file = next_fasta[ :-1 ].split( '/' )[ -1 ]
+    new_fasta = 'fastas/bdb-' + '-'.join( fasta_file.split( '-' )[ 1: ] )
+
+    output_fasta = open( new_fasta, 'w' )
+
+    headers_seqs = {}
+    for next_line in input_fasta:
+
+        next_line = next_line[ :-1 ]
+
+        if next_line[ 0 ] == '>':
+
+            header = next_line.split( ' ' )[ 0 ]
+            headers_seqs[ header ] = ''
+
+        else:
+            sequence = next_line
+            headers_seqs[ header ] += sequence
+
+    for next_header in sorted( headers_seqs.keys() ):
+
+        next_sequence = headers_seqs[ next_header ]
+        output = next_header + '\n' + next_sequence + '\n'
+        output_fasta.write( output )
+
+    input_fasta.close()
+    output_fasta.close()
+
+input_fastas.close()

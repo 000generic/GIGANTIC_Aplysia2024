@@ -1,0 +1,5 @@
+#! /bin/bash
+
+mkdir output
+mkdir output/2-big-structured-fastas
+mkdir fastas

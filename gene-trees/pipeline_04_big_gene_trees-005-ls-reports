@@ -1,0 +1,3 @@
+#! /bin/bash
+
+ls output/4-blast-report-rgs_X_projectdb-* > output/5-list-reports

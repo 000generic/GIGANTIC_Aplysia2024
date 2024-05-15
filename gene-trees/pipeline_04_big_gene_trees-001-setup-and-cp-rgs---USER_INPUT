@@ -1,0 +1,16 @@
+#! /bin/bash
+
+# USER INPUT
+
+# Please provide the name of your reference gene set fasta file
+rgs='' # Example: rgs_fox-human-fly-worm-gene-set-1-2023dec27.aa
+
+###
+###
+
+mkdir input
+mkdir output
+mkdir big2024-END
+
+cp ../reference-gene-sets/$rgs input/$rgs.aa
+cp ../reference-gene-sets/$rgs input/rgs.aa

@@ -1,0 +1,16 @@
+#! /bin/bash
+
+# User Input
+
+# Please update the code below to include all and only those species used as reference genomes
+# ls ../../../../projectdbs/database_1/big_database_1/*Genus-species*aa > output/8-list-rgs-projectdb-fastas
+
+ls ../../../../projectdbs/database_1/big_database_1/*Homo-sapiens*aa > output/8-list-rgs-projectdb-fastas
+#ls ../../../../projectdbs/database_1/big_database_1/*Drosophila-melanogaster*aa > output/8-list-rgs-projectdb-fastas
+#ls ../../../../projectdbs/database_1/big_database_1/*Caenorhabditis-elegans*aa > output/8-list-rgs-projectdb-fastas
+
+###
+###
+
+ls output/7*genome* > output/8-list-reports
+

@@ -1,0 +1,3 @@
+#! /bin/bash
+
+python /home/eedsinger/anaconda3/envs/busco5/bin/generate_plot.py --working_directory output/6-output-busco-short-summaries/

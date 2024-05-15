@@ -1,0 +1,5 @@
+#! /bin/bash
+
+cat output/9*rgs > output/10-rgs-all-genomes-combined.fasta-rgs
+ls -1 output/10*rgs > output/10-list-RGS-header-reference-genome-fastas
+

@@ -1,0 +1,3 @@
+#! /bin/bash
+
+cp output/phylonames database/db_phylonames

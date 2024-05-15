@@ -1,0 +1,5 @@
+#! /bin/bash
+
+mkdir input
+mkdir output
+mkdir database

@@ -1,0 +1,23 @@
+#! python
+
+input_fastas = open( 'output/1-list-species311-fastas', 'r' )
+output_commands = open( '003-busco-metazoa-species311', 'w' )
+
+
+for next_line in input_fastas:
+
+    fasta = next_line[ :-1 ]
+    phylogenome = fasta.split( '/' )[ -1 ]
+    info_1 = phylogenome.split( '-' )
+    name_1 = '-'.join( info_1[ 1: ] )
+    info_2 = name_1.split( '.' )
+    name_2 = '.'.join( info_2[ :-1 ] )
+    
+    output = 'busco   --cpu 62 --mode proteins --lineage metazoa --out_path output  -i ' + fasta + ' -o busco-' + name_2 + ' &&\n'
+    output_commands.write( output )
+
+output = 'echo\n'
+output_commands.write( output )
+
+input_fastas.close()
+output_commands.close()

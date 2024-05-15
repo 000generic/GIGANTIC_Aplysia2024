@@ -1,0 +1,66 @@
+#! python
+
+input_datasets = open( '24-list-datasets', 'r' )
+
+for next_dataset in input_datasets:
+
+    next_dataset = next_dataset[ :-1 ]
+    
+    input_file = open( next_dataset, 'r' )
+    
+    file_name = next_dataset.split( '/' )[ -1]
+    output_id = filename.split( '-' )[ 0 ]
+
+    if output_id == '18':
+
+        core_name_initial = '-'.join( output_id.split( '-' )[ 1:] )
+        core_name = '.'.join( core_name_initial.split( '.' )[ :-1 ]  )
+        
+        new_name = 'big2024-END/gene_set_source_ids-' + core_name + '.aa'
+        output_file = open( new_name, 'w' )
+        for next_line in input_file:
+            output_file.write( next_line )
+        input_file.close()
+        output_file.close()
+        
+    if output_id == '20':
+        new_name = 'big2024-END/gene_set_tree_ids-' + core_name + '.aa'
+        output_file = open( new_name, 'w' )
+        for next_line in input_file:
+            output_file.write( next_line )
+        input_file.close()
+        output_file.close()
+        
+    if output_id == '21':
+        new_name = 'big2024-END/mafft_alignment-' + core_name + '.fasta'
+        output_file = open( new_name, 'w' )
+        for next_line in input_file:
+            output_file.write( next_line )
+        input_file.close()
+        output_file.close()
+        
+    if output_id == '22':
+        new_name = 'big2024-END/clipkit_alignment-' + core_name + '.fasta'
+        output_file = open( new_name, 'w' )
+        for next_line in input_file:
+            output_file.write( next_line )
+        input_file.close()
+        output_file.close()
+        
+    if output_id == '23':
+        new_name = 'big2024-END/fasttree_tree-' + core_name + '.fasttree'
+        output_file = open( new_name, 'w' )
+        for next_line in input_file:
+            output_file.write( next_line )
+        input_file.close()
+        output_file.close()
+        
+    if output_id == '24':
+        new_name = 'big2024-END/iqtree_tree-' + core_name + '.treefile'
+        output_file = open( new_name, 'w' )
+        for next_line in input_file:
+            output_file.write( next_line )
+        input_file.close()
+        output_file.close()
+
+input_datasets.close()

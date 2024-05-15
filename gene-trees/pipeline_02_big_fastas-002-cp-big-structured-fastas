@@ -1,0 +1,6 @@
+#! /bin/bash
+
+cp preparation/ncbi/downloaded*/output/21* output/2-big-structured-fastas/
+cp preparation/ensembl/downloaded*/output/21* output/2-big-structured-fastas/
+cp preparation/other/*/*other*aa output/2-big-structured-fastas/
+
