@@ -1,0 +1,5 @@
+#! /bin/bash
+
+ls output/blast-1e-*/* > output/4-list-blast-reports
+ls ../species19/sequences/*aa > output/4-list-fastas
+ls output/blast-1e-5/Aplysia* > output/4-list-blast-reports-minus-5

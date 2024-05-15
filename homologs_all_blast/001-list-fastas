@@ -1,0 +1,3 @@
+#! /bin/bash
+
+ls ../species19/*aa > output/1-list-genomes

@@ -1,0 +1,120 @@
+#! python
+
+input_map_gigantic_to_intermediate = open( 'input/map-species311-gigantic-to-intermediate/2-map-source-gigantic-species311-ids', 'r')
+input_map_intermediate_to_source = open( 'input/map-species307-intermediate-to-source/4-map-Metazoa307-projectdb-to-source-headers', 'r' )
+input_map_locid = open( 'input/map-aplysia-geneid-loc/GeneID-LOC-map.tsv', 'r' )
+input_map_geneid = open( 'input/map-aplysia-gigantic-names/5-map-aplysia-sequence-identifier-annotations', 'r' )
+input_map_octopus_intermediate_to_source = open( 'input/map-octopus-intermediate-to-source/3-map-projectdb-headers-to-old-headers', 'r' )
+input_map_argonauta_intermediate_to_source = open( 'input/map-Argonauta-source-to-intermediate/2-map-source-gigantic-species311-ids', 'r' )
+
+output_command = open( '004-sed-gigantic-ids-to-source-ids', 'w' )
+output_map = open( 'output/1-map-giganticid-to-sourceid', 'w' )
+
+# map Species311 gigantic ids to intermediate ids
+# Input structure
+# Kingdom_unclassified-Phylum_unclassified-Choanoflagellata-Craspedida-Salpingoecidae-Monosiga-brevicollis-pdb0000000001  Kingdom_unclassified1-Phylum_unclassified2-Choanoflagellata-Craspedida-Salpingoecidae-Monosiga-brevicollis-gigantic20220627164247_seq0000000001aa
+
+
+coreids_giganticids = {}
+giganticids_intermediateids = {}
+for next_line in input_map_gigantic_to_intermediate:
+        info = next_line[ :-1 ].split( '\t' )
+        giganticid = info [ 1 ]
+        intermediateid = info [ 0 ]
+        giganticids_intermediateids[ giganticid ] = intermediateid
+
+        gigantic_info = giganticid.split( '_seq' )
+        gigantic_core_id = gigantic_info[ -1 ].split( 'aa' )[ 0 ]
+        coreids_giganticids[ gigantic_core_id ] = giganticid
+        
+# Map intermediate ids to source ids Species311 - NOT including Octopus bimaculoides, Argonauta argos, and Aplysia californica - and one other species but not sure which one but they are not in Species19
+# Input structure
+# Kingdom_unclassified-Phylum_unclassified-Choanoflagellata-Craspedida-Salpingoecidae-Monosiga-brevicollis-pdb0000000001  MobroMp01___NP_696964.1
+
+intermediateids_sourceids = {}
+for next_line in input_map_intermediate_to_source:
+        info = next_line[ :-1 ].split( '\t' )
+        intermediateid = info[ 0 ]
+        sourceid = info[ 1 ] 
+        intermediateids_sourceids[ intermediateid ] = sourceid
+
+# Map Octopus intermediate to source
+# Input structure
+# Metazoa-Arthropoda-Insecta-Diptera-Drosophilidae-Drosophila-melanogaster-7227-ensembl_vertebrates_104-pdb0000000009     FBgn0031250___FBpp0303501
+
+for next_line in input_map_octopus_intermediate_to_source:
+        info = next_line[ :-1 ].split( '\t' )
+        intermediateid = info[ 0 ]
+        sourceid = info[ 1 ]
+        if len( intermediateid.split( 'bimaculoides' ) ) > 1:
+                intermediateids_sourceids[ intermediateid ] = sourceid
+
+# Map Argonauta intermediate to source
+# Input structure
+# Aargo000035     Metazoa-Mollusca-Cephalopoda-Octopoda-Argonautidae-Argonauta-argo-294695-gigantic_run20220314123552_seq0007407918aa
+
+for next_line in input_map_argonauta_intermediate_to_source:
+        if len( next_line ) > 1:
+                info = next_line[ :-1 ].split( '\t' )
+                intermediateid = info[ 1 ]
+                sourceid = info[ 0 ].split( ' ' )[ 0 ]
+                if len( intermediateid.split( 'Argonauta' ) ) > 1:
+                        intermediateids_sourceids[ intermediateid ] = sourceid
+
+# Map Aplysia gigantic ids to geneids
+# Input structure
+# GeneID:100533255        LOC:00000       Symbol:NOHIT1_likeNA    Name:No hit in human fly worm 1 Aplysia californica     Group:NA        AFold:00000     OFOG:N0.HOG0012429      COG:COGethyneura2834    LeonidName:Chemosensory receptor c      giganticID:Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-gigantic20220627164247_seq0006140675aa     MSLVNETERELKGSHNISEHGGLIDDQTLRIFLLVFTFVTLGLSLLGSAFNCINITVFLTLGAKDCVSVCLLSLAVSDFTCLFLGAVCGVCDILDAYGSADFYVDPRGLYYQVIFISSMSYDISTYITAFISLERCLCVALPFRFKELFTFKRAVLAMATIFCLTFCCYLPHYVTSGLRVQWDPRTNTTRVLLWSSKDMPAITAFLDLWNHLILAVTSVVIVIVCTHIMVTGLKKSSQFQRRGAARPSEPDGPNNFKTSNEVGEGEENVLRDPDSRRDNNISTPYCPTNVEKESSNKIKVEKSPQTLSAKNRRVVKMVSTLAIVSILCNTSRLLFVVALRAEPDINFGHRYHNLYMVILVLAYIFQVINAPVNIFIYLKLNPSYRKTFSQIFGIGQTK
+
+giganticids_geneids = {}
+for next_line in input_map_geneid:
+        info = next_line.split( '\t' )
+        giganticid_dirty = info[ 9 ]
+        giganticid = giganticid_dirty.split( ':' )[ -1 ]
+        geneid = info[ 0 ]
+        giganticids_geneids[ giganticid ] = geneid
+
+
+# Map Aplysia geneids to locids
+# Input structure
+# GeneID:100533255        LOC100533255
+
+geneids_locids = {}
+for next_line in input_map_locid:
+        info = next_line.split( '\t' )
+        geneid = info[ 0 ]
+        locid = info[ 1 ]
+        geneids_locids[ geneid ] = locid
+
+for next_giganticid in giganticids_intermediateids:
+        next_intermediateid = giganticids_intermediateids[ next_giganticid ]
+
+        if next_intermediateid in intermediateids_sourceids.keys():
+                next_sourceid = intermediateids_sourceids[ next_intermediateid ]
+        else:
+                next_sourceid = 'NA'
+
+        next_species = next_giganticid.split( '-' )[ 5 ]
+
+        if next_species == 'Aplysia':
+                next_geneid = giganticids_geneids[ next_giganticid ]
+                next_locid = geneids_locids[ next_geneid ]
+                next_sourceid = next_locid
+        else:
+                next_geneid = 'NA'
+                next_locid = 'NA'
+
+        if next_sourceid[ :3 ] == 'LOC':
+                info_sourceid = next_sourceid.split( '___' )
+                next_locid = info_sourceid[ 0 ]
+                
+        output = next_species + '\t' + next_giganticid + '\t' + next_intermediateid + '\t' + next_sourceid + '\t' + next_geneid + '\t' + next_locid + '\n'
+        output_map.write( output )
+
+input_map_gigantic_to_intermediate.close()
+input_map_intermediate_to_source.close()
+input_map_octopus_intermediate_to_source.close()
+input_map_argonauta_intermediate_to_source.close()
+input_map_locid.close()
+input_map_geneid.close()
+output_command.close()
+output_map.close()

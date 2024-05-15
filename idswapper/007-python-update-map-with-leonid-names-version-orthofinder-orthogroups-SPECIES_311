@@ -1,0 +1,37 @@
+#! python
+
+#
+input_map = open( 'output/6-map-giganticid-to-sourceid-species19-orthofinder-orthogroups-SPECIES_311', 'r' )
+input_leonid = open( 'input/leonid-signal-locid-names.tsv', 'r' )
+output_map = open( 'output/7-map-giganticid-to-sourceid-species19-orthofinder-orthogroups-SPECIES_311', 'w' )
+
+giganticids_newids = {}
+locids_giganticids = {}
+for next_line in input_map:
+    info = next_line[ :-1 ].split( '\t' )
+    giganticid = info[ 0 ]
+    newid = info[ 1 ]
+    giganticids_newids[ giganticid ] = newid
+    
+    info_newid = newid.split( 'plysia-' )
+    if len( info_newid ) > 1:
+        locid = '-'.join( info_newid[ 1: ] )
+        locids_giganticids[ locid ] = giganticid
+        
+for next_line in input_leonid:
+    info = next_line[ :-1 ].split( '\t' )
+    locid = info[ 0 ]
+    leonid_name = info[ 1 ]
+
+    if locid in locids_giganticids.keys():
+        giganticid = locids_giganticids[ locid ]
+        new_header = 'Aplysia-' + locid + ' ' + leonid_name
+        giganticids_newids[ giganticid ] = new_header
+
+for next_giganticid in giganticids_newids.keys():
+    output = next_giganticid + '\t' + giganticids_newids[ next_giganticid ] + '\n'
+    output_map.write( output )
+
+input_map.close()
+input_leonid.close()
+output_map.close()

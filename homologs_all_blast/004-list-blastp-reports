@@ -1,0 +1,23 @@
+#! /bin/bash
+
+ls output/3-output/*_X_* > output/4-output/4-list-blast-reports
+
+ls output/3-output/*Capitella*_X_* > output/4-output/4-list-blast-reports-Capitella
+ls output/3-output/*Drosophila*_X_* > output/4-output/4-list-blast-reports-Drosophila
+ls output/3-output/*Lingula*_X_* > output/4-output/4-list-blast-reports-Lingula
+ls output/3-output/*Homo*_X_* > output/4-output/4-list-blast-reports-Homo
+ls output/3-output/*Crassostrea*_X_* > output/4-output/4-list-blast-reports-Crassostrea
+ls output/3-output/*Mizuhopecten*_X_* > output/4-output/4-list-blast-reports-Mizuhopecten
+ls output/3-output/*Cyclina*_X_* > output/4-output/4-list-blast-reports-Cyclina
+ls output/3-output/*Nautilus*_X_* > output/4-output/4-list-blast-reports-Nautilus
+ls output/3-output/*Argonauta*_X_* > output/4-output/4-list-blast-reports-Argonauta
+ls output/3-output/*Octopus*_X_* > output/4-output/4-list-blast-reports-Octopus
+ls output/3-output/*Achatina*_X_* > output/4-output/4-list-blast-reports-Achatina
+ls output/3-output/*Pomacea*_X_* > output/4-output/4-list-blast-reports-Pomacea
+ls output/3-output/*Lottia*_X_* > output/4-output/4-list-blast-reports-Lottia
+ls output/3-output/*Gigantopelta*_X_* > output/4-output/4-list-blast-reports-Gigantopelta
+ls output/3-output/*Elysia*_X_* > output/4-output/4-list-blast-reports-Elysia
+ls output/3-output/*Acanthopleura*_X_* > output/4-output/4-list-blast-reports-Acanthopleura
+ls output/3-output/*Caenorhabditis*_X_* > output/4-output/4-list-blast-reports-Caenorhabditis
+ls output/3-output/*Phoronis*_X_* > output/4-output/4-list-blast-reports-Phoronis
+ls output/3-output/*Aplysia*_X_* > output/4-output/4-list-blast-reports-Aplysia

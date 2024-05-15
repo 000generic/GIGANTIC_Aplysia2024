@@ -1,0 +1,14 @@
+#! python
+
+input_report = open( 'output/Aplysia-californica_X_Homo-sapiens', 'r' )
+
+queries = []
+for next_line in input_report:
+    info = next_line.split( '\t' )
+    query = info[ 0 ]
+    if query not in queries:
+        queries.append( query )
+
+print( str( len( queries ) ) )
+
+input_report.close()

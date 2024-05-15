@@ -1,0 +1,121 @@
+#! python
+
+# This script remove all symbols from source identifiers - and updates Achatina to Lissachatina
+
+input_swapper = open( 'output/7-map-giganticid-to-sourceid-species19-orthofinder-orthogroups-SPECIES_311', 'r' )
+output_swapper311 = open( 'output/8-map-species311-giganticid-to-sourceid_original-to-sourceid_clean-SPECIES311_CLEAN', 'w' )
+output_swapper19 = open( 'output/8-map-species19-giganticid-to-sourceid_original-to-sourceid_clean-SPECIES19_CLEAN', 'w' )
+output_species19 = open( 'USEME-CLEAN-species19-idswapper-from-script-008', 'w' )
+
+header = 'GIGANTIC Identifier' + '\t' + 'Genus-species-Source_Identifiers' + '\t' + 'Genus-species-Clean_Source_Identifiers' + '\n'
+output_swapper311.write( header )
+output_swapper19.write( header )
+output_species19.write( header )
+
+genera = [ 'Homo', 'Drosophila', 'Caenorhabditis', 'Capitella', 'Phoronis', 'Lingula', 'Acanthopleura', 'Nautilus', 'Argonauta', 'Octopus', 'Cyclina', 'Mizuhopecten', 'Crassostrea', 'Lottia', 'Gigantopelta', 'Pomacea', 'Lissachatina', 'Elysia', 'Aplysia' ]
+
+for next_line in input_swapper:
+
+    info = next_line[ :-1 ].split( '\t' )
+    gigantic = info[ 0 ]
+    source_in_original_map = info[ 1 ]
+    info_source = source_in_original_map.split( '-' )
+    gspp = info_source[ 0 ] + '-' + info_source[ 1 ]
+
+    genus = info_source[ 0 ]
+    if genus == 'Achatina':
+        genus = 'Lissachatina'
+        
+    source_only = '-'.join( info_source[ 2: ] )
+
+    source_only = '_'.join( source_only.split( '-' ) )
+    source_only = '_'.join( source_only.split( '__' ) )
+
+    source_only = '_'.join( source_only.split( '(' ) )
+    source_only = '_'.join( source_only.split( '__' ) )
+
+    source_only = '_'.join( source_only.split( ')' ) )
+    source_only = '_'.join( source_only.split( '__' ) )
+
+    source_only = '_'.join( source_only.split( '.' ) )
+    source_only = '_'.join( source_only.split( '__' ) )
+
+    source_only = '_'.join( source_only.split( ':' ) )
+    source_only = '_'.join( source_only.split( '__' ) )
+
+    source_only = '_'.join( source_only.split( ';' ) )
+    source_only = '_'.join( source_only.split( '__' ) )
+
+    source_only = '_'.join( source_only.split( '"' ) )
+    source_only = '_'.join( source_only.split( '__' ) )
+
+    source_only = '_'.join( source_only.split( '\'' ) )
+    source_only = '_'.join( source_only.split( '__' ) )
+
+    source_only = '_'.join( source_only.split( '/' ) )
+    source_only = '_'.join( source_only.split( '__' ) )
+
+    source_only = '_'.join( source_only.split( ',' ) )
+    source_only = '_'.join( source_only.split( '__' ) )
+
+    source_only = '_'.join( source_only.split( '*' ) )
+    source_only = '_'.join( source_only.split( '__' ) )
+
+    source_only = '_'.join( source_only.split( '`' ) )
+    source_only = '_'.join( source_only.split( '__' ) )
+
+    source_only = '_'.join( source_only.split( '__' ) )
+    source_only = '_'.join( source_only.split( '[' ) )
+    
+    source_only = '_'.join( source_only.split( ']' ) )
+    source_only = '_'.join( source_only.split( '__' ) )
+
+    source_only = '_'.join( source_only.split( '+' ) )
+    source_only = '_'.join( source_only.split( '__' ) )
+
+    source_only = '_'.join( source_only.split( '$' ) )
+    source_only = '_'.join( source_only.split( '__' ) )
+
+    source_only = '_'.join( source_only.split( '#' ) )
+    source_only = '_'.join( source_only.split( '__' ) )
+
+    source_only = '_'.join( source_only.split( '|' ) )
+    source_only = '_'.join( source_only.split( '__' ) )
+
+    source_only = '_'.join( source_only.split( '\\' ) )
+    source_only = '_'.join( source_only.split( '__' ) )
+
+    source_only = '_'.join( source_only.split( '@' ) )
+    source_only = '_'.join( source_only.split( '__' ) )
+
+    source_only = '_'.join( source_only.split( '!' ) )
+    source_only = '_'.join( source_only.split( '__' ) )
+
+    source_only = '_'.join( source_only.split( '%' ) )
+    source_only = '_'.join( source_only.split( '__' ) )
+
+    source_only = '_'.join( source_only.split( '~' ) )
+    source_only = '_'.join( source_only.split( '__' ) )
+
+    source_only = '_'.join( source_only.split( '<' ) )
+    source_only = '_'.join( source_only.split( '__' ) )
+
+    source_only = '_'.join( source_only.split( '>' ) )
+    source_only = '_'.join( source_only.split( '__' ) )
+
+    source_only = '_'.join( source_only.split( '?' ) )
+    source_only = '_'.join( source_only.split( '__' ) )
+
+    source_clean = gspp + '-' + source_only
+
+    output = gigantic + '\t' + source_in_original_map + '\t' + source_clean + '\n'
+    output_swapper311.write( output )
+
+    if genus in genera:
+        output_species19.write( output )
+        output_swapper19.write( output )
+
+input_swapper.close()
+output_swapper311.close()
+output_swapper19.close()
+output_species19.close()

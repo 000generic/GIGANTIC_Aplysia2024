@@ -1,0 +1,20 @@
+#! /bin/bash
+python 005-python-parse-reports-to-make-All-Homologs-Clusters-Acanthopleura-Q.py &
+python 005-python-parse-reports-to-make-All-Homologs-Clusters-Achatina-Q.py &
+python 005-python-parse-reports-to-make-All-Homologs-Clusters-Aplysia-Q.py &
+python 005-python-parse-reports-to-make-All-Homologs-Clusters-Argonauta-Q.py &
+python 005-python-parse-reports-to-make-All-Homologs-Clusters-Caenorhabditis-Q.py &
+python 005-python-parse-reports-to-make-All-Homologs-Clusters-Capitella-Q.py &
+python 005-python-parse-reports-to-make-All-Homologs-Clusters-Crassostrea-Q.py &
+python 005-python-parse-reports-to-make-All-Homologs-Clusters-Cyclina-Q.py &
+python 005-python-parse-reports-to-make-All-Homologs-Clusters-Drosophila-Q.py &
+python 005-python-parse-reports-to-make-All-Homologs-Clusters-Elysia-Q.py &
+python 005-python-parse-reports-to-make-All-Homologs-Clusters-Gigantopelta-Q.py &
+python 005-python-parse-reports-to-make-All-Homologs-Clusters-Homo-Q.py &
+python 005-python-parse-reports-to-make-All-Homologs-Clusters-Lingula-Q.py &
+python 005-python-parse-reports-to-make-All-Homologs-Clusters-Lottia-Q.py &
+python 005-python-parse-reports-to-make-All-Homologs-Clusters-Mizuhopecten-Q.py &
+python 005-python-parse-reports-to-make-All-Homologs-Clusters-Nautilus-Q.py &
+python 005-python-parse-reports-to-make-All-Homologs-Clusters-Octopus-Q.py &
+python 005-python-parse-reports-to-make-All-Homologs-Clusters-Phoronis-Q.py &
+python 005-python-parse-reports-to-make-All-Homologs-Clusters-Pomacea-Q.py  &

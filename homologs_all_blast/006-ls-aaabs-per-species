@@ -1,0 +1,4 @@
+#! /bin/bash
+
+ls output/5-output-evalue-minus10/5-all-species-all-clusters-all-homologs-* > output/6-list-aaabs-per-species-evalue-minus10
+ls output/5-output-evalue-10minus3/5-all-species-all-clusters-all-homologs-* > output/6-list-aaabs-per-species-evalue-10minus3

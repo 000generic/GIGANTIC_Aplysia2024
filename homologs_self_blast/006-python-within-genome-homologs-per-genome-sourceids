@@ -1,0 +1,108 @@
+#! python
+
+input_reports = open( 'output/4-list-blast-reports-minus-5', 'r' )
+input_fastas = open( 'output/4-list-fastas', 'r' )
+input_map = open( '../species19/map/idswapper-species311_X_giganticid-intermediateid-sourceid-geneid-locid', 'r' )
+output_genome_counts = open( 'output/6-genome-counts', 'w' )
+output_gene_counts =  open( 'output/6-gene-homologs-and-counts', 'w' )
+
+# Monosiga        Kingdom_unclassified1-Phylum_unclassified2-Choanoflagellata-Craspedida-Salpingoecidae-Monosiga-brevicollis-gigantic20220627164247_seq0000000001aa       Kingdom_unclassified-Phylum_unclassified-Choanoflagellata-Craspedida-Salpingoecidae-Monosiga-brevicollis-pdb0000000001     MobroMp01___NP_696964.1 NA      NA
+gigantic_locid = {}
+for next_line in input_map:
+    info = next_line[ :-1 ].split( '\t' )
+    gigantic = info[ 1 ]
+    locid = info[ -1 ]
+    gigantic_locid[ gigantic ] = locid
+    
+gspp_run_gene_homologs = {}
+for next_report in input_reports:
+
+    report_path = next_report[ :-1 ]
+    info_path = report_path.split( '/' )
+    blast_run = info_path[ 0 ]
+    gspp = info_path[ 2 ] 
+
+    if gspp in gspp_run_gene_homologs.keys():
+        gspp_run_gene_homologs[ gspp ][ blast_run ] = {}
+    else:
+        gspp_run_gene_homologs[ gspp ] = {}
+        gspp_run_gene_homologs[ gspp ][ blast_run ] = {}
+        
+    input_report = open( report_path, 'r' )
+    
+    # Metazoa-Annelida-Polychaeta-Order_unclassified14-Capitellidae-Capitella-teleta-gigantic20220627164247_seq0000244112aa   0       Metazoa-Annelida-Polychaeta-Order_unclassified14-Capitellidae-Capitella-teleta-gigantic20220627164247_seq0000244112aa   0       Metazoa-Annelida-Polychaeta-Order_unclassified14-Capitellidae-Capitella-teleta-gigantic20220627164247_seq0000244112aa   1.49e-167
+    for next_line in input_report:
+
+        info = next_line[ :-1 ].split( '\t' )
+        gene = info[ 0 ]
+        if gene == 'Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-gigantic20220627164247_seq0006152414aa': # remove
+            print( gene ) # remove
+        hit = info[ 2 ]
+
+        #if gene == hit: # pass on gene hits to self in genome
+        #    pass
+        
+        #else: # collect hits to homologs in genome
+                
+        if gene in gspp_run_gene_homologs[ gspp ][ blast_run ].keys():
+            gspp_run_gene_homologs[ gspp ][ blast_run ][ gene ].append( hit )
+
+        else:
+            gspp_run_gene_homologs[ gspp ][ blast_run ][ gene ] = []
+            gspp_run_gene_homologs[ gspp ][ blast_run ][ gene ].append( hit )
+
+# calculate number of genes per genome
+gspp_genes = {} 
+for next_fasta in input_fastas:
+    count = 0
+    fasta_path = next_fasta[ :-1 ]
+    info_1 = next_fasta.split( '/' )
+    info_2 = info_1[ -1 ].split( '-' )
+    genus = info_2[ 5 ]
+    species = info_2[ 6 ]
+    gspp = genus + '-' + species
+    
+    input_fasta = open( fasta_path, 'r' )
+    for next_line in input_fasta:
+        if next_line[ 0 ] == '>':
+            count = count + 1
+
+    gspp_genes[ gspp ] = count
+            
+# calculate average number of homologs per gene
+gspp_run_homologCounts = {}
+for next_gspp in gspp_run_gene_homologs.keys():
+    gspp_run_homologCounts[ next_gspp ] = {}
+    
+    for next_run in gspp_run_gene_homologs[ next_gspp ].keys():
+
+        gspp_run_homologCounts[ next_gspp ][ next_run ] = 0
+
+        total_counts = 0
+
+        for next_gene in gspp_run_gene_homologs[ next_gspp ][ next_run ].keys():
+
+            next_count = len( gspp_run_gene_homologs[ next_gspp ][ next_run ][ next_gene ] )
+            total_counts = total_counts + next_count
+            
+            gspp_run_homologCounts[ next_gspp ][ next_run ] = gspp_run_homologCounts[ next_gspp ][ next_run ] + next_count
+            locid_query = gigantic_locid[ next_gene ]
+            output = next_gspp + '\t' + next_run + '\t' + str( next_count ) + '\t' + locid_query + '\t'
+            for next_homolog in gspp_run_gene_homologs[ next_gspp ][ next_run ][ next_gene ]:
+                locid_hit = gigantic_locid[ next_homolog ]
+                output = output + locid_hit + ', '
+
+            output = output[ :-2 ] + '\n'
+            output_gene_counts.write( output )
+
+        total_genes = gspp_genes[ next_gspp ] 
+        average_homologs = total_counts / total_genes
+        output = next_gspp + '\t' + next_run + '\t' + str( total_genes ) + '\t' + str( total_counts) + '\t' + str( average_homologs ) + '\n'
+
+        output_genome_counts.write( output )
+    
+input_reports.close()
+output_genome_counts.close()
+output_gene_counts.close()
+input_fastas.close()
+input_map.close()

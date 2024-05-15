@@ -1,0 +1,3 @@
+#! /bin/bash
+
+grep '>' /scratch/eric/projects/aplysia/projectdbs/species311/projectdb-species311/*aa > output/5-all-species311-headers

@@ -1,0 +1,22 @@
+#! python
+
+input_clusters = open( 'output/7-blast-clusters-species19-clusters', 'r' )
+output_clusters = open( 'output/8-blast-clusters-species-sorted-clusters', 'w' )
+
+counts_clusters = {}
+for next_line in input_clusters:
+
+    info = next_line.split( '\t' )
+    clusterid = info[ 0 ]
+    count = int( info[ 1 ] )
+    if count not in counts_clusters.keys():
+        counts_clusters[ count ] = []
+    counts_clusters[ count ].append( clusterid )
+
+for next_count in sorted( counts_clusters.keys() ):
+    for next_cluster in counts_clusters[ next_count ]:
+        output = next_cluster + '\t' + str( next_count ) + '\n'
+        output_clusters.write( output )
+
+input_clusters.close()
+output_clusters.close()

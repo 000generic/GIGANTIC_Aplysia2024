@@ -1,0 +1,35 @@
+#! python
+
+input_fastas = open( 'output/1-list-genomes', 'r' )
+output_blastp = open( '003-blastp-all_X_all_genomes', 'w' )
+
+fastas = []
+for next_fasta in input_fastas:
+
+    fasta = next_fasta[ :-1 ]
+    fastas.append( fasta )
+
+for next_query in fastas:
+    info_1 = next_query.split( '/' )
+    info_query = info_1[ -1 ].split( '-' )
+    query_genus = info_query[ 5 ]
+    query_species = info_query[ 6 ]
+    query_gspp = query_genus + '-' + query_species
+
+    for next_subject in fastas:
+
+        info_2 = next_subject.split( '/' )
+        info_subject = info_2[ -1 ].split( '-' )
+        subject_genus = info_subject[ 5 ]
+        subject_species = info_subject[ 6 ]
+        subject_gspp = subject_genus + '-' + subject_species
+        blast_job = query_gspp + '_X_' + subject_gspp
+        
+        output = 'blastp -max_target_seqs 10000 -max_hsps 1 -num_threads 31 -evalue 1e-3 -outfmt "6 qseqid sseqid evalue" -query ' + next_query + ' -db ' + next_subject + ' -out output/' + blast_job + '  &&\n'
+        output_blastp.write( output )
+
+output = 'echo\n'
+output_blastp.write( output )
+        
+input_fastas.close()
+output_blastp.close()

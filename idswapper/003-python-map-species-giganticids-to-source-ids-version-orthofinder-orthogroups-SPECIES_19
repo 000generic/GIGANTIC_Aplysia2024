@@ -1,0 +1,31 @@
+#! python
+
+input_map = open( 'output/1-map-giganticid-to-sourceid', 'r' )
+input_headers = open( 'output/2-all-species19-headers', 'r' )
+output_map = open( 'output/3-map-giganticid-to-sourceid-species19-orthofinder-orthogroups', 'w' )
+
+# /scratch/eric/projects/aplysia/projectdbs/species19/Metazoa-Annelida-Polychaeta-Order_unclassified14-Capitellidae-Capitella-teleta-283909-T1.aa:>Metazoa-Annelida-Polychaeta-Order_unclassified14-Capitellidae-Capitella-teleta-gigantic20220627164247_seq0000244112aa
+
+#giganticids = []
+gspps = []
+for next_line in input_headers:
+    genomeid_giganticid = next_line[ :-1 ].split( '/' )[ -1 ]
+    genomeid = genomeid_giganticid.split( '.aa:>' )[ 0 ]
+    gspp = genomeid.split( '-' )[ 5 ] + '_' + genomeid.split( '-' )[ 6 ]
+    if gspp not in gspps:
+        gspps.append( gspp )
+
+for next_line in input_map:
+    info = next_line[ :-1 ].split( '\t' )
+    giganticid = info[ 1 ]
+    source = info[ 3  ]
+    gspp = giganticid.split( '-' )[ 5 ] + '_' + giganticid.split( '-' )[ 6 ]
+    if gspp in gspps:
+        genus = gspp.split( '_' )[ 0 ]
+        identifier = genus + '-' + '-'.join( source.split( '___' ) )
+        output = giganticid + '\t' + identifier + '\n'
+        output_map.write( output )
+
+input_map.close()
+input_headers.close()
+output_map.close()

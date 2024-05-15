@@ -1,0 +1,81 @@
+#! python
+
+input_reports = open( 'output/4-output/4-list-blast-reports', 'r' )
+output_clusters = open( 'output/9-blast-hits-homologs-genesets', 'w' )
+
+print( 'Filtering reports...' )
+gspp_gene_hits = {}
+for next_report in input_reports:
+
+    report_path = next_report[ :-1 ]
+
+    print( report_path )
+
+    info_report = report_path.split( '_X_' )
+    query_species = info_report[ 0 ].split( '/' )[ -1 ]
+    subject_species = info_report[ -1 ]
+
+    if query_species not in gspp_gene_hits.keys():
+        gspp_gene_hits[ query_species ] = {}
+
+    # Metazoa-Annelida-Polychaeta-Order_unclassified14-Capitellidae-Capitella-teleta-gigantic20220627164247_seq0000244112aa   Metazoa-Annelida-Polychaeta-Order_unclassified14-Capitellidae-Capitella-teleta-gigantic20220627164247_seq0000255669aa   1.04e-21
+
+    input_report = open( report_path, 'r' )
+    for next_line in input_report:
+
+        info = next_line[ :-1 ].split( '\t' )
+        query = info[ 0 ]
+        hit = info[ 1 ]
+        evalue = info[ 2 ] # can be 1) 0.0 or 2) 0.001 or 3) 2.10e-136
+        info_evalue_e = evalue.split( 'e-' )
+
+        keeper = False
+
+        if evalue == '0.0': # keep evalues less than e-180 I think it is
+            keeper = True
+
+        elif len( info_evalue_e ) > 1:
+            evalue_e_integer = int( info_evalue_e[ -1 ] )
+            if evalue_e_integer > 3:
+                keeper = True
+
+                #elif len( info_evalue_e ) == 1:
+                #info_evalue_dot = evalue.split( '.')
+                #evalue_dot_string = info_evalue_dot[ -1 ]
+                #if len( evalue_dot_string ) > 2:
+                #keeper = True
+
+        else:
+            #print( evalue )
+            pass
+
+        if keeper == True:
+            if query not in gspp_gene_hits[ query_species ].keys():
+                gspp_gene_hits[ query_species ][ query ] = []
+                gspp_gene_hits[ query_species ][ query ].append( hit )
+            else:
+                gspp_gene_hits[ query_species ][ query ].append( hit )
+
+print( 'Building clusters...' )
+
+for next_species in sorted( gspp_gene_hits ):
+    next_output = 'output/9-blast-hits-homologs-genesets-' + next_species.split( '-' )[ 0 ]
+    output_sequences = open( next_output, 'w' )
+    
+    for next_query in gspp_gene_hits[ next_species ]:
+        core_seq_id = next_query.split( '_' )[ -1 ][ 3:-3 ]
+        genus = next_species.split( '-' )[ 0 ]
+        genesetid = 'bhh' + genus + core_seq_id
+        hits_count = str( len( gspp_gene_hits[ next_species ][ next_query ] ) ) 
+        seqids = ', '.join( gspp_gene_hits[ next_species ][ next_query ] )
+        
+        output = genesetid + '\t' + hits_count + '\t' +  seqids + '\n'
+        output_clusters.write( output )
+        for next_hit in gspp_gene_hits[ next_species ][ next_query ]:
+            output = next_hit + '\t' + genesetid + '\t' + hits_count +  '\n'
+            output_sequences.write( output )
+    output_sequences.close()
+                
+print( 'Success! :)' )
+input_reports.close()
+output_clusters.close()
