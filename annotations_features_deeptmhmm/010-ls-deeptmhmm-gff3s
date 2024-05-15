@@ -1,0 +1,1 @@
+ls -1 output/bio*/*gff3 > output/10-list-deeptmhmm-gff3s

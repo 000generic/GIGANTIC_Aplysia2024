@@ -1,0 +1,44 @@
+#! python
+
+input_fastas = open( 'output/1-list-fastas', 'r' )
+
+for next_fasta in input_fastas:
+	
+	header_seq = {}
+	input_fasta = open( next_fasta[ :-1 ], 'r' )
+	file_name = next_fasta.split( '/' )[ -1 ]
+	core_name = '-'.join( file_name.split( '-' )[ :7 ] ) 
+	counter = 1
+	counter_total = 0
+	new_file = 'output/2-' + core_name + '-' + str( counter ) + '.aa'
+	output_fasta = open( new_file, 'w' )
+
+	for next_line in input_fasta:
+
+		if next_line[ 0 ] == '>':
+			header = next_line[ :-1 ]
+			header_seq[ header ] = ''
+		else:
+			header_seq[ header ] = header_seq[ header ] + next_line[ :-1 ]
+	
+	for next_header in header_seq.keys():
+		counter = counter + 1
+		if counter > 2500:
+			output_fasta.close()
+			new_file = 'output/2-' + core_name + '-' + str( counter_total ) + '.aa'
+			output_fasta = open( new_file, 'w' )
+			output = next_header + '\n' + header_seq[ next_header ] + '\n'
+			output_fasta.write( output )
+			counter = 0
+			counter_total = counter_total + 1
+
+		else:
+			output = next_header + '\n' + header_seq[ next_header ] + '\n'
+			output_fasta.write( output )
+			counter = counter + 1
+			counter_total = counter_total + 1
+
+	input_fasta.close()
+	output_fasta.close()
+
+input_fastas.close()

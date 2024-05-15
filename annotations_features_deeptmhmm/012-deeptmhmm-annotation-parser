@@ -1,0 +1,131 @@
+#! python
+
+input_annotations = open( 'output/10-list-deeptmhmm-gff3s', 'r' )
+input_fastas = open( 'output/11-list-species19-fastas', 'r' )
+
+#  ##gff-version 3
+#  # Metazoa-Arthropoda-Insecta-Diptera-Drosophilidae-Drosophila-melanogaster-gigantic20220627164247_seq0000836058aa Length: 214
+#  # Metazoa-Arthropoda-Insecta-Diptera-Drosophilidae-Drosophila-melanogaster-gigantic20220627164247_seq0000836058aa Number of predicted TMRs: 0
+#  Metazoa-Arthropoda-Insecta-Diptera-Drosophilidae-Drosophila-melanogaster-gigantic20220627164247_seq0000836058aa signal  1       30
+#  Metazoa-Arthropoda-Insecta-Diptera-Drosophilidae-Drosophila-melanogaster-gigantic20220627164247_seq0000836058aa outside 31      214
+#  //
+#  //
+#  # Metazoa-Arthropoda-Insecta-Diptera-Drosophilidae-Drosophila-melanogaster-gigantic20220627164247_seq0000836060aa Length: 1276
+#  # Metazoa-Arthropoda-Insecta-Diptera-Drosophilidae-Drosophila-melanogaster-gigantic20220627164247_seq0000836060aa Number of predicted TMRs: 8
+#  Metazoa-Arthropoda-Insecta-Diptera-Drosophilidae-Drosophila-melanogaster-gigantic20220627164247_seq0000836060aa inside  1       74
+#  Metazoa-Arthropoda-Insecta-Diptera-Drosophilidae-Drosophila-melanogaster-gigantic20220627164247_seq0000836060aa TMhelix 75      95
+#  Metazoa-Arthropoda-Insecta-Diptera-Drosophilidae-Drosophila-melanogaster-gigantic20220627164247_seq0000836060aa outside 96      363
+#  //
+
+
+seqid_annotation = {}
+seqid_tmcount = {}
+for next_annotation in input_annotations:
+    input_annotation = open( next_annotation[ :-1 ], 'r' )
+
+    new_species = False
+    for next_line in input_annotation:
+        next_line = next_line[ :-1 ]
+        info = next_line.split( '\t' )
+        
+        if next_line[ 1 ] == '#' or next_line[ 1 ] == '/':
+            new_species = True
+        else:
+            new_species = False
+            
+        if new_species == True:
+            line_counter = 0
+            number_of_tms = ''
+            signals = []
+            tms = []
+            
+        else:
+            line_counter = line_counter + 1
+
+            if line_counter == 2:
+                number_of_tms = info[ -1 ].split( ' ' )[ -1 ]
+            elif next_line[ 0 ] == '#':
+                pass
+            else:
+                seqid = info[ 0 ]
+                seqid_tmcount[ seqid ] = number_of_tms
+                annotation_assessment = info[ 1 ]
+                if annotation_assessment == 'signal':
+                    annotation_assessment = 'SP'
+                elif annotation_assessment == 'TMhelix':
+                    annotation_assessment = 'TM'
+                else:
+                    annotation_assessment = 'X'
+                start = info[ 2 ]
+                stop = info[ 3 ]
+        
+                annotation = annotation_assessment + start + ':' + stop + '_'
+
+                if annotation_assessment == 'SP' or annotation_assessment == 'TM':
+                    if seqid in seqid_annotation.keys():
+                        seqid_annotation[ seqid ] = seqid_annotation[ seqid ] + annotation
+                    else:
+                        seqid_annotation[ seqid ] = ''
+                        seqid_annotation[ seqid ] = seqid_annotation[ seqid ] + annotation
+                else:
+                    pass
+
+for next_fasta in input_fastas:
+    input_fasta = open( next_fasta[ :-1 ], 'r' )
+
+    file_name = next_fasta.split( '/' )[ -1 ]
+    core_name = '-'.join( file_name.split( '-' )[ :7 ] )
+    new_file = 'output/12-deeptmhmm-annotations-' + core_name
+    output_annotations = open( new_file, 'w' )
+    
+    output = '[ Sequence Id ]' + '\t' + '[ DeepTMHMM SP Annotations ]' + '\t' + '[ DeepTMHMM TM Annotations ]' + '\n'
+    output_annotations.write( output )
+
+    for next_line in input_fasta:
+        if next_line[ 0 ] == '>':
+            seqid = next_line[ 1:-1 ]
+            if seqid in seqid_annotation.keys():
+                annotation = seqid_annotation[ seqid ][ :-1 ]
+                info_annotation = annotation.split( '_' )
+                signals = []
+                tms = []
+                for next_annotation in info_annotation:
+                    if next_annotation[ 0 ] == 'S':
+                        signals.append( next_annotation )
+                    elif next_annotation[ 0 ] == 'T':
+                        tms.append( next_annotation )
+                    else:
+                        pass
+                        
+                if len( signals ) > 0:
+                    signal_annotation = 'DeepTMHMM_'
+                    for next_signal in signals:
+                        signal_annotation = signal_annotation + next_signal + '_'
+                    signal_annotation = signal_annotation[ :-1 ]
+                else:
+                    signal_annotation = 'None'
+
+                if len( tms ) > 0:
+                    tms_annotation = 'DeepTMHMM_TMs=' + seqid_tmcount[ seqid ] + '_'
+                    
+                    for next_tm in tms:
+                        tms_annotation = tms_annotation + next_tm + '_'
+                    tms_annotation = tms_annotation[ :-1 ]
+                else:
+                    tms_annotation = 'None'
+                    
+                output = seqid + '\t' + signal_annotation + '\t' + tms_annotation + '\n' # DeepTMHMM signal and transmembrane coordinate annotations
+                            
+            else:
+                output = seqid + '\t' + 'None' + '\t' + 'None' + '\n' # this sequence was not annotated by DeepTMHMM - possible error in fasta files used for TMHMM vs being processed here
+
+            output_annotations.write( output ) # write annotation information to file
+
+        else: # do not process sequence data
+            pass
+
+    input_fasta.close()
+    output_annotations.close()
+
+input_fastas.close()
+input_annotations.close()

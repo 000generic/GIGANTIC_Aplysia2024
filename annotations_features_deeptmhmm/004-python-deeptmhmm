@@ -1,0 +1,13 @@
+#! python 
+
+input_fastas = open( 'output/1-list-fastas', 'r' )
+output_deeptmhmm = open( '005-deeptmhmm-species19', 'w' )
+
+for next_fasta in input_fastas:
+	
+	fasta = next_fasta[ :-1 ]
+	output = 'biolib run DTU/DeepTMHMM --fasta ' + fasta + ' &&\n'
+	output_deeptmhmm.write( output )
+
+input_fastas.close()
+output_deeptmhmm.close()

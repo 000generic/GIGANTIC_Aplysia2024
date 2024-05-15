@@ -1,0 +1,2 @@
+ls input/source-fastas/*aa > output/1-list-fastas
+
