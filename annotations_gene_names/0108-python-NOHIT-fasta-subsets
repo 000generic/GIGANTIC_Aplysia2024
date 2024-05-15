@@ -1,0 +1,39 @@
+#! python
+
+input_nohits = open( 'output/107-list-NOHITs', 'r' )
+input_fasta = open( '/scratch/eric/projects/aplysia/projectdbs/species19/Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-6500-T1.aa', 'r' )
+
+# LOC100533255    NOHIT1  No hit in human fly worm 1 Aplysia californica  NA      Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-gigantic20220627164247_seq0006140675aa     Chemosensory receptor c MSLVNETERELKGSHNISEHGGLIDDQTLRIFLLVFTFVTLGLSLLGSAFNCINITVFLTLGAKDCVSVCLLSLAVSDFTCLFLGAVCGVCDILDAYGSADFYVDPRGLYYQVIFISSMSYDISTYITAFISLERCLCVALPFRFKELFTFKRAVLAMATIFCLTFCCYLPHYVTSGLRVQWDPRTNTTRVLLWSSKDMPAITAFLDLWNHLILAVTSVVIVIVCTHIMVTGLKKSSQFQRRGAARPSEPDGPNNFKTSNEVGEGEENVLRDPDSRRDNNISTPYCPTNVEKESSNKIKVEKSPQTLSAKNRRVVKMVSTLAIVSILCNTSRLLFVVALRAEPDINFGHRYHNLYMVILVLAYIFQVINAPVNIFIYLKLNPSYRKTFSQIFGIGQTK
+nohits = []
+for next_line in input_nohits:
+    info = next_line[ :-1 ].split( '\t' )
+    giganticid = info[ 4 ]
+    nohits.append( giganticid )
+
+giganticids_sequences = {}
+for next_line in input_fasta:
+    if next_line[ 0 ] == '>':
+        header = next_line[ 1:-1 ]
+        sequence = ''
+    else:
+        sequence = next_line[ :-1 ]
+        giganticids_sequences[ header ] = sequence
+
+counter = 0
+counter_path = 1
+output_path = 'output-fasta-subsets/108-nohits-fasta-1' 
+output_fasta = open( output_path, 'w' )
+for next_nohit in nohits:
+    counter = counter + 1
+    output = '>' + next_nohit + '\n' + giganticids_sequences[ next_nohit ] + '\n'
+    if counter < 61:
+        output_fasta.write( output )
+    else:
+        counter_path = counter_path + 1
+        counter = 0
+        output_path = 'output-fasta-subsets/108-nohits-fasta-' + str( counter_path )
+        output_fasta = open( output_path, 'w' )
+        output = '>' + next_nohit + '\n' + giganticids_sequences[ next_nohit ] + '\n'
+        
+input_nohits.close()
+input_fasta.close()

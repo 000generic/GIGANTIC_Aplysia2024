@@ -1,0 +1,122 @@
+#! python
+
+# HGNC ID Approved symbol Approved name   Status  Chromosome      Accession numbers       RefSeq IDs      Locus type      NCBI Gene ID    Ensembl gene ID Gene group ID   Gene group name NCBI Gene ID(supplied by NCBI)        RefSeq(supplied by NCBI)        UniProt ID(supplied by UniProt)
+
+# HGNC:100        ASIC1   acid sensing ion channel subunit 1      Approved        12q13.12        U78181  NM_020039       gene with protein product       41      ENSG00000110881 290     Acid sensing ion channel subunits     41      NM_001095       P78348
+
+#####
+
+# HGNC ID Approved symbol Approved name   Status  Previous symbols        Accession numbers       RefSeq IDs      Gene group ID   Gene group name Locus type      NCBI Gene ID(supplied by NCBI)  Ensembl ID(supplied by Ensembl)     RefSeq(supplied by NCBI)        UniProt ID(supplied by UniProt)
+
+# HGNC:100        ASIC1   acid sensing ion channel subunit 1      Approved        ACCN2   U78181  NM_020039       290     Acid sensing ion channel subunits       gene with protein product       41      ENSG00000110881     NM_001095       P78348
+
+
+input_hgnc = open( 'input/hgnc-custom-flatfile-downloaded-31jul2022', 'r' )
+input_genome = open( 'input/species313-Chordata-Homo-sapiens/Chordata-Homo-sapiens.aa', 'r' )
+input_gff = open( 'input/species313-Chordata-Homo-sapiens/Chordata-Homo-sapiens.gff', 'r' )
+output_annotation = open( 'output/1-map-human-proteome-to-hgnc-annotations', 'w' )
+
+hgncid_hgnc_details = {}
+for next_line in input_hgnc:
+    info = next_line[ :-1 ].split( '\t' )
+    if next_line[ 0 ] == '#':
+        for next_feature in info:
+            features.append( next_feature )
+
+    else:
+        
+        ncbi_refseq = info[ 6 ]
+        ncbi_refseq = '?'.join( ncbi_refseq.split( ':' ) )
+        ncbi_refseq = '?'.join( ncbi_refseq.split( '|' ) )
+        
+        ncbi_gene_id = info[ 10 ]
+        ncbi_gene_id = '?'.join( ncbi_gene_id.split( ':' ) )
+        ncbi_gene_id = '?'.join( ncbi_gene_id.split( '|' ) )
+
+        hgnc_id = info[ 0 ].split( 'HGNC:' )[ -1 ]
+        hgnc_id = '?'.join( hgnc_id.split( ':' ) )
+        hgnc_id = '?'.join( hgnc_id.split( '|' ) )
+
+        symbol = info[ 1 ]
+        symbol = '?'.join( symbol.split( ':' ) )
+        symbol = '?'.join( symbol.split( '|' ) )
+
+        symbol_alias = info[ 4 ]
+        symbol_alias = '?'.join( symbol_alias.split( ':' ) )
+        symbol_alias = '?'.join( symbol_alias.split( '|' ) )
+
+        name = info[ 2 ]
+        name = '?'.join( name.split( ':' ) )
+        name = '?'.join( name.split( '|' ) )
+
+        group_id = info[ 7 ]
+        group_id = '?'.join( group_id.split( ':' ) )
+        group_id = '?'.join( group_id.split( '|' ) )
+
+        group_name = info[ 8 ]
+        group_name = '?'.join( group_name.split( ':' ) )
+        group_name = '?'.join( group_name.split( '|' ) )
+        
+        details = 'RefSeq:' + ncbi_refseq + '\t' + 'GeneId:' + ncbi_gene_id + '\t' + 'Symbol:' + symbol + '\t' + 'Name:' + name + '\t' + 'GeneGroupId:' + group_id + '\t' + 'GeneGroupName:' + group_name + '\t' + 'HGNC:' + hgnc_id + '\t' + 'Alias:' + symbol_alias
+        hgncid_hgnc_details[ hgnc_id ] = details
+
+
+
+#NC_000014.9     BestRefSeq      CDS     24336175        24336395        .       -       2       ID=cds-NP_006862.2;Parent=rna-NM_006871.4;Dbxref=CCDS:CCDS9628.1,Ensembl:ENSP00000216274.5,GeneID:11035,Genbank:NP_006862.2,HGNC:HGNC:10021,MIM:605817;Name=NP_006862.2;gbkey=CDS;gene=RIPK3;product=receptor-interacting serine/threonine-protein kinase 3;protein_id=NP_006862.2;tag=MANE Select
+
+#NW_018654722.1  BestRefSeq      gene    637003  640969  .       -       .       ID=gene-RIPK3-2;Dbxref=GeneID:11035,HGNC:HGNC:10021,MIM:605817;Name=RIPK3;description=receptor interacting serine/threonine kinase 3;gbkey=Gene;gene=RIPK3;gene_biotype=protein_coding;gene_synonym=RIP3
+
+#NW_018654722.1  BestRefSeq      mRNA    637003  640969  .       -       .       ID=rna-NM_006871.4-2;Parent=gene-RIPK3-2;Dbxref=GeneID:11035,Genbank:NM_006871.4,HGNC:HGNC:10021,MIM:605817;Name=NM_006871.4;gbkey=mRNA;gene=RIPK3;product=receptor interacting serine/threonine kinase 3;transcript_id=NM_006871.4
+
+#NW_018654722.1  BestRefSeq      exon    640785  640969  .       -       .       ID=exon-NM_006871.4-2-1;Parent=rna-NM_006871.4-2;Dbxref=GeneID:11035,Genbank:NM_006871.4,HGNC:HGNC:10021,MIM:605817;gbkey=mRNA;gene=RIPK3;product=receptor interacting serine/threonine kinase 3;transcript_id=NM_006871.4
+
+ncbi_protein_hgncid = {}
+for next_line in input_gff:
+
+    info = next_line.split( '\t' )
+    
+    if len( info ) > 2:
+
+        if info[ 2 ] == 'CDS':
+            info_1 = info[ 8 ].split( 'ID=cds-' )[ 1 ]
+            ncbi_protein_id = info_1.split( ';' )[ 0 ]
+            info_2 = info[ 8 ].split( 'HGNC:' )[ -1 ]
+            hgncid = info_2.split( ',' )[ 0 ]
+            hgncid = hgncid.split( ';' )[ 0 ]
+            ncbi_protein_hgncid[ ncbi_protein_id ] = hgncid
+        else:
+            pass
+
+output = '[ NCBI Proteome Header Protein Id ]' + '\t' '[ NCBI Proteome Header Protein Name ]' + '\t' + '[ RefSeq Id ]' + '\t' + '[ NCBI GeneId ]' + '\t' + '[ Gene Symbol ]' + '\t' + '[ Gene Name ]' + '\t' + '[ Gene Group Id ]' + '\t' + '[ Gene Group Name ]' + '\t' + '[ HGNC Gene Id ]' + '\t' + '[ Gene Symbol Alias ]' + '\n'
+output_annotation.write( output )
+
+# >NP_000005.3 alpha-2-macroglobulin isoform a precursor [Homo sapiens]
+for next_line in input_genome:
+
+    if next_line[ 0 ] == '>':
+        info = next_line[ 1:-1 ].split( ' ' )
+        ncbi_protein = info[ 0 ]
+        info_1 = next_line.split( '[' )[ 0 ]
+        ncbi_name = ' '.join( info_1.split( ' ' )[ 1: ] )
+
+        if ncbi_protein in ncbi_protein_hgncid.keys():
+            hgncid = ncbi_protein_hgncid[ ncbi_protein ]
+            if hgncid in hgncid_hgnc_details.keys():
+                hgnc_annotation = hgncid_hgnc_details[ hgncid ]
+                output = ncbi_protein + '\t' + ncbi_name + '\t' + hgnc_annotation + '\n'
+                
+            else:
+                output = ncbi_protein + '\t' + ncbi_name + '\t' + 'RefSeq:NA' + '\t' + 'GeneId:NA' + '\t' + 'Symbol:NA' + '\t' + 'Name:NA' + '\t' + 'GeneGroupId:NA' + '\t' + 'GeneGroupName:NA' + '\t' + 'HGNC:NA' + '\t' + 'Alias:NA' + '\n'
+
+        else:
+            output = ncbi_protein + '\t' + ncbi_name +  '\t' + 'RefSeq:NA' + '\t' + 'GeneId:NA' + '\t' + 'Symbol:NA' + '\t' + 'Name:NA' + '\t' + 'GeneGroupId:NA' + '\t' + 'GeneGroupName:NA' + '\t' +  'HGNC:NA' + '\t' + 'Alias:NA' + '\n'
+
+        output_annotation.write( output )
+                        
+    else:
+        pass
+        
+input_hgnc.close()
+input_genome.close()
+input_gff.close()
+output_annotation.close()

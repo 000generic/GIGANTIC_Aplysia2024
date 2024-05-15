@@ -1,0 +1,75 @@
+#! python
+input_gff = open( 'input/Nematoda-Caenorhabditis-elegans.gff', 'r' )
+input_map = open( 'output/0-map-species313-for-real-gigantic-to-intermediate-to-source', 'r' )
+output_map = open( 'output/1-map-worm-identifiers-and-name', 'w' )
+output_rna_count = open( 'output/1-rna_counts', 'w' )
+output_match_count = open( 'output/1-match_counts', 'w' )
+
+gigantic_gene = {}
+gigantic_name = {}
+gigantic_ids = {}
+for next_line in input_map:
+
+    if len( next_line.split( '-elegans-' ) ) > 1:
+        info = next_line.split( '\t' )
+        gigantic = info[ 0 ]
+        source = info[ 2 ]
+        info_source = source.split( '___' )
+        gene = info_source[ 0 ]
+        protein = info_source[ 1 ]
+
+        gigantic_gene[ gigantic ] = gene
+        gigantic_ids[ gigantic ] = next_line[ :-1 ]
+    else:
+        pass
+    
+rna_count = 0
+match_count = 0
+for next_line in input_gff:
+
+    if len( next_line.split( 'ID=rna' ) ) > 1:
+
+        rna_count = rna_count + 1
+        output = str( rna_count ) + '\n'
+        output_rna_count.write( output )
+
+        for next_gigantic in gigantic_gene.keys():
+            gene = gigantic_gene[ next_gigantic ]
+        
+            if len( next_line.split( gene ) )> 1:
+
+                match_count = match_count + 1
+                output = str( match_count ) + '\n'
+                output_match_count.write( output )
+                
+                info_gene = next_line.split( 'product=' )
+                name = info_gene[ -1 ].split( ';' )[ 0 ]
+                gigantic_name[ next_gigantic ] = name
+
+            else:
+                pass
+    else:
+        pass
+
+output = '[ GIGANTIC ID ]' + '\t' + '[ Intermediate ID ]' + '\t' + '[ Source Id ]' + '\t' + '[ Source GFF Gene ID ]' + '\t' + '[ Source GFF Gene Name ]' + '\n'
+output_map.write( output )
+none_count = 0
+for next_gigantic in gigantic_ids.keys():
+
+    if next_gigantic in gigantic_gene.keys():
+        gene_symbol = gigantic_gene[ next_gigantic ]
+    else:
+        gene_symbol = 'NONE' + str( none_count )
+    if next_gigantic in gigantic_name.keys():
+        gene_name = gigantic_name[ next_gigantic ]
+    else:
+        gene_name = 'No gene name in worm genome for gene ' + gene_name
+
+    output = gigantic_ids[ next_gigantic ] + '\t' + gene_symbol + '\t' + gene_name + '\n'
+    output_map.write( output )
+
+input_gff.close()
+input_map.close()
+output_map.close()
+output_rna_count.close()
+output_match_count.close()

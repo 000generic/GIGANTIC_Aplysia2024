@@ -1,0 +1,3 @@
+#! /bin/bash
+
+ls output-fasta-subsets/108* > output/109-list-nohit-fasta-subsets

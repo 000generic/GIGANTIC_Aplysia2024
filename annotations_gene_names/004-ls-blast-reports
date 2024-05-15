@@ -1,0 +1,1 @@
+ls input/1-blast-report-aplysia_X_* > output/4-list-blast-reports

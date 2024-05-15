@@ -1,0 +1,26 @@
+#! python
+
+input_singletons = open( '/scratch/eric/projects/aplysia/orthofinder/species19/orthofinder-blast-fasttree/OrthoFinder/Results_species19-orthofinder-blast-fasttree-GIGANTIC-species-tree/Phylogenetic_Hierarchical_Orthogroups/output/10-map-singletons-SOGs', 'r' )
+input_map = open( 'input/1a-map-aplysia_X_orthofinder-OGs', 'r' )
+output_map = open( 'input/1a-map-aplysia_X_orthofinder-OGs-PLUS_SINGLETONS', 'w' )
+
+# Capitella       S0.SOG0000001   Metazoa-Annelida-Polychaeta-Order_unclassified14-Capitellidae-Capitella-teleta-gigantic20220627164247_seq0000244113aa   Singleton No Orthogroup
+
+for next_line in input_map:
+    output_map.write( next_line )
+
+for next_line in input_singletons:
+
+    info = next_line[ :-1 ].split( '\t' )
+    genus = info[ 0 ]
+    hog = info[ 1 ]
+    giganticid = info[ 2 ]
+    seqids = giganticid
+
+    if genus == 'Aplysia':
+        output = giganticid + '\t' + hog + '\t' + hog + '\t' + seqids + '\n'
+        output_map.write( output )
+
+input_singletons.close()
+input_map.close()
+output_map.close()

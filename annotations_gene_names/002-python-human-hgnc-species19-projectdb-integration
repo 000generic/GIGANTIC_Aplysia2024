@@ -1,0 +1,147 @@
+#! python
+
+# MAP 3
+# Salk :) grep 'XP_006719119' output/1-map-human-proteome-to-hgnc-annotations
+#XP_006719119.1  alpha-2-macroglobulin isoform X1 RefSeq:NM_000014       GeneId:2        Symbol:A2M      Name:alpha-2-macroglobulin      GeneGroupId:1234        GeneGroupName:C3 and PZP like, alpha-2-macroglobulin domain containing      HGNC:7
+
+input_map = open( 'output/0-map-species313-for-real-gigantic-to-intermediate-to-source', 'r' )
+input_hgnc = open( 'output/1-map-human-proteome-to-hgnc-annotations', 'r' )
+input_orthogroups = open( 'input/N0.tsv', 'r' )
+output_hgnc = open( 'output/2-map-human-gene-symbol-to-hgnc-annotations', 'w' )
+
+symbol_gigantic = {}
+gigantic_symbol = {}
+for next_line in input_map:
+    info = next_line[ :-1 ].split( '\t' )
+    source_id = info[ 2 ]
+    gigantic_id = info[ 0 ]
+    info_gigantic = gigantic_id.split( '-' )
+    gspp = info_gigantic[ 5 ] + '-' + info_gigantic[ 6 ]
+    info_source = source_id.split( '___' )
+    if len( info_source ) > 1:
+        
+        symbol_id = info_source[ 0 ]
+        gspp_symbol = gspp + '___' + symbol_id
+        protein_id = info_source[ 1 ]
+        symbol_gigantic[ gspp_symbol ] = gigantic_id
+        gigantic_symbol[ gigantic_id ] = gspp_symbol
+    else:
+        symbol_gigantic[ source_id ] = gigantic_id
+        gigantic_symbol[ gigantic_id ] = source_id
+
+# N0.HOG0000002   OG0000000       n39     Metazoa-Annelida-Polychaeta-Order_unclassified14-Capitellidae-Capitella-teleta-gigantic20220627164247_seq0000273134aa, Metazoa-Annelida-Polychaeta-Order_unclassified14-Capitellidae-Capitella-teleta-gigantic20220627164247_seq0000245947aa                                            Metazoa-Mollusca-Bivalvia-Venerida-Veneridae-Cyclina-sinensis-gigantic20220627164247_seq0005788997aa                    Metazoa-Mollusca-Cephalopoda-Octopoda-Octopodidae-Octopus-bimaculoides-gigantic20220627164247_seq0005916882aa                           Metazoa-Mollusca-Gastropoda-Order_unclassified55-Lottiidae-Lottia-gigantea-gigantic20220627164247_seq0006386367aa, Metazoa-Mollusca-Gastropoda-Order_unclassified55-Lottiidae-Lottia-gigantea-gigantic20220627164247_seq0006372933aa
+
+symbol_orthogroup = {}
+for next_orthogroup in input_orthogroups:
+    info = next_orthogroup.split( '\t' )
+    if info[ 0 ] == 'HOG':
+        pass
+    else:
+        orthogroup = info[ 0 ]
+        for next_sequences in info:
+            if len( next_sequences.split( '-Homo-' ) ) > 1:
+                info_sequences = next_sequences.split( ', ' )
+                for next_gigantic_id in info_sequences:
+                    symbol = gigantic_symbol[ next_gigantic_id ]
+                    symbol_orthogroup[ symbol ] = orthogroup
+            else:
+                pass
+
+# [ NCBI Proteome Header Protein Id ]     [ NCBI Proteome Header Protein Name ]   [ RefSeq Id ]   [ NCBI GeneId ] [ Gene Symbol ] [ Gene Name ]   [ Gene Group Id ]       [ Gene Group Name ]     [ HGNC Gene Id ] [ Gene Symbol Aliases ]
+
+# NP_000005.3     alpha-2-macroglobulin isoform a precursor       RefSeq:NM_000014        GeneId:2        Symbol:A2M      Name:alpha-2-macroglobulin      GeneGroupId:1234        GeneGroupName:C3 and PZP like, alpha-2-macroglobulin domain containing      HGNC:7   Alias:A2Mb
+
+first_line = False
+for next_line in input_hgnc:
+    if first_line == False:
+        first_line = True
+    else:
+        info = next_line[ :-1 ].split( '\t' )
+
+        refseq = info[ 2 ].split( ':' )[ -1 ]
+        if len( refseq ) == 0:
+            refseq = 'None'
+        
+        geneid = info[ 3 ].split( ':' )[ -1 ]
+        if len( geneid ) == 0:
+            geneid = 'None'
+
+        gene_symbol = info[ 4 ].split( ':' )[ -1 ]
+        if len( gene_symbol ) == 0:
+            gene_symbol = 'None'
+        else:
+            gene_symbol = 'Homo-sapiens___' + gene_symbol
+
+        gene_name = info[ 5 ].split( ':' )[ -1 ]
+        if len( gene_name ) == 0:
+            gene_name = 'None'
+
+        group_id = info[ 6 ].split( ':' )[ -1 ]
+        if len( group_id ) == 0:
+            group_id = 'None'
+
+        group_name = info[ 7 ].split( ':' )[ -1 ]
+        if len( group_name ) == 0:
+            group_name = 'None'
+
+        hgnc_id = info[ 8 ].split( ':' )[ -1 ]
+        if len( hgnc_id ) == 0:
+            hgnc_id = 'None'
+
+        alias = info[ 9 ].split( ':' )[ -1 ]
+        if len( alias ) == 0:
+            alias = 'None'
+                
+        header_protein_id = info[ 0 ]
+        if len( header_protein_id ) == 0:
+            header_protein_id = 'None'
+    
+        header_protein_name = info[ 1 ]
+        if len( header_protein_name ) == 0:
+            header_protein_name = 'None'
+    
+        if gene_symbol in symbol_orthogroup.keys():
+            orthogroup = symbol_orthogroup[ gene_symbol ]
+        else:
+            symbol_test = False
+            info_alias = alias.split( ', ' )
+            for next_alias in info_alias:
+                next_alias = 'Homo-sapiens___' + next_alias
+                if next_alias in symbol_orthogroup.keys():
+                    symbol_test = True
+                    orthogroup = symbol_orthogroup[ next_alias ]
+                else:
+                    pass
+            if symbol_test == False:
+                orthogroup = 'None'
+            else:
+                pass
+
+        if gene_symbol in symbol_gigantic.keys():
+            gigantic_id = symbol_gigantic[ gene_symbol ]
+        else:
+            symbol_test = False
+            info_alias = alias.split( ', ' )
+            for next_alias in info_alias:
+                next_alias = 'Homo-sapiens___' + next_alias
+                if next_alias in symbol_gigantic.keys():
+                    symbol_test = True
+                    gigantic_id = symbol_gigantic[ next_alias ]
+                else:
+                    pass
+            if symbol_test == False:
+                gigantic_id = 'None'
+            else:
+                pass
+            
+        gene_symbol = gene_symbol.split( '___' )[ -1 ]
+
+        annotation = 'TO_ANNOTATE_use_gene_symbol:' + gene_symbol + '-like for_matches_to_ncbi_symbol:' + gene_symbol +'_geneid:' + geneid + '_mrna:' + refseq + '_protein:' + header_protein_id + '_alias:' + alias + ' orthogroup:' + orthogroup + ' gigantic_id:' + gigantic_id + ' |SOURCES_ncbi species:human  geneid:' + geneid + ' symbol:' + gene_symbol + ' hgnc_gene_id:' + hgnc_id + ' hgnc_group_id:' + group_id + ' hgnc_group_name:' + group_name + ' fasta_header_id:' + header_protein_id + ' fasta_header_name:'+ header_protein_name + '|'
+
+        output = gene_symbol + '\t' + annotation + '\n'
+        output_hgnc.write( output )
+
+input_map.close()
+input_hgnc.close()
+input_orthogroups.close()
+output_hgnc.close()

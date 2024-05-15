@@ -1,0 +1,3 @@
+#! /bin/bash
+
+ls output-blast-reports/* > output/112-list-blast-reports

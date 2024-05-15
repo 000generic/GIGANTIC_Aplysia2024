@@ -1,0 +1,30 @@
+#! python
+
+# GeneID:100533255
+
+# GeneID:100533255        LOC:00000       Symbol:NOHIT1_likeNA    Name:No hit in human fly worm 1 Aplysia californica     Group:NA        AFold:00000     OFOG:N0.HOG0012429      COG:COGethyneura2834    LeonidName:Chemosensory receptor c      giganticID:Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-gigantic20220627164247_seq0006140675aa  MSLVNETERELKGSHNISEHGGLIDDQTLRIFLLVFTFVTLGLSLLGSAFNCINITVFLTLGAKDCVSVCLLSLAVSDFTCLFLGAVCGVCDILDAYGSADFYVDPRGLYYQVIFISSMSYDISTYITAFISLERCLCVALPFRFKELFTFKRAVLAMATIFCLTFCCYLPHYVTSGLRVQWDPRTNTTRVLLWSSKDMPAITAFLDLWNHLILAVTSVVIVIVCTHIMVTGLKKSSQFQRRGAARPSEPDGPNNFKTSNEVGEGEENVLRDPDSRRDNNISTPYCPTNVEKESSNKIKVEKSPQTLSAKNRRVVKMVSTLAIVSILCNTSRLLFVVALRAEPDINFGHRYHNLYMVILVLAYIFQVINAPVNIFIYLKLNPSYRKTFSQIFGIGQTK
+
+input_map = open( 'output/5-map-aplysia-sequence-identifier-annotations', 'r' )
+input_loc = open( '../leonid-geneid-loc-map/GeneID-LOC-map.tsv', 'r' )
+output_map = open( 'output/6-map-aplysia-sequence-identifier-annotations', 'w' )
+
+geneid_loc = {}
+for next_line in input_loc:
+
+    info = next_line[ :-1 ].split( '\t' )
+    geneid = info[ 0 ]
+    locid = info[ 1 ]
+
+    geneid_loc[ geneid ] = locid
+
+for next_line in input_map:
+    info = next_line.split( '\t' )
+    geneid = info[ 0 ]
+    locid = geneid_loc[ geneid ]
+    info[ 1 ] = locid
+    output = '\t'.join( info )
+    output_map.write( output )
+
+input_map.close()
+input_loc.close()
+output_map.close()

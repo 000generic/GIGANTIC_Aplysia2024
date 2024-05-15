@@ -1,0 +1,429 @@
+#! python
+
+input_blast_reports = open( 'output/4-list-blast-reports', 'r' )
+input_genome = open( '/scratch/eric/projects/aplysia/projectdbs/species19/Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-6500-T1.aa', 'r' )
+
+input_ofogs = open( 'input/1a-map-aplysia_X_orthofinder-OGs-PLUS_SINGLETONS', 'r' )
+
+input_hgnc = open( 'output/1-map-human-proteome-to-hgnc-annotations', 'r' )
+input_worm = open( 'output/1-map-worm-identifiers-and-name', 'r' )
+input_fly = open( 'output/1-map-fly-seqids-to-fbgg-annotations', 'r' )
+
+input_map = open( 'output/0-map-species313-for-real-gigantic-to-intermediate-to-source', 'r' )
+input_leonid = open( 'input/leonid-gene-names-2022.tsv', 'r' )
+
+output_fasta = open( 'output/5-Aplysia-californica-annotated-genome-T1.aa', 'w' )
+output_loaded = open( 'output/5-Aplysia-californica-annotated-genome-T1-LOADED-HEADERS.aa', 'w' )
+output_map_all = open( 'output/5-map-aplysia-sequence-identifier-annotations', 'w' )
+output_hits = open( 'output/5-aplysia-top-hits-in-human-fly-worm', 'w' )
+output_error = open( 'output/5-errors', 'w' )
+
+# input map of gigantic to source ids in Leonid excels
+# Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-gigantic20220627164247_seq0006140675aa     NA      Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-moroz2022_GeneID:100533255_NP_001191495.1
+gigantic_source = {}
+source_gigantic = {}
+for next_line in input_map:
+    info = next_line[ :-1 ].split( '\t' )
+    
+    gigantic = info[ 0 ]
+    info_gigantic = gigantic.split( '-' )
+    gspp = info_gigantic[ 5 ] + '-' + info_gigantic[ 6 ]
+    source = info[ 2 ]
+    info_source = source.split( '-' )
+    if len( source.split( 'Aplysia' ) ) > 1: # Aplysia is structured differently / need to be processed separately to gain source identifiers
+        
+        geneid = info_source[ -1 ].split( '_' )[ 1 ]
+        gigantic_source[ gigantic ] = geneid
+        source_gigantic[ geneid ] = gigantic
+
+    else:
+        source_symbol = source.split( '___' )[ 0 ]
+        source_id = gspp + '___' + source_symbol
+        gigantic_source[ gigantic ] = source_id
+        source_gigantic[ source_id ] = gigantic
+
+# input Leonid Excel 2022 gene names
+gigantic_leonid_name = {}
+for next_line in input_leonid:
+    info = next_line[ :-1 ].split( '\t' )
+    gene_id = info[ 0 ]
+    leonid_name = info[ 1 ].split( ' [Aplysia californica]' )[ 0 ]
+    leonid_name = ''.join( leonid_name.split( '\"' ) )
+    leonid_name = ''.join( leonid_name.split( '\'' ) )
+    leonid_name = leonid_name.capitalize()
+    if gene_id in source_gigantic.keys():
+        gigantic_id = source_gigantic[ gene_id ]
+        gigantic_leonid_name[ gigantic_id ] = leonid_name
+    else:
+        output = 'Error: ' + gene_id + ' from Leonid names Excel info not in gff map for aplysia.\n'
+        output_error.write( output )
+        
+# read in blast reports human-fly-worm
+# input/1-blast-report-aplysia_X_fly
+# Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-gigantic20220627164247_seq0006140676aa     Metazoa-Arthropoda-Insecta-Diptera-Drosophilidae-Drosophila-melanogaster-gigantic20220627164247_seq0000824640aa     2.30e-73
+gigantic_gspp_evalueseqid = {}
+for next_report in input_blast_reports:
+    input_report = open( next_report[ :-1 ], 'r' )
+    gspp = next_report[ :-1 ].split( '_' )[ -1 ]
+    for next_hit in input_report:
+        info = next_hit[ :-1 ].split( '\t' )
+        gigantic_aplysia = info [ 0 ]
+        gigantic_gspp = info [ 1 ]
+        evalue = info[ 2 ]
+        evalueseqid = evalue + '___' + gigantic_gspp
+        if gigantic_aplysia in gigantic_gspp_evalueseqid.keys():
+            gigantic_gspp_evalueseqid[ gigantic_aplysia ][ gspp ] = evalueseqid
+        else:
+            gigantic_gspp_evalueseqid[ gigantic_aplysia ] = {}
+            gigantic_gspp_evalueseqid[ gigantic_aplysia ][ gspp ] = evalueseqid
+        output = gigantic_aplysia + '\t' + gspp + '\t' + gigantic_gspp + '\t' + evalue + '\n'
+        output_hits.write( output )
+        
+# read in aplysia genome proteins T1 gene set
+gigantic_sequence = {}
+nohits_count = 0
+for next_line in input_genome:
+    if next_line[ 0 ] == '>':
+        gigantic = next_line[ 1:-1 ]
+        if gigantic in gigantic_gspp_evalueseqid.keys():
+            pass
+        else:
+            nohits_count = nohits_count + 1
+            gigantic_gspp_evalueseqid[ gigantic ] = 'NOHIT' + str( nohits_count )
+    else:
+        sequence = next_line[ :-1 ]
+        gigantic_sequence[ gigantic ] = sequence
+
+# Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-6500-T1    OG      HOG     Metazoa-Annelida-Polychaeta-Order_unclassified14-Capitellidae-Capitella-teleta-283909-T1, Metazoa-Arthropoda-Insecta-Diptera-Drosophilidae-Drosophila-melanogaster-7227-T1, Metazoa-Brachiopoda-Lingulata-Lingulida-Lingulidae-Lingula-anatina-7574-T1, Metazoa-Chordata-Mammalia-Primates-Hominidae-Homo-sapiens-9606-T1, Metazoa-Mollusca-Bivalvia-Ostreida-Ostreidae-Crassostrea-gigas-29159-T1, Metazoa-Mollusca-Bivalvia-Pectinida-Pectinidae-Mizuhopecten-yessoensis-6573-T1, Metazoa-Mollusca-Bivalvia-Venerida-Veneridae-Cyclina-sinensis-120566-T1, Metazoa-Mollusca-Cephalopoda-Nautilida-Nautilidae-Nautilus-pompilius-34573-T1, Metazoa-Mollusca-Cephalopoda-Octopoda-Argonautidae-Argonauta-argo-294695-T1, Metazoa-Mollusca-Cephalopoda-Octopoda-Octopodidae-Octopus-bimaculoides-37653-T1, Metazoa-Mollusca-Class_unclassified38-Order_unclassified39-Family_unclassified40-Achatina-fulica-0000_ncbiID_unclassified41-T1, Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-6500-T1, Metazoa-Mollusca-Gastropoda-Architaenioglossa-Ampullariidae-Pomacea-canaliculata-400727-T1, Metazoa-Mollusca-Gastropoda-Order_unclassified55-Lottiidae-Lottia-gigantea-225164-T1, Metazoa-Mollusca-Gastropoda-Order_unclassified57-Peltospiridae-Gigantopelta-aegis-1735272-T1, Metazoa-Mollusca-Gastropoda-Order_unclassified58-Plakobranchidae-Elysia-chlorotica-188477-T1, Metazoa-Mollusca-Polyplacophora-Chitonida-Chitonidae-Acanthopleura-granulata-61363-T1, Metazoa-Nematoda-Chromadorea-Rhabditida-Rhabditidae-Caenorhabditis-elegans-6239-T1, Metazoa-Phoronida-Class_unclassified74-Order_unclassified75-Family_unclassified76-Phoronis-australis-115415-T1
+
+giganticaplysia_ofog = {}
+gigantichuman_ofog = {}
+giganticfly_ofog = {}
+giganticworm_ofog = {}
+ofogs_giganticids = {}
+for next_line in input_ofogs:
+    info = next_line[ :-1 ].split( '\t' )
+    ofog_id = info[ 2 ]
+    sequence_set = info[ -1 ]
+    info_set = sequence_set.split( ', ' )
+    ofogs_giganticids[ ofog_id ] = []
+    for next_sequence in info_set:
+        if len( next_sequence.split( 'Aplysia' ) ) > 1:
+            giganticaplysia_ofog[ next_sequence ] = ofog_id
+            ofogs_giganticids[ ofog_id ].append( next_sequence )
+            if len( next_sequence.split( 'seq0006140722aa' ) ) > 1:
+                    print ( '!!!' + next_sequence ) # remove
+        elif len( next_sequence.split( 'Homo' ) ) > 1:
+            gigantichuman_ofog[ next_sequence ] = ofog_id
+            ofogs_giganticids[ ofog_id ].append( next_sequence )
+        elif len( next_sequence.split( 'Drosophila' ) ) > 1:
+            giganticfly_ofog[ next_sequence ] = ofog_id
+            ofogs_giganticids[ ofog_id ].append( next_sequence )
+        elif len( next_sequence.split( 'Caenorhabditis' ) ) > 1:
+            giganticworm_ofog[ next_sequence ] = ofog_id
+            ofogs_giganticids[ ofog_id ].append( next_sequence )
+        else:
+            pass
+
+# read in HGNC annotation information
+# [ NCBI Proteome Header Protein Id ]     [ NCBI Proteome Header Protein Name ]   [ RefSeq Id ]   [ NCBI GeneId ] [ Gene Symbol ] [ Gene Name ]   [ Gene Group Id ]       [ Gene Group Name ]     [ HGNC Gene Id ]
+# NP_000005.3     alpha-2-macroglobulin isoform a precursor       RefSeq:NM_000014        GeneId:2        Symbol:A2M      Name:alpha-2-macroglobulin      GeneGroupId:1234        GeneGroupName:C3 and PZP like, alpha-2-macroglobulin domain containing      HGNC:7    Aliases
+gigantichuman_hgnc = {}
+for next_line in input_hgnc:
+    if next_line[ 0 ] == '[':
+        pass
+    else:
+        info = next_line[ :-1 ].split( '\t' )
+        source_id = info[ 0 ]
+        hgnc_gene_name = info[ 5 ].split( ':' )[ -1 ]
+        hgnc_gene_symbol = info[ 4 ].split( ':' )[ -1 ]
+        gspp_symbol = 'Homo-sapiens___' +  hgnc_gene_symbol
+        hgnc_group_id = info[ 5 ].split( ':' )[ -1 ] 
+        hgnc_group_name = info[ 6 ].split( ':' )[ -1 ]
+
+        aliases = info[ -1 ]
+        info_aliases = aliases.split( ', ' )
+        
+        if gspp_symbol in source_gigantic.keys():
+            gigantic_id = source_gigantic[ gspp_symbol ]
+            annotation = hgnc_gene_symbol + '\t' + hgnc_gene_name + ' | ' + hgnc_group_name
+            gigantichuman_hgnc[ gigantic_id ] = annotation
+
+        else:
+            for next_aliase in info_aliases:
+                gspp_next_aliase = 'Homo-sapiens___' +  next_aliase
+                if gspp_next_aliase in source_gigantic.keys():
+                    gigantic_id = source_gigantic[ gspp_next_aliase ]
+                    annotation = hgnc_gene_symbol + '\t' + hgnc_gene_name + ' | ' + hgnc_group_name
+                    gigantichuman_hgnc[ gigantic_id ] = annotation
+                else:
+                    info_string = ''
+                    for next_info in info:
+                        info_string = info_string + '___' + next_info
+                    output = 'Error: ' + hgnc_gene_symbol + ' human gene symbol from HGNC is not in GFF-based map for human genome proteom ' + info_string + '\n'
+                    output_error.write( output )
+
+# read in FBGG annotatoin information
+# # [ Group member FB gene id ]     [ Group member FB gene symbol ] [ FB group id ] [ FB group symbol ]     [ FB group name  ]
+# Metazoa-Arthropoda-Insecta-Diptera-Drosophilidae-Drosophila-melanogaster-gigantic20220627164247_seq0000822298aa NP_001007096.1  FBgn0261360     CG42637 FBgg0000223     PSEU-PK PUTATIVE PSEUDOKINASES
+giganticfly_fbgg = {}
+for next_line in input_fly:
+    if next_line[ 0 ] == '[':
+        pass
+    else:
+        info = next_line[ :-1 ].split( '\t' )
+        gigantic_id = info[ 0 ]
+        source_id = info[ 1]
+        fbgene_id = info[ 2 ]
+        fbgene_symbol = info[ 3 ]
+        fbgene_name = info[ 4 ]
+        fbgroup_id = info[ 5 ]
+        fbgroup_symbol = info[ 6 ]
+        fbgroup_name = info[ 7 ]
+        annotation = fbgene_symbol + '\t' + fbgene_name
+        giganticfly_fbgg[ gigantic_id ] = annotation
+
+# read in worm symbol annotation information
+# # NCBI Taxonomy ID       Species         GeneID          Public          (Locus name)    Sequence ID
+# 6239    Caenorhabditis elegans  WBGene00000002  aat-1   F27C8.1
+giganticworm_symbol = {}
+none_counter = 0
+for next_line in input_worm:
+    if next_line[ 0 ] == '[':
+        pass
+    else:
+        info = next_line[ :-1 ].split( '\t' )
+        gigantic = info[ 0 ]
+        source = info[ 2 ]
+        gene = info[ 3 ]
+        name = info[ 4 ]
+        annotation = gene + '\t' + name
+        giganticworm_symbol[ gigantic ] = annotation
+
+# process aplysia protein T1 sequences and assign official symbol and name to each
+no_human_fly_worm_hit_counter = 0
+symbolcore_symbols = {}
+unclear = 0
+for next_seqid in gigantic_sequence:
+    giganticid = next_seqid
+    geneid = gigantic_source[ next_seqid ].split( 'GeneID:' )[ -1 ]
+    locid = '00000'
+    afoldid = '00000'
+    aplysia_ofog = giganticaplysia_ofog[ next_seqid ]
+    leonid_name = gigantic_leonid_name[ next_seqid ]
+    sequence = gigantic_sequence[ next_seqid ]
+    evalue = ''
+    gspp = ''
+    hitseqid = ''
+    keeper = False
+    # for nohits check to see if OrthoFinder orthogroup that clusters with human (preferred), fly, or worm - insulin is an example where blastp hits to human, fly, worm, are too low but OrthoFinder clusters Aplysia with the three
+    if isinstance( gigantic_gspp_evalueseqid[ next_seqid ], str ) == True: # no hits based on blast to human, fly, and worm
+        if giganticid in giganticaplysia_ofog.keys():
+            ofogid = giganticaplysia_ofog[ giganticid ]
+            for next_giganticid in ofogs_giganticids[ ofogid ]:
+                if keeper == False:
+                    if len( next_giganticid.split( 'Homo' ) ) > 1:
+                        keeper = True
+                        representative_seqid = next_giganticid
+                        if representative_seqid in gigantichuman_hgnc.keys():
+                            annotation_human = gigantichuman_hgnc[ representative_seqid ]  # annotation = hgnc_gene_symbol + '\t' + hgnc_gene_name + ' | ' + hgnc_group_name
+                            info_annotation_human = annotation_human.split( '\t' )
+                            gspp_symbol = info_annotation_human[ 0 ]
+                            symbol_core = ''.join( gspp_symbol.split( '-' ) ) # remove source dashes
+                            symbol_core = ''.join( symbol_core.split( '_' ) ) # remove source underscore 
+                            if symbol_core in symbolcore_symbols.keys():
+                                last_symbol = symbolcore_symbols[ symbol_core ][ -1 ]
+                                count_so_far = int( last_symbol.split( 'like' )[ -1 ] )
+                                count = count_so_far + 1
+                                symbol = symbol_core.upper() + '_like' + str( count )
+                                symbolcore_symbols[ symbol_core ].append( symbol ) # add Aplysia identifier
+                            else:
+                                symbolcore_symbols[ symbol_core ] = []
+                                symbol = symbol_core.upper() + '_like1'
+                                symbolcore_symbols[ gspp_symbol ].append( symbol ) # add Aplysia identifier
+                                naming_info = info_annotation_human[ 1 ].split(  ' | ' )
+                                gspp_name = naming_info[ 0 ]
+                                gspp_group = naming_info[ 1 ]
+                                symbol = symbol + '_HOG' # for orthofinder sequences only to identify later and potentially update symbol and name based on OrthoFinder gene tree for orthogroup
+                            
+            if keeper == False: # prefer human but can use fly or worm if available as representative sequence
+                for next_giganticid in ofogs_giganticids[ ofogid ]:
+                    if len( next_giganticid.split( 'Drosophila' ) ) > 1:
+                        keeper = True
+                        representative_seqid = next_giganticid
+                        annotation_fly = giganticfly_fbgg[ representative_seqid ]
+                        info_annotation_fly = annotation_fly.split( '\t' )
+                        gspp_symbol = info_annotation_fly[ 0 ]
+                        symbol_core = ''.join( gspp_symbol.split( '-' ) ) # remove source dashes
+                        symbol_core = ''.join( symbol_core.split( '_' ) ) # remove source underscore                                            
+                        if symbol_core in symbolcore_symbols.keys():
+                            last_symbol = symbolcore_symbols[ symbol_core ][ -1 ]
+                            count_so_far = int( last_symbol.split( 'like' )[ -1 ] )
+                            count = count_so_far + 1
+                            symbol = symbol_core.upper() + '_like' + str( count )
+                            symbolcore_symbols[ symbol_core ].append( symbol )
+                        else:
+                            symbolcore_symbols[ symbol_core ] = []
+                            symbol = symbol_core.upper() + '_like1'
+                            symbolcore_symbols[ symbol_core ].append( symbol )
+                        gspp_name = info_annotation_fly[ 1 ]
+                        gspp_group = 'NA'
+                        symbol = symbol + '_HOG'
+                        
+                    elif len( next_giganticid.split( 'Caenorhabditis' ) ) > 1:
+                        keeper = True
+                        representative_seqid = next_giganticid
+                        annotation_worm = giganticworm_symbol[ representative_seqid ]
+                        info_annotation_worm = annotation_worm.split( '\t' )
+                        gspp_symbol = info_annotation_worm[ 0 ]
+                        symbol_core = ''.join( gspp_symbol.split( '-' ) ) # remove source dashes
+                        symbol_core = ''.join( symbol_core.split( '_' ) ) # remove source underscore          
+                        if symbol_core in symbolcore_symbols.keys():
+                            last_symbol = symbolcore_symbols[ symbol_core ][ -1 ]
+                            count_so_far = int( last_symbol.split( 'like' )[ -1 ] )
+                            count = count_so_far + 1
+                            symbol = symbol_core.upper() + '_like' + str( count )
+                            symbolcore_symbols[ symbol_core ].append( symbol )
+                        else:
+                            symbolcore_symbols[ symbol_core ] = []
+                            symbol = symbol_core.upper() + '_like1'
+                            symbolcore_symbols[ symbol_core ].append( symbol )
+                        gspp_name = info_annotation_worm[ 1 ]
+                        gspp_group = 'NA'
+                        symbol = symbol + '_HOG'
+                    else:
+                        pass
+                    
+        if keeper == False:
+            gspp_symbol = gigantic_gspp_evalueseqid[ next_seqid ]
+            gspp_name = 'No hit in human fly worm ' + gigantic_gspp_evalueseqid[ next_seqid ].split( 'NOHIT')[ -1 ]
+            gspp_group = 'NA'
+            symbol = gspp_symbol  
+            #symbol_info = symbol.split( 'OHIT' )
+            #if len( symbol_info ) > 1:
+            #    symbol = symbol.split( '_' )[ 0 ]
+            
+        name =  gspp_name + ' Aplysia californica'
+        name_underscore = 'Aplysia_californica'
+        gigantic_short_id = next_seqid.split( '-' )[ -1 ]
+        group = gspp_group
+        leonid_gene_name = gigantic_leonid_name[ next_seqid ]
+            
+        output = '>' + symbol  + '-GeneID' + geneid + '-' + name_underscore + ' ' + gspp_name + '\n' + sequence + '\n'
+        output_fasta.write( output )
+        output = '>' + symbol  + '-GeneID' + geneid + '-' + name_underscore + ' | GIGANTIC ' + gigantic_short_id + ' | MOROZ ' + leonid_gene_name + ' | ' + gspp_name + '\n' + sequence + '\n'
+        output_loaded.write( output )
+            
+        output = 'GeneID:' + geneid + '\tLOC:' + locid + '\tSymbol:' +  symbol + '\tName:' + name + '\tGroup:' + group + '\tAFold:' + afoldid + '\tOFOG:' + aplysia_ofog +  '\tLeonidName:' + leonid_name + '\tgiganticID:' + next_seqid + '\t'  + sequence + '\n'
+        output_map_all.write( output )
+                                                                                                        
+    else:
+        for next_gspp in gigantic_gspp_evalueseqid[ next_seqid ].keys():
+            next_evalue = float( gigantic_gspp_evalueseqid[ next_seqid ][ next_gspp ].split( '___' )[ 0 ] )
+            next_hitseqid = gigantic_gspp_evalueseqid[ next_seqid ][ next_gspp ].split( '___' )[ 1 ]
+            if len( str( evalue ) ) == 0:
+                evalue = next_evalue
+                gspp = next_gspp
+                hitseqid = next_hitseqid
+            elif next_evalue < evalue:
+                evalue = next_evalue
+                gspp = next_gspp
+                hitseqid = next_hitseqid
+            else:
+                pass
+
+        if gspp == 'human':
+            if hitseqid in gigantichuman_hgnc.keys():
+                info_human = gigantichuman_hgnc[ hitseqid ].split( '\t' )
+                gspp_symbol = info_human[ 0 ]
+                gspp_name = info_human[ 1 ].split( ' | ' )[ 0 ]
+                gspp_group = 'NA'
+            else:
+                source = gigantic_source[ hitseqid ]
+                gspp_symbol = source.split( '___' )[ -1 ]
+                gspp_name = '!!! Match symbol to NP_ to genome fasta header name'
+                gspp_group = 'NA'
+                print( 'Error Human: ' + hitseqid )
+                
+        elif gspp == 'fly':
+            info_fly = giganticfly_fbgg[ hitseqid ].split( '\t' )
+            gspp_symbol = info_fly[ 0 ]
+            gspp_name = info_fly[ 1 ]
+            gspp_group = 'NA'
+        elif gspp == 'worm':
+            if hitseqid in giganticworm_symbol.keys():
+                
+                info_worm = giganticworm_symbol[ hitseqid ].split( '\t' )
+                gspp_symbol = info_worm[ 0 ]
+                gspp_name = info_worm[ 1 ]
+                gspp_group = 'NA'
+            else:
+                print( 'Error 1 WORM: ' + hitseqid )
+        else:
+            print( 'Error 2 WORM: ' + hitseqid ) # replace  )
+
+        name = gspp_name #.lower()
+        name = name.capitalize()
+        group = gspp_group
+                        
+        symbol_core = gspp_symbol  #### provide counters for -like!  remove - and _ TRPA-1_a -->  TRPA1a-like1
+        symbol_core = ''.join( symbol_core.split( '-' ) ) # remove source dashes
+        symbol_core = ''.join( symbol_core.split( '_' ) ) # remove source underscore
+
+        if symbol_core[ :8 ] == 'NOSYMBOL':
+            symbol = symbol_core
+            
+        else:
+            if symbol_core in symbolcore_symbols.keys():
+                last_symbol = symbolcore_symbols[ symbol_core ][ -1 ]
+                count_so_far = int( last_symbol.split( 'like' )[ -1 ] )
+                count = count_so_far + 1
+                symbol = symbol_core.upper() + '_like' + str( count ) # 
+                symbolcore_symbols[ symbol_core ].append( symbol )
+
+                name = gspp_name #.lower()
+                name = name.capitalize() + ' like ' + str( count ) # 
+                
+            else:
+                symbol = symbol_core.upper() + '_like1' #
+                symbolcore_symbols[ symbol_core ] = []
+                symbolcore_symbols[ symbol_core ].append( symbol )
+        
+                name = gspp_name #.lower()
+                name = name.capitalize() + ' like 1' # 
+
+        symbol = symbol.split( 'CELE' )[ -1 ] # remove after updating C.elegans annotations
+        name = ''.join( name.split( '(' ) )
+        name = ''.join( name.split( ')' ) )
+        name = ''.join( name.split( '[' ) )
+        name = ''.join( name.split( ']' ) )
+        name = ' '.join( name.split( '_' ) )
+
+        symbol_info = symbol.split( 'OHIT' )
+        if len( symbol_info ) > 1:
+            symbol = symbol.split( '_' )[ 0 ] # remove like from NOHITs
+        name_underscore = 'Aplysia_californica'
+        short_gigantic_id = next_seqid.split( '-' )[ -1 ]
+        output = '>' + symbol  + '-GeneID' + geneid +  '-' + name_underscore +  ' ' + name + '\n' + sequence + '\n'
+        output = '_'.join( output.split( '%' ) )
+        output_fasta.write( output )
+        output = '>' + symbol  + '-GeneID' + geneid +  '-' + name_underscore + ' | GIGANTIC ' + gigantic_short_id + ' | MOROZ ' + leonid_gene_name + ' | ' + name + '\n' + sequence + '\n'
+        output = '_'.join( output.split( '%' ) )
+        output_loaded.write( output )
+
+        output = 'GeneID:' + geneid + '\tLOC:' + locid + '\tSymbol:' +  symbol + '\tName:' + name + '\tGroup:' + group + '\tAFold:' + afoldid + '\tOFOG:' + aplysia_ofog + '\t\
+LeonidName:' + leonid_name + '\tgiganticID:' + next_seqid  + '\t'  + sequence + '\n'
+        output = '_'.join( output.split( '%' ) )
+        output_map_all.write( output )
+                                                
+input_blast_reports.close()
+input_genome.close()
+input_ofogs.close()
+input_hgnc.close()
+input_worm.close()
+input_fly.close()
+input_map.close()
+input_leonid.close()
+output_fasta.close()
+output_map_all.close()
+output_hits.close()

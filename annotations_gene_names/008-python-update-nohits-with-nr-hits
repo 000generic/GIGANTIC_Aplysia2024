@@ -1,0 +1,48 @@
+#! python
+
+input_names = open( 'output/7-map-aplysia-sequence-identifier-annotations-FOR-INTEGRATION', 'r' )
+input_nr = open( '/scratch/eric/projects/aplysia/blastp/aplysia-blastp-for-gene-names/output/112-giganticid-blastp_X_nr-annotations', 'r' )
+output_map = open( 'output/8-map-aplysia-sequence-identifier-annotations-FOR-INTEGRATION', 'w' )
+
+# Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-gigantic20220627164247_seq0006147552aa     hypothetical protein Btru_074420 [Bulinus truncatus KAH9499682], unnamed protein product [Candidula unifasciata CAG5119578], arylsulfatase b [Plakobranchus ocellatus GFO42305], hypothetical protein EGW08_015872, partial [Elysia chlorotica RUS76366], hypothetical protein Btru_074419 [Bulinus truncatus KAH9499681], arylsulfatase B-like [Pecten maximus XP_033759784], arylsulfatase B-like isoform X1 [Pecten maximus XP_033759785], arylsulfatase B-like [Crassostrea virginica XP_022340527], arylsulfatase B-like [Mytilus californianus XP_052090818], arylsulfatase b [Plakobranchus ocellatus GFN76971]
+
+symbolcores = {}
+giganticids_tophits = {}
+for next_line in input_nr:
+    info = next_line[ :-1 ].split( '\t' )
+    giganticid = info[ 0 ]
+    info_hits = info[ 1 ].split( '], ' )
+    tophit = info_hits[ 0 ] + ']'
+    name = ' ['.join( tophit.split( ' [' )[ :-1 ] )
+    symbol_info_1 = tophit.split( ' [' )[ -1 ][ :-1 ]
+    symbol_info_2 = symbol_info_1.split( ' ' )
+    symbol_core = 'NRHIT_' + symbol_info_2[ 2 ] + '_' + symbol_info_2[ 0 ] + '_' + symbol_info_2[ 1 ] + '_like'
+    if symbol_core in symbolcores.keys():
+        symbolcores[ symbol_core ].append( symbol_core )
+    else:
+        symbolcores[ symbol_core ] = []
+        symbolcores[ symbol_core ].append( symbol_core )
+    symbol = symbol_core + str( len( symbolcores[ symbol_core ] ) )
+    top_hit_symbol_name = symbol + '\t' + name
+    giganticids_tophits[ giganticid ] = top_hit_symbol_name
+
+# LOCID   Symbol  Gene Name       Gene Group Name GIGANTIC ID     Leonid Gene Name        AA Sequence
+for next_line in input_names:
+    info = next_line[ :-1 ].split( '\t' )
+    giganticid = info [ 4 ]
+    gigantic_symbol = info [ 1 ]
+    if len( gigantic_symbol.split( 'OHIT' ) ) > 1:
+        if giganticid in giganticids_tophits.keys():
+            info_top_hit = giganticids_tophits[ giganticid ].split( '\t' )
+            symbol = info_top_hit[ 0 ]
+            name = info_top_hit[ 1 ]
+            info[ 1 ] = symbol
+            info[ 2 ] = name
+
+    output = '\t'.join( info ) + '\n'
+    output_map.write( output )
+
+input_names.close()
+input_nr.close()
+output_map.close()
+

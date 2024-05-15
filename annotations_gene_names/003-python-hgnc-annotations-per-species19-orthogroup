@@ -1,0 +1,70 @@
+#! python
+
+input_annotation = open( 'output/2-map-human-gene-symbol-to-hgnc-annotations', 'r' )
+input_orthogroups = open( 'input/N0.tsv', 'r' )
+output_map = open( 'output/3-map-othogroup-to-name-annotation', 'w' )
+
+# A2M     TO_ANNOTATE_use_gene_symbol:A2M-like for_matches_to_ncbi_symbol:A2M_geneid:2_mrna:NM_000014_protein:NP_000005.3 orthogroup:N0.HOG0000626 gigantic_id:Metazoa-Chordata-Mammalia-Primates-Hominidae-Homo-sapiens-gigantic20220627164247_seq0004217301aa |SOURCES_ncbi species:human  geneid:2 symbol:A2M hgnc_gene_id:7 hgnc_group_id:1234 hgnc_group_name:C3 and PZP like, alpha-2-macroglobulin domain containing fasta_header_id:NP_000005.3 fasta_header_name:alpha-2-macroglobulin isoform a precursor |
+
+orthogroup_annotation = {}
+for next_annotation in input_annotation:
+    info = next_annotation.split( '\t' )
+
+    human_symbol = info[ 0 ]
+
+    annotation_all = info[ 1 ]
+    info_1 = annotation_all.split( ' ' )
+    annotation_symbol = info_1[ 0 ].split( ':' )[ -1 ]
+
+    info_hgnc_group_id = next_annotation.split( 'hgnc_group_id:' )[ -1 ]
+    hgnc_group_id = info_hgnc_group_id.split( ' hgnc_group_name:' )[ 0 ]
+    hgnc_group_id = '|'.join( hgnc_group_id.split( '?' ) )
+    
+    info_hgnc_group_name = next_annotation.split( 'hgnc_group_name:' )[ -1 ]
+    hgnc_group_name = info_hgnc_group_name.split( ' fasta_header_id' )[ 0 ]
+    hgnc_group_name = ' | '.join( hgnc_group_name.split( '?' ) )
+
+    if hgnc_group_name == 'None':
+        name = 'HGNC: No Group'
+    else:
+        name = 'HGNC' + hgnc_group_id + ': ' + hgnc_group_name
+        
+    info_orthogroup = next_annotation.split( ' orthogroup:' )[ -1 ]
+    orthogroup = info_orthogroup.split( ' gigantic_id:' )[ 0 ]
+    
+    if orthogroup in orthogroup_annotation.keys():
+        
+        orthogroup_annotation[ orthogroup ].append( name )
+    else:
+        orthogroup_annotation[ orthogroup ] = []
+        orthogroup_annotation[ orthogroup ].append( name )
+
+# N0.HOG0000000   OG0000000       n5      Metazoa-Annelida-Polychaeta-Order_unclassified14-Capitellidae-Capitella-teleta-gigantic20220627164247_seq0000258659aa   Metazoa-Arthropoda-Insecta-Diptera-Drosophilidae-Drosophila-melanogaster-gigantic20220627164247_seq0000823671aa, Metazoa-Arthropoda-Insecta-Diptera-Drosophilidae-Drosophila-melanogaster-gigantic20220627164247_seq0000827237aa                       Metazoa-Mollusca-Bivalvia-Venerida-Veneridae-Cyclina-sinensis-gigantic20220627164247_seq0005794960aa, Metazoa-Mollusca-Bivalvia-Venerida-Veneridae-Cyclina-sinensis-gigantic20220627164247_seq0005806000aa  Metazoa-Mollusca-Gastropoda-Order_unclassified55-Lottiidae-Lottia-gigantea-gigantic20220627164247_seq0006375756aa                Metazoa-Mollusca-Gastropoda-Order_unclassified58-Plakobranchidae-Elysia-chlorotica-gigantic20220627164247_seq0006440458aa, Metazoa-Mollusca-Gastropoda-Order_unclassified58-Plakobranchidae-Elysia-chlorotica-gigantic20220627164247_seq0006439064aa
+
+seqids_names = {}
+orthogroups_names = {}
+output = '[ Species19 OrthoFinder Orthogroup Id ]' + '\t' + '[ HGNC Group Id: HGNC Group Name ]' + '\n' 
+output_map.write( output )
+
+for next_orthogroup in input_orthogroups:
+
+    info = next_orthogroup.split( '\t' )
+    orthogroup = info[ 0 ]
+
+    if orthogroup == 'HOG':
+        pass
+
+    elif not orthogroup in orthogroup_annotation.keys():
+        output = orthogroup + '\t' + 'None' + '\n'
+        output_map.write( output )
+
+    else:
+        hgnc_annotation = '[ '
+        for next_hgnc_annotation in list( set( orthogroup_annotation[ orthogroup ] ) ):
+            hgnc_annotation = hgnc_annotation + next_hgnc_annotation + ' ] + [ '
+        output = orthogroup + '\t' + hgnc_annotation[ :-5 ] + '\n'
+        output_map.write( output )
+        
+input_annotation.close()
+input_orthogroups.close()
+output_map.close()

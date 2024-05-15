@@ -1,0 +1,79 @@
+#! python
+
+# GFF
+# NC_004354.4     RefSeq  mobile_genetic_element  122739  122812  .       +       .       ID=id-NC_004354.4:122739..122812;Dbxref=FLYBASE:FBti0062863;gbkey=mobile_element;mobile_element_type=transposon:HeT-A{}4802
+# NT_037436.4     RefSeq  CDS     19726648        19726815        .       -       0       ID=cds-NP_001007096.1;Parent=rna-NM_001007095.3;Dbxref=FLYBASE:FBpp0291485,GeneID:40153,Genbank:NP_001007096.1,FLYBASE:FBgn0261360;Name=NP_001007096.1;gbkey=CDS;gene=CG42637;locus_tag=Dmel_CG42637;orig_transcript_id=gnl|FlyBase|CG42637-RC;product=uncharacterized protein%2C isoform C;protein_id=NP_001007096.1
+
+# FBGG map
+## FB_group_id  FB_group_symbol FB_group_name   Parent_FB_group_id      Parent_FB_group_symbol  Group_member_FB_gene_id Group_member_FB_gene_symbol
+# FBgg0000489     MCV-F0  MITOCHONDRIAL COMPLEX V - F0 SUBUNITS   FBgg0000491     MCV     FBgn0016119     ATPsynCF6
+
+input_gff = open( 'input/Arthropoda-Drosophila-melanogaster.gff', 'r' )
+input_fbgg = open( 'input/gene_group_data_fb_2022_03.tsv', 'r' )
+input_map = open( 'output/0-map-species313-for-real-gigantic-to-intermediate-to-source', 'r' )
+output_map = open( 'output/1-map-fly-seqids-to-fbgg-annotations', 'w' )
+output_error = open( 'output/1-errors-fly', 'w' )
+
+fbseqids_names = {}
+seqid_fbseqid = {}
+for next_line in input_gff:
+
+    if len( next_line.split( 'ID=cds-' ) ) == 1:
+        pass
+    else:
+        info_seqid = next_line.split( 'ID=cds-' )[ -1 ]
+        seqid = info_seqid.split( ';' )[ 0 ]
+        info_fbseqid = next_line.split( 'FLYBASE:' )[ -1 ]
+        fbseqid = info_fbseqid.split( ';' )[ 0 ]
+        seqid_fbseqid[ seqid ] = fbseqid
+        info_name = next_line.split( 'product=' )
+        name = info_name[ -1 ].split( ';' )[ 0 ]
+        fbseqids_names[ fbseqid ] = name 
+
+fbseqid_fbgg = {}
+for next_line in input_fbgg:
+    info = next_line[ :-1 ].split( '\t' )
+    if next_line[ 0 ] == '#':
+        pass
+    elif len( next_line ) < 10:
+        pass
+    else:
+        fbseqid = info[ 5 ]
+        fbseqid_symbol = info[ 6 ]
+        if fbseqid in fbseqids_names.keys():
+            fbseqid_name = fbseqids_names[ fbseqid ]
+        else:
+            fbseqid_name = 'None'
+            output = 'FlyBase gene identifier ' + fbseqid + ' is not cds-linked in genome gff. fbseqid_name assigned to None based on this\n'
+            output_error.write( output )
+        fbgg_id = info[ 0 ]
+        fbgg_symbol = info[ 1 ]
+        fbgg_name = info[ 2 ]
+        fbgg_annotation = fbseqid + '\t' + fbseqid_symbol + '\t' + fbseqid_name + '\t' + fbgg_id + '\t' + fbgg_symbol + '\t' + fbgg_name 
+        fbseqid_fbgg[ fbseqid ] = fbgg_annotation
+
+# Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-gigantic20220627164247_seq0006140681aa     NA      Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-moroz2022_GeneID:101860616_XP_005088984.1
+
+output = '[ giganticID ]' + '\t' + '[ Source ID ]' + '\t' + '[ FB SeqID ]' + '\t' + '[ FB SeqID Symbol ]' + '\t' + '[ FB SeqID Name]' + '\t' + '[ FB Gene Group ID ]' + '\t' + '[ FB Gene Group Name ]' + '\n'
+output_map.write( output )
+
+for next_line in input_map:
+    if len( next_line.split( 'Drosophila-melanogaster' ) ) == 1:
+        pass
+    else:
+        info = next_line[ :-1 ].split( '\t' )
+        giganticseqid = info[ 0 ]
+        sourceseqid_all = info[ 2 ]
+        sourceseqid = sourceseqid_all.split( '___' )[ 1 ]
+        fbseqid = seqid_fbseqid[ sourceseqid ]
+        if fbseqid in fbseqid_fbgg.keys():
+            fbgg_annotation = fbseqid_fbgg[ fbseqid ]
+            output = giganticseqid + '\t' + sourceseqid + '\t' + fbgg_annotation + '\n'
+        else:
+            output = giganticseqid + '\t' + sourceseqid + '\t' + fbseqid + '\t' + 'None' + '\t' + 'None' + '\t' + 'None' + '\t' + 'None' + '\t' + 'None' + '\n'
+        output_map.write( output )
+
+input_gff.close()
+input_fbgg.close()
+input_map.close()
+output_map.close()

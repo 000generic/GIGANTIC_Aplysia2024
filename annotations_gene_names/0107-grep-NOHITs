@@ -1,0 +1,3 @@
+#! /bin/bash
+
+grep 'NOHIT' /scratch/eric/projects/aplysia/analyses/names/output/8-map-aplysia-sequence-identifier-annotations-FOR-INTEGRATION > output/107-list-NOHITs

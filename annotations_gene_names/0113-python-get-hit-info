@@ -1,0 +1,23 @@
+#! python
+
+# KAH9509153.1
+# Salk :) blastdbcmd -entry KAH9509153.1
+# >KAH9509153.1 hypothetical protein Btru_049223 [Bulinus truncatus]
+# MNTSTITGNQSSGTNGEQKRTLAEIAVWSLVLVVIMVISVVGSLLTIVCALTDHKLREDKGNILLVNLSLTDLFNAVTVI
+
+input_reports = open( 'output/112-list-blast-reports', 'r' )
+output_blastdbcmd = open( '0114-blastdbcmd', 'w' )
+
+# Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-gigantic20220627164247_seq0006153935aa     1093978 dbj|GFR64472.1| 0       GFR64472        1.88e-23
+
+for next_report in input_reports:
+    input_report = open( next_report[ :-1 ], 'r' )
+    for next_line in input_report:
+        info = next_line.split( '\t' )
+        hit = info[ 4 ]
+
+        output = 'blastdbcmd -entry ' + hit + ' >> output/114-hits-info\n'
+        output_blastdbcmd.write( output )
+
+input_reports.close()
+output_blastdbcmd.close()

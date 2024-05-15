@@ -1,0 +1,57 @@
+#! python
+
+input_blastdbcmd = open( 'output/114-hits-info', 'r' )
+input_blast_reports = open( 'output/109-list-blast-reports', 'r' )
+output_annotations = open( 'output/115-giganticid-blastp_X_nr-annotations' , 'w' )
+
+counter = 0
+identifier_annotation = {}
+for next_line in input_blastdbcmd:
+    # >KAI8788510.1 octopamine receptor 1-like [Biomphalaria glabrata]
+    if next_line[ 0 ] == '>':
+        if len( next_line[ 1: ].split( '>' ) )> 1:
+            first_header = next_line[ 1: ].split( '>' )[ 0 ]
+        else:
+            first_header = next_line[ 1:-1 ]
+        print( first_header ) # remove
+        info_anno = first_header.split( ' ' )
+        genus = info_anno[ -2 ][ 1: ]
+        species = info_anno[ -1 ][ :-1 ]
+        identifier = info_anno[ 0 ].split( '.' )[ 0 ]
+        name = ' '.join( info_anno[ 1:-2 ] )
+        info_name = name.split( '[' )
+        name = ''.join( info_name )
+        info_name = name.split( ']' )
+        name = ''.join( info_name )
+        # octopamine receptor 1-like [Biomphalaria glabrata KAI8788510.1]
+        annotation = name + ' [' + genus + ' ' + species + ' ' + identifier + ']' 
+        identifier_annotation[ identifier ] = annotation 
+
+giganticid_annotations = {}
+for next_report in input_blast_reports:
+    input_report = open( next_report[ :-1 ], 'r' )
+    for next_line in input_report:
+        info = next_line.split( '\t' )
+        giganticid = info[ 0 ]
+        identifier = info[ 4 ]
+        if identifier in identifier_annotation.keys():
+            annotation = identifier_annotation[ identifier ]
+        else:
+            annotation = identifier + ' _no_nr_annotation'
+            
+        if giganticid in giganticid_annotations.keys():
+            giganticid_annotations[ giganticid ].append( annotation )
+        else:
+            giganticid_annotations[ giganticid ] = []
+            giganticid_annotations[ giganticid ].append( annotation )
+
+for next_giganticid in giganticid_annotations.keys():
+    output = next_giganticid + '\t' 
+    for next_annotation in giganticid_annotations[ next_giganticid ]:
+        output = output + next_annotation + ', '
+    output = output[ :-2 ] + '\n'
+    output_annotations.write( output )
+
+input_blastdbcmd.close()
+input_blast_reports.close()
+output_annotations.close()

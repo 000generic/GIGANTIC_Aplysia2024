@@ -1,0 +1,26 @@
+#! python
+
+input_annotation = open( 'output/6-map-aplysia-sequence-identifier-annotations', 'r' )
+output_annotation = open( 'output/7-map-aplysia-sequence-identifier-annotations-FOR-INTEGRATION', 'w' )
+
+# GeneID:100533255        LOC100533255    Symbol:NOHIT1_likeNA    Name:No hit in human fly worm 1 Aplysia californica     Group:NA        AFold:00000     OFOG:N0.HOG0012429      LeonidName:Chemosensory receptor c      giganticID:Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-gigantic20220627164247_seq0006140675aa     MSLVNETERELKGSHNISEHGGLIDDQTLRIFLLVFTFVTLGLSLLGSAFNCINITVFLTLGAKDCVSVCLLSLAVSDFTCLFLGAVCGVCDILDAYGSADFYVDPRGLYYQVIFISSMSYDISTYITAFISLERCLCVALPFRFKELFTFKRAVLAMATIFCLTFCCYLPHYVTSGLRVQWDPRTNTTRVLLWSSKDMPAITAFLDLWNHLILAVTSVVIVIVCTHIMVTGLKKSSQFQRRGAARPSEPDGPNNFKTSNEVGEGEENVLRDPDSRRDNNISTPYCPTNVEKESSNKIKVEKSPQTLSAKNRRVVKMVSTLAIVSILCNTSRLLFVVALRAEPDINFGHRYHNLYMVILVLAYIFQVINAPVNIFIYLKLNPSYRKTFSQIFGIGQTK
+
+output = 'LOCID' + '\t' + 'Symbol' + '\t' + 'Gene Name' + '\t' + 'Gene Group Name' + '\t' + 'GIGANTIC ID' + '\t' + 'Leonid Gene Name' + '\t' + 'AA Sequence' + '\n'
+output_annotation.write( output )
+
+for next_line in input_annotation:
+    info = next_line[ :-1 ].split( '\t' )
+    geneid = info[ 0 ]
+    locid = info[ 1 ]
+    symbol = info[ 2 ]
+    name = info[ 3 ]
+    group = info[ 4 ]
+    leonid = info[ 7 ]
+    giganticid = info[ 8 ]
+    sequence = info[ 9 ]
+
+    output = locid + '\t' + symbol.split( 'ymbol:' )[ -1 ] + '\t' + name.split( 'ame:' )[ -1 ] + '\t' + group.split( 'roup:' )[ -1 ] + '\t' + giganticid.split( 'ID:' )[ -1 ] + '\t' + leonid.split( 'ame:' )[ -1 ] + '\t' + sequence + '\n'
+    output_annotation.write( output )
+    
+input_annotation.close()
+output_annotation.close()
