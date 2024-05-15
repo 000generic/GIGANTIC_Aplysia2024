@@ -1,0 +1,237 @@
+#! python
+
+# input format with tabs and | formatting
+# 111957  |       Thermoplasma sp. XT101  |               |       Thermoplasma    |       Thermoplasmataceae      |       Thermoplasmatales       |       Thermoplasmata  |       Euryarchaeota   |               |       Archaea |
+
+# input format | only for readability here
+# 9595|Gorilla gorilla gorilla|Gorilla gorilla|Gorilla|Hominidae|Primates|Mammalia|Chordata|Metazoa|Eukaryota|
+
+# input format names of each position in file from NCBI Readme.txt
+# taxon id, taxon name, species, genus, family, order, class, phylum, kingdom, superkingdom
+
+input_dump = open( 'downloaded-ncbi-new_taxdump-16nov2021/rankedlineage.dmp', 'r' )
+output_gspp_info = open( 'output/10-phyloNames', 'w' )
+output_map = open( 'output/10-map-phyloName_X_ncbi-ranking-info', 'w' )
+output_fail = open( 'output/10-failed', 'w' )
+
+count = 0 #####
+
+for next_line in input_dump:
+
+    info = next_line[ :-1 ] .split( '|' )
+
+    # taxon id
+    taxon_id = info[ 0 ][ :-1 ]
+
+    # is input for an actual species
+    species_raw_1 = info[ 1 ][ 1:-1 ]
+
+# if else 1
+    if len( species_raw_1 ) > 0:
+
+        # species evaluation
+        species_raw_2 = species_raw_1.split( ' ' )
+
+# if else 2
+        if len( species_raw_2 ) > 1:
+
+# if else 3
+            if species_raw_2[ 0 ] == 'unclassified':
+                species = 'species_unclassified'
+
+            else:
+                # remove genus 
+                species = species_raw_2[ 1: ]
+                # clean one or more words in species name
+                clean_words = []
+                for word in species:
+
+                    # remove any (
+                    word_temp = word.split( '(' )
+                    word_holder = []
+                    for element in word_temp:
+                        if len( element ) == 0:
+                            pass
+                        else:
+                            word_holder.append( element )
+                    word = '_'.join(word_holder )
+                                                                                                                        
+                    # remove any )
+                    word_temp = word.split( ')' )
+                    word_holder = []
+                    for element in word_temp:
+                        if len( element ) == 0:
+                            pass
+                        else:
+                            word_holder.append( element )
+                    word = '_'.join(word_holder )
+                    
+                    # remove any [
+                    word_temp = word.split( '[' )
+                    word_holder = []
+                    for element in word_temp:
+                        if len( element ) == 0:
+                            pass
+                        else:
+                            word_holder.append( element )
+                    word = '_'.join(word_holder )
+                    
+                    # remove any ]
+                    word_temp = word.split( ']' )
+                    word_holder = []
+                    for element in word_temp:
+                        if len( element ) == 0:
+                            pass
+                        else:
+                            word_holder.append( element )
+                    word = '_'.join(word_holder )
+                    
+                    # remove any /
+                    word_temp = word.split( '/' )
+                    word_holder = []
+                    for element in word_temp:
+                        if len( element ) == 0:
+                            pass
+                        else:
+                            word_holder.append( element )
+                    word = '_'.join(word_holder )
+                            
+                    # remove any dots
+                    word_temp = word.split( '.' )
+                    word_holder = []
+                    for element in word_temp:
+                        if len( element ) == 0:
+                            pass
+                        else:
+                            word_holder.append( element )
+                    word = '_'.join(word_holder )
+                    
+                    # remove any '
+                    word_temp = word.split( '\'' )
+                    word_holder = []
+                    for element in word_temp:
+                        if len( element ) == 0:
+                            pass
+                        else:
+                            word_holder.append( element )                                                                        
+                    word = '_'.join( word_holder )
+
+                    # remove any :
+                    word_temp = word.split( ':' )
+                    word_holder = []
+                    for element in word_temp:
+                        if len( element ) == 0:
+                            pass
+                        else:
+                            word_holder.append( element )
+                    word = '_'.join( word_holder )
+                    
+                    # remove any dashes
+                    word_temp = word.split( '-' )
+                    word_holder = []
+                    for element in word_temp:
+                        if len( element ) == 0:
+                            pass
+                        else:
+                            word_holder.append( element )
+                    word = '_'.join( word_holder )
+                    
+                    clean_words.append( word )
+                    
+                # create clean species name    
+                species = '_'.join( clean_words )
+
+        # species position has only a single element - most likely it is the genus name
+        else:
+            
+           species = 'species_unclassified'
+       
+    # species posiiton has no info        
+    else:
+        output_fail.write( next_line )
+        
+        # genus evaluation
+    genus = info[ 3 ][ 1:-1 ]
+    if len( genus ) < 1:
+
+        # when there is no genus info it is often the first position of the species info at position info[ 1 ] of split next_line - which is cleaned up as species_raw_2[ 0 ]
+        genus = species_raw_2[ 0 ]
+        if genus == 'unclassified':
+            genus = 'Genus_unclassified'
+        else:
+            pass
+
+    else:
+    
+        genus = genus.split( '-' )
+        genus = '_'.join( genus )
+
+    # family evaluation
+    family_raw = info[ 4 ][ 1:-1 ]
+    if len( family_raw ) > 0:
+        family = family_raw
+    else:
+        family = 'Family_unclassified'
+        
+    # order evaluation
+    order_raw = info[ 5 ][ 1:-1 ]
+    if len( order_raw ) > 0:
+        order = order_raw
+    else:
+        order = 'Order_unclassified'
+        
+    # class evaluation
+    class_id_raw = info[ 6 ][ 1:-1 ]
+    if len( class_id_raw ) > 0:
+        class_id = class_id_raw
+    else:
+        class_id = 'Class_unclassified'
+        
+    # phylum evaluation
+    phylum_raw = info[ 7 ][ 1:-1 ]
+    if len( phylum_raw ) > 0:
+        phylum = phylum_raw
+    else:
+        phylum = 'Phylum_unclassified'
+        
+    # kingdom evaluation
+    kingdom_raw = info[ 8 ][ 1:-1 ]
+    if len( kingdom_raw ) > 0:
+        kingdom = kingdom_raw
+    else:
+        kingdom = 'Kingdom_unclassified'
+            
+    # phyloName id
+
+    phyloName = kingdom + '-' + phylum + '-' + class_id + '-' + order + '-' + family + '-' + genus + '-' + species + '-' + taxon_id
+
+    output = phyloName + '\n'
+    output_gspp_info.write( output )
+
+    ncbi_names = ['Taxon_id', 'Taxon_name', 'Species', 'Genus', 'Family', 'Order', 'Class', 'Phylum', 'Kingdom', 'Superkingdom', 'Blank' ]
+        
+    output = phyloName + '\t'
+    info_provided = 'No'
+    count = -1
+        
+    for element in info:
+        count = count + 1
+        element_split = element.split( '\t' )
+            
+        for tabfree in element_split:
+            if len( tabfree ) > 0:
+                output = output + tabfree + '\t'
+                info_provided = 'Yes'
+            else:
+                pass
+        if info_provided == 'Yes':
+            info_provided = 'No'
+        else:
+            output = output + 'No NCBI Taxonomy '+ ncbi_names[ count ] + '\t' 
+
+    output = output[ :-1 ] + '\n'
+    output_map.write( output )
+             
+input_dump.close()
+output_gspp_info.close()
+output_fail.close()

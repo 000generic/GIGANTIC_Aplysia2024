@@ -1,0 +1,3 @@
+#! /bin/bash
+
+gunzip -c new_taxdump.tar.gz | tar xf -

@@ -1,0 +1,26 @@
+#! python
+input_phylo = open( 'check-Phylo', 'r' )
+input_t1 = open( 'check-T1', 'r' )
+
+phylo = []
+
+# output/15-output/Metazoa-Chordata-Actinopteri-Cyprinodontiformes-Nothobranchiidae-Nothobranchius-furzeri-105023-T1.aa
+
+for next_line in input_phylo:
+
+    info = next_line.split( '-' )
+    gspp = info[ -4 ] + '-' + info[ -3 ]
+    phylo.append( gspp )
+
+# output/5-output/Chordata-Astyanax-mexicanus-T1.aa
+for next_line in input_t1:
+
+    info = next_line.split( '-' )
+    gspp = info[ -3 ] + '-' + info[ -2 ]
+
+    if gspp in phylo:
+        pass
+    else:
+        print( gspp )
+        
+    
