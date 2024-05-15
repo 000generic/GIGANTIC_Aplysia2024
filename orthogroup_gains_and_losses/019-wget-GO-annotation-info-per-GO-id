@@ -1,0 +1,3 @@
+#! python
+
+wget http://current.geneontology.org/ontology/go.obo input/go.obo

@@ -1,0 +1,376 @@
+#! python
+
+# HOG     OG      Gene Tree Parent Clade  Metazoa-Annelida-Polychaeta-Order_unclassified14-Capitellidae-Capitella-teleta-283909-T1        Metazoa-Arthropoda-Insecta-Diptera-Drosophilidae-Drosophila-melanogaster-7227-T1        Metazoa-Brachiopoda-Lingulata-Lingulida-Lingulidae-Lingula-anatina-7574-T1 Metazoa-Chordata-Mammalia-Primates-Hominidae-Homo-sapiens-9606-T1       Metazoa-Mollusca-Bivalvia-Ostreida-Ostreidae-Crassostrea-gigas-29159-T1 Metazoa-Mollusca-Bivalvia-Pectinida-Pectinidae-Mizuhopecten-yessoensis-6573-T1     Metazoa-Mollusca-Bivalvia-Venerida-Veneridae-Cyclina-sinensis-120566-T1 Metazoa-Mollusca-Cephalopoda-Nautilida-Nautilidae-Nautilus-pompilius-34573-T1   Metazoa-Mollusca-Cephalopoda-Octopoda-Argonautidae-Argonauta-argo-294695-T1        Metazoa-Mollusca-Cephalopoda-Octopoda-Octopodidae-Octopus-bimaculoides-37653-T1 Metazoa-Mollusca-Class_unclassified38-Order_unclassified39-Family_unclassified40-Achatina-fulica-0000_ncbiID_unclassified41-T1     Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-6500-T1    Metazoa-Mollusca-Gastropoda-Architaenioglossa-Ampullariidae-Pomacea-canaliculata-400727-T1      Metazoa-Mollusca-Gastropoda-Order_unclassified55-Lottiidae-Lottia-gigantea-225164-T1       Metazoa-Mollusca-Gastropoda-Order_unclassified57-Peltospiridae-Gigantopelta-aegis-1735272-T1    Metazoa-Mollusca-Gastropoda-Order_unclassified58-Plakobranchidae-Elysia-chlorotica-188477-T1       Metazoa-Mollusca-Polyplacophora-Chitonida-Chitonidae-Acanthopleura-granulata-61363-T1   Metazoa-Nematoda-Chromadorea-Rhabditida-Rhabditidae-Caenorhabditis-elegans-6239-T1      Metazoa-Phoronida-Class_unclassified74-Order_unclassified75-Family_unclassified76-Phoronis-australis-115415-T1
+
+# N0.HOG0028620   OG0026346       -                                                                                                                                                       Metazoa-Phoronida-Class_unclassified74-Order_unclassified75-Family_unclassified76-Phoronis-australis-gigantic20220627164247_seq0007069033aa, Metazoa-Phoronida-Class_unclassified74-Order_unclassified75-Family_unclassified76-Phoronis-australis-gigantic20220627164247_seq0007068346aa
+
+input_N0 = open( 'N0.tsv', 'r' )
+output_map = open( 'output/4-map-species-orthogroups-seqids', 'w' )
+output_classification = open( 'output/4-map-ALL-orthology-classifications-per-species-per-sequence', 'w' )
+
+first_line = False
+
+hogs_species19_seqids = {}
+combos_hogs_pairs_seqids = {}
+
+for next_line in input_N0:
+
+    info = next_line[ :-1 ].split( '\t' )
+    next_hog = info[ 0 ]
+    species19_seqids = info[ 3: ]      
+
+    if first_line == False:
+        
+        first_line = True
+        species19_names = []
+        for next_species in species19_seqids:
+            next_species = '-'.join( next_species.split( '-' )[ :-2 ] )
+            species19_names.append( next_species )
+
+    else:
+        
+        hogs_species19_seqids[ next_hog ] = {}
+        
+        for next_species in species19_names:
+
+            hogs_species19_seqids[ next_hog ][ next_species ] = []
+
+            for each_species in species19_names:
+                next_combo = next_species + '_x_' + each_species
+                
+                if next_combo in combos_hogs_pairs_seqids.keys():
+                    combos_hogs_pairs_seqids[ next_combo ][ next_hog ] = {}
+                    combos_hogs_pairs_seqids[ next_combo ][ next_hog ][ next_species ] = []
+                    combos_hogs_pairs_seqids[ next_combo ][ next_hog ][ each_species ] = []
+                else:
+                    combos_hogs_pairs_seqids[ next_combo ] = {}
+                    combos_hogs_pairs_seqids[ next_combo ][ next_hog ] = {}
+                    combos_hogs_pairs_seqids[ next_combo ][ next_hog ][ next_species ] = []
+                    combos_hogs_pairs_seqids[ next_combo ][ next_hog ][ each_species ] = []
+                    
+        for next_seqids in species19_seqids:
+
+            info_seqids = next_seqids.split( ', ' )
+            current_species = '-'.join( info_seqids[ 0 ].split( '-' )[ :-1 ] )
+
+            if len( current_species ) > 1:
+                for next_seqid in info_seqids:
+                    hogs_species19_seqids[ next_hog ][ current_species ].append( next_seqid )
+
+output = 'SeqId' + '\t' + 'Species 1' + '\t' + 'Orthogroup' + '\t' + 'Orthologs Species 1' + '\t' + 'Species 2' + '\t' + 'Orthologs Species 2' + '\t' + 'Classification' + '\n'
+output_classification.write( output )
+
+seqids_classification = {}
+for next_hog in hogs_species19_seqids.keys():
+    for next_species in species19_names:
+        for each_species in species19_names:
+            
+            combo = next_species + '_x_' + each_species
+            next_seqids = hogs_species19_seqids[ next_hog ][ next_species ]
+            each_seqids = hogs_species19_seqids[ next_hog ][ each_species ]
+
+            if len( next_seqids ) > 0 and len( each_seqids ) >0 :
+                
+                for next_seqid in next_seqids:
+                    combos_hogs_pairs_seqids[ combo ][ next_hog ][ next_species ].append( next_seqid )
+
+                for each_seqid in each_seqids:
+                    combos_hogs_pairs_seqids[ combo ][ next_hog ][ each_species ].append( each_seqid )
+
+            else:
+                combos_hogs_pairs_seqids[ combo ].pop( next_hog )
+
+            # 1 to 1 - 1 to Many - Many to 1 - Many to Many - Absent
+            next_count = len( next_seqids )
+            each_count = len( each_seqids )
+            next_cat = ''
+            each_cat = ''
+            
+            if next_count == 0:
+                next_cat = 'Absent'
+            elif next_count == 1:
+                next_cat = 'One'
+            elif 6 > next_count > 1:
+                next_cat = 'Few'
+            elif 25 > next_count > 5:
+                next_cat = 'Many'
+            elif 100 >= next_count > 24:
+                next_cat = 'Mondo'
+            elif next_count > 100:
+                next_cat = 'Massive'
+
+            if each_count == 0:
+                each_cat = 'Absent'
+            elif each_count == 1:
+                each_cat = 'One'
+            elif 6 > each_count > 1:
+                each_cat = 'Few'
+            elif 25 > each_count > 5:
+                each_cat = 'Many'
+            elif 100 >= each_count > 24:
+                each_cat = 'Mondo'
+            elif each_count > 100:
+                each_cat = 'Massive'
+
+            classification = next_cat + ' to ' + each_cat
+
+            for next_seqid in next_seqids:
+                
+                details = next_hog + '\t' + next_species.split( '-' )[ 5 ] + '\t' + next_seqid.split( '-' )[ -1 ] + '\t' + str( next_count ) + '\t' + each_species.split( '-' )[ 5 ] +  '\t' + str( each_count ) + '\t' + classification + '\n'
+
+                if next_seqid in seqids_classification.keys():
+                    seqids_classification[ next_seqid ] = seqids_classification[ next_seqid ] + details
+                else:
+                    seqids_classification[ next_seqid ] = ''
+                    seqids_classification[ next_seqid ] = seqids_classification[ next_seqid ] + details
+                    
+species_classification = {}
+for next_seqid in sorted( seqids_classification.keys()):
+
+    output = seqids_classification[ next_seqid ]
+    output_classification.write( output )
+
+    species = next_seqid.split( '-' )[ 5 ]
+
+    if species in species_classification.keys():
+        species_classification[ species ].append( output )
+    else:
+        species_classification[ species ] = []
+        species_classification[ species ].append( output )
+
+for next_species in species_classification.keys():
+
+    species_path = 'output/4-map-species-' + next_species +'-orthology-classifications-per-species-per-sequence'
+    output_classy = open( species_path, 'w' )
+
+    classy_output = {}
+    classy_output[ 'Absent' ] = []
+    classy_output[ 'One' ] = []
+    classy_output[ 'Few' ] = []
+    classy_output[ 'Many' ] = []
+    classy_output[ 'Mondo' ] = []
+    classy_output[ 'Massive' ] = []
+    
+    for next_output in set( species_classification[ next_species ] ):
+
+        info = next_output.split( '\t' )
+        classification = info[ -1 ][ :-1 ].split( ' ' )[ 0 ]
+        classy_output[ classification ].append( next_output )
+
+    for next_classy in classy_output.keys():
+        for next_output in classy_output[ 'Absent' ]:
+            output_classy.write( next_output)
+        for next_output in classy_output[ 'One' ]:
+            output_classy.write( next_output)
+        for next_output in classy_output[ 'Few' ]:
+            output_classy.write( next_output)
+        for next_output in classy_output[ 'Many' ]:
+            output_classy.write( next_output)
+        for next_output in classy_output[ 'Mondo' ]:
+            output_classy.write( next_output)
+        for next_output in classy_output[ 'Massive' ]:
+            output_classy.write( next_output)
+    
+output = 'Species 1' + '\t' + 'Species 2' + '\t' + 'Orthogroups Shared' + '\t' + 'Orthologs Species 1' + '\t' + 'Orthologs Species 2' + '\n'
+output_map.write( output )
+
+for next_combo in combos_hogs_pairs_seqids.keys():
+    species_1 = next_combo.split( '_x_' )[ 0 ]
+    species_2 = next_combo.split( '_x_' )[ 1 ]
+    orthogroups_shared_count = str( len( combos_hogs_pairs_seqids[ next_combo ].keys() ) )
+    orthologs_species_1 = []
+    orthologs_species_2 = []
+
+    for next_hog in combos_hogs_pairs_seqids[ next_combo ]:
+        for next_seqid in combos_hogs_pairs_seqids[ next_combo ][ next_hog ][ species_1 ]:
+            orthologs_species_1.append( next_seqid )
+        for next_seqid in combos_hogs_pairs_seqids[ next_combo ][ next_hog ][ species_2 ]:
+            orthologs_species_2.append( next_seqid )
+            
+    orthologs_species_1_count = str( len( list( set( orthologs_species_1 ) ) ) )
+    orthologs_species_2_count = str( len( list( set( orthologs_species_2 ) ) ) )
+
+    species_1 = species_1.split( '-' )[ 5 ]
+    species_2 = species_2.split( '-' )[ 5 ]
+
+    output = species_1 + '\t' + species_2 + '\t' + orthogroups_shared_count + '\t' + orthologs_species_1_count + '\t' + orthologs_species_2_count + '\n'
+    output_map.write( output  )
+
+for next_species in species19_names:
+
+    species_name = next_species.split( '-' )[ 5 ]
+    
+    output_path = 'output/4-' + species_name + '-seqids-hogs-species19'
+    output_map_2 = open( output_path, 'w' )
+
+    for next_hog in hogs_species19_seqids.keys():
+
+        species_set = ''
+        for each_species in species19_names:
+            
+            if len( hogs_species19_seqids[ next_hog ][ each_species ] ) > 0:
+                species_set = species_set  + each_species.split( '-' )[ 5 ] + ' '
+        species_set = species_set[ :-1 ]
+
+        actual_species_set = set( species_set.split( ' ' ) )
+        
+        bilateria_1 = { 'Homo' }
+        bilateria_2 = { 'Drosophila', 'Caenorhabditis', 'Capitella', 'Phoronis', 'Lingula', 'Acanthopleura', 'Nautilus', 'Argonauta', 'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea', 'Achatina', 'Elysia', 'Aplysia' }
+
+        protostomia_1 = { 'Drosophila', 'Caenorhabditis' }
+        protostomia_2 = { 'Capitella', 'Phoronis', 'Lingula', 'Acanthopleura', 'Nautilus', 'Argonauta', 'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea', 'Achatina', 'Elysia', 'Aplysia' }
+
+        ecdysozoa_1 = { 'Drosophila' }
+        ecdysozoa_2 = { 'Caenorhabditis' }
+        
+        spiralia_1 = { 'Capitella', 'Phoronis', 'Lingula' }
+        spiralia_2 = { 'Acanthopleura', 'Nautilus', 'Argonauta', 'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea', 'Achatina', 'Elysia', 'Aplysia' }
+
+        spiralian_clade_4_1 = { 'Capitella' }
+        spiralian_clade_4_2 = { 'Phoronis', 'Lingula' }
+
+        lophophorata_1 = { 'Phoronis' }
+        lophophorata_2 = { 'Lingula' }
+        
+        mollusca_1 = { 'Acanthopleura' }
+        mollusca_2 = { 'Nautilus', 'Argonauta', 'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea', 'Achatina', 'Elysia', 'Aplysia' }
+
+        conchifera_1 = { 'Nautilus', 'Argonauta', 'Octopus' }
+        conchifera_2 = { 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea', 'Achatina', 'Elysia', 'Aplysia' }
+
+        molluscan_clade_2_1 = { 'Cyclina', 'Crassostrea', 'Mizuhopecten' }
+        molluscan_clade_2_2 = { 'Lottia', 'Gigantopelta', 'Pomacea', 'Achatina', 'Elysia', 'Aplysia' }
+
+        polyplacophora = { 'Acanthopleura' }
+
+        cephalopoda_1 = { 'Nautilus' }
+        cephalopoda_2 = { 'Argonauta', 'Octopus' }
+
+        octopoda_1 = { 'Argonauta' }
+        octopoda_2 = { 'Octopus' }
+
+        bivalvia_1 = { 'Cyclina' }
+        bivalvia_2 = { 'Crassostrea', 'Mizuhopecten' }
+
+        pteriomorpha_1 = { 'Crassostrea' }
+        pteriomorpha_2 = { 'Mizuhopecten' }
+        
+        gastropoda_1 = { 'Lottia', 'Gigantopelta' }
+        gastropoda_2 = { 'Pomacea', 'Achatina', 'Elysia', 'Aplysia' }
+
+        psilogastropoda_1 = { 'Lottia' }
+        psilogastropoda_2 = { 'Gigantopelta' }
+
+        angiogastropoda_1 = { 'Pomacea' }
+        angiogastropoda_2 = { 'Achatina', 'Elysia', 'Aplysia' }
+
+        euthyneura_1 = { 'Achatina', 'Elysia' }
+        euthyneura_2 = { 'Aplysia' }
+
+        euopisthobranchia = { 'Aplysia' }
+        saccoglossa = { 'Elysia' }
+        stylommatophora = { 'Achatina' }
+        caenogastropoda = { 'Pomacea' }
+        vetigastropoda = { 'Gigantopelta' }
+        patellogastropoda = { 'Lottia' }
+        pectinida = { 'Mizuhopecten' }
+        ostreida = { 'Crassostrea' }
+        heteroconchia = { 'Cyclina' }
+        octopodoidea = { 'Octopus' }
+        argonautoidea = { 'Argonauta' }
+        nautiloidea = { 'Nautilus' }
+        polyplacorphora = { 'Acanthopleura' }
+        brachiopoda = { 'Lingula' }
+        phoronida = { 'Phoronis' }
+        annelida = { 'Capitella' }
+        arthropoda = { 'Drosophila' }
+        nematoda = { 'Caenorhabditis' }
+        deuterostomia = { 'Homo' }
+        
+        if bool( actual_species_set.intersection( bilateria_1 ) ) and bool( actual_species_set.intersection( bilateria_2  ) ) == True:
+            origins = 'Bilateria'
+        elif bool( actual_species_set.intersection( protostomia_1 ) ) and bool( actual_species_set.intersection( protostomia_2  ) ) == True:
+            origins = 'Protosomia'
+        elif bool( actual_species_set.intersection( ecdysozoa_1 ) ) and bool( actual_species_set.intersection( ecdysozoa_2  ) ) == True:
+            origins = 'Ecdysozoa'
+        elif bool( actual_species_set.intersection( spiralia_1 ) ) and bool( actual_species_set.intersection( spiralia_2  ) ) == True:
+            origins = 'Spiralia'
+        elif bool( actual_species_set.intersection( spiralian_clade_4_1 ) ) and bool( actual_species_set.intersection( spiralian_clade_4_2  ) ) == True:
+            origins = 'Spiralian Clade 4'
+        elif bool( actual_species_set.intersection( lophophorata_1 ) ) and bool( actual_species_set.intersection( lophophorata_2  ) ) == True:
+            origins = 'Lophophorata'
+        elif bool( actual_species_set.intersection( mollusca_1 ) ) and bool( actual_species_set.intersection( mollusca_2  ) ) == True:
+            origins = 'Mollusca'
+        elif bool( actual_species_set.intersection( conchifera_1 ) ) and bool( actual_species_set.intersection( conchifera_2  ) ) == True:
+            origins = 'Conchifera'
+        elif bool( actual_species_set.intersection( cephalopoda_1 ) ) and bool( actual_species_set.intersection( cephalopoda_2  ) ) == True:
+            origins = 'Cephalopoda'
+        elif bool( actual_species_set.intersection( octopoda_1 ) ) and bool( actual_species_set.intersection( octopoda_2  ) ) == True:
+            origins = 'Octopoda'
+        elif bool( actual_species_set.intersection( molluscan_clade_2_1 ) ) and bool( actual_species_set.intersection( molluscan_clade_2_2  ) ) == True:
+            origins = 'Molluscan Clade 2'
+        elif bool( actual_species_set.intersection( bivalvia_1 ) ) and bool( actual_species_set.intersection( bivalvia_2  ) ) == True:
+            origins = 'Bivalvia'
+        elif bool( actual_species_set.intersection( pteriomorpha_1 ) ) and bool( actual_species_set.intersection(pteriomorpha_2  ) ) == True:
+            origins = 'Pteriomorpha'
+        elif bool( actual_species_set.intersection( gastropoda_1 ) ) and bool( actual_species_set.intersection( gastropoda_2  ) ) == True:
+            origins = 'Gastropoda'
+        elif bool( actual_species_set.intersection( psilogastropoda_1 ) ) and bool( actual_species_set.intersection( psilogastropoda_2  ) ) == True:
+            origins = 'Psilogastropoda'
+        elif bool( actual_species_set.intersection( angiogastropoda_1 ) ) and bool( actual_species_set.intersection( angiogastropoda_2  ) ) == True:
+            origins = 'Angiogastropoda'
+        elif bool( actual_species_set.intersection( euthyneura_1 ) ) and bool( actual_species_set.intersection( euthyneura_2  ) ) == True:
+            origins = 'Euthyneura'
+        elif bool( actual_species_set.intersection( euopisthobranchia ) )  == True:
+            origins = 'Euopisthobranchia Aplysia'
+        elif bool( actual_species_set.intersection( saccoglossa ) )  == True:
+                        origins = 'Saccoglossa Elysia'
+        elif bool( actual_species_set.intersection( stylommatophora ) )  == True:
+                        origins = 'Stylommatophora Lissachatina'
+        elif bool( actual_species_set.intersection( caenogastropoda ) )  == True:
+                        origins = 'Caenogastropoda Pomacea'
+        elif bool( actual_species_set.intersection( vetigastropoda ) )  == True:
+                        origins = 'Vetigastropoda Gigantopelta'
+        elif bool( actual_species_set.intersection( patellogastropoda ) )  == True:
+                        origins = 'Patellogastropoda Lottia'
+        elif bool( actual_species_set.intersection( pectinida ) )  == True:
+                        origins = 'Pectinida Mizuhopecten'
+        elif bool( actual_species_set.intersection( ostreida ) )  == True:
+                        origins = 'Ostreida Crassostrea'
+        elif bool( actual_species_set.intersection( heteroconchia ) )  == True:
+                        origins = 'Heteroconchia Cyclina'
+        elif bool( actual_species_set.intersection( octopodoidea ) )  == True:
+                        origins = 'Octopodoidea Octopus'
+        elif bool( actual_species_set.intersection( argonautoidea ) )  == True:
+                        origins = 'Argonautoidea Argonauta'
+        elif bool( actual_species_set.intersection( nautiloidea ) )  == True:
+                        origins = 'Nautiloidea Nautilus'
+        elif bool( actual_species_set.intersection( polyplacophora ) )  == True:
+                        origins = 'Polyplacophora Acanthopleura'
+        elif bool( actual_species_set.intersection( brachiopoda ) )  == True:
+                        origins = 'Brachiopoda Lingula'
+        elif bool( actual_species_set.intersection( phoronida ) )  == True:
+                        origins = 'Phoronida Phoronis'
+        elif bool( actual_species_set.intersection( annelida ) )  == True:
+                        origins = 'Annelida Capitella'
+        elif bool( actual_species_set.intersection( arthropoda ) )  == True:
+                        origins = 'Arthropoda Drosophila'
+        elif bool( actual_species_set.intersection( nematoda ) )  == True:
+            origins = 'Nematoda Caenorhabditis'
+        elif bool( actual_species_set.intersection( deuterostomia ) )  == True:
+            origins = 'Deuterostomia Homo'
+        else:
+            origins = 'Fix the code!'
+    
+        if len( hogs_species19_seqids[ next_hog ][ next_species ] ) > 0:
+            
+            for next_seqid in hogs_species19_seqids[ next_hog ][ next_species ]:
+                next_seqid = next_seqid.split( '-' )[ -1 ]
+                output = species_name + '\t' + next_seqid + '\t' + next_hog + '\t' + origins + '\t' + species_set + '\n'
+                output_map_2.write( output )
+
+    output_map_2.close()
+
+input_N0.close()
+output_map.close()
+output_classification.close()

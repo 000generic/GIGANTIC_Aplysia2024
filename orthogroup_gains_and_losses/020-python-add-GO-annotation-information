@@ -1,0 +1,131 @@
+#! python
+
+input_go = open( 'input/go.obo', 'r' )
+input_N0 = open( 'N0.tsv', 'r' )
+input_map = open( 'output/18-map-aplysia-genome-orthgroups_X_annotations' , 'r' )
+output_go = open( 'output/20-all-jan2023-go-annotations-parsed-from-go.obo', 'w' )
+output_map = open( 'output/20-map-aplysia-sequences-annotations', 'w' )
+output_map_seqids = open( 'output/20-aplysia-seqids-single-go-annotations', 'w' )
+
+hog_og = {}
+for next_line in input_N0:
+    info = next_line.split( '\t' )
+    hog = info[ 0 ]
+    og = info[ 1 ]
+    hog_og[ hog ] = og
+
+# [Term]
+# id: GO:0000001
+# name: mitochondrion inheritance
+# namespace: biological_process
+# def: "The distribution of mitochondria, including the mitochondrial genome, into daughter cells after mitosis or meiosis, mediated by interactions between mitochondria and the cytoskeleton." [GOC:mcc, PMID:10873824, PMID:11389764]
+# synonym: "mitochondrial inheritance" EXACT []
+
+goids_annotations = {}
+goid = 'GO ID'
+namespace = 'GO Namespace'
+name = 'GO Name'
+definition = 'GO Definition'
+
+for next_line in input_go:
+    if next_line[ :-1 ] == '[Term]':
+        annotation = goid + '\t' + namespace + '\t' + name + '\t' + definition
+        goids_annotations[ goid ] = annotation
+        output = annotation + '\n'
+        output_go.write( output )
+        
+    else:
+        info = next_line[ :-1 ].split( ': ' )
+        if info[ 0 ] == 'id':
+            goid = info[ -1 ]
+        elif info[ 0 ] == 'name':
+            name = info[ -1 ]
+        elif info[ 0 ] == 'namespace':
+            namespace = info[ -1 ]
+        elif info[ 0 ] == 'def':
+            definition = info[ -1 ].split( '"' )[ 1 ]
+
+annotation = goid + '\t' + namespace + '\t' + name + '\t' + definition
+goids_annotations[ goid ] = annotation
+output = annotation + '\n'
+output_go.write( output )
+
+output = 'LOCID' + '\t' + 'GENEID' + '\t' + 'GIGANTICID' + '\t' + 'Orthogroup HOGID' + '\t' + 'Orthogroup OGID' + '\t' + 'Pfam' + '\t' + 'Pfam Symbol' + '\t' + 'Pfam Description' + '\t' + 'GO' + '\t' + 'GO Namespace' + '\t' + 'GO Name' + '\t' + '\t' + 'GO Description' + '\t' + 'PANTHER' + '\t' + 'DeepLoc SP' + '\t' + 'DeepTMHMM SP' + '\t' + 'Signalp SP' + '\t' + 'DeepLoc TM' + '\t' + 'DeepTMHMM TM' + '\t' + 'Mobidblite DO' + '\t' + 'MetaPredict DO' + '\t' + 'Antifam' + '\t' + 'CDD' + '\t' + 'Coils' + '\t' + 'FunFam' + '\t' + 'Gene3d' + '\t' + 'Hamap' + '\t' + 'PIRSF' + '\t' + 'PRINTS' + '\t' + 'ProSite Patterns' + '\t' + 'ProSite Profiles' + '\t' + 'SFLD' + '\t' + 'SMART' + '\t' + 'SuperFamily' + '\t' + 'TIGRFAM' + '\t' + 'KEGG' + '\t' + 'KEGG Description' + '\n'
+output_map.write( output )
+
+for next_line in input_map:
+    if next_line[ 0 ] != '[':
+        info = next_line[ :-1 ].split( '\t' )
+        goids = info[ 24 ].split( ', ' )
+        namespaces = ''
+        names = ''
+        definitions = ''
+        for next_goid in goids:
+            goid = next_goid.split( '_' )[ 0 ]
+            if goid in goids_annotations.keys():
+                annotation = goids_annotations[ goid ]
+                anno_info = annotation.split( '\t' )
+                namespace = anno_info[ 1 ]
+                name = anno_info[ 2 ]
+                definition = anno_info[ 3 ]
+                namespaces = namespaces + namespace + ', '
+                names = names + name + ', '
+                definitions = definitions + definition + ', '
+            else:
+                namespaces = namespaces + 'None, '
+                names = names + 'None, '
+                definitions = definitions + 'None, '
+
+        go_namespace = namespaces[ :-2 ]
+        go_name = names[ :-2 ]
+        go_anno = definitions[ :-2 ]
+        
+        # LOC101845594    GeneID:101845594        gigantic20220627164247_seq0006140695aa  N0.HOG0002010   None    None    None    None    Gene3D_G3DSA:1.20.1070.10_20_327        None    None    PANTHER_PTHR24243_22_324        None    None    Pfam_PF00001_43_302     7tm_1   Family  7 transmembrane receptor (rhodopsin family)     None    ProSiteProfiles_PS50262_42_302  None    None    SUPERFAMILY_SSF81321_21_324     None    GO:0004930_43_302, GO:0016020_43_302, GO:0016020_42_302, GO:0007186_43_302      None    None    DeepLoc2_LOCAL:Cellmembrane_SIGNAL:Transmembranedomain  None    DeepTMHMM_TMs=7_TM30:50_TM60:83_TM97:118_TM142:162_TM184:209_TM244:265_TM282:304        MetaPredict_IDR_0_17    None    K08428
+        locid = info[ 0 ]
+        geneid = info[ 1 ]
+        giganticid = info[ 2 ]
+        orthogroupid_HOG = info[ 3 ]
+        if orthogroupid_HOG in hog_og.keys():
+            orthogroupid_OG = hog_og[ orthogroupid_HOG ]
+        else:
+            orthogroupid_OG = orthogroupid_HOG
+        antifam = info[ 4 ]
+        cdd = info[ 5 ]
+        coils = info[ 6 ]
+        funfam = info[ 7 ]
+        gene3d = info[ 8 ]
+        hamap = info[ 9 ]
+        mobidblite_do = info[ 10 ]
+        panther = info[ 11 ]
+        pirsf = info[ 12 ]
+        prints = info[ 13 ]
+        pfam_accession = info[ 14 ]
+        pfam_symbol = info[ 15 ]
+        pfam_type = info[ 16 ]
+        pfam_description = info[ 17 ]
+        patterns = info[ 18 ]
+        profiles = info[ 19 ]
+        sfld = info[ 20 ]
+        smart = info[ 21 ]
+        superfamily = info[ 22 ]
+        tigrfam = info[ 23 ]
+        go_id = info[ 24 ]
+        deeploc_inference = info[ 25 ]
+        deeploc_sp = info[ 26 ]
+        deeploc_tm = info[ 27 ]
+        deeptm_sp = info[ 28 ]
+        deeptm_tm = info[ 29 ]
+        metapredict_do = info[ 30 ]
+        signalp_sp = info[ 31 ]
+        kegg_id = info[ 32 ]
+        kegg_anno = info[ 33 ]
+
+        output = locid + '\t' + geneid + '\t' + giganticid + '\t' + orthogroupid_HOG + '\t' + orthogroupid_OG + '\t' + pfam_accession + '\t' + pfam_symbol + '\t' + pfam_description + '\t' + go_id + '\t' + go_namespace + '\t' + go_name + '\t' + go_anno + '\t' + panther + '\t' + deeploc_sp + '\t' + deeptm_sp + '\t' + signalp_sp + '\t' + deeploc_tm + '\t' + deeptm_tm + '\t' + mobidblite_do + '\t' + metapredict_do + '\t' + antifam + '\t' + cdd + '\t' + coils + '\t' + funfam + '\t' + gene3d + '\t' + hamap + '\t' + pirsf + '\t' + prints + '\t' + patterns + '\t' + profiles + '\t' + sfld + '\t' + smart + '\t' + superfamily + '\t' + tigrfam + '\t' + kegg_id + '\t' + kegg_anno + '\n'
+        
+        output_map.write( output )
+
+input_go.close()
+input_map.close()
+output_go.close()
+output_map.close()
+output_map_seqids.close()

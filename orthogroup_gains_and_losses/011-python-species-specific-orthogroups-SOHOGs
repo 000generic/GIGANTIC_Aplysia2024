@@ -1,0 +1,104 @@
+#! python
+
+# N0.HOG0028620   OG0026346       -                                                                                                                                                       Metazoa-Phoronida-Class_unclassified74-Order_unclassified75-Family_unclassified76-Phoronis-australis-gigantic20220627164247_seq0007069033aa, Metazoa-Phoronida-Class_unclassified74-Order_unclassified75-Family_unclassified76-Phoronis-australis-gigantic20220627164247_seq0007068346aa
+
+input_N0 = open( 'N0.tsv' , 'r' )
+output_map = open( 'output/11-map-species-specific-orthogroups-SOHOGs', 'w' )
+output_counts = open( 'output/11-stats-orthogroups-and-species-specific-orthogroups-per-species-SOHOGs', 'w' )
+output_sohogs = open( 'output/11-map-HOG-to-SOHOG-ids', 'w' )
+species_counts = {}
+species_hogs = {}
+species_max = {}
+
+species_specific_counts = {}
+species_specific_hogs = {}
+species_specific_max = {}
+
+output = 'GIGANTIC SeqId' + '\t' + 'Species' + '\t' + 'Species Orthogroup' + '\t' + 'Number Of Orthogroup Sequences' + '\n'
+output_map.write( output )
+
+output = 'Species' + '\t' + 'Number of Orthogroups' + '\t' + 'Number Of Orthogroup Sequences' + '\t' + 'Average Number Of Sequences Per Orthogroup' + '\t' + 'Max Sequences in Orthogroup' + '\t' + 'Species-Specific Orthogroups' + '\t' + 'Number Of Species-Specific Orthogroup Sequences' + '\t' + 'Average Number Of Sequences Per Species-Specific Orthogroup' + '\t' + 'Species-Specific Max Sequences in Orthogroup' + '\n'
+output_counts.write( output )
+
+for next_line in input_N0:
+    
+    info = next_line[ :-1 ].split( '\t' )
+    hog_id = info[ 0 ]
+    seqids = info[ 3: ]
+    number_of_species = 0
+    species = ''
+    
+    for next_species in seqids:
+        
+        info_seqids = next_species.split( ', ' )
+
+        if len( info_seqids[ 0 ] ) > 0:
+
+            number_of_species = number_of_species + 1 
+            species = info_seqids[ 0 ].split( '-' ) [ 5 ]
+            sequences_count = len( info_seqids )
+            info_seqids_keeper = info_seqids
+            
+            # cummulative hog count per species
+            if species in species_hogs.keys():
+                species_hogs[ species ] = species_hogs[ species ] + 1
+            else:
+                species_hogs[ species ] = 1
+            # cummulative clustered sequences per species
+            if species in species_counts.keys():
+                species_counts[ species ] = species_counts[ species ] + sequences_count 
+            else:
+                species_counts[ species ] = []
+                species_counts[ species ] = sequences_count
+
+            # max
+            if species in species_max.keys():
+                if len( info_seqids ) > species_max[ species ]:
+                    species_max[ species ] = len( info_seqids )
+            else:
+                species_max[ species ] = len( info_seqids )
+                    
+    if number_of_species == 1:
+        for next_seqid in info_seqids_keeper:
+            output = next_seqid.split( '-' )[ -1 ] + '\t' + species + '\t' + hog_id + '\t' + str( sequences_count ) + '\n'
+            output_map.write( output )
+            
+            sohog_id = 'SOHOG'.join( hog_id.split( 'HOG' ) )
+            output = next_seqid.split( '-' )[ -1 ] + '\t' + species + '\t' + hog_id + '\t' + sohog_id + '\n'
+            output_sohogs.write( output )
+            
+        # cummulative species-specific hog count per species
+        if species in species_specific_hogs.keys():
+            species_specific_hogs[ species ] = species_specific_hogs[ species ] + 1
+        else:
+            species_specific_hogs[ species ] = 1
+        # cummulative clustered sequences per species
+        if species in species_specific_counts.keys():
+            species_specific_counts[ species ] = species_specific_counts[ species ] + sequences_count
+        else:
+            species_specific_counts[ species ] = []
+            species_specific_counts[ species ] = sequences_count
+
+        # max
+        if species in species_specific_max.keys():
+            if len( info_seqids_keeper ) > species_specific_max[ species ]:
+                species_specific_max[ species ] = len( info_seqids_keeper )
+        else:
+            species_specific_max[ species ] = len( info_seqids_keeper )
+            
+for next_species in sorted( species_counts.keys() ):
+    total_number_orthogroups = species_hogs[ next_species ]
+    total_number_sequences_in_orthogroups = species_counts[ next_species ] 
+    average_number_sequences_per_orthogroup = total_number_sequences_in_orthogroups / total_number_orthogroups
+
+    total_number_species_specific_orthogroups = species_specific_hogs[ next_species ]
+    total_number_sequences_in_species_specific_orthogroups = species_specific_counts[ next_species ]
+    average_number_in_species_specific_orthogroups = total_number_sequences_in_species_specific_orthogroups / total_number_species_specific_orthogroups
+
+    output = next_species + '\t' + str( total_number_orthogroups ) + '\t' + str( total_number_sequences_in_orthogroups ) + '\t' + str( average_number_sequences_per_orthogroup ) + '\t' + str( species_max[ next_species ] ) + '\t' + str( total_number_species_specific_orthogroups ) + '\t' + str( total_number_sequences_in_species_specific_orthogroups ) + '\t' + str( average_number_in_species_specific_orthogroups ) + '\t' + str( species_specific_max[ next_species ] ) + '\n'
+    output_counts.write( output )
+
+input_N0.close()
+output_counts.close()
+output_map.close()
+output_sohogs.close()

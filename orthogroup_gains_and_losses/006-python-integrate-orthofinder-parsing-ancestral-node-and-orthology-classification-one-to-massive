@@ -1,0 +1,106 @@
+#! python
+
+input_map = open( 'map-gigantic-source-headers/2-map-source-gigantic-species311-ids', 'r' )
+input_nodes = open( 'output/5-list-ancestral-node-parsings', 'r' )
+input_orthology = open( 'output/5-list-orthology-classification', 'r' )
+output_map_singles = open( 'output/6-map-ancestral-nodes-and-orthology-classification-per-sequence-single-line', 'w' )
+output_map_multiples = open( 'output/6-map-ancestral-nodes-and-orthology-classification-per-sequence-multiple-lines', 'w' )
+
+seqid_geneid = {}
+seqid_nodes = {}
+seqid_orthology_singles = {}
+seqid_orthology_multiples = {}
+
+# Kingdom_unclassified-Phylum_unclassified-Choanoflagellata-Craspedida-Salpingoecidae-Monosiga-brevicollis-pdb0000000001  Kingdom_unclassified1-Phylum_unclassified2-Choanoflagellata-Craspedida-Salpingoecidae-Monosiga-brevicollis-gigantic20220627164247_seq0000000001a
+for next_line in input_map:
+    info = next_line[ :-1 ].split( '\t' )
+    source = info[ 0 ]
+    gigantic = info[ 1 ].split( '-' )[ -1 ]
+    seqid_geneid[ gigantic ] = source
+
+# Aplysia gigantic20220627164247_seq0006143518aa  N0.HOG0000000   Bilateria       Capitella Drosophila Lingula Homo Crassostrea Mizuhopecten Cyclina Nautilus Octopus Achatina Aplysia Pomacea Lottia Gigantopelta Elysia Acanthopleura Caenorhabditis Phoronis
+for next_line in input_nodes:
+    node_path = next_line[ :-1 ]
+    input_node = open( node_path, 'r' )
+    
+    for next_line in input_node:
+        info = next_line[ :-1 ].split( '\t' )
+        species = info[ 0 ]
+        gigantic_id = info[ 1 ]
+        hog_id = info[ 2 ]
+        ancestral_node = info[ 3 ]
+        species_set = info[ 4 ]
+
+        # species gigantic_id hog_id ancestral_node species_set
+        details = info
+        seqid_nodes[ gigantic_id ] = details
+    input_node.close()
+
+output = 'GeneID' + '\t' + 'Species' +  '\t' + 'GIGANTIC Seqid' + '\t' + 'Orthogroup' + '\t' + 'Origin' + '\t' + 'Species 1' + '\t' + 'Species 1 Orthologs' + '\t' + 'Species 2' + '\t' + 'Species 2 Orthologs' + '\t' + 'Classification' + '\n'
+output_map_singles.write( output )
+
+# N0.HOG0004501   Aplysia gigantic20220627164247_seq0006147297aa          1       Capitella       2       One to Few
+for next_line in input_orthology:
+    classy_path = next_line[ :-1 ]
+    input_classification = open( classy_path, 'r' )
+
+    first_line = False
+    for next_line in input_classification:
+
+        if first_line == False:
+            first_line = True
+        else:
+            info = next_line[ :-1 ].split( '\t' )
+            hog_id = info[ 0 ]
+            species_1 = info[ 1 ]
+            gigantic_id = info[ 2 ]
+            species_one_orthology_count = info[ 3 ]
+            species_2 = info[ 4 ]
+            species_two_orthology_count = info[ 5 ]
+            classification = info[ 6 ]
+    
+            details_single = species_1 + '\t' + species_one_orthology_count + '\t' + species_2 + '\t' + species_two_orthology_count + '\t' + classification
+
+            if gigantic_id in seqid_orthology_singles.keys():
+                seqid_orthology_singles[ gigantic_id ] = seqid_orthology_singles[ gigantic_id ] + '\t' + details_single
+            else:
+                seqid_orthology_singles[ gigantic_id ] = details_single
+
+            details_multiple = details_single + '\n'
+    
+            if gigantic_id in seqid_orthology_multiples.keys():
+                seqid_orthology_multiples[ gigantic_id ] = seqid_orthology_multiples[ gigantic_id ] + details_multiple
+            else:
+                seqid_orthology_multiples[ gigantic_id ] = details_multiple
+
+    input_classification.close()
+    
+for next_seqid in sorted( seqid_nodes.keys() ):
+
+    gigantic_id = next_seqid
+    gene_id = seqid_geneid[ next_seqid ]
+    gene_id = gene_id.split( '-' )[ -1 ]
+    # moroz2022_GeneID:100533255_NP_001191495.1 
+    gene_id = gene_id.split( 'ID:' )
+    if len( gene_id )  > 1:
+        gene_id = gene_id[ 0 ] + 'ID:' + gene_id[ 1 ]
+        info_id = gene_id.split( '_' )
+        gene_id = info_id[ 1 ]
+    else:
+        gene_id = gene_id[ 0 ]
+    
+    detail_nodes = '\t'.join( seqid_nodes[ next_seqid ] )
+    details_classy_single = seqid_orthology_singles[ next_seqid ] 
+    details_classy_multiple =  seqid_orthology_multiples[ next_seqid ] 
+    
+    output = gene_id + '\t' + detail_nodes  + '\t' + details_classy_single  + '\n'
+    output_map_singles.write( output )
+
+    output = gene_id + '\t' + detail_nodes  + '\t' + details_classy_multiple 
+    output_map_multiples.write( output )
+
+input_map.close()
+input_nodes.close()
+input_orthology.close()
+output_map_singles.close()
+output_map_multiples.close()

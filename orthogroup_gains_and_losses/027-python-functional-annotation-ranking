@@ -1,0 +1,118 @@
+#! python
+
+input_giganticids = open( 'output/21-map-aplysia-sequences-annotations-names', 'r' )
+input_annotations = open( 'output/25-aplysia-genome-core-annotations-secretome-orthofinder', 'r' )
+input_homology_classification = open( 'output/4-map-species-Aplysia-orthology-classifications-per-species-per-sequence', 'r' )
+output_all = open( 'output/27-ranking-functional-annotations-based-on-homolog-complexity-ALL', 'w' )
+output_aplysia = open( 'output/27-ranking-functional-annotations-based-on-homolog-complexity-Aplysia', 'w' )
+
+# Ranking System: Species of interest vs reference species
+# 5 = one to one
+# 4 = one or more is few
+# 3 = one or both is many
+# 2 = one or both is mondo
+# 1 = one or both is massive
+# 0 = one or both is absent
+
+user_reference_species = [ 'Homo', 'Drosophila', 'Caenorhabditis' ]
+number_of_reference_species = len( user_reference_species )
+
+# N0.HOG0006827   Aplysia gigantic20220627164247_seq0006155755aa  1       Capitella       4       One to Few
+species_seq_references_ranks = {}
+for next_line in input_homology_classification:
+    info = next_line[ :-1 ].split( '\t' )
+    target_species = info[ 1 ]
+    target_sequence = info[ 2 ]
+    reference_species = info[ 4 ]
+    homologs_rank = info[ -1 ]
+    if reference_species in user_reference_species:
+        info_rank = homologs_rank.split( ' to ' )
+        target_homologs_count = info_rank[ 0 ]
+        target_reference_count = info_rank[ 1 ]
+        functional_annotation_rank = 'TBD'
+        if ( target_homologs_count == 'One' ) and ( target_reference_count == 'One' ):
+            functional_annotation_rank = 5
+        elif len( homologs_rank.split( 'Fe' ) ) > 1:
+            functional_annotation_rank = 4
+        elif len( homologs_rank.split( 'Man' ) ) > 1:
+            functional_annotation_rank = 3
+        elif len( homologs_rank.split( 'Mond' ) ) > 1:
+            functional_annotation_rank = 2
+        elif len( homologs_rank.split( 'Massiv' ) ) > 1:
+            functional_annotation_rank = 1
+        elif len( homologs_rank.split( 'Absen' ) ) > 1:
+            functional_annotation_rank = 0
+        else:
+            print( 'Error: No Functional Annotation Rank assigned!' )
+        
+        if target_species not in species_seq_references_ranks.keys():
+            species_seq_references_ranks[ target_species ] = {}
+        if target_sequence not in species_seq_references_ranks[ target_species ].keys():
+            species_seq_references_ranks[ target_species ][ target_sequence ] = {}
+        species_seq_references_ranks[ target_species ][ target_sequence ][ reference_species ] = functional_annotation_rank
+
+output = 'Species' + '\t' + 'Sequence Id' + '\t' + 'Ranking Top' +'\t' + 'Ranking Bottom' + '\t' + 'Ranking Average' + '\n'
+output_all.write( output )
+species_seqs_ranks = {}
+for next_species in species_seq_references_ranks.keys():
+    for next_seq in species_seq_references_ranks[ next_species ].keys():
+        total_ranks = 0
+        min_rank = 6
+        max_rank = -1
+        for next_reference_species in species_seq_references_ranks[ next_species ][ next_seq ].keys():
+            next_rank = species_seq_references_ranks[ next_species ][ next_seq ][ next_reference_species ]
+            total_ranks = total_ranks + next_rank
+            if next_rank < min_rank:
+                min_rank = next_rank
+            if next_rank > max_rank:
+                max_rank = next_rank
+        average_functional_annotation_ranking = total_ranks / number_of_reference_species
+        short_ave = str( average_functional_annotation_ranking ).split( '.' )[ 0 ] + '.' + str( average_functional_annotation_ranking ).split( '.' )[ -1 ][ 0 ]
+        ranks = str( max_rank ) + '\t' + str( min_rank ) + '\t' + short_ave
+        if next_species not in species_seqs_ranks.keys():
+            species_seqs_ranks[ next_species ] = {}
+        species_seqs_ranks[ next_species ][ next_seq ] = ranks
+
+        output = next_species + '\t' + next_seq + '\t' + ranks + '\n'
+        output_all.write( output )
+
+locids_giganticids = {}
+for next_line in input_giganticids:
+    info = next_line.split( '\t' )
+    locid = info [ 0 ]
+    giganticid = info[ 6 ]
+    locids_giganticids[ locid ] = giganticid
+
+# LOCID   Gene Symbol     Gene Name       Leonid Gene Name        Orthogroup OG   Orthogroup OG Clade     Orthogroup OG Name      Orthogroup HOG  Orthogroup HOG Name     Secretome Conservative  Secretome Liberal       Secretome Leonid        Serectome Leonid Gene Name      Pfam    Pfam Symbol     Pfam Description        GO      GO Namespace    GO Name GO Description  DeepLoc SP      DeepTNHMM SP    SignalP SP      DeepLoc TM      DeepTMHMM TM    Mobidblite DO   MetaPredict DO  AA Sequence
+first_line = True
+for next_line in input_annotations:
+    if first_line == True:
+        first_line = False
+        output = 'LOCID' + '\t' + 'Gene Symbol' + '\t' + 'Gene Name' + '\t' + 'Ranking Top' +'\t' + 'Ranking Bottom' + '\t' + 'Ranking Average' + '\t' + 'OG Id' + '\t' + 'OG Clade' + '\t' + 'OG Name' + '\t' + 'HOG Id' + '\t' + 'HOG Name' + '\t' + '\t' + 'Sequence' + '\n'
+        output_aplysia.write( output )
+        
+    else:
+        info = next_line[ :-1 ].split( '\t' )
+        locid = info[ 0 ]
+        symbol = info[ 1 ]
+        name = info[ 2 ]
+        og_id = info[ 4 ]
+        og_clade = info[ 5 ]
+        og_name = info[ 6 ]
+        hog_id = info[ 7 ]
+        hog_name = info[ 8 ]
+        sequence = info[ -1 ]
+    
+        gigantic_id = locids_giganticids[ locid ]
+        if gigantic_id in species_seqs_ranks[ 'Aplysia' ].keys():
+            rankings = species_seqs_ranks[ 'Aplysia' ][ gigantic_id ]
+        else:
+            rankings = '0\t0\t0'
+
+        output = locid + '\t' + symbol + '\t' + name + '\t' + rankings + '\t' + og_id + '\t' + og_clade + '\t' + og_name + '\t' + hog_id + '\t' + hog_name + '\t' + sequence + '\n'
+        output_aplysia.write( output )
+
+input_annotations.close()
+input_homology_classification.close()
+output_all.close()
+output_aplysia.close()

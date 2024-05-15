@@ -1,0 +1,3 @@
+#! /bin/bash
+
+ls -1 /scratch/eric/projects/aplysia/zoo/leonid-excel-tsvs/leonid-excels/* > output/28-list-single-cell-tsvs

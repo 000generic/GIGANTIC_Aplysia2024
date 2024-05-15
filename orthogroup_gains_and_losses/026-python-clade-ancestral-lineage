@@ -1,0 +1,68 @@
+#! python
+
+input_map = open( 'input/list-clades-ancestors', 'r' )
+input_names = open( 'input/list-clades-names', 'r' )
+output_map = open( 'output/26-clades-ancestral-lineages', 'w' )
+
+clades_names = {}
+
+for next_line in input_names:
+    info = next_line[ :-1 ].split( '\t' )
+    clade = info[ 0 ]
+    name = info[ 1 ]
+    info_name = name.split( '-' )
+    if len( info_name ) > 1:
+        name = info_name[ 1 ] + '~' + info_name[ 0 ]
+    info_name = name.split( '/' )
+    if len( info_name ) > 1:
+        name = info_name[ 1 ] + '~' + info_name[ 0 ]
+        
+    clades_names[ clade ] = name
+
+clades_ancestors = {}
+clades_lineages = {}
+for next_line in input_map:
+
+    info = next_line[ :-1 ].split( '\t' )
+    clade = info[ 0 ]
+    ancestor = info[ 1 ]
+    clades_ancestors[ clade ] = ancestor
+
+for next_clade in clades_ancestors:
+    original_clade = next_clade
+    next_ancestor = clades_ancestors[ next_clade ]
+    if next_clade in clades_lineages.keys():
+        clades_lineages[ next_clade ].append( next_ancestor )
+    
+    else:
+        clades_lineages[ next_clade ] = []
+        clades_lineages[ next_clade ].append( next_ancestor )
+
+    while next_ancestor in clades_ancestors.keys():
+        next_clade = next_ancestor
+        next_ancestor = clades_ancestors[ next_clade ]
+        clades_lineages[ original_clade ].append( next_ancestor )
+
+for next_clade in sorted( clades_lineages.keys() ):
+    next_name = clades_names[ next_clade ]
+    output = next_clade + '\t' + next_name + '\t'
+
+    lineage = next_clade + '-'
+    for next_ancestor in sorted( clades_lineages[ next_clade ] ):
+        lineage = lineage + next_ancestor + '-'
+
+    lineage = lineage[ :-1 ]
+    lineage_names = ''
+
+    lineage_info = lineage.split( '-' )
+    for next_clade in lineage_info:
+        next_name = clades_names[ next_clade ]
+        lineage_names = lineage_names + next_name + '-'
+
+    lineage_names = lineage_names[ :-1 ]
+    
+    output = output + lineage + '\t' + lineage_names + '\n'
+    output_map.write( output )
+
+input_map.close()
+output_map.close()

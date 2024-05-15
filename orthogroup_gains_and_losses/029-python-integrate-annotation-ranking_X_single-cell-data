@@ -1,0 +1,45 @@
+#! python
+
+input_ranking = open( 'output/27-ranking-functional-annotations-based-on-homolog-complexity-Aplysia', 'r' )
+input_tsvs = open( 'output/28-list-single-cell-tsvs', 'r' )
+
+locids_ranks = {}
+first_line = True
+for next_line in input_ranking:
+    if first_line == True:
+        first_line = False
+        ranking_header = next_line[ :-1 ]
+    else:
+        info = next_line.split( '\t' )
+        locid = info[ 0 ]
+        ranking = next_line[ :-1 ]
+        locids_ranks[ locid ] = ranking
+
+for next_tsv in input_tsvs:
+    next_path = next_tsv[ :-1 ]
+    input_name = next_path.split( '/' )[ -1 ]
+    input_tsv = open( next_path, 'r' )
+    output_path = 'output/29-annotation-ranking_X_' + input_name
+    output_tsv = open( output_path, 'w' )
+
+    first_line = True
+    for next_line in input_tsv:
+        info = next_line[ :-1 ].split( '\t' )
+        locid = info[ 0 ]
+        single_cell_data = '\t'.join( info[ 1: ] )
+        if first_line == True:
+            first_line = False
+            output = ranking_header + '\t' + single_cell_data
+            output_tsv.write( output )
+        else:
+            if locid in locids_ranks.keys():
+                ranking_data = locids_ranks[ locid ]
+                output = ranking_data + '\t' + single_cell_data + '\n'
+            else:
+                output = locid + 'NA' + '\t' + 'NA' + '\t'+ 'NA' + '\t'+ 'NA' + '\t'+ 'NA' + '\t'+ 'NA' + '\t'+ 'NA' + '\t'+ 'NA' + '\t'+ 'NA' + '\t'+ 'NA' + '\t' + single_cell_data + '\n'
+            output_tsv.write( output )
+            
+    input_tsv.close()
+    output_tsv.close()
+input_ranking.close()
+input_tsvs.close()

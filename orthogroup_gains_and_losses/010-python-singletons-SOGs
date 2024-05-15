@@ -1,0 +1,82 @@
+#! python
+
+# N0.HOG0028620   OG0026346       -                                                                                                                                                       Metazoa-Phoronida-Class_unclassified74-Order_unclassified75-Family_unclassified76-Phoronis-australis-gigantic20220627164247_seq0007069033aa, Metazoa-Phoronida-Class_unclassified74-Order_unclassified75-Family_unclassified76-Phoronis-australis-gigantic20220627164247_seq0007068346aa
+
+input_N0 = open( 'N0.tsv' , 'r' )
+input_fastas = open( 'output/9-list-fastas', 'r' )
+output_map = open( 'output/10-map-singletons-SOGs', 'w' )
+output_counts = open( 'output/10-stats-singletons-SOGs', 'w' )
+
+species_singletons = {}
+species_exiles = {}
+all_clustered_seqids = []
+
+for next_line in input_N0:
+
+    sequence_count = 0
+    
+    info = next_line[ :-1 ].split( '\t' )
+
+    hog_id = info[ 0 ]
+    seqids = info[ 3: ]
+    
+    for next_species in seqids:
+        info_seqids = next_species.split( ', ' )
+        for next_seqid in info_seqids:
+            if len( next_seqid ) > 0:
+                all_clustered_seqids.append( next_seqid )
+                sequence_count = sequence_count + 1
+                seqid = next_seqid
+                
+    if sequence_count == 1:
+        species = seqid.split( '-' )[ 5 ]
+        data = hog_id + '\t' + seqid + '\t' + 'Singleton In Orthogroup'
+        if species in species_singletons.keys():
+            species_singletons[ species ].append( data )
+
+        else:
+            species_singletons[ species ] = []
+            species_singletons[ species ].append( data )
+
+for next_species in sorted( species_singletons.keys() ):
+
+    number_of_singletons = len( species_singletons[ next_species ] )
+    output = next_species + '\t' + str( number_of_singletons ) + '\t' + 'Singleton In Orthogroup' + '\n'
+    output_counts.write( output )
+    
+    for next_singleton in species_singletons[ next_species ]:
+
+        output = next_species + '\t' + next_singleton + '\n'
+        output_map.write( output )
+
+exile_count = 0
+for next_line in input_fastas:
+
+    fasta_path = next_line[ :-1 ]
+    input_fasta = open( fasta_path, 'r' )
+    species_exile_count = 0
+    for next_line in input_fasta:
+        
+        if next_line[ 0 ] == '>':
+            seqid = next_line[ 1:-1 ].split( ' ' ) [ 0 ]
+            species = seqid.split( '-' ) [ 5 ]
+            if seqid in all_clustered_seqids:
+                pass
+            else:
+                exile_count = exile_count + 1
+                species_exile_count = species_exile_count + 1
+                sog_id = 'S0.SOG' +  str( exile_count ).zfill( 7 )
+                output = species + '\t' + sog_id + '\t' + seqid + '\t' + 'Singleton No Orthogroup' + '\n'
+                output_map.write( output )
+                
+    species_exiles[ species ] = species_exile_count
+
+for next_species in sorted( species_exiles.keys() ):
+    number_of_exiles = str( species_exiles[ next_species ] )
+    output = next_species + '\t' + number_of_exiles + '\t' + 'Singeltons No Orthogroup' + '\n'
+    output_counts.write( output )
+
+input_N0.close()
+input_fasta.close()
+output_counts.close()
+output_map.close()

@@ -1,0 +1,47 @@
+#! python
+
+input_data = open( 'output/7-Aplysia-map-ancestral-nodes-and-orthology-classification-per-sequence-single-line', 'r' )
+input_names = open( 'gigantic-names-map/5-map-aplysia-sequence-identifier-annotations', 'r' )
+output_data = open( 'output/8-Aplysia-orthogroup-analyses-12dec2022', 'w' )
+
+
+# GeneID:100533255        LOC:00000       Symbol:NOHIT1_likeNA    Name:No hit in human fly worm 1 Aplysia californica     Group:NA        AFold:00000     OFOG:N0.HOG0012429      COG:COGethyneura2834    LeonidName:Chemosensory receptor c      giganticID:Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-gigantic20220627164247_seq0006140675aa     MSLVNETERELKGSHNISEHGGLIDDQTLRIFLLVFTFVTLGLSLLGSAFNCINITVFLTLGAKDCVSVCLLSLAVSDFTCLFLGAVCGVCDILDAYGSADFYVDPRGLYYQVIFISSMSYDISTYITAFISLERCLCVALPFRFKELFTFKRAVLAMATIFCLTFCCYLPHYVTSGLRVQWDPRTNTTRVLLWSSKDMPAITAFLDLWNHLILAVTSVVIVIVCTHIMVTGLKKSSQFQRRGAARPSEPDGPNNFKTSNEVGEGEENVLRDPDSRRDNNISTPYCPTNVEKESSNKIKVEKSPQTLSAKNRRVVKMVSTLAIVSILCNTSRLLFVVALRAEPDINFGHRYHNLYMVILVLAYIFQVINAPVNIFIYLKLNPSYRKTFSQIFGIGQTK
+
+geneid_gigantic_symbol = {}
+geneid_gigantic_name = {}
+geneid_moroz = {}
+
+for next_line in input_names:
+    info = next_line[ :-1 ].split( '\t' )
+    gene_id = info[ 0 ]
+    loc_id = info[ 1 ]
+    gigantic_symbol = info[ 2 ].split( ':' )[ -1 ]
+    gigantic_name = info[ 3 ].split( ':' )[ -1 ]
+    group = info[ 4 ]
+    afold = info[ 5 ]
+    hog = info[ 6 ]
+    cog = info[ 7 ]
+    moroz_name = ':'.join( info[ 8 ].split( ':' )[ 1: ] )
+
+    geneid_gigantic_symbol[ gene_id ] = gigantic_symbol
+    geneid_gigantic_name[ gene_id ] = gigantic_name
+    geneid_moroz[ gene_id ] = moroz_name
+
+
+firstie = False
+for next_line in input_data:
+
+    if firstie == False:
+        firstie = True
+        output = 'GIGANTIC Symbol' + '\t' + 'GIGANTIC Name' + '\t' + 'Moroz Name' + next_line
+        output_data.write( output )
+        
+    else:
+        info = next_line[ :-1 ].split( '\t' )
+        gene_id = info[ 0 ]
+        output = geneid_gigantic_symbol[ gene_id ] + '\t' + geneid_gigantic_name[ gene_id ] + '\t' + geneid_moroz[ gene_id ]  + '\t' + next_line
+        output_data.write( output )
+
+input_data.close()
+input_names.close()
+output_data.close()

@@ -1,0 +1,69 @@
+#! python
+
+input_fastas = open( 'output/30-list-genome-fastas', 'r' )
+input_origins = open( 'output/3-species19_sequences-orthrogroups-clade_when-orthogroup_arose_in_evolution', 'r' )
+output_sums = open( 'output/31-sum-orthogroups-per-ancestral-node-across-species', 'w' )
+
+species_genome = {}
+for next_fasta in input_fastas:
+    input_fasta = open( next_fasta[ :-1 ], 'r' )
+    info_1 = next_fasta[ :-1 ].split( '/' )
+    info_2 = info_1[ -1 ].split( '-' )
+    species = info_2[ 5 ]
+    count = 0
+    for next_line in input_fasta:
+        if next_line[ 0 ] == '>':
+            count = count + 1
+    species_genome[ species ] = count
+
+species_clade_seq = {}
+# Metazoa-Phoronida-Class_unclassified74-Order_unclassified75-Family_unclassified76-Phoronis-australis-gigantic20220627164247_seq0007069071aa     OG0003594       C37     Bilateria
+for next_line in input_origins:
+
+    info = next_line[ :-1 ].split( '\t' )
+    giganticid = info[ 0 ]
+    ogid = info[ 1 ]
+    ancestral_clade = info[ 2 ]
+    ancestral_name = info[ 3 ]
+    info_gigantic = giganticid.split( '-' )
+    genus = info_gigantic[ 5 ]
+    clade = ancestral_clade + '-' + ancestral_name
+    if genus not in species_clade_seq.keys():
+        species_clade_seq[ genus ] = {}
+    if clade not in species_clade_seq[ genus ].keys():
+        species_clade_seq[ genus ][ clade ] = []
+    species_clade_seq[ genus ][ clade ].append( giganticid )
+
+output = 'Species' + '\t' + 'Genes In Genome' + '\t' + 'Ancestral Clade' + '\t' + 'Genes Originating In Clade' + '\t' + 'Percentage of Genome' + '\n'
+output_sums.write( output )
+for next_species in sorted( species_clade_seq.keys() ):
+    species_orthogroup_homologs_count = 0
+    clades_data = {}
+    for next_clade in sorted( species_clade_seq[ next_species ].keys() ):
+        count = len( species_clade_seq[ next_species ][ next_clade ] )
+        species_orthogroup_homologs_count = species_orthogroup_homologs_count + count
+        genome = species_genome[ next_species ]
+        percent = round( ( count / genome ) * 100, 1 )
+        next_data = next_species + '\t' + next_clade + '\t' + str( count ) + '\t' + str( percent )
+        clades_data[ next_clade ] = next_data
+        
+    species_test = True
+    singletons = genome - species_orthogroup_homologs_count
+    for next_clade in sorted( clades_data.keys() ):
+        next_data = clades_data[ next_clade ]
+        info_data = next_data.split( '\t' )
+        
+        if species_test == True:
+            species_test = False
+            orthogroup_seqs = int( info_data[ 2 ] )
+            all_seqs = singletons + orthogroup_seqs
+            percent = round( ( all_seqs / genome ) * 100, 1 )
+            info_data[ 2 ] = str( all_seqs )
+            info_data[ 3 ] = str( percent )
+
+        output = info_data[ 0 ] + '\t' + str( genome ) + '\t' + info_data[ 1 ] + '\t' + info_data[ 2 ] + '\t' + info_data[ 3 ]  + '\n'
+        output_sums.write( output )
+
+input_fastas.close()
+input_origins.close()
+output_sums.close()

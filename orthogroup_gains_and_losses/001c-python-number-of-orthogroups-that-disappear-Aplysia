@@ -1,0 +1,40 @@
+#! python
+
+input_N0 = open( 'N0.tsv', 'r' )
+input_N16 = open( 'N16.tsv', 'r' )
+
+n16_orthogroups = []
+n0_orthogroups = []
+
+for next_line in input_N16:
+    info = next_line.split( '\t' )
+    orthogroup_id = info[ 1 ]
+    for next_species in info[ 2: ]:
+        info_species = next_species.split( ', ' )
+        for next_sequence in info_species:
+            if len(next_sequence.split( 'Achatina' ) ) > 1:
+                if orthogroup_id not in n16_orthogroups:
+                    n16_orthogroups.append( orthogroup_id )
+
+missing = []
+for next_line in input_N0:
+    info = next_line.split( '\t' )
+    orthogroup_id = info[ 1 ]
+    for next_species in info[ 2: ]:
+        info_species = next_species.split( ', ' )
+        for next_sequence in info_species:
+            if len(next_sequence.split( 'Achatina' ) ) > 1:
+                if orthogroup_id not in n0_orthogroups:
+                    n0_orthogroups.append( orthogroup_id )
+final_n0 = list( set( n0_orthogroups ) )
+final_n16 = list( set( n16_orthogroups ) )
+
+for next_ortho in final_n0:
+    if next_ortho in final_n16:
+        pass
+    else:
+        print( next_ortho )
+
+input_N0.close()
+input_N16.close()
+

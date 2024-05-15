@@ -1,0 +1,4 @@
+#! /bin/bash
+
+wget https://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.dat.gz
+gunzip Pfam-A.hmm.dat.gz

@@ -1,0 +1,3 @@
+#! /bin/bash
+
+grep -c '>' ../../../*pep > output/12-counts-gene-per-genome

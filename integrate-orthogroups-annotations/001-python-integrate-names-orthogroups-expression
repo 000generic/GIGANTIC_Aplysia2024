@@ -1,0 +1,133 @@
+#! python
+
+# input_names = open( '../names/gene-names-2/output/8-map-aplysia-sequence-identifier-annotations-FOR-INTEGRATION', 'r' )
+# LOCID   Gene Symbol     Gene Name       Leonid Gene Name        Orthogroup OG   Orthogroup OG Clade     Orthogroup OG Name      Orthogroup HOG  Orthogroup HOG Name     Secretome Conservative  Secretome Liberal       Secretome Leonid        Serectome Leonid Gene Name      Pfam    Pfam Symbol     Pfam Description        GO      GO Namespace    GO Name GO Description  DeepLoc SP      DeepTNHMM SP    SignalP SP      DeepLoc TM      DeepTMHMM TM    Mobidblite DO   MetaPredict DO  AA Sequence
+
+# LOC100533255    NOHIT1  No hit in human fly worm 1 Aplysia californica  Chemosensory receptor c OG0011106       C21     Heterobranchia-Euthyneura       N0.HOG0013252   Euthyneura      No      No      No      NA      Pfam_PF00001_66_369     7tm_1   7 transmembrane receptor (rhodopsin family)     GO:0007186_44_392, GO:0016020_44_392, GO:0004930_66_369, GO:0007186_66_369, GO:0016020_66_369, GO:0004930_44_392, GO:0016020_47_377     biological_process, cellular_component, molecular_function, biological_process, cellular_component, molecular_function, cellular_component      G protein-coupled receptor signaling pathway, membrane, G protein-coupled receptor activity, G protein-coupled receptor signaling pathway, membrane, G protein-coupled receptor activity, membrane      The series of molecular signals initiated by a ligand binding to its receptor, in which the activated receptor promotes the exchange of GDP for GTP on the alpha-subunit of an associated heterotrimeric G-protein complex. The GTP-bound activated alpha-G-protein then dissociates from the beta- and gamma-subunits to further transmit the signal within the cell. The pathway begins with receptor-ligand interaction, and ends with regulation of a downstream cellular process. The pathway can start from the plasma membrane, Golgi or nuclear membrane., A lipid bilayer along with all the proteins and protein complexes embedded in it and attached to it., Combining with an extracellular signal and transmitting the signal across the membrane by activating an associated G-protein; promotes the exchange of GDP for GTP on the alpha subunit of a heterotrimeric G-protein complex., The series of molecular signals initiated by a ligand binding to its receptor, in which the activated receptor promotes the exchange of GDP for GTP on the alpha-subunit of an associated heterotrimeric G-protein complex. The GTP-bound activated alpha-G-protein then dissociates from the beta- and gamma-subunits to further transmit the signal within the cell. The pathway begins with receptor-ligand interaction, and ends with regulation of a downstream cellular process. The pathway can start from the plasma membrane, Golgi or nuclear membrane., A lipid bilayer along with all the proteins and protein complexes embedded in it and attached to it., Combining with an extracellular signal and transmitting the signal across the membrane by activating an associated G-protein; promotes the exchange of GDP for GTP on the alpha subunit of a heterotrimeric G-protein complex., A lipid bilayer along with all the proteins and protein complexes embedded in it and attached to it.  None    None    None    DeepLoc2_LOCAL:Cellmembrane_SIGNAL:Transmembranedomain  DeepTMHMM_TMs=7_TM32:57_TM69:90_TM109:133_TM154:174_TM205:228_TM322:338_TM354:378       MobiDBLite_mobidb-lite_240_286, MobiDBLite_mobidb-lite_264_278  MetaPredict_IDR_0_21_IDR_235_314        MSLVNETERELKGSHNISEHGGLIDDQTLRIFLLVFTFVTLGLSLLGSAFNCINITVFLTLGAKDCVSVCLLSLAVSDFTCLFLGAVCGVCDILDAYGSADFYVDPRGLYYQVIFISSMSYDISTYITAFISLERCLCVALPFRFKELFTFKRAVLAMATIFCLTFCCYLPHYVTSGLRVQWDPRTNTTRVLLWSSKDMPAITAFLDLWNHLILAVTSVVIVIVCTHIMVTGLKKSSQFQRRGAARPSEPDGPNNFKTSNEVGEGEENVLRDPDSRRDNNISTPYCPTNVEKESSNKIKVEKSPQTLSAKNRRVVKMVSTLAIVSILCNTSRLLFVVALRAEPDINFGHRYHNLYMVILVLAYIFQVINAPVNIFIYLKLNPSYRKTFSQIFGIGQTK
+
+input_annotations = open( '/scratch/eric/projects/aplysia/homologs-orthogroups/orthofinder/species19/orthofinder-blast-fasttree/OrthoFinder/Results_species19-orthofinder-blast-fasttree-GIGANTIC-species-tree/000-eric-analyses/orthogroup-gains-losses-annotation-integration/output/25-aplysia-genome-core-annotations-secretome-orthofinder', 'r' )
+input_neurons96 = open( '/scratch/eric/projects/aplysia/zoo/leonid-excel-tsvs/leonid-excels/Neurons-96-well-plate-med-coverage-LOC-2022.tsv', 'r' )
+input_neuronsAll = open( '/scratch/eric/projects/aplysia/zoo/leonid-excel-tsvs/leonid-excels/Aplysia_californica_Gene_Models_2022_ALL_NEURONS_SG_H.tsv', 'r' )
+input_camp = open( '/scratch/eric/projects/aplysia/zoo/leonid-excel-tsvs/leonid-excels/cAMP-test-LOC-2022.tsv', 'r' )
+input_devtis = open( '/scratch/eric/projects/aplysia/zoo/leonid-excel-tsvs/leonid-excels/Aplysia-tissue-and-develpment-2022.tsv', 'r' )
+input_neuronsHigh = open( '/scratch/eric/projects/aplysia/zoo/leonid-excel-tsvs/leonid-excels/Neurons-High-coverage-LOC-2022.tsv', 'r' )
+output_fail = open( 'output/1-locid-failures', 'w' )
+
+locids_annotations = {}
+header_annotations = ''
+first_line = True
+for next_line in input_annotations:
+    info = next_line[ :-1 ].split( '\t' )
+    if first_line == True:
+        first_line = False
+        header_annotations = next_line[ :-1 ]
+    else:
+        locid = info[ 0 ]
+        if locid == 'ATT': # remove
+            print( next_line ) # remove
+        annotations = '\t'.join( info )
+        locids_annotations[ locid ] = annotations
+
+first_line = True
+output_neurons96 = open( 'output/1-Aplysia-californica-annotations_EE2023_1_X_expression-data-sets/Aplysia-californica-annotations_EE2023_1_X_neurons96-expression-data.tsv', 'w' )
+for next_line in input_neurons96:
+    info = next_line.split( '\t' )
+    expression_data = '\t'.join( info[ 1: ] )
+    locid = info[ 0 ]
+    if first_line == True:
+        first_line = False
+        output = header_annotations + '\t' + expression_data
+        output_neurons96.write( output )
+    else:
+        if locid in locids_annotations.keys():
+            annotations = locids_annotations[ locid ]
+            output = annotations + '\t' + expression_data
+            output_neurons96.write( output )
+        else:
+            output_fail.write( 'neurons96\t' + info[ 0 ] + '\n' )
+
+first_line = True
+output_neuronsAll = open( 'output/1-Aplysia-californica-annotations_EE2023_1_X_expression-data-sets/Aplysia-californica-annotations_EE2023_1_X_neuronsAll-expression-data.tsv', 'w' )
+for next_line in input_neuronsAll:
+    info = next_line.split( '\t' )
+    expression_data = '\t'.join( info[ 1: ] )
+    locid = info[ 0 ]
+    if first_line == True:
+        first_line = False
+        output = header_annotations + '\t' + expression_data
+        output_neuronsAll.write( output )
+    else:
+        if locid in locids_annotations.keys():
+            annotations = locids_annotations[ locid ]
+            output = annotations + '\t' + expression_data
+            output_neuronsAll.write( output )
+        else:
+            output_fail.write( 'neuronsAll\t' + info[ 0 ] + '\n')
+
+first_line = True
+output_camp = open( 'output/1-Aplysia-californica-annotations_EE2023_1_X_expression-data-sets/Aplysia-californica-annotations_EE2023_1_X_cAMP-expression-data.tsv', 'w' )
+for next_line in input_camp:
+    info = next_line.split( '\t' )
+    expression_data = '\t'.join( info[ 1: ] )
+    locid = info[ 0 ]
+    if first_line == True:
+        first_line = False
+        output = header_annotations + '\t' + expression_data
+        output_camp.write( output )
+    else:
+        if locid in locids_annotations.keys():
+            annotations = locids_annotations[ locid ]
+            output = annotations + '\t' + expression_data
+            output_camp.write( output )
+        else:
+            output_fail.write( 'cAMP\t' + info[ 0 ] + '\n')
+
+
+first_line = True
+output_devtis = open( 'output/1-Aplysia-californica-annotations_EE2023_1_X_expression-data-sets/Aplysia-californica-annotations_EE2023_1_X_DevTis-expression-data.tsv', 'w' )
+for next_line in input_devtis:
+    info = next_line.split( '\t' )
+    expression_data = '\t'.join( info[ 1: ] )
+    locid = info[ 0 ]
+    if first_line == True:
+        first_line = False
+        output = header_annotations + '\t' + expression_data
+        output_devtis.write( output )
+    else:
+        if locid in locids_annotations.keys():
+            annotations = locids_annotations[ locid ]
+            output = annotations + '\t' + expression_data
+            output_devtis.write( output )
+        else:
+            output_fail.write( 'DevTis\t' + info[ 0 ] + '\n')
+
+first_line = True
+output_neuronsHigh = open( 'output/1-Aplysia-californica-annotations_EE2023_1_X_expression-data-sets/Aplysia-californica-annotations_EE2023_1_X_neuronsHigh-expression-data.tsv', 'w' )
+for next_line in input_neuronsHigh:
+    info = next_line.split( '\t' )
+    expression_data = '\t'.join( info[ 1: ] )
+    locid = info[ 0 ]
+    if first_line == True:
+        first_line = False
+        output = header_annotations + '\t' + expression_data
+        output_neuronsHigh.write( output )
+    else:
+        if locid in locids_annotations.keys():
+            annotations = locids_annotations[ locid ]
+            output = annotations + '\t' + expression_data
+            output_neuronsHigh.write( output )
+        else:
+            output_fail.write( 'neuronsHigh\t' + info[ 0 ] + '\n')
+
+input_annotations.close()
+input_neurons96.close()
+input_neuronsAll.close()
+input_camp.close()
+input_devtis.close()
+input_neuronsHigh.close()
+output_neurons96.close()
+output_neuronsAll.close()
+output_camp.close()
+output_devtis.close()
+output_neuronsHigh.close()
+output_fail.close()

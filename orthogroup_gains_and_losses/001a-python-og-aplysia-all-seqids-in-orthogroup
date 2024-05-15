@@ -1,0 +1,35 @@
+#! python
+# N0.HOG0000012   OG0000000       n160                            Metazoa-Chordata-Mammalia-Primates-Hominidae-Homo-sapiens-gigantic20220627164247_seq0004218536aa                                        Metazoa-Mollusca-Cephalopoda-Octopoda-Argonautidae-Argonauta-argo-gigantic20220627164247_seq0005895884aa
+
+# will use OG not HOG as this will allow linking aplysia sequences to model organisms better - lower resolution of OGs more likely to place Aplysia in same orthogroup as one of the model species
+
+input_N0 = open( 'N0.tsv', 'r' )
+output_map = open( 'output/1a-map-aplysia_X_orthofinder-OGs', 'w' )
+
+for next_line in input_N0:
+    info = next_line[ :-1 ].split( '\t' )
+    hog = info[ 0 ]
+    og = info[ 1 ]
+    aplysia = False
+    all_seqids = []
+    aplysia_seqids = []
+    for next_species in info[ 3: ]:
+        species_info = next_species.split( ', ' )
+        for next_seqid in species_info:
+            all_seqids.append( next_seqid )
+            if len( next_seqid.split( 'Aplysia' ) ) > 1:
+                    aplysia = True
+                    aplysia_seqids.append( next_seqid )
+    if aplysia == True:
+        all_seqids_output = ', '.join( all_seqids )
+        for next_aplysia_seqid in aplysia_seqids:
+            output = next_aplysia_seqid + '\t' + og + '\t' + hog + '\t' + all_seqids_output + '\n'
+            output_map.write( output )
+
+input_N0.close()
+output_map.close()
+
+
+        
+                    
+            

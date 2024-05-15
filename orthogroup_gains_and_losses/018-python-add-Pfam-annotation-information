@@ -1,0 +1,102 @@
+#! python
+
+input_map = open( 'output/16-map-aplysia-genome-orthgroups_X_annotations', 'r' )
+input_pfam = open( 'input/pfam-annotations/Pfam-A.hmm.dat', 'r' )
+output_map = open( 'output/18-map-aplysia-genome-orthgroups_X_annotations', 'w' )
+
+# # STOCKHOLM 1.0
+# #=GF ID   1-cysPrx_C
+# #=GF AC   PF10417.12
+# #=GF DE   C-terminal domain of 1-Cys peroxiredoxin
+# #=GF GA   21.1; 21.1;
+# #=GF TP   Domain
+# #=GF ML   40
+# //
+
+pfams_descriptions = {}
+pfams_symbols = {}
+pfams_types = {}
+
+for next_line in input_pfam:
+
+    info = next_line.split( ' ' )
+    
+    if info[ 0 ] == 'STOCKHOLM':
+        pfam_id = ''
+        pfam_accession = ''
+        pfam_description = ''
+        pfam_type = ''
+
+    elif next_line[ 0 ] == '/':
+        pfams_descriptions[ pfam_accession ] = pfam_description
+        pfams_symbols[ pfam_accession ] = pfam_symbols
+        pfams_types[ pfam_accession ] = pfam_type
+        
+    else:
+        
+        info_2 = next_line[ :-1 ].split( '   ' )
+        
+        if info[ 1 ] == 'ID':
+            pfam_symbols = info_2[ 1 ]
+        elif info[ 1 ] == 'AC':
+            pfam_accession = info_2[ 1 ].split( '.' )[ 0 ]
+        elif info[ 1 ] == 'DE':
+            pfam_description = ''.join( info_2[ 1 ].split( ',' ) )
+        elif info[ 1 ] == 'TP':
+            pfam_type = info_2[ 1 ]
+
+first = False
+for next_line in input_map:
+
+    info = next_line.split( '\t' )
+    
+    if first == False:
+        first = True
+        update = '[ Pfam Accession ]' + '\t'  + '[ Pfam Symbols ]' + '\t' + '[ Pfam Types ]' + '\t' + '[ Pfam Descriptions ]' 
+        info[ 14 ] = update
+        output = '\t'.join( info )
+        output_map.write( output )
+
+    # Pfam_PF00001_66:369, Pfam_PF00001_66:369, Pfam_PF00001_66:369, Pfam_PF00001_66:369, Pfam_PF00001_66:369, Pfam_PF00001_66:369, Pfam_PF00001_66:369
+    else:
+        source_pfamids = info[ 14 ]
+        pfamids = info[ 14 ].split( ', ' )
+
+        descriptions = ''
+        symbols = ''
+        types = ''
+        
+        for next_pfamid in pfamids:
+            
+            if next_pfamid == 'None':
+                descriptions = descriptions +  'None, '
+                symbols = symbols + 'None, '
+                types = types + 'None, '
+
+            else:
+                pfam_short = next_pfamid.split( '_' )[ 1 ]
+                
+                if pfam_short in pfams_descriptions.keys():
+
+                    description = pfams_descriptions[ pfam_short ]
+                    descriptions = descriptions + description + ', '
+
+                    symbol = pfams_symbols[ pfam_short ]
+                    symbols = symbols + symbol + ', '
+
+                    typo = pfams_types[ pfam_short ]
+                    types = types + typo + ', '
+                    
+                else:
+                    descriptions = descriptions +  'Deprecated Pfam, '
+                    symbols = symbols + 'Deprecated Pfam, '
+                    types = types + 'Deprecated Pfam, '
+
+        update = source_pfamids + '\t' + symbols[ :-2 ] + '\t' + types[ :-2 ] + '\t'  + descriptions[ :-2 ]
+        info[ 14 ] = update
+        output = '\t'.join( info )
+        output_map.write( output )
+
+input_map.close()
+input_pfam.close()
+output_map.close()

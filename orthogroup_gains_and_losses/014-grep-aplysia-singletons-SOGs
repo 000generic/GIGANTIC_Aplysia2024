@@ -1,0 +1,3 @@
+#! /bin/bash
+
+grep 'Aplysia' output/10-map-singletons > output/14-map-singletons-Aplysia

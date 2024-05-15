@@ -1,0 +1,4 @@
+#! /bin/bash
+
+ls -1 output/4-*hogs* > output/5-list-ancestral-node-parsings
+ls -1 output/4-map-ALL* > output/5-list-orthology-classification

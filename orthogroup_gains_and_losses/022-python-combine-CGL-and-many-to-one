@@ -1,0 +1,97 @@
+#! python
+
+input_cgl = open( 'output/3-species19_sequences-orthrogroups-clade_when-orthogroup_arose_in_evolution', 'r' )
+input_sohogs = open( 'output/11-map-HOG-to-SOHOG-ids', 'r' )
+input_singletons = open( 'output/10-map-singletons-SOGs', 'r' )
+input_many = open( 'output/13-Aplysia-orthogroup-analyses-12dec2022', 'r' )
+input_names = open( '/scratch/eric/projects/aplysia/names/gene-names-2/output/8-map-aplysia-sequence-identifier-annotations-FOR-INTEGRATION', 'r' )
+output_combo = open( 'output/22-aplysia-species19-orthogroups_X_evolution', 'w' )
+
+giganticids_ogs = {}
+giganticids_origins = {}
+# Metazoa-Annelida-Polychaeta-Order_unclassified14-Capitellidae-Capitella-teleta-gigantic20220627164247_seq0000250511aa   OG0001074       C37     Bilateria
+for next_line in input_cgl:
+    info = next_line[ :-1 ].split( '\t' )
+    giganticid = info[ 0 ].split( '-' )[ -1 ]
+    og = info[ 1 ]
+    clade = info[ 2 ]
+    clade_name = info[ 3 ]
+    clade_cladename = clade + '\t' + clade_name
+    giganticids_origins[ giganticid ] = clade_cladename
+    giganticids_ogs[ giganticid ] = og
+    
+hogs_sohogs = {}
+# gigantic20220627164247_seq0000251367aa  Capitella       N0.HOG0000009   N0.SOHOG0000009
+for next_line in input_sohogs:
+    info = next_line[ :-1 ].split( '\t' )
+    giganticid = info[ 0 ]
+    genus = info[ 1 ]
+    hog = info[ 2 ]
+    sohog = info[ 3 ]
+    hogs_sohogs[ hog ] = sohog
+    
+giganticids_singletonids = {}
+# Capitella       S0.SOG0000070   Metazoa-Annelida-Polychaeta-Order_unclassified14-Capitellidae-Capitella-teleta-gigantic20220627164247_seq0000245177aa   Singleton No Orthogroup
+for next_line in input_singletons:
+    info = next_line.split( '\t' )[ :-1 ]
+    giganticid = info[ 2 ].split( '-' )[ -1 ]
+    singletonid = info[ 1 ]
+    giganticids_singletonids[ giganticid ] = singletonid
+    
+giganticids_manys = {}
+giganticids_hogs = {}
+# LOC100533255    NOHIT1_likeNA   No hit in human fly worm 1 Aplysia californica  Chemosensory receptor c GeneID:100533255        Aplysia gigantic20220627164247_seq0006140675aa  N0.HOG0013252   Euthyneura      Achatina Aplysia Elysia Aplysia 1 Capitella        0       One to Absent   Aplysia 1       Drosophila      0       One to Absent   Aplysia 1       Lingula 0       One to Absent   Aplysia 1       Homo    0       One to Absent   Aplysia 1       Crassostrea     0       One to Absent      Aplysia 1       Mizuhopecten    0       One to Absent   Aplysia 1       Cyclina 0       One to Absent   Aplysia 1       Nautilus        0       One to Absent   Aplysia 1       Argonauta       0       One to Absent   Aplysia 1       Octopus    0       One to Absent   Aplysia 1       Achatina        2       One to Few      Aplysia 1       Aplysia 1       One to One      Aplysia 1       Pomacea 0       One to Absent   Aplysia 1       Lottia  0       One to Absent   Aplysia 1 Gigantopelta     0       One to Absent   Aplysia 1       Elysia  2       One to Few      Aplysia 1       Acanthopleura   0       One to Absent   Aplysia 1       Caenorhabditis  0       One to Absent   Aplysia 1       Phoronis        0       One to Absent
+
+for next_line in input_many:
+    info = next_line[ :-1 ].split( '\t' )
+    locid = info[ 0 ]
+    giganticid = info[ 6 ]
+    hog = info[ 7 ]
+    if hog in hogs_sohogs.keys():
+        hog = hogs_sohogs[ hog ]
+    many_to_one = info[ 8 ] + '\t' + '\t'.join( info[ 10 : ] )
+    giganticids_manys[ giganticid ] =  many_to_one
+    giganticids_hogs[ giganticid ] = hog
+
+number_of_many_to_one_elements = len( many_to_one.split( '\t' ) )
+range_of_many_to_one_elements = range( number_of_many_to_one_elements )
+                                      
+# LOCID   Symbol  Gene Name       Gene Group Name GIGANTIC ID     Leonid Gene Name        AA Sequence
+# LOC101850063    GLIS3_like1     Glis family zinc finger 3 like 1        NA      Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-gigantic20220627164247_seq0006160618aa     Transcription factor mef2a-like MNGRGSSRSQTNGQGHGHIPGSHSSGVKGEGQQQTPRQGQQQSGDGGPGNIPMLRVQPDTPVPPSNHSTPGPGDKGTSLPAIPSYSPGLVSSGRPSPKDTFKHSGSRGSILHHHHNNNNNNNNNNSSSNSSVAKNRGYSTARGTGNSTHLKITPTATSTFPNKHLKQEVQSGGYGPQCIPLGPRHTNNLSNDFVNGYNYSNSLNNNNNNSGNISNSKSMGPKSSNYHGNSEEVSPRMPNVNGSSGGGGGNIFGSDIGHQGVTLIPLQTLYTHTPTPSEISNITARSAASPRSGMHTPALSVISNQERASALGATSRASVHTPRSSLHTPRSMLGTPRLEQSSDVSSGGKMHIQQPQQQQQHHVFLEPALPKSQDWPHFKLLPSVTSSTMDGSDNDSQSIAVPGSATSHYNTGSNLSPYQGTEMSPFPSRFTSPRHSANINARMSQKRALSISPSLSDGIDLNHIIRLSPTSLGPYLPSTRNSSTSGSPQPGQQGSFSHLSARNSSPYSQTGSGQRRLGGNFTPFSMMSGVKSENNMDFFNMVPLESNGLEDMMSNSFVARQSDVPLIEYNCSVGLFPNGVNVNGGGQMGHMDTDQDYNSVASEGIGGNLTVGTMQQNCMMAGNGMGGIMPHGMNNMQTAMNSVMPVNGIPPPPSYNEALEQQQQQHHQHHHPHQQAQSHHLQPPSHHHHHQTSQGGVLLHQHRPSHHQHSHPHSQQIQHHPLLHAQQHPQSEQQQQQQQQQQQQQQQQQQQTGGAPGIPPHMHGLSSNLQVMSPSAMQVMSPGIQGLSPGSGNGMQGMMGMSPAAPGGGGVTSANMSPAYMSDSSSQPVGTTSGSAKVEEFEDEDPNICRWIDCNMMFKEQDELVRHLEKVHIDQKKGEEFSCFWQGCPRQFRPFNARYKLLIHMRVHSGEKPNKCTFDGCTKAFSRLENLKIHLRSHTGERPYLCTQPGCHKAFSNSSDRAKHQRTHVDTKPYACQVAGCNKRYTDPSSLRKHIKNHTKEQQQQQKKKLKTESLEGGDILNTCLTIQPLRPEGSPMDFNENSLGRSPHAVHNADVFPSFTFSSSHSSRCGTATGSSNMSSQQSPVSMTTGTLGVLDETSENMSGYSSTPANMLSPRPLPPIPQQQMPPHMVHMQAGQYGHSAYLYNQQMQGNTDMTPSMQQQLRPQYPQAYTGFNSCRMGAMQAQRMISMQNFNPDSFNMPLDGMPQPGFTDTTSLPTLESLPVPAEPGMQQYLQLTAIDRCNSRTSVYADGTT
+output = 'Locid' + '\t' + 'Gene Symbol' + '\t' + 'Gene Name' + '\t' + 'Orthogroup OG' + '\t' + 'OG Origin Clade' + '\t' + 'OG Origin Name' + '\t' + 'Orthogroup HOG' + '\t' + 'HOG Origin Name' + '\t' + 'Aplysia' + '\t' + 'Count' + '\t' + 'Capitella' + '\t' + 'Count' + '\t' + 'Class' + '\t' + 'Aplysia' + '\t' + 'Count' + '\t' + 'Drosophila' + '\t' + 'Count' + '\t' + 'Class' + '\t' + 'Aplysia' + '\t' + 'Count' + '\t' + 'Lingula' + '\t' + 'Count' + '\t' + 'Class' + '\t' + 'Aplysia' + '\t' + 'Count' + '\t' + 'Homo' + '\t' + 'Count' + '\t' + 'Class' + '\t' + 'Aplysia' + '\t' + 'Count' + '\t' + 'Crassostrea' + '\t' + 'Count' + '\t' + 'Class' + '\t' + 'Aplysia' + '\t' + 'Count' + '\t' + 'Mizuhopecten' + '\t' + 'Count' + '\t' + 'Class' + '\t' + 'Aplysia' + '\t' + 'Count' + '\t' + 'Cyclina' + '\t' + 'Count' + '\t' + 'Class' + '\t' + 'Aplysia' + '\t' + 'Count' + '\t' + 'Nautilus' + '\t' + 'Count' + '\t' + 'Class' + '\t' + 'Aplysia' + '\t' + 'Count' + '\t' + 'Argonauta' + '\t' + 'Count' + '\t' + 'Class' + '\t' + 'Aplysia' + '\t' + 'Count' + '\t' + 'Octopus' + '\t' + 'Count' + '\t' + 'Count' + '\t' + 'Aplysia' + '\t' + 'Count' + '\t' + 'Achatina' + '\t' + 'Count' + '\t' + 'Class' + '\t' + 'Aplysia' + '\t' + 'Count' + '\t' + 'Aplysia' + '\t' + 'Count' + '\t' + 'Class' + '\t' + 'Aplysia' + '\t' + 'Count' + '\t' + 'Pomacea' + '\t' + 'Count' + '\t' + 'Class' + '\t' + 'Aplysia' + '\t' + 'Count' + '\t' + 'Lottia' + '\t' + 'Count' + '\t' + 'Class' + '\t' + 'Aplysia' + '\t' + 'Count' + '\t' + 'Gigantopelta' + '\t' + 'Count' + '\t' + 'Class' + '\t' + 'Aplysia' + '\t' + 'Count' + '\t' + 'Elysia' + '\t' + 'Count' + '\t' + 'Class' + '\t' + 'Aplysia' + '\t' + 'Count' + '\t' + 'Acanthopleura' + '\t' + 'Count' + '\t' + 'Class' + '\t' + 'Aplysia' + '\t' + 'Count' + '\t' + 'Caenorhabditis' + '\t' + 'Count' + '\t' + 'Class' + '\t' + 'Aplysia' + '\t' + 'Count' + '\t' + 'Phoronis' + '\t' + 'Count' + '\t' + 'Class' + '\t' + 'GIGANTIC ID'  + '\n'
+
+output_combo.write( output )
+
+first = False
+for next_line in input_names:
+    if first == False:
+        first = True
+    else:
+        info = next_line[ :-1 ].split( '\t' )
+        locid = info[ 0 ]
+        symbol = info[ 1 ]
+        gene_name = info[ 2 ]
+        giganticid = info[ 4 ].split( '-' )[ -1 ]
+        if giganticid in giganticids_hogs.keys():
+            hog = giganticids_hogs[ giganticid ]
+            orthogroup = giganticids_ogs[ giganticid ]
+            origins = giganticids_origins[ giganticid ]
+            manys = giganticids_manys[ giganticid ]
+        else:
+            hog = giganticids_singletonids[ giganticid ]
+            orthogroup = giganticids_singletonids[ giganticid ]
+            origins = 'C01\tEuopisthobranchia-Aplysia'
+            manys = 'Euopisthobranchia Aplysia' + '\t' 'Aplysia' + '\t' + '1' + '\t' + 'Capitella' + '\t' + '0' + '\t' + 'Singleton' + '\t' + 'Aplysia' + '\t' + '1' + '\t' + 'Drosophila' + '\t' + '0' + '\t' + 'Singleton' + '\t' + 'Aplysia' + '\t' + '1' + '\t' + 'Lingula' + '\t' + '0' + '\t' + 'Singleton' + '\t' + 'Aplysia' + '\t' + '1' + '\t' + 'Homo' + '\t' + '0' + '\t' + 'Singleton' + '\t' + 'Aplysia' + '\t' + '1' + '\t' + 'Crassostrea' + '\t' + '0' + '\t' + 'Singleton' + '\t' + 'Aplysia' + '\t' + '1' + '\t' + 'Mizuhopecten' + '\t' + '0' + '\t' + 'Singleton' + '\t' + 'Aplysia' + '\t' + '1' + '\t' + 'Cyclina' + '\t' + '0' + '\t' + 'Singleton' + '\t' + 'Aplysia' + '\t' + '1' + '\t' + 'Nautilus' + '\t' + '0' + '\t' + 'Singleton' + '\t' + 'Aplysia' + '\t' + '1' + '\t' + 'Argonauta' + '\t' + '0' + '\t' + 'Singleton' + '\t' + 'Aplysia' + '\t' + '1' + '\t' + 'Octopus' + '\t' + '0' + '\t' + 'Singleton' + '\t' + 'Aplysia' + '\t' + '1' + '\t' + 'Achatina' + '\t' + '0' + '\t' + 'Singleton' + '\t' + 'Aplysia' + '\t' + '1' + '\t' + 'Aplysia' + '\t' + '1' + '\t' + 'Singleton' + '\t' + 'Aplysia' + '\t' + '1' + '\t' + 'Pomacea' + '\t' + '0' + '\t' + 'Singleton' + '\t' + 'Aplysia' + '\t' + '1' + '\t' + 'Lottia' + '\t' + '0' + '\t' + 'Singleton' + '\t' + 'Aplysia' + '\t' + '1' + '\t' + 'Gigantopelta' + '\t' + '0' + '\t' + 'Singleton' + '\t' + 'Aplysia' + '\t' + '1' + '\t' + 'Elysia' + '\t' + '0' + '\t' + 'Singleton' + '\t' + 'Aplysia' + '\t' + '1' + '\t' + 'Acanthopleura' + '\t' + '0' + '\t' + 'Singleton' + '\t' + 'Aplysia' + '\t' + '1' + '\t' + 'Caenorhabditis' + '\t' + '0' + '\t' + 'Singleton' + '\t' + 'Aplysia' + '\t' + '1' + '\t' + 'Phoronis' + '\t' + '0' + '\t' + 'Singleton'
+
+        output = locid + '\t' + symbol + '\t' + gene_name + '\t' + orthogroup +  '\t' + origins + '\t' + hog + '\t' + manys + '\t' + giganticid + '\n'
+        output_combo.write( output )
+
+# ['LOC101850063', 'GLIS3_like1', 'Glis family zinc finger 3 like 1', 'OG0001401', 'N0.HOG0002983', 'C37', 'Bilateria', 'Bilateria', 'Aplysia', '1', 'Capitella', '1', 'One to One', 'Aplysia', '1', 'Drosophila', '1', 'One to One', 'Aplysia', '1', 'Lingula', '1', 'One to One', 'Aplysia', '1', 'Homo', '2', 'One to Few', 'Aplysia', '1', 'Crassostrea', '1', 'One to One', 'Aplysia', '1', 'Mizuhopecten', '1', 'One to One', 'Aplysia', '1', 'Cyclina', '1', 'One to One', 'Aplysia', '1', 'Nautilus', '1', 'One to One', 'Aplysia', '1', 'Argonauta', '2', 'One to Few', 'Aplysia', '1', 'Octopus', '1', 'One to One', 'Aplysia', '1', 'Achatina', '1', 'One to One', 'Aplysia', '1', 'Aplysia', '1', 'One to One', 'Aplysia', '1', 'Pomacea', '1', 'One to One', 'Aplysia', '1', 'Lottia', '1', 'One to One', 'Aplysia', '1', 'Gigantopelta', '1', 'One to One', 'Aplysia', '1', 'Elysia', '1', 'One to One', 'Aplysia', '1', 'Acanthopleura', '1', 'One to One', 'Aplysia', '1', 'Caenorhabditis', '0', 'One to Absent', 'Aplysia', '1', 'Phoronis', '1', 'One to One', 'gigantic20220627164247_seq0006160618aa\n']
+info_check = output.split( '\t' )
+print( info_check )
+
+input_cgl.close()
+input_sohogs.close()
+input_many.close()
+input_names.close()
+output_combo.close()

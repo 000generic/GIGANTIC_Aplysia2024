@@ -1,0 +1,83 @@
+#! python
+
+input_tsvs = open( 'output/2-list-tsvs', 'r' )
+input_species = open( '/scratch/eric/projects/aplysia/homologs-orthogroups/orthofinder/species19/orthofinder-blast-fasttree/OrthoFinder/Results_species19-orthofinder-blast-fasttree-GIGANTIC-species-tree/000-eric-analyses/orthogroup-gains-losses-annotation-integration/output/22-aplysia-species19-orthogroups_X_evolution', 'r' )
+output_fail = open( 'output/3-fails', 'w' )
+
+# Locid   Gene Symbol     Gene Name       Orthogroup OG   OG Origin Clade OG Origin Name  Orthogroup HOG  HOG Origin Name Aplysia Count   Capitella       Count   Class   Aplysia Count   Drosophila      Count   Class   Aplysia Count   Lingula Count   Class   Aplysia Count   Homo    Count   Class   Aplysia Count   Crassostrea     Count   Class   Aplysia Count   Mizuhopecten    Count   Class   Aplysia Count   Cyclina Count   Class   Aplysia Count   Nautilus        Count   Class   Aplysia Count   Argonauta       Count   Class   Aplysia Count   Octopus Count   Count   Aplysia Count   Achatina        Count   Class   Aplysia Count   Aplysia Count   Class   Aplysia Count   Pomacea Count   Class   Aplysia Count   Lottia  Count   Class   Aplysia Count   Gigantopelta    Count   Class   Aplysia Count   Elysia  Count   Class   Aplysia Count   Acanthopleura   Count   Class   Aplysia Count   Caenorhabditis  Count   Class   Aplysia Count   Phoronis        Count   Class   GIGANTIC ID
+
+# LOC100533255    NOHIT1  No hit in human fly worm 1 Aplysia californica  OG0011106       C21     Heterobranchia-Euthyneura       N0.HOG0013252   Euthyneura      Aplysia 1       Capitella       0       One to Absent   Aplysia 1       Drosophila      0       One to Absent   Aplysia 1       Lingula 0       One to Absent   Aplysia 1       Homo    0       One to Absent   Aplysia 1       Crassostrea     0       One to Absent   Aplysia 1       Mizuhopecten    0       One to Absent   Aplysia 1       Cyclina 0       One to Absent   Aplysia 1       Nautilus        0       One to Absent   Aplysia 1       Argonauta       0       One to Absent   Aplysia 1       Octopus 0       One to Absent   Aplysia 1       Achatina        2       One to Few      Aplysia 1       Aplysia 1       One to One      Aplysia 1       Pomacea 0       One to Absent   Aplysia 1       Lottia  0       One to Absent   Aplysia 1       Gigantopelta    0       One to Absent   Aplysia 1       Elysia  2           One to Few      Aplysia 1       Acanthopleura   0       One to Absent   Aplysia 1       Caenorhabditis  0       One to Absent   Aplysia 1       Phoronis        0       One to Absent   gigantic20220627164247_seq0006140675aa
+
+genera = ['Capitella','Drosophila','Lingula','Homo','Crassostrea','Mizuhopecten','Cyclina','Nautilus','Argonauta','Octopus','Achatina','Pomacea','Lottia','Gigantopelta','Elysia','Acanthopleura','Caenorhabditis','Phoronis' ]
+locid_hog_species = {}
+first_test = False
+for next_line in input_species:
+    if first_test == False:
+        first_test = True
+    else:
+        info = next_line[ :-1 ].split( '\t' )
+        giganticid = info[ -1 ]
+        locid = info[ 0 ]
+        ogid = info[ 3 ]
+        ogbranch = info[ 4 ]
+        ogclade = info[ 5 ]
+        hogid = info[ 6 ]
+        hogbranch = info[ 7 ]
+        hogclade = info[ 8 ]
+        
+        species = []
+        capture = False
+        for next_anno in info[ 9:-1 ]:
+            if capture == True:
+                capture = False
+                anno_number = int( next_anno )
+                if anno_number > 0:
+                    species.append( previous_anno )
+            if next_anno in genera:
+                capture = True
+                previous_anno = next_anno
+        species_set = ', '.join( species )
+        locid_hog_species[ locid ] = {}
+        locid_hog_species[ locid ][ hogid ] = species_set
+
+for next_tsv in input_tsvs:
+    source_file = next_tsv[ :-1 ]
+    input_tsv = open( source_file, 'r' )
+    info = source_file.split( '/' )
+    new_file = 'output/3-' + info[ -1 ] 
+    output_tsv =  open( new_file, 'w' )
+
+    # LOCID   Gene Symbol     Gene Name       Leonid Gene Name        Orthogroup OG   Orthogroup OG Clade     Orthogroup OG Name      Orthogroup HOG  Orthogroup HOG Name     Secretome Conservative  Secretome Liberal       Secretome Leonid        Serectome Leonid Gene Name Pfam    Pfam Symbol     Pfam Description        GO      GO Namespace    GO Name GO Description  DeepLoc SP      DeepTNHMM SP    SignalP SP      DeepLoc TM      DeepTMHMM TM    Mobidblite DO   MetaPredict DO  AA Sequence RNA Accession Number    best_annotation AboveR14_1      AboveR14_2      B_cluster       Behind_E2       F_cluster_1     F_cluster_2     G_cluster_1     G_cluster_2     G_cluster_3     G_cluster_4     G_cluster_5     G_cluster_6     G_cluster_7        Gill_Motor_Neuron       L_G_cluster     Lg_E_cluster    L_MCC   LPL1    L_VC_1  L_VC_2  L_VC_3  L_VC_4  L_VC_5  L_VC_6  L_VC_7  L_VC_8  L_VC_9  L_VC_10 L_VC_11 L_VC_12 L_VC_13 L_VC_14 Med_E_cluster   Near_F2 Near_L11_1      Near_L11_2 Near_L7_1       Near_L7_2       Near_R14        Near_R2_1       Near_R2_2       Near_R2_3       Near_R2_4       Near_R2_5       Near_R2_6       Near_R2_7       Pl_FMRF_10      Pl_FMRF_11      Pl_FMRF_12      Pl_FMRF_1       Pl_FMRF_2 Pl_FMRF_3        Pl_FMRF_4       Pl_FMRF_5       Pl_FMRF_6       Pl_FMRF_7       Pl_FMRF_8       Pl_FMRF_9       R14     R2      R_A_cluster_1   R_A_cluster_2   R_A_cluster_3   R_A_cluster_4   R_A_cluster_5   C_cluster_1     C_cluster_2     C_cluster_3        C_cluster_4     C_cluster_5     C_cluster_6     C_cluster_7     R_MCC   R_Pd_cilia_10   R_Pd_cilia_11   R_Pd_cilia_12   R_Pd_cilia_13   R_Pd_cilia_14   R_Pd_cilia_15   R_Pd_cilia_16   R_Pd_cilia_17   R_Pd_cilia_18   R_Pd_cilia_19      R_Pd_cilia_1    R_Pd_cilia_20   R_Pd_cilia_21   R_Pd_cilia_2    R_Pd_cilia_3    R_Pd_cilia_4    R_Pd_cilia_5    R_Pd_cilia_6    R_Pd_cilia_7    R_Pd_cilia_8    R_Pd_cilia_9    Sm_Ant_CerG_1   Sm_Ant_CerG_2
+
+    first_line = True
+    for next_line in input_tsv:
+        info = next_line.split( '\t' )
+        if len( info ) > 2:
+            locid = info[ 0 ]
+            hogid = info[ 7 ]
+            conservation_clade = info[ 8 ]
+            if first_line == True:
+                first_line = False
+                output = info[ 0 ] + '\t' + conservation_clade + '\tOrthogroup Species\t' + '\t'.join( info[ 1: ] )
+                output_tsv.write( output )
+                
+            else:
+                if locid in  locid_hog_species.keys():
+                    if hogid in locid_hog_species[ locid ].keys():
+                        species = 'Aplysia, ' + locid_hog_species[ locid ][ hogid ]
+                        if len( locid_hog_species[ locid ][ hogid ] ) == 0:
+                            species = species[ :-2 ]
+                        output = info[ 0 ] + '\t' + conservation_clade + '\t' + species + '\t' +  '\t'.join( info[ 1: ] )
+                        output_tsv.write( output )
+                    else:
+                        output = 'FAIL ' + source_file + ' ' + locid + ' ' + hogid + '\n'
+                        output_fail.write( output )
+                else:
+                    output = 'FAIL ' + source_file + ' ' + locid + '\n'
+                    output_fail.write( output )
+        else:
+            print( 'Empty line: ' + next_line + '!' )
+            
+input_tsvs.close()
+input_species.close()
+output_fail.close()

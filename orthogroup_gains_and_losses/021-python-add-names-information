@@ -1,0 +1,116 @@
+#! python
+
+input_names = open( '/scratch/eric/projects/aplysia/names/gene-names-2/output/8-map-aplysia-sequence-identifier-annotations-FOR-INTEGRATION', 'r' )
+input_map = open( 'output/20-map-aplysia-sequences-annotations', 'r' )
+input_leonid = open( 'input/leonid-signal-locid-names.tsv', 'r' )
+output_map = open( 'output/21-map-aplysia-sequences-annotations-names', 'w' )
+output_map_short = open( 'output/21-map-aplysia-sequences-annotations-names-SHORT', 'w' )
+
+# LOCID   Symbol  Gene Name       Gene Group Name GIGANTIC ID     Leonid Gene Name        AA Sequence
+locids_names = {} 
+for next_line in input_names:
+    info = next_line[ :-1 ].split( '\t' )
+    locid = info[ 0 ]
+    symbol = info[ 1 ]
+    name = info[ 2 ]
+    group = info[ 3 ]
+    giganticid = info[ 4 ]
+    leonid = info[ 5 ]
+    aa = info[ 6 ]
+
+    name_annotation = locid + '\t' + symbol + '\t' + name + '\t' + group + '\t' + leonid + '\t' + aa
+    locids_names[ locid ] = name_annotation
+
+# 
+leonid_locids_name = {}
+for next_line in input_leonid:
+    info = next_line[ :-1 ].split( '\t' )
+    locid = info[ 0 ]
+    name = info[ 1 ]
+    leonid_locids_name[ locid ] = name
+    
+# LOCID   Gene Symbol     Gene Name       Group Name      Leonid Name     GENEID  GIGANTICID      Orthogroup HOGID        Orthogroup OGID Pfam    Pfam Symbol     Pfam Description        GO      GO Namespace    GO Name         GO Description  PANTHER    DeepLoc SP      DeepTMHMM SP    Signalp SP      DeepLoc TM      DeepTMHMM TM    Mobidblite DO   MetaPredict DO  Antifam CDD     Coils   FunFam  Gene3d  Hamap   PIRSF   PRINTS  ProSite Patterns        ProSite Profiles        SFLD    SMART      SuperFamily     TIGRFAM KEGG    KEGG Description        AA Sequence
+first = False
+for next_line in input_map:
+    info = next_line[ :-1 ].split( '\t' )
+
+    if first == False:
+        first = True
+        
+        locid = info[ 0 ]
+        locid_plus = locid + '\t' + 'Gene Symbol' + '\t' + 'Gene Name' + '\t' + 'Group Name' + '\t' + 'Leonid Name' + '\t' + 'Secretome Conservative' + '\t' + 'Secretome Liberal' + '\t' + 'Secretome Leonid' + '\t'
+        info[ 0 ] = locid_plus
+        info.append( 'AA Sequence' )
+        output = '\t'.join( info ) + '\n'
+        output_map.write( output )
+        
+        output_short = 'Locid' + '\t' + 'Gene Symbol' + '\t' + 'Gene Name' + '\t' + 'Leonid Name' + '\t' + 'Secretome Conservative' + '\t' + 'Secretome Liberal' + '\t' + 'Secretome Leonid' + '\t' + 'Leonid Secretome Name' + '\t' +  'Orthogroup HOG' + '\t' + 'Orthogroup OG' + '\t' + 'Pfam' + '\t' + 'Pfam Symbol' + '\t' + 'Pfam Description' + '\t' + 'GO' + '\t' + 'GO Namespace' + '\t' + 'GO Name' + '\t' + 'GO Description' + '\t' + 'DeepLoc SP' + '\t' + 'DeepTNHMM SP' + '\t' + 'SignalP SP' + '\t' + 'DeepLoc TM' + '\t' + 'DeepTMHMM TM' + '\t' + 'Mobidblite DO' + '\t' + 'MetaPredict DO' + '\t' + 'AA Sequence' + '\n'
+        output_map_short.write( output_short )
+        
+    else:
+        locid = info[ 0 ]
+        name_annotation = locids_names[ locid ]
+        info_names = name_annotation.split( '\t' )
+        aa = info_names[ -1 ]
+        locid_names = '\t'.join( info_names[ :-1 ] )
+        info[ 0 ] = locid_names
+        info.append( aa )
+        output = '\t'.join( info ) + '\n'
+        output_map.write( output )
+
+        info_output = output.split( '\t' )
+        locid = info_output[ 0 ]
+        symbol = info_output[ 1 ]
+        name = info_output[ 2 ]
+        leonid = info_output[ 4 ]
+        hog = info_output[ 7 ]
+        og = info_output[ 8 ]
+        pfam = info_output[ 9 ]
+        pfam_symbol = info_output[ 10 ]
+        pfam_anno = info_output[ 11 ]
+        go = info_output[ 12 ]
+        go_namespace = info_output[ 13 ]
+        go_name = info_output[ 14 ]
+        go_anno = info_output[ 15 ]
+        deeploc_sp = info_output[ 17 ]
+        tmhmm_sp = info_output[ 18 ]
+        signalp_sp = info_output[ 19 ]
+        deeploc_tm = info_output[ 20 ]
+        tmhmm_tm = info_output[ 21 ]
+        mobi_do = info_output[ 22 ]
+        metapredict_do = info_output[ 23 ]
+        aa = info_output[ -1 ]
+
+        # secretome_conservative
+        if deeploc_sp == 'None':
+            secretome_conservative = 'No'
+        elif deeploc_tm != 'None':
+            secretome_conservative = 'No'
+        elif metapredict_do == 'None':
+            secretome_conservative = 'No'
+        else:
+            secretome_conservative = 'Yes'
+        # secreteome_liberal
+        if deeploc_sp == 'None':
+            secretome_liberal = 'No'
+        elif deeploc_tm != 'None':
+            secretome_liberal = 'No'
+        elif metapredict_do == 'None':
+            secretome_liberal = 'No'
+        else:
+            secretome_liberal = 'Yes'
+
+        if locid in leonid_locids_name.keys():
+            secretome_leonid = 'Yes'
+            secretome_name = leonid_locids_name[ locid ]
+        else:
+            secretome_leonid = 'No'
+            secretome_name = 'NA'
+
+        output = locid + '\t' + symbol + '\t' + name + '\t' + leonid + '\t' + secretome_conservative + '\t' + secretome_liberal + '\t' + secretome_leonid + '\t' + secretome_name + '\t' + hog + '\t' + og + '\t' + pfam + '\t' + pfam_symbol + '\t' + pfam_anno + '\t' + go + '\t' + go_namespace + '\t' + go_name + '\t' + go_anno + '\t' + deeploc_sp + '\t' + tmhmm_sp + '\t' + signalp_sp + '\t' + deeploc_tm + '\t' + tmhmm_tm + '\t' + mobi_do + '\t' + metapredict_do + '\t' + aa
+        output_map_short.write( output )
+    
+input_names.close()
+input_map.close()
+output_map.close()
+output_map_short.close()

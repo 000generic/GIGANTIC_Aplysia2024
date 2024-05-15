@@ -1,0 +1,1966 @@
+#! python
+# Code Eric Edsinger
+# Identify and count homologs, gains, and losses per species in OrthoFinder Species19 genomes clustering
+
+input_map_nodes_to_clades = open( 'input/list-nodes-clades', 'r' )
+input_map_clades_to_ancestors = open( 'input/list-clades-ancestors', 'r' )
+input_map_clades_to_names = open( 'input/list-clades-names', 'r' )
+input_map_clades_to_shortnames = open( 'input/list-clades-shortnames', 'r' )
+input_nodes = open( 'output/2-list-Ns', 'r' )
+output_counts = open( 'output/3-orthofinder-orthogroups-gains-losses-per-species-tree-node-GLOBAL-APLYSIA-OCTOPUS', 'w' )
+output_cgl = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-GLOBAL', 'w' )
+output_cgl_aplysia = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c01-aplysia', 'w' ) #C01
+output_cgl_elysia = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c02-elysia', 'w' ) #C02
+output_cgl_achatina = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c03-achatina', 'w' ) #C03
+output_cgl_pomacea = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c04-pomacea', 'w' ) #C04
+output_cgl_gigantopelta = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c05-gigantopelta', 'w' ) #C05
+output_cgl_lottia = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c06-lottia', 'w' ) #C06
+output_cgl_mizuhopecten = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c07-mizuhopecten', 'w' ) #C07
+output_cgl_crassostrea = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c08-crassostrea', 'w' ) #C08
+output_cgl_cyclina = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c09-cyclina', 'w' ) #C09
+output_cgl_octopus = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c10-octopus', 'w' ) #C10
+output_cgl_argonauta = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c11-argonauta', 'w' ) #C11
+output_cgl_nautilus = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c12-nautilus', 'w' ) #C12
+output_cgl_acanthopleura = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c13-achanothopleura', 'w' ) #C13
+output_cgl_lingula = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c14-lingula', 'w' ) #C14
+output_cgl_phoronis = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c15-phoronis', 'w' ) #C15
+output_cgl_capitella = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c16-capitella', 'w' ) #C16
+output_cgl_drosophila = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c17-drosophila', 'w' ) #C17
+output_cgl_caenorhabditis = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c18-caenorhabditis', 'w' ) #C18
+output_cgl_homo = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c19-homo', 'w' ) #C19
+output_cgl_panpulmonata = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c20-panpulmonata', 'w' ) #C20
+output_cgl_euthyneura = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c21-euthyneura', 'w' ) #C21
+output_cgl_angiogastropoda = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c22-angiogastropoda', 'w' ) #C22
+output_cgl_psilogastropoda = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c23-psilogastropoda', 'w' ) #C23
+output_cgl_gastropoda = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c24-gastropoda', 'w' ) #C24
+output_cgl_pteriomorphia = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c25-pteriomorphia', 'w' ) #C25
+output_cgl_bivalvia = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c26-bivalvia', 'w' ) #C26
+output_cgl_molluscan_clade_2 = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c27-molluscan_clade_2', 'w' ) #C27
+output_cgl_coleoidea = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c28-coleoidea', 'w' ) #C28
+output_cgl_cephalopoda = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c29-cephalopoda', 'w' ) #C29
+output_cgl_conchifera = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c30-conchifera', 'w' ) #C30
+output_cgl_mollusca = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c31-mollusca', 'w' ) #C31
+output_cgl_lophophorata = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c32-lophophorata', 'w' ) #C32
+output_cgl_spiralian_clade_4 = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c33-spiralian_clade_4', 'w' ) #C33
+output_cgl_spiralia = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c34-spiralia', 'w' ) #C34
+output_cgl_ecdysozoa = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c35-ecdysozoa', 'w' ) #C35
+output_cgl_protostomia = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c36-protostomia', 'w' ) #C36
+output_cgl_bilateria = open( 'output/3-orthofinder-species19-CGL-orthogroup-ids-per-clade-c37-bilateria', 'w' ) #C37
+output_map_gains = open( 'output/3-species19_sequences-orthrogroups-clade_when-orthogroup_arose_in_evolution', 'w' )
+
+######### Process input files
+
+nodes_clades = {}
+clades_names = {}
+names_clades = {}
+clades_ancestors = {}
+clades_orthogroups_total = {}
+clades_orthogroups_gains = {}
+clades_orthogroups_losses = {}
+
+sequences_orthogroups = {}
+orthogroups_cladegained = {}
+
+print( 'Reading non-node files into dictionaries!')
+
+# read in node to clade map
+for next_line in input_map_nodes_to_clades:
+    info = next_line[ :-1 ].split( '\t')
+    node = info[ 0 ]
+    clade = info[ 1 ]
+    nodes_clades[ node ] = clade
+
+# read in clade to ancestor map
+for next_line in input_map_clades_to_ancestors:
+    info = next_line[ :-1 ].split( '\t')
+    clade = info[ 0 ]
+    ancestor = info[ 1 ]
+    clades_ancestors[ clade ] = ancestor
+
+# read in clade to name map
+for next_line in input_map_clades_to_names:
+    info = next_line[:-1].split('\t')
+    clade = info[ 0 ]
+    name = info[ 1 ]
+    clades_names[ clade ] = name
+
+# read in clade to short name map
+for next_line in input_map_clades_to_shortnames:
+    info = next_line[ :-1 ].split( '\t' )
+    clade = info[ 0 ]
+    name = info[ 1 ]
+    names_clades[ name ] = clade
+    
+# set up lists for each clade for conserved, gained, and lost orthogroups per OrthoFinder species tree node clustering
+for next_clade in clades_names.keys():
+    clades_orthogroups_total[ next_clade ] = []
+    clades_orthogroups_gains[ next_clade ] = []
+    clades_orthogroups_losses[ next_clade ] = []
+    
+# read in orthogroups per OrthoFinder species tree node clustering into dictionary
+for next_node in input_nodes:
+    next_node = next_node[ :-1 ]
+    node_id = next_node.split( '.' )[ 0 ]
+    clade_id: str = nodes_clades[ node_id ]
+    clade_name = clades_names[ clade_id ]
+    if clade_id == 'C37':
+        ancestor_id = 'NA'
+    else:
+        ancestor_id = clades_ancestors[ clade_id ]
+
+########## Begin processing OrthoFinder clustering of species tree nodes N0-N17
+
+    input_node = open( next_node, 'r' )
+    print( 'Processing: ' + next_node )
+
+    for next_line in input_node:
+        next_line = next_line[ :-1 ]
+        info = next_line.split( '\t' )
+        orthogroup_id: str = info[ 1 ]
+        seqids = ', '.join( info[ 3: ] )
+        info_seqids = seqids.split( ', ' )  # dictionary of seqids that form the orthogroup
+
+        # ancestral Bilateria N0 orthogroups C37
+
+        if node_id == 'N0':
+
+            # C37 Bilateria
+            clade_1 = [ 'Homo' ]  # C19
+            clade_2 = [ 'Drosophila', 'Caenorhabditis', 'Capitella', 'Phoronis', 'Lingula', 'Acanthopleura', 'Nautilus',
+                        'Argonauta', 'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta',
+                        'Pomacea', 'Achatina', 'Elysia', 'Aplysia']  # C36
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                        next_clade_id_1 = names_clades[ next_clade_1_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_1 ]:
+                            clades_orthogroups_total[ next_clade_id_1 ].append( orthogroup_id )
+                for next_clade_2_species in clade_2:
+                    if len(next_seqid.split(next_clade_2_species)) > 1:
+                        test_clade_2 = True
+                        next_clade_id_2 = names_clades[ next_clade_2_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_2 ]:
+                            clades_orthogroups_total[ next_clade_id_2 ].append( orthogroup_id )
+                        
+            if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+
+########## Process Single-species lineage gains
+# All species-specific orthogroups were identified in OrthoFinder node  N0, as it contains full species and sequence representation of the orthogroup clustering according to OrthoFinder documentation.
+
+            # C01 Aplysia
+            clade_1 = ['Aplysia']  # C01
+            clade_2 = ['Drosophila', 'Caenorhabditis', 'Capitella', 'Phoronis', 'Lingula', 'Acanthopleura', 'Nautilus',
+                       'Argonauta', 'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta',
+                       'Pomacea', 'Achatina', 'Elysia', 'Homo']  # All but Aplysia
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                for next_clade_2_species in clade_2:
+                    if len(next_seqid.split(next_clade_2_species)) > 1:
+                        test_clade_2 = True
+            if test_clade_1 == True and test_clade_2 == False:   # process single-species lineage C01 Euopisthobranchia-Aplysia
+                clades_orthogroups_total[ 'C01' ].append( orthogroup_id )
+
+            # C02 Elysia
+            clade_1 = ['Elysia']  # C02
+            clade_2 = ['Drosophila', 'Caenorhabditis', 'Capitella', 'Phoronis', 'Lingula', 'Acanthopleura', 'Nautilus',
+                       'Argonauta', 'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta',
+                       'Pomacea', 'Achatina', 'Aplysia', 'Homo']  # All but Elysia
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                for next_clade_2_species in clade_2:
+                    if len(next_seqid.split(next_clade_2_species)) > 1:
+                        test_clade_2 = True
+            if test_clade_1 == True and test_clade_2 == False:   # process single-species lineage C02 Panpulmonata-Sacoglossa-Elysia
+                clades_orthogroups_total[ 'C02' ].append( orthogroup_id )
+
+            # C03 Lissachatina
+            clade_1 = ['Achatina']  # C03
+            clade_2 = ['Drosophila', 'Caenorhabditis', 'Capitella', 'Phoronis', 'Lingula', 'Acanthopleura', 'Nautilus',
+                       'Argonauta', 'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta',
+                       'Pomacea', 'Elysia', 'Aplysia', 'Homo']  # All but Lissachatina
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                for next_clade_2_species in clade_2:
+                    if len(next_seqid.split(next_clade_2_species)) > 1:
+                        test_clade_2 = True
+            if test_clade_1 == True and test_clade_2 == False:   # process single-species lineage C03 Panpulmonata-Stylommatomorpha-Lissachatina
+                clades_orthogroups_total[ 'C03' ].append( orthogroup_id )
+
+            # C04 Pomacea
+            clade_1 = ['Pomacea']  # C04
+            clade_2 = ['Drosophila', 'Caenorhabditis', 'Capitella', 'Phoronis', 'Lingula', 'Acanthopleura', 'Nautilus',
+                       'Argonauta', 'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta',
+                       'Achatina', 'Elysia', 'Aplysia', 'Homo']  # All but Pomacea
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                for next_clade_2_species in clade_2:
+                    if len(next_seqid.split(next_clade_2_species)) > 1:
+                        test_clade_2 = True
+            if test_clade_1 == True and test_clade_2 == False:   # process single-species lineage C04 Caenogastropoda-Pomacea
+                clades_orthogroups_total[ 'C04' ].append( orthogroup_id )
+
+            # C05 Gigantopelta
+            clade_1 = ['Gigantopelta']  # C05
+            clade_2 = ['Drosophila', 'Caenorhabditis', 'Capitella', 'Phoronis', 'Lingula', 'Acanthopleura', 'Nautilus',
+                       'Argonauta', 'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Pomacea',
+                       'Achatina', 'Elysia', 'Aplysia', 'Homo']  # All but Gigantopelta
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                for next_clade_2_species in clade_2:
+                    if len(next_seqid.split(next_clade_2_species)) > 1:
+                        test_clade_2 = True
+            if test_clade_1 == True and test_clade_2 == False:   # process single-species lineage C05 Vetigastropoda-Gigantopelta
+                clades_orthogroups_total[ 'C05' ].append( orthogroup_id )
+
+            # C06 Lottia
+            clade_1 = ['Lottia']  # C06
+            clade_2 = ['Drosophila', 'Caenorhabditis', 'Capitella', 'Phoronis', 'Lingula', 'Acanthopleura', 'Nautilus',
+                       'Argonauta', 'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Gigantopelta', 'Pomacea',
+                       'Achatina', 'Elysia', 'Aplysia', 'Homo']  # All but Lottia
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                for next_clade_2_species in clade_2:
+                    if len(next_seqid.split(next_clade_2_species)) > 1:
+                        test_clade_2 = True
+            if test_clade_1 == True and test_clade_2 == False:   # process single-species lineage C06 Patellogastropoda-Lottia
+                clades_orthogroups_total[ 'C06' ].append( orthogroup_id )
+
+            # C07 Mizuhopecten
+            clade_1 = ['Mizuhopecten']  # C07
+            clade_2 = ['Drosophila', 'Caenorhabditis', 'Capitella', 'Phoronis', 'Lingula', 'Acanthopleura', 'Nautilus',
+                       'Argonauta', 'Octopus', 'Cyclina', 'Crassostrea', 'Lottia', 'Gigantopelta', 'Pomacea',
+                       'Achatina', 'Elysia', 'Aplysia', 'Homo']  # All but Mizuhopecten
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                for next_clade_2_species in clade_2:
+                    if len(next_seqid.split(next_clade_2_species)) > 1:
+                        test_clade_2 = True
+            if test_clade_1 == True and test_clade_2 == False:   # process single-species lineage C07 Pectinidae-Mizuhopecten
+                clades_orthogroups_total[ 'C07' ].append( orthogroup_id )
+
+            # C08 Crassostrea
+            clade_1 = ['Crassostrea']  # C08
+            clade_2 = ['Drosophila', 'Caenorhabditis', 'Capitella', 'Phoronis', 'Lingula', 'Acanthopleura', 'Nautilus',
+                       'Argonauta', 'Octopus', 'Cyclina', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea',
+                       'Achatina', 'Elysia', 'Aplysia', 'Homo']  # All but Crassostrea
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                for next_clade_2_species in clade_2:
+                    if len(next_seqid.split(next_clade_2_species)) > 1:
+                        test_clade_2 = True
+            if test_clade_1 == True and test_clade_2 == False:   # process single-species lineage C08 Ostreidae-Crassostrea
+                clades_orthogroups_total[ 'C08' ].append( orthogroup_id )
+
+            # C09 Cyclina
+            clade_1 = ['Cyclina']  # C09
+            clade_2 = ['Drosophila', 'Caenorhabditis', 'Capitella', 'Phoronis', 'Lingula', 'Acanthopleura', 'Nautilus',
+                       'Argonauta', 'Octopus', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea',
+                       'Achatina', 'Elysia', 'Aplysia', 'Homo']  # All but Cyclina
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                for next_clade_2_species in clade_2:
+                    if len(next_seqid.split(next_clade_2_species)) > 1:
+                        test_clade_2 = True
+            if test_clade_1 == True and test_clade_2 == False:   # process single-species lineage C09 Heteroconchia-Cyclina
+                clades_orthogroups_total[ 'C09' ].append( orthogroup_id )
+
+            # C10 Octopus
+            clade_1 = ['Octopus']  # C10
+            clade_2 = ['Drosophila', 'Caenorhabditis', 'Capitella', 'Phoronis', 'Lingula', 'Acanthopleura', 'Nautilus',
+                       'Argonauta', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea',
+                       'Achatina', 'Elysia', 'Aplysia', 'Homo']  # All but Octopus
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                for next_clade_2_species in clade_2:
+                    if len(next_seqid.split(next_clade_2_species)) > 1:
+                        test_clade_2 = True
+            if test_clade_1 == True and test_clade_2 == False:   # process single-species lineage C10 Octopodoidea-Octopus
+                clades_orthogroups_total[ 'C10' ].append( orthogroup_id )
+
+            # C11 Argonauta
+            clade_1 = ['Argonauta']  # C11
+            clade_2 = ['Drosophila', 'Caenorhabditis', 'Capitella', 'Phoronis', 'Lingula', 'Acanthopleura', 'Nautilus',
+                       'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea',
+                       'Achatina', 'Elysia', 'Aplysia', 'Homo']  # All but Argonauta
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                for next_clade_2_species in clade_2:
+                    if len(next_seqid.split(next_clade_2_species)) > 1:
+                        test_clade_2 = True
+            if test_clade_1 == True and test_clade_2 == False:   # process single-species lineage C11 Argonautoidea-Argonauta
+                clades_orthogroups_total[ 'C11' ].append( orthogroup_id )
+
+            # C12 Nautilus
+            clade_1 = ['Nautilus']  # C12
+            clade_2 = ['Drosophila', 'Caenorhabditis', 'Capitella', 'Phoronis', 'Lingula', 'Acanthopleura', 'Argonauta',
+                       'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea',
+                       'Achatina', 'Elysia', 'Aplysia', 'Homo']  # All but Nautilus
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                for next_clade_2_species in clade_2:
+                    if len(next_seqid.split(next_clade_2_species)) > 1:
+                        test_clade_2 = True
+            if test_clade_1 == True and test_clade_2 == False:   # process single-species lineage C12 Nautiloidea-Nautilus
+                clades_orthogroups_total[ 'C12' ].append( orthogroup_id )
+
+            # C13 Acanthopleura
+            clade_1 = ['Acanthopleura']  # C13
+            clade_2 = ['Drosophila', 'Caenorhabditis', 'Capitella', 'Phoronis', 'Lingula', 'Nautilus', 'Argonauta',
+                       'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea',
+                       'Achatina', 'Elysia', 'Aplysia', 'Homo']  # All but Acanthopleura
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                for next_clade_2_species in clade_2:
+                    if len(next_seqid.split(next_clade_2_species)) > 1:
+                        test_clade_2 = True
+            if test_clade_1 == True and test_clade_2 == False:   # process single-species lineage C13 Polyplacophora-Acanthopleura
+                clades_orthogroups_total[ 'C13' ].append( orthogroup_id )
+
+            # C14 Lingula
+            clade_1 = ['Lingula']  # C14
+            clade_2 = ['Drosophila', 'Caenorhabditis', 'Capitella', 'Phoronis', 'Acanthopleura', 'Nautilus', 'Argonauta',
+                       'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea',
+                       'Achatina', 'Elysia', 'Aplysia', 'Homo']  # All but Lingula
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                for next_clade_2_species in clade_2:
+                    if len(next_seqid.split(next_clade_2_species)) > 1:
+                        test_clade_2 = True
+            if test_clade_1 == True and test_clade_2 == False:   # process single-species lineage C14 Brachiopoda-Lingula
+                clades_orthogroups_total[ 'C14' ].append( orthogroup_id )
+
+            # C15 Phoronis
+            clade_1 = ['Phoronis']  # C15
+            clade_2 = ['Drosophila', 'Caenorhabditis', 'Capitella', 'Lingula', 'Acanthopleura', 'Nautilus', 'Argonauta',
+                       'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea',
+                       'Achatina', 'Elysia', 'Aplysia', 'Homo']  # All but Phoronis
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                for next_clade_2_species in clade_2:
+                    if len(next_seqid.split(next_clade_2_species)) > 1:
+                        test_clade_2 = True
+            if test_clade_1 == True and test_clade_2 == False:   # process single-species lineage C15 Phoronida-Phoronis
+                clades_orthogroups_total[ 'C15' ].append( orthogroup_id )
+
+            # C16 Capitella
+            clade_1 = ['Capitella']  # C16
+            clade_2 = ['Drosophila', 'Caenorhabditis', 'Phoronis', 'Lingula', 'Acanthopleura', 'Nautilus', 'Argonauta',
+                       'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea',
+                       'Achatina', 'Elysia', 'Aplysia', 'Homo']  # All but Phoronis
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                for next_clade_2_species in clade_2:
+                    if len(next_seqid.split(next_clade_2_species)) > 1:
+                        test_clade_2 = True
+            if test_clade_1 == True and test_clade_2 == False:   # process single-species lineage C16 Annelida-Capitella
+                clades_orthogroups_total[ 'C16' ].append( orthogroup_id )
+
+            # C17 Drosophila
+            clade_1 = ['Drosophila']  # C17
+            clade_2 = ['Capitella', 'Caenorhabditis', 'Phoronis', 'Lingula', 'Acanthopleura', 'Nautilus', 'Argonauta',
+                       'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea',
+                       'Achatina', 'Elysia', 'Aplysia', 'Homo']  # All but Drosophila
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                for next_clade_2_species in clade_2:
+                    if len(next_seqid.split(next_clade_2_species)) > 1:
+                        test_clade_2 = True
+            if test_clade_1 == True and test_clade_2 == False:   # process single-species lineage C17 Arthropoda-Drosophila
+                clades_orthogroups_total[ 'C17' ].append( orthogroup_id )
+
+            # C18 Caenorhabditis
+            clade_1 = ['Caenorhabditis']  # C18
+            clade_2 = ['Capitella', 'Drosophila', 'Phoronis', 'Lingula', 'Acanthopleura', 'Nautilus', 'Argonauta',
+                       'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea',
+                       'Achatina', 'Elysia', 'Aplysia', 'Homo']  # All but Caenorhabditis
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                for next_clade_2_species in clade_2:
+                    if len(next_seqid.split(next_clade_2_species)) > 1:
+                        test_clade_2 = True
+            if test_clade_1 == True and test_clade_2 == False:   # process single-species lineage C18 Nematoda-Caenorhabditis
+                clades_orthogroups_total[ 'C18' ].append( orthogroup_id )
+
+########## Continue processing OrthoFinder clustering of species tree nodes N0-N17
+
+        # ancestral Protostomia N1 orthogroups C36
+        if node_id == 'N1':
+            clade_1 = ['Drosophila', 'Caenorhabditis']  # C35
+            clade_2 = ['Capitella', 'Phoronis', 'Lingula', 'Acanthopleura', 'Nautilus', 'Argonauta', 'Octopus',
+                       'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea', 'Achatina',
+                       'Elysia', 'Aplysia']  # C34
+            test_clade_1 = False
+            test_clade_2 = False
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                        next_clade_id_1 = names_clades[ next_clade_1_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_1 ]:
+                            clades_orthogroups_total[ next_clade_id_1 ].append( orthogroup_id )
+                for next_clade_2_species in clade_2:
+                    if len( next_seqid.split( next_clade_2_species ) ) > 1:
+                        test_clade_2 = True
+                        next_clade_id_2 = names_clades[ next_clade_2_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_2 ]:
+                            clades_orthogroups_total[ next_clade_id_2 ].append( orthogroup_id )
+                        
+            if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
+                if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                    if orthogroup_id not in clades_orthogroups_total[clade_id]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
+                if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                    if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                        clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+
+        # ancestral Ecdysozoa N2 orthogroups C35
+        if node_id == 'N2':
+            clade_1 = [ 'Drosophila' ]  # C17
+            clade_2 = [ 'Caenorhabditis' ]  # C18
+            test_clade_1 = False
+            test_clade_2 = False
+            deep_ancestors = [ 'C36', 'C37' ]
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                        next_clade_id_1 = names_clades[ next_clade_1_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_1 ]:
+                            clades_orthogroups_total[ next_clade_id_1 ].append( orthogroup_id )
+                for next_clade_2_species in clade_2:
+                    if len( next_seqid.split( next_clade_2_species ) ) > 1:
+                        test_clade_2 = True
+                        next_clade_id_2 = names_clades[ next_clade_2_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_2 ]:
+                            clades_orthogroups_total[ next_clade_id_2 ].append( orthogroup_id )
+                        
+            if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[clade_id]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+
+        # ancestral Spiralia N3 orthogroups C34
+        if node_id == 'N3':
+            clade_1 = [ 'Capitella', 'Phoronis', 'Lingula', ]  # C33
+            clade_2 = [ 'Acanthopleura', 'Nautilus', 'Argonauta', 'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea', 'Achatina', 'Elysia', 'Aplysia' ]  # C31
+            test_clade_1 = False
+            test_clade_2 = False
+            deep_ancestors = [ 'C36', 'C37' ]
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                        next_clade_id_1 = names_clades[ next_clade_1_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_1 ]:
+                            clades_orthogroups_total[ next_clade_id_1 ].append( orthogroup_id )
+                for next_clade_2_species in clade_2:
+                    if len( next_seqid.split( next_clade_2_species ) ) > 1:
+                        test_clade_2 = True
+                        next_clade_id_2 = names_clades[ next_clade_2_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_2 ]:
+                            clades_orthogroups_total[ next_clade_id_2 ].append( orthogroup_id )
+                        
+            if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+
+        # ancestral Spiralian_Clade_4 N4 orthogroups C33
+        if node_id == 'N4':
+            clade_1 = [ 'Capitella' ]  # C16
+            clade_2 = [ 'Phoronis', 'Lingula' ]  # C32
+            test_clade_1 = False
+            test_clade_2 = False
+            deep_ancestors = [ 'C34', 'C36', 'C37' ]
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                        next_clade_id_1 = names_clades[ next_clade_1_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_1 ]:
+                            clades_orthogroups_total[ next_clade_id_1 ].append( orthogroup_id )
+                for next_clade_2_species in clade_2:
+                    if len( next_seqid.split( next_clade_2_species ) ) > 1:
+                        test_clade_2 = True
+                        next_clade_id_2 = names_clades[ next_clade_2_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_2 ]:
+                            clades_orthogroups_total[ next_clade_id_2 ].append( orthogroup_id )
+                        
+            if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+
+        # ancestral Tetraneuralia-Mollusca N5 orthogroups C31
+        if node_id == 'N5':
+            clade_1 = [ 'Acanthopleura' ]  # C13
+            clade_2 = [ 'Nautilus', 'Argonauta', 'Octopus', 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea', 'Achatina', 'Elysia', 'Aplysia'  ]  # C30
+            test_clade_1 = False
+            test_clade_2 = False
+            deep_ancestors = [ 'C34', 'C36', 'C37' ]
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                        next_clade_id_1 = names_clades[ next_clade_1_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_1 ]:
+                            clades_orthogroups_total[ next_clade_id_1 ].append( orthogroup_id )
+                for next_clade_2_species in clade_2:
+                    if len( next_seqid.split( next_clade_2_species ) ) > 1:
+                        test_clade_2 = True
+                        next_clade_id_2 = names_clades[ next_clade_2_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_2 ]:
+                            clades_orthogroups_total[ next_clade_id_2 ].append( orthogroup_id )
+                        
+            if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+
+        # ancestral Spiralian_Clade_2-Lophophorata N6 orthogroups C32
+        if node_id == 'N6':
+            clade_1 = [ 'Lingula' ]  # C14
+            clade_2 = [ 'Phoronis'  ]  # C15
+            test_clade_1 = False
+            test_clade_2 = False
+            deep_ancestors = [ 'C33', 'C34', 'C36', 'C37' ]
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                        next_clade_id_1 = names_clades[ next_clade_1_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_1 ]:
+                            clades_orthogroups_total[ next_clade_id_1 ].append( orthogroup_id )
+                for next_clade_2_species in clade_2:
+                    if len( next_seqid.split( next_clade_2_species ) ) > 1:
+                        test_clade_2 = True
+                        next_clade_id_2 = names_clades[ next_clade_2_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_2 ]:
+                            clades_orthogroups_total[ next_clade_id_2 ].append( orthogroup_id )
+                        
+            if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+
+        # ancestral Conchifera-Molluscan_Clade_1 N7 orthogroups C30
+        if node_id == 'N7':
+            clade_1 = [ 'Nautilus', 'Argonauta', 'Octopus' ]  # C29
+            clade_2 = [ 'Cyclina', 'Crassostrea', 'Mizuhopecten', 'Lottia', 'Gigantopelta', 'Pomacea', 'Achatina', 'Elysia', 'Aplysia' ]  # C27
+            test_clade_1 = False
+            test_clade_2 = False
+            deep_ancestors = [ 'C31', 'C34', 'C36', 'C37' ]
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                        next_clade_id_1 = names_clades[ next_clade_1_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_1 ]:
+                            clades_orthogroups_total[ next_clade_id_1 ].append( orthogroup_id )
+                for next_clade_2_species in clade_2:
+                    if len( next_seqid.split( next_clade_2_species ) ) > 1:
+                        test_clade_2 = True
+                        next_clade_id_2 = names_clades[ next_clade_2_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_2 ]:
+                            clades_orthogroups_total[ next_clade_id_2 ].append( orthogroup_id )
+                        
+            if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+
+        # ancestral Cephalopoda N8 orthogroups C29
+        if node_id == 'N8':
+            clade_1 = [ 'Nautilus' ]  # C12
+            clade_2 = [ 'Argonauta', 'Octopus' ]  # C28
+            test_clade_1 = False
+            test_clade_2 = False
+            deep_ancestors = [ 'C30', 'C31', 'C34', 'C36', 'C37' ]
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                        next_clade_id_1 = names_clades[ next_clade_1_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_1 ]:
+                            clades_orthogroups_total[ next_clade_id_1 ].append( orthogroup_id )
+                for next_clade_2_species in clade_2:
+                    if len( next_seqid.split( next_clade_2_species ) ) > 1:
+                        test_clade_2 = True
+                        next_clade_id_2 = names_clades[ next_clade_2_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_2 ]:
+                            clades_orthogroups_total[ next_clade_id_2 ].append( orthogroup_id )
+                        
+            if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+
+        # ancestral Molluscan_Clade_2 N9 orthogroups C27
+        if node_id == 'N9':
+            clade_1 = [ 'Cyclina', 'Crassostrea', 'Mizuhopecten' ]  # C26
+            clade_2 = [ 'Lottia', 'Gigantopelta', 'Pomacea', 'Achatina', 'Elysia', 'Aplysia'  ]  # C24
+            test_clade_1 = False
+            test_clade_2 = False
+            deep_ancestors = [ 'C30', 'C31', 'C34', 'C36', 'C37' ]
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                        next_clade_id_1 = names_clades[ next_clade_1_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_1 ]:
+                            clades_orthogroups_total[ next_clade_id_1 ].append( orthogroup_id )
+                for next_clade_2_species in clade_2:
+                    if len( next_seqid.split( next_clade_2_species ) ) > 1:
+                        test_clade_2 = True
+                        next_clade_id_2 = names_clades[ next_clade_2_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_2 ]:
+                            clades_orthogroups_total[ next_clade_id_2 ].append( orthogroup_id )
+                        
+            if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+
+        # ancestral Coleoidea/Octopoda N10 orthogroups C28
+        if node_id == 'N10':
+            clade_1 = [ 'Argonauta' ]  # C11
+            clade_2 = [ 'Octopus'  ]  # C10
+            test_clade_1 = False
+            test_clade_2 = False
+            deep_ancestors = [ 'C29', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                        next_clade_id_1 = names_clades[ next_clade_1_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_1 ]:
+                            clades_orthogroups_total[ next_clade_id_1 ].append( orthogroup_id )
+                for next_clade_2_species in clade_2:
+                    if len( next_seqid.split( next_clade_2_species ) ) > 1:
+                        test_clade_2 = True
+                        next_clade_id_2 = names_clades[ next_clade_2_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_2 ]:
+                            clades_orthogroups_total[ next_clade_id_2 ].append( orthogroup_id )
+                        
+            if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+
+        # ancestral Bivalvia N11 orthogroups C26
+        if node_id == 'N11':
+            clade_1 = [ 'Cyclina' ]  # C09
+            clade_2 = [  'Crassostrea', 'Mizuhopecten'  ]  # C25
+            test_clade_1 = False
+            test_clade_2 = False
+            deep_ancestors = [ 'C27', 'C30', 'C31', 'C34', 'C36', 'C37']
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                        next_clade_id_1 = names_clades[ next_clade_1_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_1 ]:
+                            clades_orthogroups_total[ next_clade_id_1 ].append( orthogroup_id )
+                for next_clade_2_species in clade_2:
+                    if len( next_seqid.split( next_clade_2_species ) ) > 1:
+                        test_clade_2 = True
+                        next_clade_id_2 = names_clades[ next_clade_2_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_2 ]:
+                            clades_orthogroups_total[ next_clade_id_2 ].append( orthogroup_id )
+                        
+            if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+
+        # ancestral Gastropoda N12 orthogroups C24
+        if node_id == 'N12':
+            clade_1 = [  'Lottia', 'Gigantopelta' ]  # C23
+            clade_2 = [  'Pomacea', 'Achatina', 'Elysia', 'Aplysia'  ]  # C22
+            test_clade_1 = False
+            test_clade_2 = False
+            deep_ancestors = [ 'C27', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                        next_clade_id_1 = names_clades[ next_clade_1_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_1 ]:
+                            clades_orthogroups_total[ next_clade_id_1 ].append( orthogroup_id )
+                for next_clade_2_species in clade_2:
+                    if len( next_seqid.split( next_clade_2_species ) ) > 1:
+                        test_clade_2 = True
+                        next_clade_id_2 = names_clades[ next_clade_2_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_2 ]:
+                            clades_orthogroups_total[ next_clade_id_2 ].append( orthogroup_id )
+                        
+            if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+
+        # ancestral Pteriomorphia N13 orthogroups C25
+        if node_id == 'N13':
+            clade_1 = [ 'Crassostrea'  ]  # C08
+            clade_2 = [  'Mizuhopecten'  ]  # C07
+            test_clade_1 = False
+            test_clade_2 = False
+            deep_ancestors = [ 'C26', 'C27', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                        next_clade_id_1 = names_clades[ next_clade_1_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_1 ]:
+                            clades_orthogroups_total[ next_clade_id_1 ].append( orthogroup_id )
+                for next_clade_2_species in clade_2:
+                    if len( next_seqid.split( next_clade_2_species ) ) > 1:
+                        test_clade_2 = True
+                        next_clade_id_2 = names_clades[ next_clade_2_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_2 ]:
+                            clades_orthogroups_total[ next_clade_id_2 ].append( orthogroup_id )
+                            
+            if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+
+        # ancestral Psilogastropoda N14 orthogroups C23
+        if node_id == 'N14':
+            clade_1 = [ 'Lottia' ]  # C06
+            clade_2 = [  'Gigantopelta'   ]  # C05
+            test_clade_1 = False
+            test_clade_2 = False
+            deep_ancestors = [ 'C24', 'C27', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                        next_clade_id_1 = names_clades[ next_clade_1_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_1 ]:
+                            clades_orthogroups_total[ next_clade_id_1 ].append( orthogroup_id )
+                for next_clade_2_species in clade_2:
+                    if len( next_seqid.split( next_clade_2_species ) ) > 1:
+                        test_clade_2 = True
+                        next_clade_id_2 = names_clades[ next_clade_2_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_2 ]:
+                            clades_orthogroups_total[ next_clade_id_2 ].append( orthogroup_id )
+                        
+            if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+
+        # ancestral Angiogastropoda N15 orthogroups C22
+        if node_id == 'N15':
+            clade_1 = [ 'Pomacea' ]  # C04
+            clade_2 = [ 'Achatina', 'Elysia', 'Aplysia' ]  # C21
+            test_clade_1 = False
+            test_clade_2 = False
+            deep_ancestors = [ 'C24', 'C27', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                        next_clade_id_1 = names_clades[ next_clade_1_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_1 ]:
+                            clades_orthogroups_total[ next_clade_id_1 ].append( orthogroup_id )
+                for next_clade_2_species in clade_2:
+                    if len( next_seqid.split( next_clade_2_species ) ) > 1:
+                        test_clade_2 = True
+                        next_clade_id_2 = names_clades[ next_clade_2_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_2 ]:
+                            clades_orthogroups_total[ next_clade_id_2 ].append( orthogroup_id )
+                            
+            if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+
+        # ancestral Heterobranchia-Euthyneura N16 orthogroups C21
+        if node_id == 'N16':
+            clade_1 = [ 'Aplysia']  # C01
+            clade_2 = [ 'Achatina', 'Elysia',  ]  # C20
+            test_clade_1 = False
+            test_clade_2 = False
+            deep_ancestors = [ 'C22', 'C24', 'C27', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                        next_clade_id_1 = names_clades[ next_clade_1_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_1 ]:
+                            clades_orthogroups_total[ next_clade_id_1 ].append( orthogroup_id )                            
+                for next_clade_2_species in clade_2:
+                    if len( next_seqid.split( next_clade_2_species ) ) > 1:
+                        test_clade_2 = True
+                        next_clade_id_2 = names_clades[ next_clade_2_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_2 ]:
+                            clades_orthogroups_total[ next_clade_id_2 ].append( orthogroup_id )
+                            
+            if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+
+        # ancestral Panpulmonata N17 orthogroups C20
+        if node_id == 'N17':
+            clade_1 = [ 'Achatina' ]  # C03
+            clade_2 = [ 'Elysia' ]  # C02
+            test_clade_1 = False
+            test_clade_2 = False
+            deep_ancestors = [ 'C21', 'C22', 'C24', 'C27', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+            for next_seqid in info_seqids:
+                sequences_orthogroups[ next_seqid ] = orthogroup_id
+                for next_clade_1_species in clade_1:
+                    if len( next_seqid.split( next_clade_1_species ) ) > 1:
+                        test_clade_1 = True
+                        next_clade_id_1 = names_clades[ next_clade_1_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_1 ]:
+                            clades_orthogroups_total[ next_clade_id_1 ].append( orthogroup_id )
+                for next_clade_2_species in clade_2:
+                    if len( next_seqid.split( next_clade_2_species ) ) > 1:
+                        test_clade_2 = True
+                        next_clade_id_2 = names_clades[ next_clade_2_species ]
+                        if orthogroup_id not in clades_orthogroups_total[ next_clade_id_2 ]:
+                            clades_orthogroups_total[ next_clade_id_2 ].append( orthogroup_id )
+                            
+            if test_clade_1 == True and test_clade_2 == True:   # test if orthogroup conserved: orthogroup in both clade 1 and 2
+                if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                    clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == True and test_clade_2 == False:   # test if orthogroup conserved: orthogroup present in clades 1 not 2 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+            if test_clade_1 == False and test_clade_2 == True:   # test if orthogroup conserved: orthogroup present in clades 2 not 1 and ancestor A
+                for ancestor_id in deep_ancestors:
+                    if orthogroup_id in clades_orthogroups_total[ ancestor_id ]:
+                        if orthogroup_id not in clades_orthogroups_total[ clade_id ]:
+                            clades_orthogroups_total[ clade_id ].append( orthogroup_id )
+
+########## Read counts to output
+print( 'Calculating gains and losses...')
+
+output = 'Clade ID' + '\t' + 'Clade Name' + '\t' + 'Clade Orthogroups Total' + '\t' + 'Clade Orthogroups Conserved' + '\t' + 'Clade Orthogroups Gained' + '\t' + 'Clade Orthogroups Lost' + '\t' + 'Aplysia Conserved' + '\t' + 'Aplysia Gained' + '\t' + 'Aplysia Lost' + '\t' + 'Aplysia Lost Deep' + '\t' # Global C01
+output = output + 'Elysia Conserved' + '\t' + 'Elysia Gained' + '\t' + 'Elysia Lost' + '\t' + 'Elysia Lost Deep' + '\t'  # C02
+output = output + 'Lissachatina Conserved' + '\t' + 'Lissachatina Gained' + '\t' + 'Lissachatina Lost' + '\t'  + 'Lissachatina Lost Deep' + '\t'  # C03
+output = output + 'Pomacea Conserved' + '\t' + 'Pomacea Gained' + '\t' + 'Pomacea Lost' + '\t' + 'Pomacea Lost Deep' + '\t'  # C04
+output = output + 'Gigantopelta Conserved' + '\t' + 'Gigantopelta Gained' + '\t' + 'Gigantopelta Lost' + '\t' + 'Gigantopelta Lost Deep' + '\t'  # C05
+output = output + 'Lottia Conserved' + '\t' + 'Lottia Gained' + '\t' + 'Lottia Lost' + '\t' + 'Lottia Lost Deep' + '\t'  # C06
+output = output + 'Mizuhopecten Conserved' + '\t' + 'Mizuhopecten Gained' + '\t' + 'Mizuhopecten Lost' + '\t' + 'Mizuhopecten Lost Deep' + '\t'   # C07
+output = output + 'Crassostrea Conserved' + '\t' + 'Crassostrea Gained' + '\t' + 'Crassostrea Lost' + '\t' + 'Crassostrea Lost Deep' + '\t'  # C08
+output = output + 'Cyclina Conserved' + '\t' + 'Cyclina Gained' + '\t' + 'Cyclina Lost' + '\t' + 'Cyclina Lost Deep' + '\t'  # C09
+output = output + 'Octopus Conserved' + '\t' + 'Octopus Gained' + '\t' + 'Octopus Lost' + '\t' + 'Octopus Lost Deep' + '\t'  # C10
+output = output + 'Argonauta Conserved' + '\t' + 'Argonauta Gained' + '\t' + 'Argonauta Lost' + '\t' + 'Argonauta Lost Deep' + '\t'  # C11
+output = output + 'Nautilus Conserved' + '\t' + 'Nautilus Gained' + '\t' + 'Nautilus Lost' + '\t' + 'Nautilus Lost Deep' + '\t'  # C12
+output = output + 'Acanthopleura Conserved' + '\t' + 'Acanthopleura Gained' + '\t' + 'Acanthopleura Lost' + '\t' + 'Acanthopleura Lost Deep' + '\t'  # C13
+output = output + 'Lingula Conserved' + '\t' + 'Lingula Gained' + '\t' + 'Lingula Lost' + '\t' + 'Lingula Lost Deep' + '\t'  # C14
+output = output + 'Phoronis Conserved' + '\t' + 'Phoronis Gained' + '\t' + 'Phoronis Lost' + '\t' + 'Phoronis Lost Deep' + '\t'  # C15
+output = output + 'Capitella Conserved' + '\t' + 'Capitella Gained' + '\t' + 'Capitella Lost' + '\t' + 'Capitella Lost Deep' + '\t'  # C16
+output = output + 'Drosophila Conserved' + '\t' + 'Drosophila Gained' + '\t' + 'Drosophila Lost' + '\t' + 'Drosophila Lost Deep' + '\t'  # C17
+output = output + 'Caenorhabditis Conserved' + '\t' + 'Caenorhabditis Gained' + '\t' + 'Caenorhabditis Lost' + '\t' + 'Caenorhabditis Lost Deep' + '\t'  # C18
+output = output + 'Homo Conserved' + '\t' + 'Homo Gained' + '\t' + 'Homo Lost' + '\t'  + 'Homo Lost Deep' + '\t'  # C19
+output = output + 'Panpulmonata Conserved' + '\t' + 'Panpulmonata Gained' + '\t' + 'Panpulmonata Lost' + '\t' + 'Panpulmonata Lost Deep' + '\t'  # C20
+output = output + 'Euthyneura Conserved' + '\t' + 'Euthyneura Gained' + '\t' + 'Euthyneura Lost' + '\t' + 'Euthyneura Lost Deep' + '\t'  # C21
+output = output + 'Angiogastropoda Conserved' + '\t' + 'Angiogastropoda Gained' + '\t' + 'Angiogastropoda Lost' + '\t' + 'Angiogastropoda Lost Deep' + '\t'  # C22
+output = output + 'Psilogastropoda Conserved' + '\t' + 'Psilogastropoda Gained' + '\t' + 'Psilogastropoda Lost' + '\t' + 'Psilogastropoda Lost Deep' + '\t'  # C23
+output = output + 'Gastropoda Conserved' + '\t' + 'Gastropoda Gained' + '\t' + 'Gastropoda Lost' + '\t' + 'Gastropoda Lost Deep' + '\t'  # C24
+output = output + 'Pteriomorphia Conserved' + '\t' + 'Pteriomorphia Gained' + '\t' + 'Pteriomorphia Lost' + '\t' + 'Pteriomorphia Lost Deep' + '\t'  # C25
+output = output + 'Bivalvia Conserved' + '\t' + 'Bivalvia Gained' + '\t' + 'Bivalvia Lost' + '\t' + 'Bivalvia Lost Deep' + '\t'  # C26
+output = output + 'Molluscan Clade 2 Conserved' + '\t' + 'Molluscan Clade 2 Gained' + '\t' + 'Molluscan Clade 2 Lost' + '\t' + 'Molluscan Clade 2 Lost Deep' + '\t'  # C27
+output = output + 'Coleoidea Conserved' + '\t' + 'Coleoidea Gained' + '\t' + 'Coleoidea Lost' + '\t'  + 'Coleoidea Lost Deep' + '\t'  # C28
+output = output + 'Cephalopoda Conserved' + '\t' + 'Cephalopoda Gained' + '\t' + 'Cephalopoida Lost' + '\t' + 'Cephalopoida Lost Deep' + '\t'  # C29
+output = output + 'Conchifera Conserved' + '\t' + 'Conchifera Gained' + '\t' + 'Conchifera Lost' + '\t' + 'Conchifera Lost Deep' + '\t'  # C30
+output = output + 'Mollusca Conserved' + '\t' + 'Mollusca Gained' + '\t' + 'Mollusca Lost' + '\t' + 'Mollusca Lost Deep' + '\t'  # C31
+output = output + 'Lophophorata Conserved' + '\t' + 'Lophophorata Gained' + '\t' + 'Lophophorata Lost' + '\t' + 'Lophophorata Lost Deep' + '\t'  # C32
+output = output + 'Spiralian Clade 4 Conserved' + '\t' + 'Spiralian Clade 4 Gained' + '\t' + 'Spiralian Clade 4 Lost' + '\t' + 'Spiralian Clade 4 Lost Deep' + '\t'  # C33
+output = output + 'Spiralia Conserved' + '\t' + 'Spiralia Gained' + '\t' + 'Spiralia Lost' + '\t' + 'Spiralia Lost Deep' + '\t'  # C34
+output = output + 'Ecdysozoa Conserved' + '\t' + 'Ecdysozoa Gained' + '\t' + 'Ecdysozoa Lost' + '\t' + 'Ecdysozoa Lost Deep' + '\t'  # C35
+output = output + 'Protostomia Conserved' + '\t' + 'Protostomia Gained' + '\t' + 'Protostomia Lost' + '\t' + 'Protostomia Lost Deep' + '\t'  # C36
+output = output + 'Bilateria Conserved' + '\t' + 'Bilateria Gained' + '\t' + 'Bilateria Lost' + '\t' + 'Bilateria Lost Deep' + '\n'   # C37
+
+output_counts.write( output )
+
+aplysia_orthogroups = clades_orthogroups_total[ 'C01' ]
+elysia_orthogroups = clades_orthogroups_total[ 'C02' ]
+achatina_orthogroups = clades_orthogroups_total[ 'C03' ]
+pomacea_orthogroups = clades_orthogroups_total[ 'C04' ]
+gigantopelta_orthogroups = clades_orthogroups_total[ 'C05' ]
+lottia_orthogroups = clades_orthogroups_total[ 'C06' ]
+mizuhopecten_orthogroups = clades_orthogroups_total[ 'C07' ]
+crassostrea_orthogroups = clades_orthogroups_total[ 'C08' ]
+cyclina_orthogroups = clades_orthogroups_total[ 'C09' ]
+octopus_orthogroups = clades_orthogroups_total[ 'C10' ]
+argonauta_orthogroups = clades_orthogroups_total[ 'C11' ]
+nautilus_orthogroups = clades_orthogroups_total[ 'C12' ]
+acanthopleura_orthogroups = clades_orthogroups_total[ 'C13' ]
+lingula_orthogroups = clades_orthogroups_total[ 'C14' ]
+phoronis_orthogroups = clades_orthogroups_total[ 'C15' ]
+capitella_orthogroups = clades_orthogroups_total[ 'C16' ]
+drosophila_orthogroups = clades_orthogroups_total[ 'C17' ]
+caenorhabditis_orthogroups = clades_orthogroups_total[ 'C18' ]
+homo_orthogroups = clades_orthogroups_total[ 'C19' ]
+panpulmonata_orthogroups = clades_orthogroups_total[ 'C20' ]
+euthyneura_orthogroups = clades_orthogroups_total[ 'C21' ]
+angiogastropoda_orthogroups = clades_orthogroups_total[ 'C22' ]
+psilogastropoda_orthogroups = clades_orthogroups_total[ 'C23' ]
+gastropoda_orthogroups = clades_orthogroups_total[ 'C24' ]
+pteriomorphia_orthogroups = clades_orthogroups_total[ 'C25' ]
+bivalvia_orthogroups = clades_orthogroups_total[ 'C26' ]
+molluscan_clade_2_orthogroups = clades_orthogroups_total[ 'C27' ]
+coleoidea_orthogroups = clades_orthogroups_total[ 'C28' ]
+cephalopoda_orthogroups = clades_orthogroups_total[ 'C29' ]
+conchifera_orthogroups = clades_orthogroups_total[ 'C30' ]
+mollusca_orthogroups = clades_orthogroups_total[ 'C31' ]
+lophophorata_orthogroups = clades_orthogroups_total[ 'C32' ]
+spiralian_clade_4_orthogroups = clades_orthogroups_total[ 'C33' ]
+spiralia_orthogroups = clades_orthogroups_total[ 'C34' ]
+ecdysozoa_orthogroups = clades_orthogroups_total[ 'C35' ]
+protostomia_orthogroups = clades_orthogroups_total[ 'C36' ]
+bilateria_orthogroups = clades_orthogroups_total[ 'C37' ]
+
+for next_clade in sorted( clades_orthogroups_total.keys() ):
+    clade_name = clades_names[ next_clade ]
+
+    total_orthogroups = str( len( list( set( clades_orthogroups_total[ next_clade ] ) ) ) )
+    clade_orthogroups = list( set( clades_orthogroups_total[ next_clade ] ) )
+
+    if next_clade != 'C37':
+        ancestor_id = clades_ancestors[ next_clade ]
+        ancestor_orthogroups = list( set(  clades_orthogroups_total[ ancestor_id ] ) )
+
+        deep_ancestor_orthogroups = []
+
+        if next_clade == 'C01':
+            deep_ancestors = ['C21', 'C22', 'C24', 'C27', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C02':
+            deep_ancestors = [ 'C20', 'C21', 'C22', 'C24', 'C27', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C03':
+            deep_ancestors = [ 'C20', 'C21', 'C22', 'C24', 'C27', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C04':
+            deep_ancestors = [ 'C22', 'C24', 'C27', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C05':
+            deep_ancestors = [ 'C23', 'C24', 'C27', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C06':
+            deep_ancestors = [ 'C23', 'C24', 'C27', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C07':
+            deep_ancestors = [ 'C25', 'C26', 'C27', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C08':
+            deep_ancestors = [ 'C25', 'C26', 'C27', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C09':
+            deep_ancestors = [  'C26', 'C27', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C10':
+            deep_ancestors = [  'C28', 'C29', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C11':
+            deep_ancestors = [ 'C28', 'C29', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C12':
+            deep_ancestors = [ 'C29', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C13':
+            deep_ancestors = [ 'C31', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C14':
+            deep_ancestors = [ 'C32', 'C33', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C15':
+            deep_ancestors = [ 'C32', 'C33', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C16':
+            deep_ancestors = [  'C33', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C17':
+            deep_ancestors = [ 'C35', 'C36', 'C37' ]
+        if next_clade == 'C18':
+            deep_ancestors = [ 'C35', 'C36', 'C37' ]
+        if next_clade == 'C19':
+            deep_ancestors = [ 'C37' ]
+        if next_clade == 'C20':
+            deep_ancestors = [ 'C21', 'C22', 'C24', 'C27', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C21':
+            deep_ancestors = [ 'C22', 'C24', 'C27', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C22':
+            deep_ancestors = [ 'C24', 'C27', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C23':
+            deep_ancestors = [ 'C24', 'C27', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C24':
+            deep_ancestors = [ 'C27', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C25':
+            deep_ancestors = [ 'C26', 'C27', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C26':
+            deep_ancestors = [ 'C27', 'C30', 'C31', 'C34', 'C36', 'C37']
+        if next_clade == 'C27':
+            deep_ancestors = [ 'C30', 'C31', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C28':
+            deep_ancestors = [ 'C29', 'C30', 'C31', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C29':
+            deep_ancestors = [ 'C30', 'C31', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C30':
+            deep_ancestors = [ 'C31', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C31':
+            deep_ancestors = [ 'C34', 'C36', 'C37' ]
+        if next_clade == 'C32':
+            deep_ancestors = [ 'C33', 'C34', 'C36', 'C37' ]
+        if next_clade == 'C33':
+            deep_ancestors = [ 'C34', 'C36', 'C37' ]
+        if next_clade == 'C34':
+            deep_ancestors = [ 'C36', 'C37' ]
+        if next_clade == 'C35':
+            deep_ancestors = [ 'C36', 'C37' ]
+        if next_clade == 'C36':
+            deep_ancestors = [ 'C37' ]
+            
+        for next_deep_ancestor_id in deep_ancestors:
+            for next_deep_ancestor_orthogroup in clades_orthogroups_total[ next_deep_ancestor_id ]:
+                if next_deep_ancestor_orthogroup not in deep_ancestor_orthogroups:
+                    deep_ancestor_orthogroups.append( next_deep_ancestor_orthogroup )
+                        
+        conserved_orthogroups = 0
+        gained_orthogroups = 0
+        aplysia_conserved = 0 # C01
+        aplysia_gained = 0
+        elysia_conserved = 0 # C02
+        elysia_gained = 0
+        achatina_conserved = 0 # C03
+        achatina_gained = 0
+        pomacea_conserved = 0 # C04
+        pomacea_gained = 0
+        gigantopelta_conserved = 0 # C05
+        gigantopelta_gained = 0
+        lottia_conserved = 0 # C06
+        lottia_gained = 0
+        mizuhopecten_conserved = 0 # C07
+        mizuhopecten_gained = 0
+        crassostrea_conserved = 0 # C08
+        crassostrea_gained = 0
+        cyclina_conserved = 0 # C09
+        cyclina_gained = 0
+        octopus_conserved = 0 # C10
+        octopus_gained = 0
+        argonauta_conserved = 0 # C11
+        argonauta_gained = 0
+        nautilus_conserved = 0 # C12
+        nautilus_gained = 0
+        acanthopleura_conserved = 0 # C13
+        acanthopleura_gained = 0
+        lingula_conserved = 0 # C14 
+        lingula_gained = 0
+        phoronis_conserved = 0 # C15
+        phoronis_gained = 0
+        capitella_conserved = 0 # C16
+        capitella_gained = 0
+        drosophila_conserved = 0 # C17
+        drosophila_gained = 0
+        caenorhabditis_conserved = 0 # C18
+        caenorhabditis_gained = 0
+        homo_conserved = 0 # C19
+        homo_gained = 0
+        panpulmonata_conserved = 0 # C20
+        panpulmonata_gained = 0
+        euthyneura_conserved = 0 # C21
+        euthyneura_gained = 0
+        angiogastropoda_conserved = 0 # C22
+        angiogastropoda_gained = 0
+        psilogastropoda_conserved = 0 # C23
+        psilogastropoda_gained = 0
+        gastropoda_conserved = 0 # C24
+        gastropoda_gained = 0
+        pteriomorphia_conserved = 0 # C25
+        pteriomorphia_gained = 0
+        bivalvia_conserved = 0 # C26
+        bivalvia_gained = 0
+        molluscan_clade_2_conserved = 0 # C27
+        molluscan_clade_2_gained = 0
+        coleoidea_conserved = 0 # C28
+        coleoidea_gained = 0
+        cephalopoda_conserved = 0 # C29
+        cephalopoda_gained = 0
+        conchifera_conserved = 0 # C30
+        conchifera_gained = 0
+        mollusca_conserved = 0 # C31
+        mollusca_gained = 0
+        lophophorata_conserved = 0 # C32
+        lophophorata_gained = 0
+        spiralian_clade_4_conserved = 0 # C33
+        spiralian_clade_4_gained = 0
+        spiralia_conserved = 0 # C34
+        spiralia_gained = 0
+        ecdysozoa_conserved = 0 # C35
+        ecdysozoa_gained = 0
+        protostomia_conserved = 0 # C36
+        protostomia_gained = 0
+        bilateria_conserved = 0 # C37
+        bilateria_gained = 0
+
+        for next_orthogroup in clade_orthogroups:
+
+            if next_orthogroup in deep_ancestor_orthogroups:
+                
+                conserved_orthogroups = conserved_orthogroups + 1
+                output = 'Conserved' + '\t' + next_clade + '\t' + next_orthogroup + '\n'
+                output_cgl.write( output )
+                
+                if next_orthogroup in aplysia_orthogroups: # C01
+                    aplysia_conserved = aplysia_conserved + 1
+                    output_cgl_aplysia.write( output )
+                if next_orthogroup in elysia_orthogroups: # C02
+                    elysia_conserved = elysia_conserved + 1
+                    output_cgl_elysia.write( output )
+                if next_orthogroup in achatina_orthogroups: # C03
+                    achatina_conserved = achatina_conserved + 1
+                    output_cgl_achatina.write( output )
+                if next_orthogroup in pomacea_orthogroups: # C04
+                    pomacea_conserved = pomacea_conserved + 1
+                    output_cgl_pomacea.write( output )
+                if next_orthogroup in gigantopelta_orthogroups: # C05
+                    gigantopelta_conserved = gigantopelta_conserved + 1
+                    output_cgl_gigantopelta.write( output )
+                if next_orthogroup in lottia_orthogroups: # C06
+                    lottia_conserved = lottia_conserved + 1
+                    output_cgl_lottia.write( output )
+                if next_orthogroup in mizuhopecten_orthogroups: # C07
+                    mizuhopecten_conserved = mizuhopecten_conserved + 1
+                    output_cgl_mizuhopecten.write( output )
+                if next_orthogroup in crassostrea_orthogroups: # C08
+                    crassostrea_conserved = crassostrea_conserved + 1
+                    output_cgl_crassostrea.write( output )
+                if next_orthogroup in cyclina_orthogroups: # C09
+                    cyclina_conserved = cyclina_conserved + 1
+                    output_cgl_cyclina.write( output )
+                if next_orthogroup in octopus_orthogroups: # C10
+                    octopus_conserved = octopus_conserved + 1
+                    output_cgl_octopus.write( output )
+                if next_orthogroup in argonauta_orthogroups: # C11
+                    argonauta_conserved = argonauta_conserved + 1
+                    output_cgl_argonauta.write( output )
+                if next_orthogroup in nautilus_orthogroups: # C12
+                    nautilus_conserved = nautilus_conserved + 1
+                    output_cgl_nautilus.write( output )
+                if next_orthogroup in acanthopleura_orthogroups: # C13
+                    acanthopleura_conserved = acanthopleura_conserved + 1
+                    output_cgl_acanthopleura.write( output )
+                if next_orthogroup in lingula_orthogroups: # C14
+                    lingula_conserved = lingula_conserved + 1
+                    output_cgl_lingula.write( output )
+                if next_orthogroup in phoronis_orthogroups: # C15
+                    phoronis_conserved = phoronis_conserved + 1
+                    output_cgl_phoronis.write( output )
+                if next_orthogroup in capitella_orthogroups: # C16
+                    capitella_conserved = capitella_conserved + 1
+                    output_cgl_capitella.write( output )
+                if next_orthogroup in drosophila_orthogroups: # C17
+                    drosophila_conserved = drosophila_conserved + 1
+                    output_cgl_drosophila.write( output )
+                if next_orthogroup in caenorhabditis_orthogroups: # C18
+                    caenorhabditis_conserved = caenorhabditis_conserved + 1
+                    output_cgl_caenorhabditis.write( output )
+                if next_orthogroup in homo_orthogroups: # C19
+                    homo_conserved = homo_conserved + 1
+                    output_cgl_homo.write( output )
+                if next_orthogroup in panpulmonata_orthogroups: # C20
+                    panpulmonata_conserved = panpulmonata_conserved + 1
+                    output_cgl_panpulmonata.write( output )
+                if next_orthogroup in euthyneura_orthogroups: # C21
+                    euthyneura_conserved = euthyneura_conserved + 1
+                    output_cgl_euthyneura.write( output )
+                if next_orthogroup in angiogastropoda_orthogroups: # C22
+                    angiogastropoda_conserved = angiogastropoda_conserved + 1
+                    output_cgl_angiogastropoda.write( output )
+                if next_orthogroup in psilogastropoda_orthogroups: # C23
+                    psilogastropoda_conserved = psilogastropoda_conserved + 1
+                    output_cgl_psilogastropoda.write( output )
+                if next_orthogroup in gastropoda_orthogroups: # C24
+                    gastropoda_conserved = gastropoda_conserved + 1
+                    output_cgl_gastropoda.write( output )
+                if next_orthogroup in pteriomorphia_orthogroups: # C25
+                    pteriomorphia_conserved = pteriomorphia_conserved + 1
+                    output_cgl_pteriomorphia.write( output )
+                if next_orthogroup in bivalvia_orthogroups: # C26
+                    bivalvia_conserved = bivalvia_conserved + 1
+                    output_cgl_bivalvia.write( output )
+                if next_orthogroup in molluscan_clade_2_orthogroups: # C27
+                    molluscan_clade_2_conserved = molluscan_clade_2_conserved + 1
+                    output_cgl_molluscan_clade_2.write( output )
+                if next_orthogroup in coleoidea_orthogroups: # C28
+                    coleoidea_conserved = coleoidea_conserved + 1
+                    output_cgl_coleoidea.write( output )
+                if next_orthogroup in cephalopoda_orthogroups: # C29
+                    cephalopoda_conserved = cephalopoda_conserved + 1
+                    output_cgl_cephalopoda.write( output )
+                if next_orthogroup in conchifera_orthogroups: # C30
+                    conchifera_conserved = conchifera_conserved + 1
+                    output_cgl_conchifera.write( output )
+                if next_orthogroup in mollusca_orthogroups: # C31
+                    mollusca_conserved = mollusca_conserved + 1
+                    output_cgl_mollusca.write( output )
+                if next_orthogroup in lophophorata_orthogroups: # C32
+                    lophophorata_conserved = lophophorata_conserved + 1
+                    output_cgl_lophophorata.write( output )
+                if next_orthogroup in spiralian_clade_4_orthogroups: # C33
+                    spiralian_clade_4_conserved = spiralian_clade_4_conserved + 1
+                    output_cgl_spiralian_clade_4.write( output )
+                if next_orthogroup in spiralia_orthogroups: # C34
+                    spiralia_conserved = spiralia_conserved + 1
+                    output_cgl_spiralia.write( output )
+                if next_orthogroup in ecdysozoa_orthogroups: # C35
+                    ecdysozoa_conserved = ecdysozoa_conserved + 1
+                    output_cgl_ecdysozoa.write( output )
+                if next_orthogroup in protostomia_orthogroups: # C36
+                    protostomia_conserved = protostomia_conserved + 1
+                    output_cgl_protostomia.write( output )
+                if next_orthogroup in bilateria_orthogroups: # C37
+                    bilateria_conserved = bilateria_conserved + 1
+                    output_cgl_bilateria.write( output )
+
+            else:
+                gained_orthogroups = gained_orthogroups + 1
+                output = 'Gained' + '\t' + next_clade + '\t' + next_orthogroup + '\n'
+                output_cgl.write( output )
+
+                if next_orthogroup in orthogroups_cladegained.keys(): # capture when orthogroup first evolved
+                    orthogroups_cladegained[ next_orthogroup ].append( next_clade )
+                else:
+                    orthogroups_cladegained[ next_orthogroup ] = []
+                    orthogroups_cladegained[ next_orthogroup ].append( next_clade )
+                
+                if next_orthogroup in aplysia_orthogroups: # C01
+                    aplysia_gained = aplysia_gained + 1
+                    output_cgl_aplysia.write( output )
+                if next_orthogroup in elysia_orthogroups: # C02
+                    elysia_gained = elysia_gained + 1
+                    output_cgl_elysia.write( output )
+                if next_orthogroup in achatina_orthogroups: # C03
+                    achatina_gained = achatina_gained + 1
+                    output_cgl_achatina.write( output )
+                if next_orthogroup in pomacea_orthogroups: # C04
+                    pomacea_gained = pomacea_gained + 1
+                    output_cgl_pomacea.write( output )
+                if next_orthogroup in gigantopelta_orthogroups: # C05
+                    gigantopelta_gained = gigantopelta_gained + 1
+                    output_cgl_gigantopelta.write( output )
+                if next_orthogroup in lottia_orthogroups: # C06
+                    lottia_gained = lottia_gained + 1
+                    output_cgl_lottia.write( output )
+                if next_orthogroup in mizuhopecten_orthogroups: # C07
+                    mizuhopecten_gained = mizuhopecten_gained + 1
+                    output_cgl_mizuhopecten.write( output )
+                if next_orthogroup in crassostrea_orthogroups: # C08
+                    crassostrea_gained = crassostrea_gained + 1
+                    output_cgl_crassostrea.write( output )
+                if next_orthogroup in cyclina_orthogroups: # C09
+                    cyclina_gained = cyclina_gained + 1
+                    output_cgl_cyclina.write( output )
+                if next_orthogroup in octopus_orthogroups: # C10
+                    octopus_gained = octopus_gained + 1
+                    output_cgl_octopus.write( output )
+                if next_orthogroup in argonauta_orthogroups: # C11
+                    argonauta_gained = argonauta_gained + 1
+                    output_cgl_argonauta.write( output )
+                if next_orthogroup in nautilus_orthogroups: # C12
+                    nautilus_gained = nautilus_gained + 1
+                    output_cgl_nautilus.write( output )
+                if next_orthogroup in acanthopleura_orthogroups: # C13
+                    acanthopleura_gained = acanthopleura_gained + 1
+                    output_cgl_acanthopleura.write( output )
+                if next_orthogroup in lingula_orthogroups: # C14
+                    lingula_gained = lingula_gained + 1
+                    output_cgl_lingula.write( output )
+                if next_orthogroup in phoronis_orthogroups: # C15
+                    phoronis_gained = phoronis_gained + 1
+                    output_cgl_phoronis.write( output )
+                if next_orthogroup in capitella_orthogroups: # C16
+                    capitella_gained = capitella_gained + 1
+                    output_cgl_capitella.write( output )
+                if next_orthogroup in drosophila_orthogroups: # C17
+                    drosophila_gained = drosophila_gained + 1
+                    output_cgl_drosophila.write( output )
+                if next_orthogroup in caenorhabditis_orthogroups: # C18
+                    caenorhabditis_gained = caenorhabditis_gained + 1
+                    output_cgl_caenorhabditis.write( output )
+                if next_orthogroup in homo_orthogroups: # C19
+                    homo_gained = homo_gained + 1
+                    output_cgl_homo.write( output )
+                if next_orthogroup in panpulmonata_orthogroups: # C20
+                    panpulmonata_gained = panpulmonata_gained + 1
+                    output_cgl_panpulmonata.write( output )
+                if next_orthogroup in euthyneura_orthogroups: # C21
+                    euthyneura_gained = euthyneura_gained + 1
+                    output_cgl_euthyneura.write( output )
+                if next_orthogroup in angiogastropoda_orthogroups: # C22
+                    angiogastropoda_gained = angiogastropoda_gained + 1
+                    output_cgl_angiogastropoda.write( output )
+                if next_orthogroup in psilogastropoda_orthogroups: # C23
+                    psilogastropoda_gained = psilogastropoda_gained + 1
+                    output_cgl_psilogastropoda.write( output )
+                if next_orthogroup in gastropoda_orthogroups: # C24
+                    gastropoda_gained = gastropoda_gained + 1
+                    output_cgl_gastropoda.write( output )
+                if next_orthogroup in pteriomorphia_orthogroups: # C25
+                    pteriomorphia_gained = pteriomorphia_gained + 1
+                    output_cgl_pteriomorphia.write( output )
+                if next_orthogroup in bivalvia_orthogroups: # C26
+                    bivalvia_gained = bivalvia_gained + 1
+                    output_cgl_bivalvia.write( output )
+                if next_orthogroup in molluscan_clade_2_orthogroups: # C27
+                    molluscan_clade_2_gained = molluscan_clade_2_gained + 1
+                    output_cgl_molluscan_clade_2.write( output )
+                if next_orthogroup in coleoidea_orthogroups: # C28
+                    coleoidea_gained = coleoidea_gained + 1
+                    output_cgl_coleoidea.write( output )
+                if next_orthogroup in cephalopoda_orthogroups: # C29
+                    cephalopoda_gained = cephalopoda_gained + 1
+                    output_cgl_cephalopoda.write( output )
+                if next_orthogroup in conchifera_orthogroups: # C30
+                    conchifera_gained = conchifera_gained + 1
+                    output_cgl_conchifera.write( output )
+                if next_orthogroup in mollusca_orthogroups: # C31
+                    mollusca_gained = mollusca_gained + 1
+                    output_cgl_mollusca.write( output )
+                if next_orthogroup in lophophorata_orthogroups: # C32
+                    lophophorata_gained = lophophorata_gained + 1
+                    output_cgl_lophophorata.write( output )
+                if next_orthogroup in spiralian_clade_4_orthogroups: # C33
+                    spiralian_clade_4_gained = spiralian_clade_4_gained + 1
+                    output_cgl_spiralian_clade_4.write( output )
+                if next_orthogroup in spiralia_orthogroups: # C34
+                    spiralia_gained = spiralia_gained + 1
+                    output_cgl_spiralia.write( output )
+                if next_orthogroup in ecdysozoa_orthogroups: # C35
+                    ecdysozoa_gained = ecdysozoa_gained + 1
+                    output_cgl_ecdysozoa.write( output )
+                if next_orthogroup in protostomia_orthogroups: # C36
+                    protostomia_gained = protostomia_gained + 1
+                    output_cgl_protostomia.write( output )
+                if next_orthogroup in bilateria_orthogroups: # C37
+                    bilateria_gained = bilateria_gained + 1
+                    output_cgl_bilateria.write( output )
+                                                            
+        lost_orthogroups = 0
+        aplysia_lost = 0 # C01
+        elysia_lost = 0 # C02
+        achatina_lost = 0 # C03
+        pomacea_lost = 0 # C04
+        gigantopelta_lost = 0 # C05
+        lottia_lost = 0 # C06
+        mizuhopecten_lost = 0 # C07
+        crassostrea_lost = 0 # C08
+        cyclina_lost = 0 # C09
+        octopus_lost = 0 # C10
+        argonauta_lost = 0 # C11
+        nautilus_lost = 0 # C12
+        acanthopleura_lost = 0 # C13
+        lingula_lost = 0 # C14
+        phoronis_lost = 0 # C15
+        capitella_lost = 0 # C16
+        drosophila_lost = 0 # C17
+        caenorhabditis_lost = 0 # C18
+        homo_lost = 0 # C19
+        panpulmonata_lost = 0 # C20
+        euthyneura_lost = 0 # C21
+        angiogastropoda_lost = 0 # C22
+        psilogastropoda_lost = 0 # C23
+        gastropoda_lost = 0 # C24
+        pteriomorphia_lost = 0 # C25
+        bivalvia_lost = 0 # C26
+        molluscan_clade_2_lost = 0 # C27
+        coleoidea_lost = 0 # C28
+        cephalopoda_lost = 0 # C29
+        conchifera_lost = 0 # C30
+        mollusca_lost = 0 # C31
+        lophophorata_lost = 0 # C32
+        spiralian_clade_4_lost = 0 # C33
+        spiralia_lost = 0 # C34
+        ecdysozoa_lost = 0 # C35
+        protostomia_lost = 0 # C36
+        bilateria_lost = 0 # C37
+        
+        for next_orthogroup in ancestor_orthogroups:
+            if next_orthogroup not in clade_orthogroups:
+                lost_orthogroups = lost_orthogroups + 1
+                output = 'Lost' + '\t' + next_clade + '\t' + next_orthogroup + '\n'
+                output_cgl.write( output )
+                                    
+                if next_orthogroup not in aplysia_orthogroups: # C01
+                    aplysia_lost = aplysia_lost + 1
+                    output_cgl_aplysia.write( output )
+                if next_orthogroup not in elysia_orthogroups: # C02
+                    elysia_lost = elysia_lost + 1
+                    output_cgl_elysia.write( output )
+                if next_orthogroup not in achatina_orthogroups: # C03
+                    achatina_lost = achatina_lost + 1
+                    output_cgl_achatina.write( output )
+                if next_orthogroup not in pomacea_orthogroups: # C04
+                    pomacea_lost = pomacea_lost + 1
+                    output_cgl_pomacea.write( output )
+                if next_orthogroup not in gigantopelta_orthogroups: # C05
+                    gigantopelta_lost = gigantopelta_lost + 1
+                    output_cgl_gigantopelta.write( output )
+                if next_orthogroup not in lottia_orthogroups: # C06
+                    lottia_lost = lottia_lost + 1
+                    output_cgl_lottia.write( output )
+                if next_orthogroup not in mizuhopecten_orthogroups: # C07
+                    mizuhopecten_lost = mizuhopecten_lost + 1
+                    output_cgl_mizuhopecten.write( output )
+                if next_orthogroup not in crassostrea_orthogroups: # C08
+                    crassostrea_lost = crassostrea_lost + 1
+                    output_cgl_crassostrea.write( output )
+                if next_orthogroup not in cyclina_orthogroups: # C09
+                    cyclina_lost = cyclina_lost + 1
+                    output_cgl_cyclina.write( output )
+                if next_orthogroup not in octopus_orthogroups: # C10
+                    octopus_lost = octopus_lost + 1
+                    output_cgl_octopus.write( output )
+                if next_orthogroup not in argonauta_orthogroups: # C11
+                    argonauta_lost = argonauta_lost + 1
+                    output_cgl_argonauta.write( output )
+                if next_orthogroup not in nautilus_orthogroups: # C12
+                    nautilus_lost = nautilus_lost + 1
+                    output_cgl_nautilus.write( output )
+                if next_orthogroup not in acanthopleura_orthogroups: # C13
+                    acanthopleura_lost = acanthopleura_lost + 1
+                    output_cgl_acanthopleura.write( output )
+                if next_orthogroup not in lingula_orthogroups: # C14
+                    lingula_lost = lingula_lost + 1
+                    output_cgl_lingula.write( output )
+                if next_orthogroup not in phoronis_orthogroups: # C15
+                    phoronis_lost = phoronis_lost + 1
+                    output_cgl_phoronis.write( output )
+                if next_orthogroup not in capitella_orthogroups: # C16
+                    capitella_lost = capitella_lost + 1
+                    output_cgl_capitella.write( output )
+                if next_orthogroup not in drosophila_orthogroups: # C17
+                    drosophila_lost = drosophila_lost + 1
+                    output_cgl_drosophila.write( output )
+                if next_orthogroup not in caenorhabditis_orthogroups: # C18
+                    caenorhabditis_lost = caenorhabditis_lost + 1
+                    output_cgl_caenorhabditis.write( output )
+                if next_orthogroup not in homo_orthogroups: # C19
+                    homo_lost = homo_lost + 1
+                    output_cgl_homo.write( output )
+                if next_orthogroup not in panpulmonata_orthogroups: # C20
+                    panpulmonata_lost = panpulmonata_lost + 1
+                    output_cgl_panpulmonata.write( output )
+                if next_orthogroup not in euthyneura_orthogroups: # C21
+                    euthyneura_lost = euthyneura_lost + 1
+                    output_cgl_euthyneura.write( output )
+                if next_orthogroup not in angiogastropoda_orthogroups: # C22
+                    angiogastropoda_lost = angiogastropoda_lost + 1
+                    output_cgl_angiogastropoda.write( output )
+                if next_orthogroup not in psilogastropoda_orthogroups: # C23
+                    psilogastropoda_lost = psilogastropoda_lost + 1
+                    output_cgl_psilogastropoda.write( output )
+                if next_orthogroup not in gastropoda_orthogroups: # C24
+                    gastropoda_lost = gastropoda_lost + 1
+                    output_cgl_gastropoda.write( output )
+                if next_orthogroup not in pteriomorphia_orthogroups: # C25
+                    pteriomorphia_lost = pteriomorphia_lost + 1
+                    output_cgl_pteriomorphia.write( output )
+                if next_orthogroup not in bivalvia_orthogroups: # C26
+                    bivalvia_lost = bivalvia_lost + 1
+                    output_cgl_bivalvia.write( output )
+                if next_orthogroup not in molluscan_clade_2_orthogroups: # C27
+                    molluscan_clade_2_lost = molluscan_clade_2_lost + 1
+                    output_cgl_molluscan_clade_2.write( output )
+                if next_orthogroup not in coleoidea_orthogroups: # C28
+                    coleoidea_lost = coleoidea_lost + 1
+                    output_cgl_coleoidea.write( output )
+                if next_orthogroup not in cephalopoda_orthogroups: # C29
+                    cephalopoda_lost = cephalopoda_lost + 1
+                    output_cgl_cephalopoda.write( output )
+                if next_orthogroup not in conchifera_orthogroups: # C30
+                    conchifera_lost = conchifera_lost + 1
+                    output_cgl_conchifera.write( output )
+                if next_orthogroup not in mollusca_orthogroups: # C31
+                    mollusca_lost =  mollusca_lost + 1
+                    output_cgl_mollusca.write( output )
+                if next_orthogroup not in lophophorata_orthogroups: # C32
+                    lophophorata_lost = lophophorata_lost + 1
+                    output_cgl_lophophorata.write( output )
+                if next_orthogroup not in spiralian_clade_4_orthogroups: # C33
+                    spiralian_clade_4_lost = spiralian_clade_4_lost + 1
+                    output_cgl_spiralian_clade_4.write( output )
+                if next_orthogroup not in spiralia_orthogroups: # C34
+                    spiralia_lost = spiralia_lost + 1
+                    output_cgl_spiralia.write( output )
+                if next_orthogroup not in ecdysozoa_orthogroups: # C35
+                    ecdysozoa_lost = ecdysozoa_lost + 1
+                    output_cgl_ecdysozoa.write( output )
+                if next_orthogroup not in protostomia_orthogroups: # C36
+                    protostomia_lost = protostomia_lost + 1
+                    output_cgl_protostomia.write( output )
+                if next_orthogroup not in bilateria_orthogroups: # C37
+                    bilateria_lost = bilateria_lost + 1
+                    output_cgl_bilateria.write( output )
+
+        deep_lost_orthogroups = 0
+        deep_aplysia_lost = 0 # C01
+        deep_elysia_lost = 0 # C02
+        deep_achatina_lost = 0 # C03
+        deep_pomacea_lost = 0 # C04
+        deep_gigantopelta_lost = 0 # C05
+        deep_lottia_lost = 0 # C06
+        deep_mizuhopecten_lost = 0 # C07
+        deep_crassostrea_lost = 0 # C08
+        deep_cyclina_lost = 0 # C09
+        deep_octopus_lost = 0 # C10
+        deep_argonauta_lost = 0 # C11
+        deep_nautilus_lost = 0 # C12
+        deep_acanthopleura_lost = 0 # C13
+        deep_lingula_lost = 0 # C14
+        deep_phoronis_lost = 0 # C15
+        deep_capitella_lost = 0 # C16
+        deep_drosophila_lost = 0 # C17
+        deep_caenorhabditis_lost = 0 # C18
+        deep_homo_lost = 0 # C19
+        deep_panpulmonata_lost = 0 # C20
+        deep_euthyneura_lost = 0 # C21
+        deep_angiogastropoda_lost = 0 # C22
+        deep_psilogastropoda_lost = 0 # C23
+        deep_gastropoda_lost = 0 # C24
+        deep_pteriomorphia_lost = 0 # C25
+        deep_bivalvia_lost = 0 # C26
+        deep_molluscan_clade_2_lost = 0 # C27
+        deep_coleoidea_lost = 0 # C28
+        deep_cephalopoda_lost = 0 # C29
+        deep_conchifera_lost = 0 # C30
+        deep_mollusca_lost = 0 # C31
+        deep_lophophorata_lost = 0 # C32
+        deep_spiralian_clade_4_lost = 0 # C33
+        deep_spiralia_lost = 0 # C34
+        deep_ecdysozoa_lost = 0 # C35
+        deep_protostomia_lost = 0 # C36
+        deep_bilateria_lost = 0 # C37 
+
+        for next_orthogroup in deep_ancestor_orthogroups:
+            if next_orthogroup not in clade_orthogroups:
+                deep_lost_orthogroups = deep_lost_orthogroups + 1
+                output = 'Lost Deep' + '\t' + next_clade + '\t' + next_orthogroup + '\n'
+                output_cgl.write( output )
+
+                if next_orthogroup not in aplysia_orthogroups: # C01
+                    deep_aplysia_lost = deep_aplysia_lost + 1
+                    output_cgl_aplysia.write( output )
+                if next_orthogroup not in elysia_orthogroups: # C02
+                    deep_elysia_lost = deep_elysia_lost + 1
+                    output_cgl_elysia.write( output )
+                if next_orthogroup not in achatina_orthogroups: # C03
+                    deep_achatina_lost = deep_achatina_lost + 1
+                    output_cgl_achatina.write( output )
+                if next_orthogroup not in pomacea_orthogroups: # C04
+                    deep_pomacea_lost = deep_pomacea_lost + 1
+                    output_cgl_pomacea.write( output )
+                if next_orthogroup not in gigantopelta_orthogroups: # C05
+                    deep_gigantopelta_lost = deep_gigantopelta_lost + 1
+                    output_cgl_gigantopelta.write( output )
+                if next_orthogroup not in lottia_orthogroups: # C06
+                    deep_lottia_lost = deep_lottia_lost + 1
+                    output_cgl_lottia.write( output )
+                if next_orthogroup not in mizuhopecten_orthogroups: # C07
+                    deep_mizuhopecten_lost = deep_mizuhopecten_lost + 1
+                    output_cgl_mizuhopecten.write( output )
+                if next_orthogroup not in crassostrea_orthogroups: # C08
+                    deep_crassostrea_lost = deep_crassostrea_lost + 1
+                    output_cgl_crassostrea.write( output )
+                if next_orthogroup not in cyclina_orthogroups: # C09
+                    deep_cyclina_lost = deep_cyclina_lost + 1
+                    output_cgl_cyclina.write( output )
+                if next_orthogroup not in octopus_orthogroups: # C10
+                    deep_octopus_lost = deep_octopus_lost + 1
+                    output_cgl_octopus.write( output )
+                if next_orthogroup not in argonauta_orthogroups: # C11
+                    deep_argonauta_lost = deep_argonauta_lost + 1
+                    output_cgl_argonauta.write( output )
+                if next_orthogroup not in nautilus_orthogroups: # C12
+                    deep_nautilus_lost = deep_nautilus_lost + 1
+                    output_cgl_nautilus.write( output )
+                if next_orthogroup not in acanthopleura_orthogroups: # C13
+                    deep_acanthopleura_lost = deep_acanthopleura_lost + 1
+                    output_cgl_acanthopleura.write( output )
+                if next_orthogroup not in lingula_orthogroups: # C14
+                    deep_lingula_lost = deep_lingula_lost + 1
+                    output_cgl_lingula.write( output )
+                if next_orthogroup not in phoronis_orthogroups: # C15
+                    deep_phoronis_lost = deep_phoronis_lost + 1
+                    output_cgl_phoronis.write( output )
+                if next_orthogroup not in capitella_orthogroups: # C16
+                    deep_capitella_lost = deep_capitella_lost + 1
+                    output_cgl_capitella.write( output )
+                if next_orthogroup not in drosophila_orthogroups: # C17
+                    deep_drosophila_lost = deep_drosophila_lost + 1
+                    output_cgl_drosophila.write( output )
+                if next_orthogroup not in caenorhabditis_orthogroups: # C18
+                    deep_caenorhabditis_lost = deep_caenorhabditis_lost + 1
+                    output_cgl_caenorhabditis.write( output )
+                if next_orthogroup not in homo_orthogroups: # C19
+                    deep_homo_lost = deep_homo_lost + 1
+                    output_cgl_homo.write( output )
+                if next_orthogroup not in panpulmonata_orthogroups: # C20
+                    deep_panpulmonata_lost = deep_panpulmonata_lost + 1
+                    output_cgl_panpulmonata.write( output )
+                if next_orthogroup not in euthyneura_orthogroups: # C21
+                    deep_euthyneura_lost = deep_euthyneura_lost + 1
+                    output_cgl_euthyneura.write( output )
+                if next_orthogroup not in angiogastropoda_orthogroups: # C22
+                    deep_angiogastropoda_lost = deep_angiogastropoda_lost + 1
+                    output_cgl_angiogastropoda.write( output )
+                if next_orthogroup not in psilogastropoda_orthogroups: # C23
+                    deep_psilogastropoda_lost = deep_psilogastropoda_lost + 1
+                    output_cgl_psilogastropoda.write( output )
+                if next_orthogroup not in gastropoda_orthogroups: # C24
+                    deep_gastropoda_lost = deep_gastropoda_lost + 1
+                    output_cgl_gastropoda.write( output )
+                if next_orthogroup not in pteriomorphia_orthogroups: # C25
+                    deep_pteriomorphia_lost = deep_pteriomorphia_lost + 1
+                    output_cgl_pteriomorphia.write( output )
+                if next_orthogroup not in bivalvia_orthogroups: # C26
+                    deep_bivalvia_lost = deep_bivalvia_lost + 1
+                    output_cgl_bivalvia.write( output )
+                if next_orthogroup not in molluscan_clade_2_orthogroups: # C27
+                    deep_molluscan_clade_2_lost = deep_molluscan_clade_2_lost + 1
+                    output_cgl_molluscan_clade_2.write( output )
+                if next_orthogroup not in coleoidea_orthogroups: # C28
+                    deep_coleoidea_lost = deep_coleoidea_lost + 1
+                    output_cgl_coleoidea.write( output )
+                if next_orthogroup not in cephalopoda_orthogroups: # C29
+                    deep_cephalopoda_lost = deep_cephalopoda_lost + 1
+                    output_cgl_cephalopoda.write( output )
+                if next_orthogroup not in conchifera_orthogroups: # C30
+                    deep_conchifera_lost = deep_conchifera_lost + 1
+                    output_cgl_conchifera.write( output )
+                if next_orthogroup not in mollusca_orthogroups: # C31
+                    deep_mollusca_lost =  deep_mollusca_lost + 1
+                    output_cgl_mollusca.write( output )
+                if next_orthogroup not in lophophorata_orthogroups: # C32
+                    deep_lophophorata_lost = deep_lophophorata_lost + 1
+                    output_cgl_lophophorata.write( output )
+                if next_orthogroup not in spiralian_clade_4_orthogroups: # C33
+                    deep_spiralian_clade_4_lost = deep_spiralian_clade_4_lost + 1
+                    output_cgl_spiralian_clade_4.write( output )
+                if next_orthogroup not in spiralia_orthogroups: # C34
+                    deep_spiralia_lost = deep_spiralia_lost + 1
+                    output_cgl_spiralia.write( output )
+                if next_orthogroup not in ecdysozoa_orthogroups: # C35
+                    deep_ecdysozoa_lost = deep_ecdysozoa_lost + 1
+                    output_cgl_ecdysozoa.write( output )
+                if next_orthogroup not in protostomia_orthogroups: # C36
+                    deep_protostomia_lost = deep_protostomia_lost + 1
+                    output_cgl_protostomia.write( output )
+                if next_orthogroup not in bilateria_orthogroups: # C37
+                    deep_bilateria_lost = deep_bilateria_lost + 1
+                    output_cgl_bilateria.write( output )
+                
+    else:
+        conserved_orthogroups = 'NA'
+        gained_orthogroups = 'NA'
+        lost_orthogroups = 'NA'
+
+    output = next_clade + '\t' + clade_name  + '\t' + total_orthogroups + '\t' + str( conserved_orthogroups ) + '\t' + str( gained_orthogroups ) + '\t' + str( lost_orthogroups ) + '\t' + str( deep_lost_orthogroups ) + '\t'
+    output = output + str( aplysia_conserved ) + '\t' + str( aplysia_gained ) + '\t' + str( aplysia_lost ) + '\t' + str( deep_aplysia_lost ) + '\t' # C01
+    output = output + str( elysia_conserved ) + '\t' + str( elysia_gained ) + '\t' + str( elysia_lost ) + '\t' + str( deep_elysia_lost ) + '\t'  # C02
+    output = output + str( achatina_conserved ) + '\t' + str( achatina_gained ) + '\t' + str( achatina_lost ) + '\t' + str( deep_achatina_lost ) + '\t'  # C03
+    output = output + str( pomacea_conserved ) + '\t' + str( pomacea_gained ) + '\t' + str( pomacea_lost ) + '\t' + str( deep_pomacea_lost ) + '\t'  # C04
+    output = output + str( gigantopelta_conserved ) + '\t' + str( gigantopelta_gained ) + '\t' + str( gigantopelta_lost ) + '\t' + str( deep_gigantopelta_lost ) + '\t'  # C05
+    output = output + str( lottia_conserved ) + '\t' + str( lottia_gained ) + '\t' + str( lottia_lost ) + '\t' + str( deep_lottia_lost ) + '\t'  # C06
+    output = output + str( mizuhopecten_conserved ) + '\t' + str( mizuhopecten_gained ) + '\t' + str( mizuhopecten_lost ) + '\t' + str( deep_mizuhopecten_lost ) + '\t'  # C07
+    output = output + str( crassostrea_conserved ) + '\t' + str( crassostrea_gained ) + '\t' + str( crassostrea_lost ) + '\t' + str( deep_crassostrea_lost ) + '\t'  # C08
+    output = output + str( cyclina_conserved ) + '\t' + str( cyclina_gained ) + '\t' + str( cyclina_lost ) + '\t' + str( deep_cyclina_lost ) + '\t'  # C09
+    output = output + str( octopus_conserved ) + '\t' + str( octopus_gained ) + '\t' + str( octopus_lost )+ '\t' + str( deep_octopus_lost )+ '\t'  # C10
+    output = output + str( argonauta_conserved ) + '\t' + str( argonauta_gained ) + '\t' + str( argonauta_lost ) + '\t' + str( deep_argonauta_lost ) + '\t'  # C11
+    output = output + str( nautilus_conserved ) + '\t' + str( nautilus_gained ) + '\t' + str( nautilus_lost ) + '\t' + str( deep_nautilus_lost ) + '\t'  # C12
+    output = output + str( acanthopleura_conserved ) + '\t' + str( acanthopleura_gained ) + '\t' + str( acanthopleura_lost ) + '\t' + str( deep_acanthopleura_lost ) + '\t'  # C13
+    output = output + str( lingula_conserved ) + '\t' + str( lingula_gained ) + '\t' + str( lingula_lost ) + '\t' + str( deep_lingula_lost ) + '\t'  # C14
+    output = output + str( phoronis_conserved ) + '\t' + str( phoronis_gained ) + '\t' + str( phoronis_lost ) + '\t' + str( deep_phoronis_lost ) + '\t'  # C15
+    output = output + str( capitella_conserved ) + '\t' + str( capitella_gained ) + '\t' + str( capitella_lost ) + '\t' + str( deep_capitella_lost ) + '\t'  # C16
+    output = output + str( drosophila_conserved ) + '\t' + str( drosophila_gained ) + '\t' + str( drosophila_lost ) + '\t' + str( deep_drosophila_lost ) + '\t'  # C17
+    output = output + str( caenorhabditis_conserved ) + '\t' + str( caenorhabditis_gained ) + '\t' + str( caenorhabditis_lost ) + '\t' + str( deep_caenorhabditis_lost ) + '\t'  # C18
+    output = output + str( homo_conserved ) + '\t' + str( homo_gained ) + '\t' + str( homo_lost ) + '\t' + str( deep_homo_lost ) + '\t'  # C19
+    output = output + str( panpulmonata_conserved ) + '\t' + str( panpulmonata_gained ) + '\t' + str( panpulmonata_lost ) + '\t' + str( deep_panpulmonata_lost ) + '\t'  # C20
+    output = output + str( euthyneura_conserved ) + '\t' + str( euthyneura_gained ) + '\t' + str( euthyneura_lost ) + '\t' + str( deep_euthyneura_lost ) + '\t'  # C21
+    output = output + str( angiogastropoda_conserved ) + '\t' + str( angiogastropoda_gained ) + '\t' + str( angiogastropoda_lost ) + '\t' + str( deep_angiogastropoda_lost ) + '\t'  # C22
+    output = output + str( psilogastropoda_conserved ) + '\t' + str( psilogastropoda_gained ) + '\t' + str( psilogastropoda_lost ) + '\t' + str( deep_psilogastropoda_lost ) + '\t'  # C23
+    output = output + str( gastropoda_conserved ) + '\t' + str( gastropoda_gained ) + '\t' + str( gastropoda_lost ) + '\t' + str( deep_gastropoda_lost ) + '\t'  # C24
+    output = output + str( pteriomorphia_conserved ) + '\t' + str( pteriomorphia_gained ) + '\t' + str( pteriomorphia_lost ) + '\t' + str( deep_pteriomorphia_lost ) + '\t'  # C25
+    output = output + str( bivalvia_conserved ) + '\t' + str( bivalvia_gained ) + '\t' + str( bivalvia_lost ) + '\t' + str( deep_bivalvia_lost ) + '\t'  # C26
+    output = output + str( molluscan_clade_2_conserved ) + '\t' + str( molluscan_clade_2_gained ) + '\t' + str( molluscan_clade_2_lost ) + '\t' + str( deep_molluscan_clade_2_lost ) + '\t'  # C27
+    output = output + str( coleoidea_conserved ) + '\t' + str( coleoidea_gained ) + '\t' + str( coleoidea_lost ) + '\t' + str( deep_coleoidea_lost ) + '\t'  # C28
+    output = output + str( cephalopoda_conserved ) + '\t' + str( cephalopoda_gained ) + '\t' + str( cephalopoda_lost ) + '\t' + str( deep_cephalopoda_lost ) + '\t'  # C29
+    output = output + str( conchifera_conserved ) + '\t' + str( conchifera_gained ) + '\t' + str( conchifera_lost ) + '\t' + str( deep_conchifera_lost ) + '\t'  # C30
+    output = output + str( mollusca_conserved ) + '\t' + str( mollusca_gained ) + '\t' + str( mollusca_lost ) + '\t' + str( deep_mollusca_lost ) + '\t'  # C31
+    output = output + str( lophophorata_conserved ) + '\t' + str( lophophorata_gained ) + '\t' + str( lophophorata_lost ) + '\t' + str( deep_lophophorata_lost ) + '\t'  # C32
+    output = output + str( spiralian_clade_4_conserved ) + '\t' + str( spiralian_clade_4_gained ) + '\t' + str( spiralian_clade_4_lost ) + '\t' + str( deep_spiralian_clade_4_lost ) + '\t'  # C33
+    output = output + str( spiralia_conserved ) + '\t' + str( spiralia_gained ) + '\t' + str( spiralia_lost ) + '\t' + str( deep_spiralia_lost ) + '\t'  # C34
+    output = output + str( ecdysozoa_conserved ) + '\t' + str( ecdysozoa_gained ) + '\t' + str( ecdysozoa_lost ) + '\t' + str( deep_ecdysozoa_lost ) + '\t'  # C35
+    output = output + str( protostomia_conserved ) + '\t' + str( protostomia_gained ) + '\t' + str( protostomia_lost ) + '\t' + str( deep_protostomia_lost ) + '\t'  # C36
+    output = output + str( bilateria_conserved ) + '\t' + str( bilateria_gained ) + '\t' + str( bilateria_lost ) + '\t' + str( deep_bilateria_lost ) + '\n'  # C37
+
+    output_counts.write( output )
+bilateria_counter = 0
+# write orthogroup and when it arose in evolution per sequence
+for next_seqid in sorted( sequences_orthogroups.keys() ):
+    next_orthogroup = sequences_orthogroups[ next_seqid ]
+    if next_orthogroup == 'OG':
+        pass
+    else:
+        if next_orthogroup in orthogroups_cladegained.keys():
+            next_gained = sorted( orthogroups_cladegained[ next_orthogroup ] )[ -1 ]
+            next_name = clades_names[ next_gained ]
+        else:
+            next_gained = 'C37'
+            next_name = 'Bilateria'
+        output = next_seqid + '\t' + next_orthogroup + '\t' + next_gained + '\t' + next_name + '\n'
+        output_map_gains.write( output )
+
+input_map_nodes_to_clades.close()
+input_map_clades_to_ancestors.close()
+input_map_clades_to_names.close()
+input_nodes.close()
+output_counts.close()
+output_cgl.close()
+output_cgl_aplysia.close()
+output_map_gains.close()

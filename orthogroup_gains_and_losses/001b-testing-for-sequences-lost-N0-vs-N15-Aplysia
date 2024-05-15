@@ -1,0 +1,42 @@
+#! python
+
+input_N0 = open( 'N0.tsv', 'r' )
+input_N16 = open( 'N16.tsv', 'r' )
+output_unique_N0s = open( 'output/1-unique-Aplysia-NO-orthogroups-vs-N16', 'w' )
+
+# N0.HOG0000008   OG0000000       n145    Metazoa-Annelida-Polychaeta-Order_unclassified14-Capitellidae-Capitella-teleta-gigantic20220627164247_seq0000252766aa
+n0_aplysiaSeq_orthogroupSeqs = {}
+for next_line in input_N0:
+    info = next_line[ :-1 ].split( '\t' )
+    orthogroup = info [ 1 ]
+    aplysia_sequences = info[ 14 ]
+    orthogroup_sequences = info[ 3: ]
+    if len( aplysia_sequences.split( 'Aplysia' ) ) > 1:
+        info_aplysia = aplysia_sequences.split( ', ' )
+        for next_sequence in info_aplysia:
+            n0_aplysiaSeq_orthogroupSeqs[ next_sequence ] = orthogroup_sequences
+
+n16_aplysiaSeq_orthogroupSeqs = {}
+for next_line in input_N16:
+    info = next_line[ :-1 ].split( '\t' )
+    orthogroup = info [ 1 ]
+    aplysia_sequences = info[ 14  ]
+    print( aplysia_sequences ) # remove
+    orthogroup_sequences = info[ 3: ]
+    if len( aplysia_sequences.split( 'Aplysia' ) ) > 1:
+        info_aplysia = aplysia_sequences.split( ', ' )
+        for next_sequence in info_aplysia:
+            n16_aplysiaSeq_orthogroupSeqs[ next_sequence ] = orthogroup_sequences
+
+for next_sequence in n0_aplysiaSeq_orthogroupSeqs.keys():
+    if next_sequence not in n16_aplysiaSeq_orthogroupSeqs.keys():
+        orthogroup_sequences = n0_aplysiaSeq_orthogroupSeqs[ next_sequence ]
+        output = next_sequence + '\n'
+        for next_orthogroup_sequence in orthogroup_sequences:
+            output = output + next_orthogroup_sequence + ', '
+        output = output[ :-2 ] + '\n'
+        output_unique_N0s.write( output )
+
+input_N0.close()
+input_N16.close()
+output_unique_N0s.close()

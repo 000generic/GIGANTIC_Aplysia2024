@@ -1,0 +1,30 @@
+#! python
+
+input_loc = open( 'leonid-geneid-loc-map/GeneID-LOC-map.tsv', 'r' )
+input_map7 = open( 'output/8-Aplysia-orthogroup-analyses-12dec2022', 'r' )
+output_map7 = open( 'output/13-Aplysia-orthogroup-analyses-12dec2022', 'w' )
+
+geneids_locids = {}
+for next_line in input_loc:
+
+    info = next_line[ :-1 ].split( '\t' )
+    geneid = info[ 0 ]
+    locid = info[ 1 ]
+    geneids_locids[ geneid ] = locid
+
+first = False
+for next_line in input_map7:
+    if first == False:
+        first = True
+    else:
+        info = next_line.split( '\t' )
+        geneid = info[ 3 ]
+        locid = geneids_locids[ geneid ]
+        output = locid + '\t' + '\t'.join( info )
+        output_map7.write( output )
+
+input_loc.close()
+input_map7.close()
+output_map7.close()
+    
+    

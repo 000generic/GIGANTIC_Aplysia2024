@@ -1,0 +1,60 @@
+#! python
+
+input_orthogroups = open( 'output/4-Aplysia-seqids-hogs-species19', 'r' )
+input_exiles = open( 'output/14-map-singletons-Aplysia', 'r' )
+input_annotations = open( 'input/annotations-summary-map-Aplysia/2-map-all-domain-annotations-interproscan-kegg-deeploc2-signalp6-deeptmhmm-metapredict', 'r' )
+output_map = open( 'output/15-map-orthgroup-hogs-sogs_X_annotations', 'w' )
+
+
+# Aplysia gigantic20220627164247_seq0006143518aa  N0.HOG0000000   Bilateria       Capitella Drosophila Lingula Homo Crassostrea Mizuhopecten Cyclina Nautilus Octopus Achatina Aplysia Pomacea Lottia Gigantopelta Elysia Acanthopleura Caenorhabditis Phoronis
+
+gigantics_hogs = {}
+for next_line in input_orthogroups:
+    info = next_line.split( '\t' )
+    gigantic_id = info[ 1 ]
+    hog_id = info[ 2 ]
+    gigantics_hogs[ gigantic_id ] = hog_id
+
+
+# Aplysia X0.XOG0020666   Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-gigantic20220627164247_seq0006140722aa     Exile 
+
+gigantics_sogs = {}
+for next_line in input_exiles:
+    info = next_line.split( '\t' )
+    sog_id = info[ 1 ]
+    gigantic_id = info[ 2 ].split( '-' )[ -1 ]
+    gigantics_sogs[ gigantic_id ] = sog_id
+
+
+# [ giganticID ]  [ KEGG IDs ]    [ KEGG Annotations ]    [ DeepLoc2 Signaling Molecule Inference ]       [ DeepLoc2 Signal Peptide Annotation ]  [ DeepLoc2 Transmembrane Domain Annotation ]    [ DeepTMHMM SP Annotations ]    [ DeepTMHMM TM Annotations ]       [ SignalP6 Signal Peptide Annotation ]  [ Metapredict Inherent Disorganized Region Annotation ]
+
+first = False
+for next_line in input_annotations:
+
+    if first == False:
+        first = True
+        output = '[ Orthgroup ID ]' + '\t' + next_line
+        output_map.write( output )
+
+    else:
+        
+        info = next_line.split( '\t' )
+        gigantic_id = info[ 0 ].split( '-' )[ -1 ]
+        annotations = '\t'.join( info )
+        
+        if gigantic_id in gigantics_hogs.keys():
+            hog_id = gigantics_hogs[ gigantic_id ]
+            output = hog_id + '\t' + annotations
+            output_map.write( output )
+
+        elif gigantic_id in gigantics_sogs.keys():
+            sog_id = gigantics_sogs[ gigantic_id ]
+            output = sog_id + '\t' + annotations
+            output_map.write( output )
+
+        else:
+            print( gigantic_id + ' not in hog and sog maps!' )
+
+input_orthogroups.close()
+input_exiles.close()
+input_annotations.close()

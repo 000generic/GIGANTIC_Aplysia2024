@@ -1,0 +1,48 @@
+#! python
+
+input_map = open( 'output/15-map-orthgroup-hogs-sogs_X_annotations', 'r' )
+input_geneids = open( 'input/gigantic-names-map/5-map-aplysia-sequence-identifier-annotations', 'r' )
+input_locids = open( 'input/leonid-geneid-loc-map/GeneID-LOC-map.tsv', 'r' )
+output_map = open( 'output/16-map-aplysia-genome-orthgroups_X_annotations', 'w' )
+
+# GeneID:101852289        LOC:00000       Symbol:ADRA1D_like1     Name:Adrenoceptor alpha 1d like 1       Group:NA        AFold:00000     OFOG:N0.HOG0011363      COG:COGprotostomia5     LeonidName: predicted: uncharacterized protein loc101852289 isoform x1  giganticID:Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-gigantic20220627164247_seq0006140684aa  MSSTSPGLNTTSTTSDISRAPRMVFLTLFMIMSSVGSLLLIIVIVHSRKHRTIQNLLIANVCVVCFIDTFLNMSLVMGSLIVDHWAFGDFMCKVNCFFLNLVNIETVLLLMSLSVDRYFSLRHSLKYEAWLFSYRIYLIIAYLWLHAAAFSIPFLTDAVSSQFRPQLHLCSVTGDTSVVFVYLTLIICFLAPLVSIVVFQILIVRVTCELRNSKRTQDPHKNYTQMLNETPLSDSVVSHPSCYTRILFVLWLILNVPFVITSSIKHYEQSQGVEESQFLDYPWEVDAVFIWMKFFFSAIFPFVTFFCKKDLWQSTKECVLCRRNNSIIDIEVVGLGSDTNVSKDKPPNIEVEFSTPKNKEKEREKAEVSHILAFSVPVLFATSTGICIEDKSSEHVTDTSSLSQNELAITAAIKGKKLDISYSDPEWPEELIGDTSDYDSSCEIDQYSSSQPVSTRNVHGTLHRTRSLSDPEIAAHPSPNKAKVVKRFSGTSGADSGLDLSGTSGTNTGKLISATVAPQGSQPSPCDQESAVPSLVKINSPNASSLLKEDVKSSKTKNNDNLASKTENVDSNPPSKKLTSNKNGKDIRTVVSSHSEEIKIKQIVSSEEMAQKGAISKETTIKRDCSAETVQSSGKSQNRLPTRLKPIEGKESPSPKVRRKKHKIKRVGRSSNTVVTPGVAKICGHKDDASSSEHTAQSRTSSASRTTKDVSNRTNSDG
+
+giganticid_geneid = {}
+for next_line in input_geneids:
+    info = next_line.split( '\t' )
+    geneid = info[ 0 ]
+    giganticid = info[ 9 ].split( '-' )[ -1 ]
+    giganticid_geneid[ giganticid ] = geneid
+
+geneid_locid = {}
+for next_line in input_locids:
+    info = next_line.split( '\t' )
+    geneid = info[ 0 ]
+    locid = info[ 1 ]
+    geneid_locid[ geneid ] = locid
+
+first = False
+for next_line in input_map:
+    info = next_line.split( '\t' )
+    giganticid = info[ 1 ].split( '-' )[ -1 ]
+    orthogroup = info[ 0 ]
+    info[ 0 ] = giganticid
+    info[ 1 ] = orthogroup
+    annotation = '\t'.join( info )
+    
+    if first == False:
+        first = True
+        output = '[ LOCID ]' + '\t' + ' [ GeneID ]' + '\t' + annotation
+        output_map.write( output )
+
+    else:
+        
+        geneid = giganticid_geneid[ giganticid ]
+        locid = geneid_locid[ geneid ]
+        output = locid + '\t' + geneid + '\t' + annotation
+        output_map.write( output )
+
+input_map.close()
+input_geneids.close()
+input_locids.close()
+output_map.close()

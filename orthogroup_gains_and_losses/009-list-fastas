@@ -1,0 +1,3 @@
+#! /bin/bash
+
+ls -1 ../../../*pep > output/9-list-fastas

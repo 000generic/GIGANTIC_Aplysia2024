@@ -1,0 +1,384 @@
+#! /bin/bash
+
+grep -c 'Aplysia' N* > output/1-output/1-aplysia-orthofinder-hog-orthogroup-count-orthogroups
+grep -c 'Elysia' N* > output/1-output/1-elysia-orthofinder-hog-orthogroup-count-orthogroups
+grep -c 'Lissachatina' N* > output/1-output/1-lissachatina-orthofinder-hog-orthogroup-count-orthogroups
+grep -c 'Pomacea' N* > output/1-output/1-pomacea-orthofinder-hog-orthogroup-count-orthogroups
+grep -c 'Gigantopelta' N* > output/1-output/1-gigantopelta-orthofinder-hog-orthogroup-count-orthogroups
+grep -c 'Lottia' N* > output/1-output/1-lottia-orthofinder-hog-orthogroup-count-orthogroups
+grep -c 'Mizuhopecten' N* > output/1-output/1-mizuhopecten-orthofinder-hog-orthogroup-count-orthogroups
+grep -c 'Crassostrea' N* > output/1-output/1-crassostrea-orthofinder-hog-orthogroup-count-orthogroups
+grep -c 'Cyclina' N* > output/1-output/1-cyclina-orthofinder-hog-orthogroup-count-orthogroups
+grep -c 'Octopus' N* > output/1-output/1-octopus-orthofinder-hog-orthogroup-count-orthogroups
+grep -c 'Argonauta' N* > output/1-output/1-argonauta-orthofinder-hog-orthogroup-count-orthogroups
+grep -c 'Nautilus' N* > output/1-output/1-nautilus-orthofinder-hog-orthogroup-count-orthogroups
+grep -c 'Acanthopleura' N* > output/1-output/1-acanthopleura-orthofinder-hog-orthogroup-count-orthogroups
+grep -c 'Lingula' N* > output/1-output/1-lingula-orthofinder-hog-orthogroup-count-orthogroups
+grep -c 'Phoronis' N* > output/1-output/1-phoronis-orthofinder-hog-orthogroup-count-orthogroups
+grep -c 'Capitella' N* > output/1-output/1-capitella-orthofinder-hog-orthogroup-count-orthogroups
+grep -c 'Drosophila' N* > output/1-output/1-drosphila-orthofinder-hog-orthogroup-count-orthogroups
+grep -c 'Caenorhabditis' N* > output/1-output/1-caenorhabditis-orthofinder-hog-orthogroup-count-orthogroups
+grep -c 'sapiens' N* > output/1-output/1-homo-orthofinder-hog-orthogroup-count-orthogroups
+
+# grep -o -i mauris example.txt | wc -l
+# Aplysia
+grep -o -i 'Aplysia' N0.* | wc -l > output/1-output/1-aplysia-orthofinder-hog-orthogroup-count-sequences-N0
+grep -o -i 'Aplysia' N1.* | wc -l > output/1-output/1-aplysia-orthofinder-hog-orthogroup-count-sequences-N1
+grep -o -i 'Aplysia' N2.* | wc -l > output/1-output/1-aplysia-orthofinder-hog-orthogroup-count-sequences-N2
+grep -o -i 'Aplysia' N3.* | wc -l > output/1-output/1-aplysia-orthofinder-hog-orthogroup-count-sequences-N3
+grep -o -i 'Aplysia' N4.* | wc -l > output/1-output/1-aplysia-orthofinder-hog-orthogroup-count-sequences-N4
+grep -o -i 'Aplysia' N5.* | wc -l > output/1-output/1-aplysia-orthofinder-hog-orthogroup-count-sequences-N5
+grep -o -i 'Aplysia' N6.* | wc -l > output/1-output/1-aplysia-orthofinder-hog-orthogroup-count-sequences-N6
+grep -o -i 'Aplysia' N7.* | wc -l > output/1-output/1-aplysia-orthofinder-hog-orthogroup-count-sequences-N7
+grep -o -i 'Aplysia' N8.* | wc -l > output/1-output/1-aplysia-orthofinder-hog-orthogroup-count-sequences-N8
+grep -o -i 'Aplysia' N9.* | wc -l > output/1-output/1-aplysia-orthofinder-hog-orthogroup-count-sequences-N9
+grep -o -i 'Aplysia' N10.* | wc -l > output/1-output/1-aplysia-orthofinder-hog-orthogroup-count-sequences-N10
+grep -o -i 'Aplysia' N11.* | wc -l > output/1-output/1-aplysia-orthofinder-hog-orthogroup-count-sequences-N11
+grep -o -i 'Aplysia' N12.* | wc -l > output/1-output/1-aplysia-orthofinder-hog-orthogroup-count-sequences-N12
+grep -o -i 'Aplysia' N13.* | wc -l > output/1-output/1-aplysia-orthofinder-hog-orthogroup-count-sequences-N13
+grep -o -i 'Aplysia' N14.* | wc -l > output/1-output/1-aplysia-orthofinder-hog-orthogroup-count-sequences-N14
+grep -o -i 'Aplysia' N15.* | wc -l > output/1-output/1-aplysia-orthofinder-hog-orthogroup-count-sequences-N15
+grep -o -i 'Aplysia' N16.* | wc -l > output/1-output/1-aplysia-orthofinder-hog-orthogroup-count-sequences-N16
+grep -o -i 'Aplysia' N17.* | wc -l > output/1-output/1-aplysia-orthofinder-hog-orthogroup-count-sequences-N17
+# Elysia
+grep -o -i 'Elysia' N0.* | wc -l > output/1-output/1-elysia-orthofinder-hog-orthogroup-count-sequences-N0
+grep -o -i 'Elysia' N1.* | wc -l > output/1-output/1-elysia-orthofinder-hog-orthogroup-count-sequences-N1
+grep -o -i 'Elysia' N2.* | wc -l > output/1-output/1-elysia-orthofinder-hog-orthogroup-count-sequences-N2
+grep -o -i 'Elysia' N3.* | wc -l > output/1-output/1-elysia-orthofinder-hog-orthogroup-count-sequences-N3
+grep -o -i 'Elysia' N4.* | wc -l > output/1-output/1-elysia-orthofinder-hog-orthogroup-count-sequences-N4
+grep -o -i 'Elysia' N5.* | wc -l > output/1-output/1-elysia-orthofinder-hog-orthogroup-count-sequences-N5
+grep -o -i 'Elysia' N6.* | wc -l > output/1-output/1-elysia-orthofinder-hog-orthogroup-count-sequences-N6
+grep -o -i 'Elysia' N7.* | wc -l > output/1-output/1-elysia-orthofinder-hog-orthogroup-count-sequences-N7
+grep -o -i 'Elysia' N8.* | wc -l > output/1-output/1-elysia-orthofinder-hog-orthogroup-count-sequences-N8
+grep -o -i 'Elysia' N9.* | wc -l > output/1-output/1-elysia-orthofinder-hog-orthogroup-count-sequences-N9
+grep -o -i 'Elysia' N10.* | wc -l > output/1-output/1-elysia-orthofinder-hog-orthogroup-count-sequences-N10
+grep -o -i 'Elysia' N11.* | wc -l > output/1-output/1-elysia-orthofinder-hog-orthogroup-count-sequences-N11
+grep -o -i 'Elysia' N12.* | wc -l > output/1-output/1-elysia-orthofinder-hog-orthogroup-count-sequences-N12
+grep -o -i 'Elysia' N13.* | wc -l > output/1-output/1-elysia-orthofinder-hog-orthogroup-count-sequences-N13
+grep -o -i 'Elysia' N14.* | wc -l > output/1-output/1-elysia-orthofinder-hog-orthogroup-count-sequences-N14
+grep -o -i 'Elysia' N15.* | wc -l > output/1-output/1-elysia-orthofinder-hog-orthogroup-count-sequences-N15
+grep -o -i 'Elysia' N16.* | wc -l > output/1-output/1-elysia-orthofinder-hog-orthogroup-count-sequences-N16
+grep -o -i 'Elysia' N17.* | wc -l > output/1-output/1-elysia-orthofinder-hog-orthogroup-count-sequences-N17
+# Lissachtina
+grep -o -i 'Achtina' N0.* | wc -l > output/1-output/1-achatina-orthofinder-hog-orthogroup-count-sequences-N0
+grep -o -i 'Achtina' N1.* | wc -l > output/1-output/1-achatina-orthofinder-hog-orthogroup-count-sequences-N1
+grep -o -i 'Achtina' N2.* | wc -l > output/1-output/1-achatina-orthofinder-hog-orthogroup-count-sequences-N2
+grep -o -i 'Achtina' N3.* | wc -l > output/1-output/1-achatina-orthofinder-hog-orthogroup-count-sequences-N3
+grep -o -i 'Achtina' N4.* | wc -l > output/1-output/1-achatina-orthofinder-hog-orthogroup-count-sequences-N4
+grep -o -i 'Achtina' N5.* | wc -l > output/1-output/1-achatina-orthofinder-hog-orthogroup-count-sequences-N5
+grep -o -i 'Achtina' N6.* | wc -l > output/1-output/1-achatina-orthofinder-hog-orthogroup-count-sequences-N6
+grep -o -i 'Achtina' N7.* | wc -l > output/1-output/1-achatina-orthofinder-hog-orthogroup-count-sequences-N7
+grep -o -i 'Achtina' N8.* | wc -l > output/1-output/1-achatina-orthofinder-hog-orthogroup-count-sequences-N8
+grep -o -i 'Achtina' N9.* | wc -l > output/1-output/1-achatina-orthofinder-hog-orthogroup-count-sequences-N9
+grep -o -i 'Achtina' N10.* | wc -l > output/1-output/1-achatina-orthofinder-hog-orthogroup-count-sequences-N10
+grep -o -i 'Achtina' N11.* | wc -l > output/1-output/1-achatina-orthofinder-hog-orthogroup-count-sequences-N11
+grep -o -i 'Achtina' N12.* | wc -l > output/1-output/1-achatina-orthofinder-hog-orthogroup-count-sequences-N12
+grep -o -i 'Achtina' N13.* | wc -l > output/1-output/1-achatina-orthofinder-hog-orthogroup-count-sequences-N13
+grep -o -i 'Achtina' N14.* | wc -l > output/1-output/1-achatina-orthofinder-hog-orthogroup-count-sequences-N14
+grep -o -i 'Achtina' N15.* | wc -l > output/1-output/1-achatina-orthofinder-hog-orthogroup-count-sequences-N15
+grep -o -i 'Achtina' N16.* | wc -l > output/1-output/1-achatina-orthofinder-hog-orthogroup-count-sequences-N16
+grep -o -i 'Achtina' N17.* | wc -l > output/1-output/1-achatina-orthofinder-hog-orthogroup-count-sequences-N17
+# Pomacea
+grep -o -i 'Pomacea' N0.* | wc -l > output/1-output/1-pomacea-orthofinder-hog-orthogroup-count-sequences-N0
+grep -o -i 'Pomacea' N1.* | wc -l > output/1-output/1-pomacea-orthofinder-hog-orthogroup-count-sequences-N1
+grep -o -i 'Pomacea' N2.* | wc -l > output/1-output/1-pomacea-orthofinder-hog-orthogroup-count-sequences-N2
+grep -o -i 'Pomacea' N3.* | wc -l > output/1-output/1-pomacea-orthofinder-hog-orthogroup-count-sequences-N3
+grep -o -i 'Pomacea' N4.* | wc -l > output/1-output/1-pomacea-orthofinder-hog-orthogroup-count-sequences-N4
+grep -o -i 'Pomacea' N5.* | wc -l > output/1-output/1-pomacea-orthofinder-hog-orthogroup-count-sequences-N5
+grep -o -i 'Pomacea' N6.* | wc -l > output/1-output/1-pomacea-orthofinder-hog-orthogroup-count-sequences-N6
+grep -o -i 'Pomacea' N7.* | wc -l > output/1-output/1-pomacea-orthofinder-hog-orthogroup-count-sequences-N7
+grep -o -i 'Pomacea' N8.* | wc -l > output/1-output/1-pomacea-orthofinder-hog-orthogroup-count-sequences-N8
+grep -o -i 'Pomacea' N9.* | wc -l > output/1-output/1-pomacea-orthofinder-hog-orthogroup-count-sequences-N9
+grep -o -i 'Pomacea' N10.* | wc -l > output/1-output/1-pomacea-orthofinder-hog-orthogroup-count-sequences-N10
+grep -o -i 'Pomacea' N11.* | wc -l > output/1-output/1-pomacea-orthofinder-hog-orthogroup-count-sequences-N11
+grep -o -i 'Pomacea' N12.* | wc -l > output/1-output/1-pomacea-orthofinder-hog-orthogroup-count-sequences-N12
+grep -o -i 'Pomacea' N13.* | wc -l > output/1-output/1-pomacea-orthofinder-hog-orthogroup-count-sequences-N13
+grep -o -i 'Pomacea' N14.* | wc -l > output/1-output/1-pomacea-orthofinder-hog-orthogroup-count-sequences-N14
+grep -o -i 'Pomacea' N15.* | wc -l > output/1-output/1-pomacea-orthofinder-hog-orthogroup-count-sequences-N15
+grep -o -i 'Pomacea' N16.* | wc -l > output/1-output/1-pomacea-orthofinder-hog-orthogroup-count-sequences-N16
+grep -o -i 'Pomacea' N17.* | wc -l > output/1-output/1-pomacea-orthofinder-hog-orthogroup-count-sequences-N17
+# Gigantopelta
+grep -o -i 'Gigantopelta' N0.* | wc -l > output/1-output/1-gigantopelta-orthofinder-hog-orthogroup-count-sequences-N0
+grep -o -i 'Gigantopelta' N1.* | wc -l > output/1-output/1-gigantopelta-orthofinder-hog-orthogroup-count-sequences-N1
+grep -o -i 'Gigantopelta' N2.* | wc -l > output/1-output/1-gigantopelta-orthofinder-hog-orthogroup-count-sequences-N2
+grep -o -i 'Gigantopelta' N3.* | wc -l > output/1-output/1-gigantopelta-orthofinder-hog-orthogroup-count-sequences-N3
+grep -o -i 'Gigantopelta' N4.* | wc -l > output/1-output/1-gigantopelta-orthofinder-hog-orthogroup-count-sequences-N4
+grep -o -i 'Gigantopelta' N5.* | wc -l > output/1-output/1-gigantopelta-orthofinder-hog-orthogroup-count-sequences-N5
+grep -o -i 'Gigantopelta' N6.* | wc -l > output/1-output/1-gigantopelta-orthofinder-hog-orthogroup-count-sequences-N6
+grep -o -i 'Gigantopelta' N7.* | wc -l > output/1-output/1-gigantopelta-orthofinder-hog-orthogroup-count-sequences-N7
+grep -o -i 'Gigantopelta' N8.* | wc -l > output/1-output/1-gigantopelta-orthofinder-hog-orthogroup-count-sequences-N8
+grep -o -i 'Gigantopelta' N9.* | wc -l > output/1-output/1-gigantopelta-orthofinder-hog-orthogroup-count-sequences-N9
+grep -o -i 'Gigantopelta' N10.* | wc -l > output/1-output/1-gigantopelta-orthofinder-hog-orthogroup-count-sequences-N10
+grep -o -i 'Gigantopelta' N11.* | wc -l > output/1-output/1-gigantopelta-orthofinder-hog-orthogroup-count-sequences-N11
+grep -o -i 'Gigantopelta' N12.* | wc -l > output/1-output/1-gigantopelta-orthofinder-hog-orthogroup-count-sequences-N12
+grep -o -i 'Gigantopelta' N13.* | wc -l > output/1-output/1-gigantopelta-orthofinder-hog-orthogroup-count-sequences-N13
+grep -o -i 'Gigantopelta' N14.* | wc -l > output/1-output/1-gigantopelta-orthofinder-hog-orthogroup-count-sequences-N14
+grep -o -i 'Gigantopelta' N15.* | wc -l > output/1-output/1-gigantopelta-orthofinder-hog-orthogroup-count-sequences-N15
+grep -o -i 'Gigantopelta' N16.* | wc -l > output/1-output/1-gigantopelta-orthofinder-hog-orthogroup-count-sequences-N16
+grep -o -i 'Gigantopelta' N17.* | wc -l > output/1-output/1-gigantopelta-orthofinder-hog-orthogroup-count-sequences-N17
+# Lottia
+grep -o -i 'Lottia' N0.* | wc -l > output/1-output/1-lottia-orthofinder-hog-orthogroup-count-sequences-N0
+grep -o -i 'Lottia' N1.* | wc -l > output/1-output/1-lottia-orthofinder-hog-orthogroup-count-sequences-N1
+grep -o -i 'Lottia' N2.* | wc -l > output/1-output/1-lottia-orthofinder-hog-orthogroup-count-sequences-N2
+grep -o -i 'Lottia' N3.* | wc -l > output/1-output/1-lottia-orthofinder-hog-orthogroup-count-sequences-N3
+grep -o -i 'Lottia' N4.* | wc -l > output/1-output/1-lottia-orthofinder-hog-orthogroup-count-sequences-N4
+grep -o -i 'Lottia' N5.* | wc -l > output/1-output/1-lottia-orthofinder-hog-orthogroup-count-sequences-N5
+grep -o -i 'Lottia' N6.* | wc -l > output/1-output/1-lottia-orthofinder-hog-orthogroup-count-sequences-N6
+grep -o -i 'Lottia' N7.* | wc -l > output/1-output/1-lottia-orthofinder-hog-orthogroup-count-sequences-N7
+grep -o -i 'Lottia' N8.* | wc -l > output/1-output/1-lottia-orthofinder-hog-orthogroup-count-sequences-N8
+grep -o -i 'Lottia' N9.* | wc -l > output/1-output/1-lottia-orthofinder-hog-orthogroup-count-sequences-N9
+grep -o -i 'Lottia' N10.* | wc -l > output/1-output/1-lottia-orthofinder-hog-orthogroup-count-sequences-N10
+grep -o -i 'Lottia' N11.* | wc -l > output/1-output/1-lottia-orthofinder-hog-orthogroup-count-sequences-N11
+grep -o -i 'Lottia' N12.* | wc -l > output/1-output/1-lottia-orthofinder-hog-orthogroup-count-sequences-N12
+grep -o -i 'Lottia' N13.* | wc -l > output/1-output/1-lottia-orthofinder-hog-orthogroup-count-sequences-N13
+grep -o -i 'Lottia' N14.* | wc -l > output/1-output/1-lottia-orthofinder-hog-orthogroup-count-sequences-N14
+grep -o -i 'Lottia' N15.* | wc -l > output/1-output/1-lottia-orthofinder-hog-orthogroup-count-sequences-N15
+grep -o -i 'Lottia' N16.* | wc -l > output/1-output/1-lottia-orthofinder-hog-orthogroup-count-sequences-N16
+grep -o -i 'Lottia' N17.* | wc -l > output/1-output/1-lottia-orthofinder-hog-orthogroup-count-sequences-N17
+# Mizuhopecten
+grep -o -i 'Mizuhopecten' N0.* | wc -l > output/1-output/1-mizuhopecten-orthofinder-hog-orthogroup-count-sequences-N0
+grep -o -i 'Mizuhopecten' N1.* | wc -l > output/1-output/1-mizuhopecten-orthofinder-hog-orthogroup-count-sequences-N1
+grep -o -i 'Mizuhopecten' N2.* | wc -l > output/1-output/1-mizuhopecten-orthofinder-hog-orthogroup-count-sequences-N2
+grep -o -i 'Mizuhopecten' N3.* | wc -l > output/1-output/1-mizuhopecten-orthofinder-hog-orthogroup-count-sequences-N3
+grep -o -i 'Mizuhopecten' N4.* | wc -l > output/1-output/1-mizuhopecten-orthofinder-hog-orthogroup-count-sequences-N4
+grep -o -i 'Mizuhopecten' N5.* | wc -l > output/1-output/1-mizuhopecten-orthofinder-hog-orthogroup-count-sequences-N5
+grep -o -i 'Mizuhopecten' N6.* | wc -l > output/1-output/1-mizuhopecten-orthofinder-hog-orthogroup-count-sequences-N6
+grep -o -i 'Mizuhopecten' N7.* | wc -l > output/1-output/1-mizuhopecten-orthofinder-hog-orthogroup-count-sequences-N7
+grep -o -i 'Mizuhopecten' N8.* | wc -l > output/1-output/1-mizuhopecten-orthofinder-hog-orthogroup-count-sequences-N8
+grep -o -i 'Mizuhopecten' N9.* | wc -l > output/1-output/1-mizuhopecten-orthofinder-hog-orthogroup-count-sequences-N9
+grep -o -i 'Mizuhopecten' N10.* | wc -l > output/1-output/1-mizuhopecten-orthofinder-hog-orthogroup-count-sequences-N10
+grep -o -i 'Mizuhopecten' N11.* | wc -l > output/1-output/1-mizuhopecten-orthofinder-hog-orthogroup-count-sequences-N11
+grep -o -i 'Mizuhopecten' N12.* | wc -l > output/1-output/1-mizuhopecten-orthofinder-hog-orthogroup-count-sequences-N12
+grep -o -i 'Mizuhopecten' N13.* | wc -l > output/1-output/1-mizuhopecten-orthofinder-hog-orthogroup-count-sequences-N13
+grep -o -i 'Mizuhopecten' N14.* | wc -l > output/1-output/1-mizuhopecten-orthofinder-hog-orthogroup-count-sequences-N14
+grep -o -i 'Mizuhopecten' N15.* | wc -l > output/1-output/1-mizuhopecten-orthofinder-hog-orthogroup-count-sequences-N15
+grep -o -i 'Mizuhopecten' N16.* | wc -l > output/1-output/1-mizuhopecten-orthofinder-hog-orthogroup-count-sequences-N16
+grep -o -i 'Mizuhopecten' N17.* | wc -l > output/1-output/1-mizuhopecten-orthofinder-hog-orthogroup-count-sequences-N17
+# Crassostrea
+grep -o -i 'Crassostrea' N0.* | wc -l > output/1-output/1-crassostrea-orthofinder-hog-orthogroup-count-sequences-N0
+grep -o -i 'Crassostrea' N1.* | wc -l > output/1-output/1-crassostrea-orthofinder-hog-orthogroup-count-sequences-N1
+grep -o -i 'Crassostrea' N2.* | wc -l > output/1-output/1-crassostrea-orthofinder-hog-orthogroup-count-sequences-N2
+grep -o -i 'Crassostrea' N3.* | wc -l > output/1-output/1-crassostrea-orthofinder-hog-orthogroup-count-sequences-N3
+grep -o -i 'Crassostrea' N4.* | wc -l > output/1-output/1-crassostrea-orthofinder-hog-orthogroup-count-sequences-N4
+grep -o -i 'Crassostrea' N5.* | wc -l > output/1-output/1-crassostrea-orthofinder-hog-orthogroup-count-sequences-N5
+grep -o -i 'Crassostrea' N6.* | wc -l > output/1-output/1-crassostrea-orthofinder-hog-orthogroup-count-sequences-N6
+grep -o -i 'Crassostrea' N7.* | wc -l > output/1-output/1-crassostrea-orthofinder-hog-orthogroup-count-sequences-N7
+grep -o -i 'Crassostrea' N8.* | wc -l > output/1-output/1-crassostrea-orthofinder-hog-orthogroup-count-sequences-N8
+grep -o -i 'Crassostrea' N9.* | wc -l > output/1-output/1-crassostrea-orthofinder-hog-orthogroup-count-sequences-N9
+grep -o -i 'Crassostrea' N10.* | wc -l > output/1-output/1-crassostrea-orthofinder-hog-orthogroup-count-sequences-N10
+grep -o -i 'Crassostrea' N11.* | wc -l > output/1-output/1-crassostrea-orthofinder-hog-orthogroup-count-sequences-N11
+grep -o -i 'Crassostrea' N12.* | wc -l > output/1-output/1-crassostrea-orthofinder-hog-orthogroup-count-sequences-N12
+grep -o -i 'Crassostrea' N13.* | wc -l > output/1-output/1-crassostrea-orthofinder-hog-orthogroup-count-sequences-N13
+grep -o -i 'Crassostrea' N14.* | wc -l > output/1-output/1-crassostrea-orthofinder-hog-orthogroup-count-sequences-N14
+grep -o -i 'Crassostrea' N15.* | wc -l > output/1-output/1-crassostrea-orthofinder-hog-orthogroup-count-sequences-N15
+grep -o -i 'Crassostrea' N16.* | wc -l > output/1-output/1-crassostrea-orthofinder-hog-orthogroup-count-sequences-N16
+grep -o -i 'Crassostrea' N17.* | wc -l > output/1-output/1-crassostrea-orthofinder-hog-orthogroup-count-sequences-N17
+# Cyclina
+grep -o -i 'Cyclina' N0.* | wc -l > output/1-output/1-cyclina-orthofinder-hog-orthogroup-count-sequences-N0
+grep -o -i 'Cyclina' N1.* | wc -l > output/1-output/1-cyclina-orthofinder-hog-orthogroup-count-sequences-N1
+grep -o -i 'Cyclina' N2.* | wc -l > output/1-output/1-cyclina-orthofinder-hog-orthogroup-count-sequences-N2
+grep -o -i 'Cyclina' N3.* | wc -l > output/1-output/1-cyclina-orthofinder-hog-orthogroup-count-sequences-N3
+grep -o -i 'Cyclina' N4.* | wc -l > output/1-output/1-cyclina-orthofinder-hog-orthogroup-count-sequences-N4
+grep -o -i 'Cyclina' N5.* | wc -l > output/1-output/1-cyclina-orthofinder-hog-orthogroup-count-sequences-N5
+grep -o -i 'Cyclina' N6.* | wc -l > output/1-output/1-cyclina-orthofinder-hog-orthogroup-count-sequences-N6
+grep -o -i 'Cyclina' N7.* | wc -l > output/1-output/1-cyclina-orthofinder-hog-orthogroup-count-sequences-N7
+grep -o -i 'Cyclina' N8.* | wc -l > output/1-output/1-cyclina-orthofinder-hog-orthogroup-count-sequences-N8
+grep -o -i 'Cyclina' N9.* | wc -l > output/1-output/1-cyclina-orthofinder-hog-orthogroup-count-sequences-N9
+grep -o -i 'Cyclina' N10.* | wc -l > output/1-output/1-cyclina-orthofinder-hog-orthogroup-count-sequences-N10
+grep -o -i 'Cyclina' N11.* | wc -l > output/1-output/1-cyclina-orthofinder-hog-orthogroup-count-sequences-N11
+grep -o -i 'Cyclina' N12.* | wc -l > output/1-output/1-cyclina-orthofinder-hog-orthogroup-count-sequences-N12
+grep -o -i 'Cyclina' N13.* | wc -l > output/1-output/1-cyclina-orthofinder-hog-orthogroup-count-sequences-N13
+grep -o -i 'Cyclina' N14.* | wc -l > output/1-output/1-cyclina-orthofinder-hog-orthogroup-count-sequences-N14
+grep -o -i 'Cyclina' N15.* | wc -l > output/1-output/1-cyclina-orthofinder-hog-orthogroup-count-sequences-N15
+grep -o -i 'Cyclina' N16.* | wc -l > output/1-output/1-cyclina-orthofinder-hog-orthogroup-count-sequences-N16
+grep -o -i 'Cyclina' N17.* | wc -l > output/1-output/1-cyclina-orthofinder-hog-orthogroup-count-sequences-N17
+# Octopus
+grep -o -i 'Octopus' N0.* | wc -l > output/1-output/1-octopus-orthofinder-hog-orthogroup-count-sequences-N0
+grep -o -i 'Octopus' N1.* | wc -l > output/1-output/1-octopus-orthofinder-hog-orthogroup-count-sequences-N1
+grep -o -i 'Octopus' N2.* | wc -l > output/1-output/1-octopus-orthofinder-hog-orthogroup-count-sequences-N2
+grep -o -i 'Octopus' N3.* | wc -l > output/1-output/1-octopus-orthofinder-hog-orthogroup-count-sequences-N3
+grep -o -i 'Octopus' N4.* | wc -l > output/1-output/1-octopus-orthofinder-hog-orthogroup-count-sequences-N4
+grep -o -i 'Octopus' N5.* | wc -l > output/1-output/1-octopus-orthofinder-hog-orthogroup-count-sequences-N5
+grep -o -i 'Octopus' N6.* | wc -l > output/1-output/1-octopus-orthofinder-hog-orthogroup-count-sequences-N6
+grep -o -i 'Octopus' N7.* | wc -l > output/1-output/1-octopus-orthofinder-hog-orthogroup-count-sequences-N7
+grep -o -i 'Octopus' N8.* | wc -l > output/1-output/1-octopus-orthofinder-hog-orthogroup-count-sequences-N8
+grep -o -i 'Octopus' N9.* | wc -l > output/1-output/1-octopus-orthofinder-hog-orthogroup-count-sequences-N9
+grep -o -i 'Octopus' N10.* | wc -l > output/1-output/1-octopus-orthofinder-hog-orthogroup-count-sequences-N10
+grep -o -i 'Octopus' N11.* | wc -l > output/1-output/1-octopus-orthofinder-hog-orthogroup-count-sequences-N11
+grep -o -i 'Octopus' N12.* | wc -l > output/1-output/1-octopus-orthofinder-hog-orthogroup-count-sequences-N12
+grep -o -i 'Octopus' N13.* | wc -l > output/1-output/1-octopus-orthofinder-hog-orthogroup-count-sequences-N13
+grep -o -i 'Octopus' N14.* | wc -l > output/1-output/1-octopus-orthofinder-hog-orthogroup-count-sequences-N14
+grep -o -i 'Octopus' N15.* | wc -l > output/1-output/1-octopus-orthofinder-hog-orthogroup-count-sequences-N15
+grep -o -i 'Octopus' N16.* | wc -l > output/1-output/1-octopus-orthofinder-hog-orthogroup-count-sequences-N16
+grep -o -i 'Octopus' N17.* | wc -l > output/1-output/1-octopus-orthofinder-hog-orthogroup-count-sequences-N17
+# Argonauta
+grep -o -i 'Argonauta' N0.* | wc -l > output/1-output/1-argonauta-orthofinder-hog-orthogroup-count-sequences-N0
+grep -o -i 'Argonauta' N1.* | wc -l > output/1-output/1-argonauta-orthofinder-hog-orthogroup-count-sequences-N1
+grep -o -i 'Argonauta' N2.* | wc -l > output/1-output/1-argonauta-orthofinder-hog-orthogroup-count-sequences-N2
+grep -o -i 'Argonauta' N3.* | wc -l > output/1-output/1-argonauta-orthofinder-hog-orthogroup-count-sequences-N3
+grep -o -i 'Argonauta' N4.* | wc -l > output/1-output/1-argonauta-orthofinder-hog-orthogroup-count-sequences-N4
+grep -o -i 'Argonauta' N5.* | wc -l > output/1-output/1-argonauta-orthofinder-hog-orthogroup-count-sequences-N5
+grep -o -i 'Argonauta' N6.* | wc -l > output/1-output/1-argonauta-orthofinder-hog-orthogroup-count-sequences-N6
+grep -o -i 'Argonauta' N7.* | wc -l > output/1-output/1-argonauta-orthofinder-hog-orthogroup-count-sequences-N7
+grep -o -i 'Argonauta' N8.* | wc -l > output/1-output/1-argonauta-orthofinder-hog-orthogroup-count-sequences-N8
+grep -o -i 'Argonauta' N9.* | wc -l > output/1-output/1-argonauta-orthofinder-hog-orthogroup-count-sequences-N9
+grep -o -i 'Argonauta' N10.* | wc -l > output/1-output/1-argonauta-orthofinder-hog-orthogroup-count-sequences-N10
+grep -o -i 'Argonauta' N11.* | wc -l > output/1-output/1-argonauta-orthofinder-hog-orthogroup-count-sequences-N11
+grep -o -i 'Argonauta' N12.* | wc -l > output/1-output/1-argonauta-orthofinder-hog-orthogroup-count-sequences-N12
+grep -o -i 'Argonauta' N13.* | wc -l > output/1-output/1-argonauta-orthofinder-hog-orthogroup-count-sequences-N13
+grep -o -i 'Argonauta' N14.* | wc -l > output/1-output/1-argonauta-orthofinder-hog-orthogroup-count-sequences-N14
+grep -o -i 'Argonauta' N15.* | wc -l > output/1-output/1-argonauta-orthofinder-hog-orthogroup-count-sequences-N15
+grep -o -i 'Argonauta' N16.* | wc -l > output/1-output/1-argonauta-orthofinder-hog-orthogroup-count-sequences-N16
+grep -o -i 'Argonauta' N17.* | wc -l > output/1-output/1-argonauta-orthofinder-hog-orthogroup-count-sequences-N17
+# Nautilus
+grep -o -i 'Nautilus' N0.* | wc -l > output/1-output/1-nautilus-orthofinder-hog-orthogroup-count-sequences-N0
+grep -o -i 'Nautilus' N1.* | wc -l > output/1-output/1-nautilus-orthofinder-hog-orthogroup-count-sequences-N1
+grep -o -i 'Nautilus' N2.* | wc -l > output/1-output/1-nautilus-orthofinder-hog-orthogroup-count-sequences-N2
+grep -o -i 'Nautilus' N3.* | wc -l > output/1-output/1-nautilus-orthofinder-hog-orthogroup-count-sequences-N3
+grep -o -i 'Nautilus' N4.* | wc -l > output/1-output/1-nautilus-orthofinder-hog-orthogroup-count-sequences-N4
+grep -o -i 'Nautilus' N5.* | wc -l > output/1-output/1-nautilus-orthofinder-hog-orthogroup-count-sequences-N5
+grep -o -i 'Nautilus' N6.* | wc -l > output/1-output/1-nautilus-orthofinder-hog-orthogroup-count-sequences-N6
+grep -o -i 'Nautilus' N7.* | wc -l > output/1-output/1-nautilus-orthofinder-hog-orthogroup-count-sequences-N7
+grep -o -i 'Nautilus' N8.* | wc -l > output/1-output/1-nautilus-orthofinder-hog-orthogroup-count-sequences-N8
+grep -o -i 'Nautilus' N9.* | wc -l > output/1-output/1-nautilus-orthofinder-hog-orthogroup-count-sequences-N9
+grep -o -i 'Nautilus' N10.* | wc -l > output/1-output/1-nautilus-orthofinder-hog-orthogroup-count-sequences-N10
+grep -o -i 'Nautilus' N11.* | wc -l > output/1-output/1-nautilus-orthofinder-hog-orthogroup-count-sequences-N11
+grep -o -i 'Nautilus' N12.* | wc -l > output/1-output/1-nautilus-orthofinder-hog-orthogroup-count-sequences-N12
+grep -o -i 'Nautilus' N13.* | wc -l > output/1-output/1-nautilus-orthofinder-hog-orthogroup-count-sequences-N13
+grep -o -i 'Nautilus' N14.* | wc -l > output/1-output/1-nautilus-orthofinder-hog-orthogroup-count-sequences-N14
+grep -o -i 'Nautilus' N15.* | wc -l > output/1-output/1-nautilus-orthofinder-hog-orthogroup-count-sequences-N15
+grep -o -i 'Nautilus' N16.* | wc -l > output/1-output/1-nautilus-orthofinder-hog-orthogroup-count-sequences-N16
+grep -o -i 'Nautilus' N17.* | wc -l > output/1-output/1-nautilus-orthofinder-hog-orthogroup-count-sequences-N17
+# Acanthopleura
+grep -o -i 'Acanthopleura' N0.* | wc -l > output/1-output/1-acanthopleura-orthofinder-hog-orthogroup-count-sequences-N0
+grep -o -i 'Acanthopleura' N1.* | wc -l > output/1-output/1-acanthopleura-orthofinder-hog-orthogroup-count-sequences-N1
+grep -o -i 'Acanthopleura' N2.* | wc -l > output/1-output/1-acanthopleura-orthofinder-hog-orthogroup-count-sequences-N2
+grep -o -i 'Acanthopleura' N3.* | wc -l > output/1-output/1-acanthopleura-orthofinder-hog-orthogroup-count-sequences-N3
+grep -o -i 'Acanthopleura' N4.* | wc -l > output/1-output/1-acanthopleura-orthofinder-hog-orthogroup-count-sequences-N4
+grep -o -i 'Acanthopleura' N5.* | wc -l > output/1-output/1-acanthopleura-orthofinder-hog-orthogroup-count-sequences-N5
+grep -o -i 'Acanthopleura' N6.* | wc -l > output/1-output/1-acanthopleura-orthofinder-hog-orthogroup-count-sequences-N6
+grep -o -i 'Acanthopleura' N7.* | wc -l > output/1-output/1-acanthopleura-orthofinder-hog-orthogroup-count-sequences-N7
+grep -o -i 'Acanthopleura' N8.* | wc -l > output/1-output/1-acanthopleura-orthofinder-hog-orthogroup-count-sequences-N8
+grep -o -i 'Acanthopleura' N9.* | wc -l > output/1-output/1-acanthopleura-orthofinder-hog-orthogroup-count-sequences-N9
+grep -o -i 'Acanthopleura' N10.* | wc -l > output/1-output/1-acanthopleura-orthofinder-hog-orthogroup-count-sequences-N10
+grep -o -i 'Acanthopleura' N11.* | wc -l > output/1-output/1-acanthopleura-orthofinder-hog-orthogroup-count-sequences-N11
+grep -o -i 'Acanthopleura' N12.* | wc -l > output/1-output/1-acanthopleura-orthofinder-hog-orthogroup-count-sequences-N12
+grep -o -i 'Acanthopleura' N13.* | wc -l > output/1-output/1-acanthopleura-orthofinder-hog-orthogroup-count-sequences-N13
+grep -o -i 'Acanthopleura' N14.* | wc -l > output/1-output/1-acanthopleura-orthofinder-hog-orthogroup-count-sequences-N14
+grep -o -i 'Acanthopleura' N15.* | wc -l > output/1-output/1-acanthopleura-orthofinder-hog-orthogroup-count-sequences-N15
+grep -o -i 'Acanthopleura' N16.* | wc -l > output/1-output/1-acanthopleura-orthofinder-hog-orthogroup-count-sequences-N16
+grep -o -i 'Acanthopleura' N17.* | wc -l > output/1-output/1-acanthopleura-orthofinder-hog-orthogroup-count-sequences-N17
+# Lingula
+grep -o -i 'Lingula' N0.* | wc -l > output/1-output/1-lingula-orthofinder-hog-orthogroup-count-sequences-N0
+grep -o -i 'Lingula' N1.* | wc -l > output/1-output/1-lingula-orthofinder-hog-orthogroup-count-sequences-N1
+grep -o -i 'Lingula' N2.* | wc -l > output/1-output/1-lingula-orthofinder-hog-orthogroup-count-sequences-N2
+grep -o -i 'Lingula' N3.* | wc -l > output/1-output/1-lingula-orthofinder-hog-orthogroup-count-sequences-N3
+grep -o -i 'Lingula' N4.* | wc -l > output/1-output/1-lingula-orthofinder-hog-orthogroup-count-sequences-N4
+grep -o -i 'Lingula' N5.* | wc -l > output/1-output/1-lingula-orthofinder-hog-orthogroup-count-sequences-N5
+grep -o -i 'Lingula' N6.* | wc -l > output/1-output/1-lingula-orthofinder-hog-orthogroup-count-sequences-N6
+grep -o -i 'Lingula' N7.* | wc -l > output/1-output/1-lingula-orthofinder-hog-orthogroup-count-sequences-N7
+grep -o -i 'Lingula' N8.* | wc -l > output/1-output/1-lingula-orthofinder-hog-orthogroup-count-sequences-N8
+grep -o -i 'Lingula' N9.* | wc -l > output/1-output/1-lingula-orthofinder-hog-orthogroup-count-sequences-N9
+grep -o -i 'Lingula' N10.* | wc -l > output/1-output/1-lingula-orthofinder-hog-orthogroup-count-sequences-N10
+grep -o -i 'Lingula' N11.* | wc -l > output/1-output/1-lingula-orthofinder-hog-orthogroup-count-sequences-N11
+grep -o -i 'Lingula' N12.* | wc -l > output/1-output/1-lingula-orthofinder-hog-orthogroup-count-sequences-N12
+grep -o -i 'Lingula' N13.* | wc -l > output/1-output/1-lingula-orthofinder-hog-orthogroup-count-sequences-N13
+grep -o -i 'Lingula' N14.* | wc -l > output/1-output/1-lingula-orthofinder-hog-orthogroup-count-sequences-N14
+grep -o -i 'Lingula' N15.* | wc -l > output/1-output/1-lingula-orthofinder-hog-orthogroup-count-sequences-N15
+grep -o -i 'Lingula' N16.* | wc -l > output/1-output/1-lingula-orthofinder-hog-orthogroup-count-sequences-N16
+grep -o -i 'Lingula' N17.* | wc -l > output/1-output/1-lingula-orthofinder-hog-orthogroup-count-sequences-N17
+# Phoronis
+grep -o -i 'Phoronis' N0.* | wc -l > output/1-output/1-phoronis-orthofinder-hog-orthogroup-count-sequences-N0
+grep -o -i 'Phoronis' N1.* | wc -l > output/1-output/1-phoronis-orthofinder-hog-orthogroup-count-sequences-N1
+grep -o -i 'Phoronis' N2.* | wc -l > output/1-output/1-phoronis-orthofinder-hog-orthogroup-count-sequences-N2
+grep -o -i 'Phoronis' N3.* | wc -l > output/1-output/1-phoronis-orthofinder-hog-orthogroup-count-sequences-N3
+grep -o -i 'Phoronis' N4.* | wc -l > output/1-output/1-phoronis-orthofinder-hog-orthogroup-count-sequences-N4
+grep -o -i 'Phoronis' N5.* | wc -l > output/1-output/1-phoronis-orthofinder-hog-orthogroup-count-sequences-N5
+grep -o -i 'Phoronis' N6.* | wc -l > output/1-output/1-phoronis-orthofinder-hog-orthogroup-count-sequences-N6
+grep -o -i 'Phoronis' N7.* | wc -l > output/1-output/1-phoronis-orthofinder-hog-orthogroup-count-sequences-N7
+grep -o -i 'Phoronis' N8.* | wc -l > output/1-output/1-phoronis-orthofinder-hog-orthogroup-count-sequences-N8
+grep -o -i 'Phoronis' N9.* | wc -l > output/1-output/1-phoronis-orthofinder-hog-orthogroup-count-sequences-N9
+grep -o -i 'Phoronis' N10.* | wc -l > output/1-output/1-phoronis-orthofinder-hog-orthogroup-count-sequences-N10
+grep -o -i 'Phoronis' N11.* | wc -l > output/1-output/1-phoronis-orthofinder-hog-orthogroup-count-sequences-N11
+grep -o -i 'Phoronis' N12.* | wc -l > output/1-output/1-phoronis-orthofinder-hog-orthogroup-count-sequences-N12
+grep -o -i 'Phoronis' N13.* | wc -l > output/1-output/1-phoronis-orthofinder-hog-orthogroup-count-sequences-N13
+grep -o -i 'Phoronis' N14.* | wc -l > output/1-output/1-phoronis-orthofinder-hog-orthogroup-count-sequences-N14
+grep -o -i 'Phoronis' N15.* | wc -l > output/1-output/1-phoronis-orthofinder-hog-orthogroup-count-sequences-N15
+grep -o -i 'Phoronis' N16.* | wc -l > output/1-output/1-phoronis-orthofinder-hog-orthogroup-count-sequences-N16
+grep -o -i 'Phoronis' N17.* | wc -l > output/1-output/1-phoronis-orthofinder-hog-orthogroup-count-sequences-N17
+# Capitella
+grep -o -i 'Capitella' N0.* | wc -l > output/1-output/1-capitella-orthofinder-hog-orthogroup-count-sequences-N0
+grep -o -i 'Capitella' N1.* | wc -l > output/1-output/1-capitella-orthofinder-hog-orthogroup-count-sequences-N1
+grep -o -i 'Capitella' N2.* | wc -l > output/1-output/1-capitella-orthofinder-hog-orthogroup-count-sequences-N2
+grep -o -i 'Capitella' N3.* | wc -l > output/1-output/1-capitella-orthofinder-hog-orthogroup-count-sequences-N3
+grep -o -i 'Capitella' N4.* | wc -l > output/1-output/1-capitella-orthofinder-hog-orthogroup-count-sequences-N4
+grep -o -i 'Capitella' N5.* | wc -l > output/1-output/1-capitella-orthofinder-hog-orthogroup-count-sequences-N5
+grep -o -i 'Capitella' N6.* | wc -l > output/1-output/1-capitella-orthofinder-hog-orthogroup-count-sequences-N6
+grep -o -i 'Capitella' N7.* | wc -l > output/1-output/1-capitella-orthofinder-hog-orthogroup-count-sequences-N7
+grep -o -i 'Capitella' N8.* | wc -l > output/1-output/1-capitella-orthofinder-hog-orthogroup-count-sequences-N8
+grep -o -i 'Capitella' N9.* | wc -l > output/1-output/1-capitella-orthofinder-hog-orthogroup-count-sequences-N9
+grep -o -i 'Capitella' N10.* | wc -l > output/1-output/1-capitella-orthofinder-hog-orthogroup-count-sequences-N10
+grep -o -i 'Capitella' N11.* | wc -l > output/1-output/1-capitella-orthofinder-hog-orthogroup-count-sequences-N11
+grep -o -i 'Capitella' N12.* | wc -l > output/1-output/1-capitella-orthofinder-hog-orthogroup-count-sequences-N12
+grep -o -i 'Capitella' N13.* | wc -l > output/1-output/1-capitella-orthofinder-hog-orthogroup-count-sequences-N13
+grep -o -i 'Capitella' N14.* | wc -l > output/1-output/1-capitella-orthofinder-hog-orthogroup-count-sequences-N14
+grep -o -i 'Capitella' N15.* | wc -l > output/1-output/1-capitella-orthofinder-hog-orthogroup-count-sequences-N15
+grep -o -i 'Capitella' N16.* | wc -l > output/1-output/1-capitella-orthofinder-hog-orthogroup-count-sequences-N16
+grep -o -i 'Capitella' N17.* | wc -l > output/1-output/1-capitella-orthofinder-hog-orthogroup-count-sequences-N17
+# Drosophila
+grep -o -i 'Drosophila' N0.* | wc -l > output/1-output/1-drosophila-orthofinder-hog-orthogroup-count-sequences-N0
+grep -o -i 'Drosophila' N1.* | wc -l > output/1-output/1-drosophila-orthofinder-hog-orthogroup-count-sequences-N1
+grep -o -i 'Drosophila' N2.* | wc -l > output/1-output/1-drosophila-orthofinder-hog-orthogroup-count-sequences-N2
+grep -o -i 'Drosophila' N3.* | wc -l > output/1-output/1-drosophila-orthofinder-hog-orthogroup-count-sequences-N3
+grep -o -i 'Drosophila' N4.* | wc -l > output/1-output/1-drosophila-orthofinder-hog-orthogroup-count-sequences-N4
+grep -o -i 'Drosophila' N5.* | wc -l > output/1-output/1-drosophila-orthofinder-hog-orthogroup-count-sequences-N5
+grep -o -i 'Drosophila' N6.* | wc -l > output/1-output/1-drosophila-orthofinder-hog-orthogroup-count-sequences-N6
+grep -o -i 'Drosophila' N7.* | wc -l > output/1-output/1-drosophila-orthofinder-hog-orthogroup-count-sequences-N7
+grep -o -i 'Drosophila' N8.* | wc -l > output/1-output/1-drosophila-orthofinder-hog-orthogroup-count-sequences-N8
+grep -o -i 'Drosophila' N9.* | wc -l > output/1-output/1-drosophila-orthofinder-hog-orthogroup-count-sequences-N9
+grep -o -i 'Drosophila' N10.* | wc -l > output/1-output/1-drosophila-orthofinder-hog-orthogroup-count-sequences-N10
+grep -o -i 'Drosophila' N11.* | wc -l > output/1-output/1-drosophila-orthofinder-hog-orthogroup-count-sequences-N11
+grep -o -i 'Drosophila' N12.* | wc -l > output/1-output/1-drosophila-orthofinder-hog-orthogroup-count-sequences-N12
+grep -o -i 'Drosophila' N13.* | wc -l > output/1-output/1-drosophila-orthofinder-hog-orthogroup-count-sequences-N13
+grep -o -i 'Drosophila' N14.* | wc -l > output/1-output/1-drosophila-orthofinder-hog-orthogroup-count-sequences-N14
+grep -o -i 'Drosophila' N15.* | wc -l > output/1-output/1-drosophila-orthofinder-hog-orthogroup-count-sequences-N15
+grep -o -i 'Drosophila' N16.* | wc -l > output/1-output/1-drosophila-orthofinder-hog-orthogroup-count-sequences-N16
+grep -o -i 'Drosophila' N17.* | wc -l > output/1-output/1-drosophila-orthofinder-hog-orthogroup-count-sequences-N17
+# Caenorhabditis
+grep -o -i 'Caenorhabditis' N0.* | wc -l > output/1-output/1-caenorhabditis-orthofinder-hog-orthogroup-count-sequences-N0
+grep -o -i 'Caenorhabditis' N1.* | wc -l > output/1-output/1-caenorhabditis-orthofinder-hog-orthogroup-count-sequences-N1
+grep -o -i 'Caenorhabditis' N2.* | wc -l > output/1-output/1-caenorhabditis-orthofinder-hog-orthogroup-count-sequences-N2
+grep -o -i 'Caenorhabditis' N3.* | wc -l > output/1-output/1-caenorhabditis-orthofinder-hog-orthogroup-count-sequences-N3
+grep -o -i 'Caenorhabditis' N4.* | wc -l > output/1-output/1-caenorhabditis-orthofinder-hog-orthogroup-count-sequences-N4
+grep -o -i 'Caenorhabditis' N5.* | wc -l > output/1-output/1-caenorhabditis-orthofinder-hog-orthogroup-count-sequences-N5
+grep -o -i 'Caenorhabditis' N6.* | wc -l > output/1-output/1-caenorhabditis-orthofinder-hog-orthogroup-count-sequences-N6
+grep -o -i 'Caenorhabditis' N7.* | wc -l > output/1-output/1-caenorhabditis-orthofinder-hog-orthogroup-count-sequences-N7
+grep -o -i 'Caenorhabditis' N8.* | wc -l > output/1-output/1-caenorhabditis-orthofinder-hog-orthogroup-count-sequences-N8
+grep -o -i 'Caenorhabditis' N9.* | wc -l > output/1-output/1-caenorhabditis-orthofinder-hog-orthogroup-count-sequences-N9
+grep -o -i 'Caenorhabditis' N10.* | wc -l > output/1-output/1-caenorhabditis-orthofinder-hog-orthogroup-count-sequences-N10
+grep -o -i 'Caenorhabditis' N11.* | wc -l > output/1-output/1-caenorhabditis-orthofinder-hog-orthogroup-count-sequences-N11
+grep -o -i 'Caenorhabditis' N12.* | wc -l > output/1-output/1-caenorhabditis-orthofinder-hog-orthogroup-count-sequences-N12
+grep -o -i 'Caenorhabditis' N13.* | wc -l > output/1-output/1-caenorhabditis-orthofinder-hog-orthogroup-count-sequences-N13
+grep -o -i 'Caenorhabditis' N14.* | wc -l > output/1-output/1-caenorhabditis-orthofinder-hog-orthogroup-count-sequences-N14
+grep -o -i 'Caenorhabditis' N15.* | wc -l > output/1-output/1-caenorhabditis-orthofinder-hog-orthogroup-count-sequences-N15
+grep -o -i 'Caenorhabditis' N16.* | wc -l > output/1-output/1-caenorhabditis-orthofinder-hog-orthogroup-count-sequences-N16
+grep -o -i 'Caenorhabditis' N17.* | wc -l > output/1-output/1-caenorhabditis-orthofinder-hog-orthogroup-count-sequences-N17
+# Homo
+grep -o -i 'sapiens' N0.* | wc -l > output/1-output/1-homo-orthofinder-hog-orthogroup-count-sequences-N0
+grep -o -i 'sapiens' N1.* | wc -l > output/1-output/1-homo-orthofinder-hog-orthogroup-count-sequences-N1
+grep -o -i 'sapiens' N2.* | wc -l > output/1-output/1-homo-orthofinder-hog-orthogroup-count-sequences-N2
+grep -o -i 'sapiens' N3.* | wc -l > output/1-output/1-homo-orthofinder-hog-orthogroup-count-sequences-N3
+grep -o -i 'sapiens' N4.* | wc -l > output/1-output/1-homo-orthofinder-hog-orthogroup-count-sequences-N4
+grep -o -i 'sapiens' N5.* | wc -l > output/1-output/1-homo-orthofinder-hog-orthogroup-count-sequences-N5
+grep -o -i 'sapiens' N6.* | wc -l > output/1-output/1-homo-orthofinder-hog-orthogroup-count-sequences-N6
+grep -o -i 'sapiens' N7.* | wc -l > output/1-output/1-homo-orthofinder-hog-orthogroup-count-sequences-N7
+grep -o -i 'sapiens' N8.* | wc -l > output/1-output/1-homo-orthofinder-hog-orthogroup-count-sequences-N8
+grep -o -i 'sapiens' N9.* | wc -l > output/1-output/1-homo-orthofinder-hog-orthogroup-count-sequences-N9
+grep -o -i 'sapiens' N10.* | wc -l > output/1-output/1-homo-orthofinder-hog-orthogroup-count-sequences-N10
+grep -o -i 'sapiens' N11.* | wc -l > output/1-output/1-homo-orthofinder-hog-orthogroup-count-sequences-N11
+grep -o -i 'sapiens' N12.* | wc -l > output/1-output/1-homo-orthofinder-hog-orthogroup-count-sequences-N12
+grep -o -i 'sapiens' N13.* | wc -l > output/1-output/1-homo-orthofinder-hog-orthogroup-count-sequences-N13
+grep -o -i 'sapiens' N14.* | wc -l > output/1-output/1-homo-orthofinder-hog-orthogroup-count-sequences-N14
+grep -o -i 'sapiens' N15.* | wc -l > output/1-output/1-homo-orthofinder-hog-orthogroup-count-sequences-N15
+grep -o -i 'sapiens' N16.* | wc -l > output/1-output/1-homo-orthofinder-hog-orthogroup-count-sequences-N16
+grep -o -i 'sapiens' N17.* | wc -l > output/1-output/1-homo-orthofinder-hog-orthogroup-count-sequences-N17

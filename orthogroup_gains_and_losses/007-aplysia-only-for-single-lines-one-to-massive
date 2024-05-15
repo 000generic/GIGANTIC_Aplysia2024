@@ -1,0 +1,3 @@
+#! /bin/bash
+
+grep 'GeneID' output/6-map-ancestral-nodes-and-orthology-classification-per-sequence-single-line > output/7-Aplysia-map-ancestral-nodes-and-orthology-classification-per-sequence-single-line
