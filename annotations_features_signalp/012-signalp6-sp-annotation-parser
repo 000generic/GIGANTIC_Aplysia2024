@@ -1,0 +1,55 @@
+#! python
+# Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-gigantic20220627164247_seq0006141035aa     SignalP-6.0     c-region        19      21      .       .       .       .
+
+input_annotations = open( 'output/10-list-signalp6-annotations', 'r' )
+input_fastas = open( 'output/11-list-fastas', 'r' )
+
+# output/Metazoa-Arthropoda-Insecta-Diptera-Drosophilidae-Drosophila-melanogaster/region_output.gff3
+seqid_annotation = {}
+for next_annotation in input_annotations:
+    input_annotation = open( next_annotation[ :-1 ], 'r' )
+    
+    # Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-gigantic20220627164247_seq0006141035aa     SignalP-6.0     c-region        19      21      .       .       .       .
+    for next_line in input_annotation:
+        if next_line[ 0 ] == '#':
+            pass
+        else:
+            info = next_line.split( '\t' )
+            seqid = info[ 0 ]
+            region = info[ 2 ].split( '-' )[ 0 ]
+            start = info[ 3 ]
+            stop = info[ 4 ]
+            annotation = '_' + region + start + ':' + stop
+
+            if seqid in seqid_annotation.keys():
+                seqid_annotation[ seqid ]  = seqid_annotation[ seqid ] + annotation
+            else:
+                seqid_annotation[ seqid ] = 'SignalP6_SP'
+                seqid_annotation[ seqid ] = seqid_annotation[ seqid ] + annotation
+
+for next_fasta in input_fastas:
+
+    input_fasta = open( next_fasta[ :-1 ], 'r' )
+    file_name = next_fasta.split( '/' )[ -1 ]
+    core_name = '-'.join( file_name.split( '-' )[ :7 ] )
+    new_file = 'output/12-signalp6-sp-annotations-' + core_name
+    output_annotation = open( new_file, 'w' )
+    output = '[ Sequence Id ]' + '\t' + '[ SignalP6 Signal Peptide Annotation ]' + '\n'
+    output_annotation.write( output )
+    
+    for next_line in input_fasta:
+
+        if next_line[ 0 ] == '>':
+            seqid = next_line[ 1:-1 ]
+            if seqid in seqid_annotation.keys():
+                annotation = seqid_annotation[ seqid ]
+                output = seqid + '\t' + annotation + '\n'
+            else:
+                output = seqid + '\t' + 'None' + '\n'
+            output_annotation.write( output )
+        else:
+            pass
+    input_fasta.close()
+    output_annotation.close()
+input_annotations.close()
+input_fastas.close()
