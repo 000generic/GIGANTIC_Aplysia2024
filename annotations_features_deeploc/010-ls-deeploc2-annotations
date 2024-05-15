@@ -1,0 +1,1 @@
+ls output/*csv > output/10-list-deeploc2-annotations

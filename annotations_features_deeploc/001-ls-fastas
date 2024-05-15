@@ -1,0 +1,2 @@
+ls ../../../species24/projectdb/*aa > output/1-list-fastas
+
