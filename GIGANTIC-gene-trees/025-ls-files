@@ -1,9 +1,0 @@
-#! /bin/bash
-# GIGANTIC gene trees script
-
-ls output/1-* > output/7-list-files-to-update-identifiers-in
-ls output/2-* >> output/7-list-files-to-update-identifiers-in
-ls output/3-* >> output/7-list-files-to-update-identifiers-in
-ls output/4-* >> output/7-list-files-to-update-identifiers-in
-ls output/5-*treefile >> output/7-list-files-to-update-identifiers-in
-ls output/6-*fasttree >> output/7-list-files-to-update-identifiers-in

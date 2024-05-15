@@ -1,4 +1,0 @@
-#! /bin/bash
-# GIGANTIC gene trees script
-
-sed -i 's/GeneID:/GeneID_/g' output/9-AGS-*-family-blastp_X_species19.*

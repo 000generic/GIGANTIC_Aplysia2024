@@ -1,4 +1,0 @@
-#! /bin/bash
-# GIGANTIC gene trees script
-
-cat input/rgs*.aa output/16-CGS-final-sequences-by-blastp-RBF-PORE.fasta > output/17-AGS_blastp-rgs-phosphatome-family_X_species19-PORE.aa

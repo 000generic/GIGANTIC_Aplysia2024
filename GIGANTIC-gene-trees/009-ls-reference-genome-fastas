@@ -1,6 +1,0 @@
-#! /bin/bash
-# GIGANTIC gene trees script
-
-cat output/8*rgs > output/9-rgs-all-genomes-combined.fasta-rgs
-ls -1 output/9*rgs > output/9-list-RGS-header-reference-genome-fastas
-

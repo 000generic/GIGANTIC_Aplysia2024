@@ -1,4 +1,0 @@
-#! /bin/bash
-# GIGANTIC gene trees script
-
-clipkit -l -m smart-gap output/3-AGS-hgncXXXX-family-blastp_X_species19.mafft -o output/4-AGS-hgncXXXX-family-blastp_X_species19.clipkit-smartgap

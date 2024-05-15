@@ -1,8 +1,0 @@
-#! /bin/bash
-# GIGANTIC gene trees script
-
-/usr/bin/blastp -db ../../../../projectdbs/species19/*Homo-sapiens*aa -query input/rgs*.aa -out output/6-blast-report-rgs-phosphatome-superfamily_X_human-genome -outfmt 6  -max_hsps 1 &
-#/usr/bin/blastp -db ../../../projectdb/*Drosophila*aa -query input/rgs*.aa -out output/6-blast-report-rgs-phosphatome-superfamily_X_fly-genome -outfmt 6  -max_hsps 1 &
-#/usr/bin/blastp -db ../../../projectdb/*Caenorhabditis*aa -query input/rgs*.aa -out output/6-blast-report-rgs-phosphatome-superfamily_X_worm-genome -outfmt 6  -max_hsps 1 &
-
-echo

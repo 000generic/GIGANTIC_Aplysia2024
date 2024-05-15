@@ -1,4 +1,0 @@
-#! /bin/bash
-# GIGANTIC gene trees script
-
-fasttree -spr 4 -mlacc 2 -slownni -gamma -boot 2000 -log output/6-log-AGS-hgncXXXX-family-blastp_X_species19 output/4-AGS-hgncXXXX-family-blastp_X_species19.clipkit-smartgap  > output/6-AGS-hgncXXXX-family-blastp_X_species19.fasttree
