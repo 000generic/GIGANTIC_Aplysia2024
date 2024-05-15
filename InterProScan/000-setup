@@ -1,5 +1,0 @@
-#! /bin/bash
-# Interproscan script
-
-mkdir output
-mkdir output/interproscan5_48_83_0-pfam-mobidblite-ika-jobs-jul2022

@@ -1,5 +1,0 @@
-#! /bin/bash
-# Interproscan script
-
-ls source-fastas/*Aplysia*aa > output/1-list-fastas
-ls source-fastas/*Octopus*aa >> output/1-list-fastas

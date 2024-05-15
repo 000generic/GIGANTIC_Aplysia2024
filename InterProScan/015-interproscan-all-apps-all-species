@@ -1,5 +1,0 @@
-#! /bin/bash
-# Interproscan script
-
-/home/eedsinger/software/interproscan/interproscan-5.59-91.0/interproscan.sh --input source-fastas/Metazoa-Mollusca-Gastropoda-Aplysiida-Aplysiidae-Aplysia-californica-6500-T1.aa --cpu 20 --disable-precalc
-/home/eedsinger/software/interproscan/interproscan-5.59-91.0/interproscan.sh --input source-fastas/Metazoa-Mollusca-Cephalopoda-Octopoda-Octopodidae-Octopus-bimaculoides-37653-T1.aa --cpu 20 --disable-precalc 
